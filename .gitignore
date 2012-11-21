@@ -1,5 +1,12 @@
 *.class
-
+.classpath
+.springBeans
+.loadpath
+.project
+.settings
+build
+target
+bin
 # Package Files #
 *.jar
 *.war

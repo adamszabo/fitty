@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="domain" size="2361,2103" id="com.acme.fitness.domain" metadata="uml2-1.0" initialized="true" zoom="0.75" tag="1000" key="32303037303533312D31303030206669746E6573732D636F6D6D6F6E2F54616D61735F426968617269">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.3/@sourceConnections.0 //@children.7/@sourceConnections.1 //@children.6/@sourceConnections.1" name="Order" location="450,295" size="201,147" id="com.acme.fitness.domain/Order" runTimeClassModel="id,trainings,delivered,orderItems,memberShips,user">
+    <children xsi:type="editmodel:CompartmentEditModel" size="178,108">
+      <children xsi:type="editmodel:AttributeEditModel" name="delivered" id="com.acme.fitness.domain/Order#delivered"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/Order#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="user" id="com.acme.fitness.domain/Order#user"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="orderItems" id="com.acme.fitness.domain/Order#orderItems"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="trainings" id="com.acme.fitness.domain/Order#trainings"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="memberShips" id="com.acme.fitness.domain/Order#memberShips"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Order-Soyatec::Import->com.acme.fitness.domain/User" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,91" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="127,55"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Order-Soyatec::Import->com.acme.fitness.domain/OrderItem" source="//@children.0" target="//@children.6" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="201,51" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,60"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Order-Soyatec::Import->com.acme.fitness.domain/MemberShip" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="169,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="2,165"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Order-Soyatec::Import->com.acme.fitness.domain/Training" source="//@children.0" target="//@children.7" targetEnd="//@children.0/@sourceConnections.3/@children.2" label="//@children.0/@sourceConnections.3/@children.0" sourceEnd="//@children.0/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="31,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="150,170"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Role" location="59,149" size="102,93" id="com.acme.fitness.domain/Role" runTimeClassModel="id,name,user">
+    <children xsi:type="editmodel:CompartmentEditModel" size="79,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/Role#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="com.acme.fitness.domain/Role#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="user" id="com.acme.fitness.domain/Role#user"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Role-Soyatec::Import->com.acme.fitness.domain/User" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.0/@children.2" label="//@children.1/@sourceConnections.0/@children.0" sourceEnd="//@children.1/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="76,93" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="24,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.0 //@children.1/@sourceConnections.0 //@children.7/@sourceConnections.0" name="User" location="111,331" size="127,201" id="com.acme.fitness.domain/User" runTimeClassModel="id,lastLoginIp,lastLogin,email,userName,fullName,registration,password,mobile">
+    <children xsi:type="editmodel:CompartmentEditModel" size="104,162">
+      <children xsi:type="editmodel:AttributeEditModel" name="email" id="com.acme.fitness.domain/User#email"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="fullName" id="com.acme.fitness.domain/User#fullName"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/User#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="lastLogin" id="com.acme.fitness.domain/User#lastLogin"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="lastLoginIp" id="com.acme.fitness.domain/User#lastLoginIp"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mobile" id="com.acme.fitness.domain/User#mobile"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="password" id="com.acme.fitness.domain/User#password"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="registration" id="com.acme.fitness.domain/User#registration"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="userName" id="com.acme.fitness.domain/User#userName"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.2" name="MemberShip" location="675,69" size="161,165" id="com.acme.fitness.domain/MemberShip" runTimeClassModel="id,numberOfEntries,maxNumberOfEntries,price,order,expireDate,type">
+    <children xsi:type="editmodel:CompartmentEditModel" size="138,126">
+      <children xsi:type="editmodel:AttributeEditModel" name="expireDate" id="com.acme.fitness.domain/MemberShip#expireDate"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/MemberShip#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="maxNumberOfEntries" id="com.acme.fitness.domain/MemberShip#maxNumberOfEntries"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="numberOfEntries" id="com.acme.fitness.domain/MemberShip#numberOfEntries"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="order" id="com.acme.fitness.domain/MemberShip#order"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="price" id="com.acme.fitness.domain/MemberShip#price"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="type" id="com.acme.fitness.domain/MemberShip#type"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/MemberShip-Soyatec::Import->com.acme.fitness.domain/Order" source="//@children.3" target="//@children.0" targetEnd="//@children.3/@sourceConnections.0/@children.2" label="//@children.3/@sourceConnections.0/@children.0" sourceEnd="//@children.3/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="22,165" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="189,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Store" location="480,555" size="122,93" id="com.acme.fitness.domain/Store" runTimeClassModel="id,product,quantity">
+    <children xsi:type="editmodel:CompartmentEditModel" size="99,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/Store#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="product" id="com.acme.fitness.domain/Store#product"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="quantity" id="com.acme.fitness.domain/Store#quantity"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Store-Soyatec::Import->com.acme.fitness.domain/Product" source="//@children.4" target="//@children.5" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="122,12" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,133"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.6/@sourceConnections.0 //@children.4/@sourceConnections.0" name="Product" location="724,434" size="141,147" id="com.acme.fitness.domain/Product" runTimeClassModel="id,creation,price,details,manufacturer,name">
+    <children xsi:type="editmodel:CompartmentEditModel" size="118,108">
+      <children xsi:type="editmodel:AttributeEditModel" name="creation" id="com.acme.fitness.domain/Product#creation"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="details" id="com.acme.fitness.domain/Product#details"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/Product#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="manufacturer" id="com.acme.fitness.domain/Product#manufacturer"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="com.acme.fitness.domain/Product#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="price" id="com.acme.fitness.domain/Product#price"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.1" name="OrderItem" location="735,286" size="122,111" id="com.acme.fitness.domain/OrderItem" runTimeClassModel="id,product,order,quantity">
+    <children xsi:type="editmodel:CompartmentEditModel" size="99,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/OrderItem#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="order" id="com.acme.fitness.domain/OrderItem#order"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="product" id="com.acme.fitness.domain/OrderItem#product"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="quantity" id="com.acme.fitness.domain/OrderItem#quantity"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/OrderItem-Soyatec::Import->com.acme.fitness.domain/Product" source="//@children.6" target="//@children.5" targetEnd="//@children.6/@sourceConnections.0/@children.2" label="//@children.6/@sourceConnections.0/@children.0" sourceEnd="//@children.6/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,111" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="71,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/OrderItem-Soyatec::Import->com.acme.fitness.domain/Order*com.acme.fitness.domain/OrderItem-Standard::Call->com.acme.fitness.domain/Order" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.1/@children.2" label="//@children.6/@sourceConnections.1/@children.0" sourceEnd="//@children.6/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Import»" size="64,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,40" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="201,31"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.3" name="Training" location="270,60" size="150,183" id="com.acme.fitness.domain/Training" runTimeClassModel="id,burnedCalories,client,order,trainingStartDate,isAnalyzed,review,trainer">
+    <children xsi:type="editmodel:CompartmentEditModel" size="127,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="burnedCalories" id="com.acme.fitness.domain/Training#burnedCalories"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="client" id="com.acme.fitness.domain/Training#client"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="com.acme.fitness.domain/Training#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="isAnalyzed" id="com.acme.fitness.domain/Training#isAnalyzed"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="order" id="com.acme.fitness.domain/Training#order"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="review" id="com.acme.fitness.domain/Training#review"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="trainer" id="com.acme.fitness.domain/Training#trainer"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="trainingStartDate" id="com.acme.fitness.domain/Training#trainingStartDate"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Training-Soyatec::Import->com.acme.fitness.domain/User" source="//@children.7" target="//@children.2" targetEnd="//@children.7/@sourceConnections.0/@children.2" label="//@children.7/@sourceConnections.0/@children.0" sourceEnd="//@children.7/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="19,183" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="124,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="com.acme.fitness.domain/Training-Soyatec::Import->com.acme.fitness.domain/Order" source="//@children.7" target="//@children.0" targetEnd="//@children.7/@sourceConnections.1/@children.2" label="//@children.7/@sourceConnections.1/@children.0" sourceEnd="//@children.7/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="41,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="145,183" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="11,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" level="-1" showScope="InPackage" properties="wireOptions=7;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

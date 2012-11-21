@@ -1,0 +1,120 @@
+package com.acme.fitness.domain;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+@Entity
+public class MemberShip {
+	
+	@Id
+	@Column
+	@GeneratedValue
+	private long id;
+	
+	@Column
+	private String type;
+
+	@Column
+	private int numberOfEntries;
+
+	@Column
+	private int maxNumberOfEntries;
+
+	@Column
+	private Date expireDate;
+
+	@Column
+	private double price;
+	
+	@ManyToOne
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	private Order order;
+
+	public MemberShip() {
+		super();
+	}
+
+	public MemberShip(String type, int numberOfEntries, int maxNumberOfEntries,
+			Date expireDate, double price, Order order) {
+		super();
+		this.type = type;
+		this.numberOfEntries = numberOfEntries;
+		this.maxNumberOfEntries = maxNumberOfEntries;
+		this.expireDate = expireDate;
+		this.price = price;
+		this.order = order;
+	}
+
+	@Override
+	public String toString() {
+		return "MemberShip [id=" + id + ", type=" + type + ", numberOfEntries="
+				+ numberOfEntries + ", maxNumberOfEntries="
+				+ maxNumberOfEntries + ", expireDate=" + expireDate
+				+ ", price=" + price + ", orderId=" + order.getId() + "]";
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getNumberOfEntries() {
+		return numberOfEntries;
+	}
+
+	public void setNumberOfEntries(int numberOfEntries) {
+		this.numberOfEntries = numberOfEntries;
+	}
+
+	public int getMaxNumberOfEntries() {
+		return maxNumberOfEntries;
+	}
+
+	public void setMaxNumberOfEntries(int maxNumberOfEntries) {
+		this.maxNumberOfEntries = maxNumberOfEntries;
+	}
+
+	public Date getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	
+}
