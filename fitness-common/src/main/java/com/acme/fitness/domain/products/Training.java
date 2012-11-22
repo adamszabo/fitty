@@ -1,4 +1,4 @@
-package com.acme.fitness.domain;
+package com.acme.fitness.domain.products;
 
 import java.util.Date;
 
@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.users.User;
 
 @Entity
 public class Training {
@@ -40,14 +43,14 @@ public class Training {
 	
 	@ManyToOne
 	@OnDelete(action=OnDeleteAction.CASCADE)
-	private Order order;
+	private Basket basket;
 
 	public Training() {
 		super();
 	}
 
 	public Training(User trainer, User client, Date trainingStartDate,
-			boolean isAnalyzed, int burnedCalories, String review, Order order) {
+			boolean isAnalyzed, int burnedCalories, String review, Basket order) {
 		super();
 		this.trainer = trainer;
 		this.client = client;
@@ -55,14 +58,14 @@ public class Training {
 		this.isAnalyzed = isAnalyzed;
 		this.burnedCalories = burnedCalories;
 		this.review = review;
-		this.order = order;
+		this.basket = order;
 	}
 
 	@Override
 	public String toString() {
 		return "Training [id=" + id + ", trainerId=" + trainer.getId() + ", clientId="
 				+ client.getId() + ", trainingStartDate=" + trainingStartDate + ", burnedCalories=" + burnedCalories
-				+ ", isAnalyzed=" + isAnalyzed + ", order=" + order + "]";
+				+ ", isAnalyzed=" + isAnalyzed + ", basketId=" + basket.getId() + "]";
 	}
 
 	public long getId() {
@@ -121,12 +124,12 @@ public class Training {
 		this.review = review;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Basket getBasket() {
+		return basket;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setBasket(Basket order) {
+		this.basket = order;
 	}
 	
 }

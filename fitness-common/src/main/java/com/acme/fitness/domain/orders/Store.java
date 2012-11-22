@@ -1,13 +1,15 @@
-package com.acme.fitness.domain;
+package com.acme.fitness.domain.orders;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.acme.fitness.domain.products.Product;
 
 @Entity
 public class Store {
@@ -17,7 +19,7 @@ public class Store {
 	@GeneratedValue
 	private long id;
 	
-	@ManyToOne
+	@OneToOne
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Product product;
 	

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.acme.fitness.dao.orders.OrderDao;
+import com.acme.fitness.dao.orders.BasketDao;
 import com.acme.fitness.dao.orders.OrderItemDao;
 import com.acme.fitness.dao.orders.StoreDao;
 import com.acme.fitness.dao.products.MemberShipDao;
@@ -16,14 +16,14 @@ import com.acme.fitness.dao.products.ProductDao;
 import com.acme.fitness.dao.products.TrainingDao;
 import com.acme.fitness.dao.users.RoleDao;
 import com.acme.fitness.dao.users.UserDao;
-import com.acme.fitness.domain.MemberShip;
-import com.acme.fitness.domain.Order;
-import com.acme.fitness.domain.OrderItem;
-import com.acme.fitness.domain.Product;
-import com.acme.fitness.domain.Role;
-import com.acme.fitness.domain.Store;
-import com.acme.fitness.domain.Training;
-import com.acme.fitness.domain.User;
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.orders.OrderItem;
+import com.acme.fitness.domain.orders.Store;
+import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.users.Role;
+import com.acme.fitness.domain.users.User;
 
 public class BootStrap {
 	
@@ -38,7 +38,7 @@ public class BootStrap {
 		ProductDao productDao=ctx.getBean(ProductDao.class);
 		StoreDao storeDao=ctx.getBean(StoreDao.class);
 		OrderItemDao orderItemDao=ctx.getBean(OrderItemDao.class);
-		OrderDao orderDao=ctx.getBean(OrderDao.class);
+		BasketDao orderDao=ctx.getBean(BasketDao.class);
 		MemberShipDao memberShipDao=ctx.getBean(MemberShipDao.class);
 		TrainingDao trainingDao=ctx.getBean(TrainingDao.class);
 		
@@ -59,13 +59,13 @@ public class BootStrap {
 		r3.setUser(u);
 		roleDao.update(r3);
 		
-		System.out.println(userDao.getAllUser());
-		System.out.println(roleDao.getAllRole());
+		System.out.println(userDao.getAllUsers());
+		System.out.println(roleDao.getAllRoles());
 		
 		//userDao.delete(u2);
 		roleDao.delete(r4);
-		System.out.println(userDao.getAllUser());
-		System.out.println(roleDao.getAllRole());
+		System.out.println(userDao.getAllUsers());
+		System.out.println(roleDao.getAllRoles());
 		/*--- User and Role ---*/
 		
 		Product p1=new Product("Prod1", "Lorem ipsum", 12000, "manufacturer", new Date());
@@ -83,25 +83,25 @@ public class BootStrap {
 		storeDao.save(s2);
 		storeDao.save(s3);
 		
-		logger.info(storeDao.getAllStore().toString());
+		logger.info(storeDao.getAllStores().toString());
 		logger.info(storeDao.getStoreByProdctId(p1.getId()).toString());
 		logger.info(storeDao.getStoreByProdctId(p2.getId()).toString());
-		logger.info("--getStoreByProductName: "+storeDao.getStoreByProductName(p1.getName()));
-		logger.info("--getStoreByProductManufacturer: "+storeDao.getStoreByProductManufacturer(p1.getManufacturer()));
+		logger.info("--getStoreByProductName: "+storeDao.getStoresByProductName(p1.getName()));
+		logger.info("--getStoreByProductManufacturer: "+storeDao.getStoresByProductManufacturer(p1.getManufacturer()));
 		
 		storeDao.delete(s2);
 		s1.setQuantity(10000);
 		storeDao.update(s1);
-		System.out.println(storeDao.getAllStore());
+		System.out.println(storeDao.getAllStores());
 		
 		//productDao.delete(p2);
 		p1.setManufacturer("asdfasdf");
 		p1.setName("fffffffff");
 		productDao.update(p1);
 		logger.info("All products:"+productDao.getAllProduct());
-		logger.info("All stores:"+storeDao.getAllStore());
+		logger.info("All stores:"+storeDao.getAllStores());
 		
-		Order o1=new Order(false, u);
+		Basket o1=new Basket(false, u);
 		OrderItem oi1=new OrderItem(p1, 10, o1);
 		OrderItem oi2=new OrderItem(p3, 30, o1);
 		orderDao.save(o1);
@@ -123,9 +123,9 @@ public class BootStrap {
 		trainingDao.save(t2);
 		
 		memberShipDao.delete(ms);
-		logger.info("All MemberShip: "+memberShipDao.getAllMemberShip().toString());
+		logger.info("All MemberShip: "+memberShipDao.getAllMemberShips().toString());
 		logger.info("MemberShip by id: "+memberShipDao.getMemberShipById(ms2.getId()).toString());
-		logger.info("MemberShips by Order: "+memberShipDao.getMemberShipByOrder(o1).toString());
+		logger.info("MemberShips by Order: "+memberShipDao.getMemberShipsByOrder(o1).toString());
 		
 		logger.info("Training by id: "+trainingDao.getTrainingById(t1.getId()).toString());
 		logger.info("Training by Order: "+trainingDao.getTrainingByOrder(o1).toString());
@@ -135,10 +135,10 @@ public class BootStrap {
 		//trainingDao.delete(t2);
 		logger.info("All Training: "+trainingDao.getAllTraining().toString());
 		
-		List<Order> orders=orderDao.getAllOrder();
+		List<Basket> orders=orderDao.getAllBaskets();
 		logger.info("Orders size:"+orders.size());
 		logger.info("Orders:"+orders.toString());
-		logger.info("Orders by user:"+orderDao.getOrderByUser(u));
+		logger.info("Orders by user:"+orderDao.getBasketsByUser(u));
 		logger.info("First order orderItems:" + orders.get(0).getOrderItems());
 		
 		logger.info("User trainings: "+trainingDao.getTrainingByClient(u));
@@ -147,7 +147,7 @@ public class BootStrap {
 		logger.info("Trainer trainings: "+trainingDao.getTrainingByTrainer(u));
 		logger.info("Trainer trainings: "+trainingDao.getTrainingByTrainer(u2));
 		
-		List<MemberShip> memberShips=memberShipDao.getMemberShipByUser(u);
+		List<MemberShip> memberShips=memberShipDao.getMemberShipsByUser(u);
 		logger.info("User memberShips quantity:"+memberShips.size()+" products:"+memberShips);
 		
 			

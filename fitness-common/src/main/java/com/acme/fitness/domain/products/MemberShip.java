@@ -1,4 +1,4 @@
-package com.acme.fitness.domain;
+package com.acme.fitness.domain.products;
 
 import java.util.Date;
 
@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.acme.fitness.domain.orders.Basket;
 
 @Entity
 public class MemberShip {
@@ -36,21 +38,21 @@ public class MemberShip {
 	
 	@ManyToOne
 	@OnDelete(action=OnDeleteAction.CASCADE)
-	private Order order;
+	private Basket basket;
 
 	public MemberShip() {
 		super();
 	}
 
 	public MemberShip(String type, int numberOfEntries, int maxNumberOfEntries,
-			Date expireDate, double price, Order order) {
+			Date expireDate, double price, Basket order) {
 		super();
 		this.type = type;
 		this.numberOfEntries = numberOfEntries;
 		this.maxNumberOfEntries = maxNumberOfEntries;
 		this.expireDate = expireDate;
 		this.price = price;
-		this.order = order;
+		this.basket = order;
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class MemberShip {
 		return "MemberShip [id=" + id + ", type=" + type + ", numberOfEntries="
 				+ numberOfEntries + ", maxNumberOfEntries="
 				+ maxNumberOfEntries + ", expireDate=" + expireDate
-				+ ", price=" + price + ", orderId=" + order.getId() + "]";
+				+ ", price=" + price + ", basketId=" + basket.getId() + "]";
 	}
 
 	public long getId() {
@@ -109,12 +111,12 @@ public class MemberShip {
 		this.price = price;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Basket getBasket() {
+		return basket;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setBasket(Basket order) {
+		this.basket = order;
 	}
 	
 }

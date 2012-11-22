@@ -1,4 +1,4 @@
-package com.acme.fitness.domain;
+package com.acme.fitness.domain.users;
 
 import java.util.Date;
 

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.orders.OrderItemDao;
-import com.acme.fitness.domain.OrderItem;
+import com.acme.fitness.domain.orders.OrderItem;
 
 @Repository
 public class HibernateOrderItemDao extends AbstractHibernateGenericDao<OrderItem> implements OrderItemDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrderItem> getAllOrderItem() {
+	public List<OrderItem> getAllOrderItems() {
 		return getSession().createCriteria(OrderItem.class).list();
 	}
 

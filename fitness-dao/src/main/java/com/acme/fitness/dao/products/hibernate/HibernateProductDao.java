@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.products.ProductDao;
-import com.acme.fitness.domain.Product;
+import com.acme.fitness.domain.products.Product;
 
 @Repository
 public class HibernateProductDao extends AbstractHibernateGenericDao<Product>	implements ProductDao {

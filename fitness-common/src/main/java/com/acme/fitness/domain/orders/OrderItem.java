@@ -1,4 +1,4 @@
-package com.acme.fitness.domain;
+package com.acme.fitness.domain.orders;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.acme.fitness.domain.products.Product;
 
 @Entity
 public class OrderItem {
@@ -26,23 +28,23 @@ public class OrderItem {
 
 	@ManyToOne
 	@OnDelete(action=OnDeleteAction.CASCADE)
-	private Order order;
+	private Basket basket;
 
 	public OrderItem() {
 		super();
 	}
 
-	public OrderItem(Product product, int quantity, Order order) {
+	public OrderItem(Product product, int quantity, Basket order) {
 		super();
 		this.product = product;
 		this.quantity = quantity;
-		this.order = order;
+		this.basket = order;
 	}
 
 	@Override
 	public String toString() {
 		return "OrderItem [id=" + id + ", product=" + product + ", quantity="
-				+ quantity + ", orderId=" + order.getId() + "]";
+				+ quantity + ", basketId=" + basket.getId() + "]";
 	}
 
 	public long getId() {
@@ -69,12 +71,12 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Basket getBasket() {
+		return basket;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setBasket(Basket order) {
+		this.basket = order;
 	}
 
 }

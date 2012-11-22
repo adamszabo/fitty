@@ -24,14 +24,14 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>com.acme.fitness.domain.User</value>
-				<value>com.acme.fitness.domain.Role</value>
-				<value>com.acme.fitness.domain.Product</value>
-				<value>com.acme.fitness.domain.Store</value>
-				<value>com.acme.fitness.domain.OrderItem</value>
-				<value>com.acme.fitness.domain.Order</value>
-				<value>com.acme.fitness.domain.Training</value>
-				<value>com.acme.fitness.domain.MemberShip</value>
+				<value>com.acme.fitness.domain.users.User</value>
+				<value>com.acme.fitness.domain.users.Role</value>
+				<value>com.acme.fitness.domain.products.Product</value>
+				<value>com.acme.fitness.domain.orders.Store</value>
+				<value>com.acme.fitness.domain.orders.OrderItem</value>
+				<value>com.acme.fitness.domain.orders.Basket</value>
+				<value>com.acme.fitness.domain.products.Training</value>
+				<value>com.acme.fitness.domain.products.MemberShip</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

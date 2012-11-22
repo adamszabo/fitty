@@ -1,4 +1,4 @@
-package com.acme.fitness.domain;
+package com.acme.fitness.domain.orders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,13 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.users.User;
+
 @Entity
 @Table(name = "fitness_order")
-public class Order {
+public class Basket {
 
 	@Id
 	@Column
@@ -34,7 +38,7 @@ public class Order {
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private User user;
 	
-	@OneToMany(mappedBy="order",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="basket",cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<OrderItem> orderItems;
 	
@@ -44,13 +48,13 @@ public class Order {
 	@Transient
 	private List<Training> trainings;
 
-	public Order() {
+	public Basket() {
 		super();
 		orderItems=new ArrayList<OrderItem>();
 	}
 
 
-	public Order(boolean delivered, User user) {
+	public Basket(boolean delivered, User user) {
 		super();
 		this.delivered = delivered;
 		this.user = user;
@@ -60,7 +64,7 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", delivered=" + delivered + ", user="
+		return "Basket [id=" + id + ", delivered=" + delivered + ", user="
 				+ user  + "]"; //+ ", orderItems=" + orderItems.toString()
 	}
 
@@ -115,5 +119,5 @@ public class Order {
 	public void setTrainings(List<Training> trainings) {
 		this.trainings = trainings;
 	}
-	
+
 }

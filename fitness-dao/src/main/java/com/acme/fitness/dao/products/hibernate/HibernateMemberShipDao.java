@@ -8,16 +8,16 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.products.MemberShipDao;
-import com.acme.fitness.domain.MemberShip;
-import com.acme.fitness.domain.Order;
-import com.acme.fitness.domain.User;
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.users.User;
 
 @Repository
 public class HibernateMemberShipDao extends AbstractHibernateGenericDao<MemberShip> implements MemberShipDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MemberShip> getAllMemberShip() {
+	public List<MemberShip> getAllMemberShips() {
 		return getSession().createCriteria(MemberShip.class).list();
 	}
 
@@ -28,14 +28,14 @@ public class HibernateMemberShipDao extends AbstractHibernateGenericDao<MemberSh
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MemberShip> getMemberShipByOrder(Order order) {
-		return getSession().createCriteria(MemberShip.class).add(Restrictions.eq("order", order)).list();
+	public List<MemberShip> getMemberShipsByOrder(Basket basket) {
+		return getSession().createCriteria(MemberShip.class).add(Restrictions.eq("basket", basket)).list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MemberShip> getMemberShipByUser(User user) {
-		Criteria crit=getSession().createCriteria(MemberShip.class).createCriteria("order", "order").add(Restrictions.eq("user", user));
+	public List<MemberShip> getMemberShipsByUser(User user) {
+		Criteria crit=getSession().createCriteria(MemberShip.class).createCriteria("basket", "basket").add(Restrictions.eq("user", user));
 		return crit.list();
 	}
 

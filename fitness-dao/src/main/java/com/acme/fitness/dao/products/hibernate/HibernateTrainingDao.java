@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.products.TrainingDao;
-import com.acme.fitness.domain.Order;
-import com.acme.fitness.domain.Training;
-import com.acme.fitness.domain.User;
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.users.User;
 
 @Repository
 public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training> implements TrainingDao {
@@ -40,8 +40,8 @@ public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Training> getTrainingByOrder(Order order) {
-		return getSession().createCriteria(Training.class).add(Restrictions.eq("order", order)).list();
+	public List<Training> getTrainingByOrder(Basket basket) {
+		return getSession().createCriteria(Training.class).add(Restrictions.eq("basket", basket)).list();
 	}
 
 	@SuppressWarnings("unchecked")

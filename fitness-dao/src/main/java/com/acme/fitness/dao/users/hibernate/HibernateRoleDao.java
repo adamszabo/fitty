@@ -7,15 +7,15 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.users.RoleDao;
-import com.acme.fitness.domain.Role;
-import com.acme.fitness.domain.User;
+import com.acme.fitness.domain.users.Role;
+import com.acme.fitness.domain.users.User;
 
 @Repository
 public class HibernateRoleDao extends AbstractHibernateGenericDao<Role> implements RoleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Role> getAllRole() {
+	public List<Role> getAllRoles() {
 		return getSession().createCriteria(Role.class).list();
 	}
 

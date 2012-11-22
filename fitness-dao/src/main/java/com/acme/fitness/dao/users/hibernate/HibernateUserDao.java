@@ -7,14 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.users.UserDao;
-import com.acme.fitness.domain.User;
+import com.acme.fitness.domain.users.User;
 
 @Repository
 public class HibernateUserDao extends AbstractHibernateGenericDao<User> implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getAllUser() {
+	public List<User> getAllUsers() {
 		return getSession().createCriteria(User.class).list();
 	}
 

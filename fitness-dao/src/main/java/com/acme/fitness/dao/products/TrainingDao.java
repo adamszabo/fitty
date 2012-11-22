@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.acme.fitness.dao.GenericDao;
-import com.acme.fitness.domain.Order;
-import com.acme.fitness.domain.Training;
-import com.acme.fitness.domain.User;
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.users.User;
 
 public interface TrainingDao extends GenericDao<Training>{
 	
@@ -18,7 +18,7 @@ public interface TrainingDao extends GenericDao<Training>{
 	
 	public List<Training> getTrainingByClient(User client);
 	
-	public List<Training> getTrainingByOrder(Order order);
+	public List<Training> getTrainingByOrder(Basket order);
 	
 	public List<Training> getTrainingAfterDate(Date date);
 }
