@@ -1,7 +1,6 @@
 package com.acme.fitness.domain.orders;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;

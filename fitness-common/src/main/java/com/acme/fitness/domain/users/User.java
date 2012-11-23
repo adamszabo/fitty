@@ -43,14 +43,19 @@ public class User {
 	
 	@Column
 	private boolean enabled;
+	
+	@Column
+	private int numberOfRetries;
 
 	public User() {
 		super();
+		this.enabled=true;
+		this.numberOfRetries=0;
 	}
 
 	public User(String fullName, String userName, String password,
 			String email, String mobile, Date registration, Date lastLogin,
-			String lastLoginIp, boolean enabled) {
+			String lastLoginIp) {
 		super();
 		this.fullName = fullName;
 		this.userName = userName;
@@ -60,7 +65,8 @@ public class User {
 		this.registration = registration;
 		this.lastLogin = lastLogin;
 		this.lastLoginIp = lastLoginIp;
-		this.enabled=enabled;
+		this.enabled=true;
+		this.numberOfRetries=0;
 	}
 
 	@Override
@@ -68,7 +74,7 @@ public class User {
 		return "User [id=" + id + ", fullName=" + fullName + ", userName="
 				+ userName + ", email=" + email + ", registration="
 				+ registration + ", lastLogin=" + lastLogin + ", lastLoginIp="
-				+ lastLoginIp + ", isEnabled="+ enabled + "]";
+				+ lastLoginIp + ", isEnabled="+ enabled + ", numberOfRetries="+ numberOfRetries + "]";
 	}
 
 	public long getId() {
@@ -149,6 +155,14 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public int getNumberOfRetries() {
+		return numberOfRetries;
+	}
+
+	public void setNumberOfRetries(int numberOfRetries) {
+		this.numberOfRetries = numberOfRetries;
 	}
 	
 
