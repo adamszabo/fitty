@@ -40,6 +40,9 @@ public class User {
 
 	@Column
 	private String lastLoginIp;
+	
+	@Column
+	private boolean enabled;
 
 	public User() {
 		super();
@@ -47,7 +50,7 @@ public class User {
 
 	public User(String fullName, String userName, String password,
 			String email, String mobile, Date registration, Date lastLogin,
-			String lastLoginIp) {
+			String lastLoginIp, boolean enabled) {
 		super();
 		this.fullName = fullName;
 		this.userName = userName;
@@ -57,6 +60,7 @@ public class User {
 		this.registration = registration;
 		this.lastLogin = lastLogin;
 		this.lastLoginIp = lastLoginIp;
+		this.enabled=enabled;
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class User {
 		return "User [id=" + id + ", fullName=" + fullName + ", userName="
 				+ userName + ", email=" + email + ", registration="
 				+ registration + ", lastLogin=" + lastLogin + ", lastLoginIp="
-				+ lastLoginIp + "]";
+				+ lastLoginIp + ", isEnabled="+ enabled + "]";
 	}
 
 	public long getId() {
@@ -138,5 +142,14 @@ public class User {
 	public void setLastLoginIp(String lastLoginIp) {
 		this.lastLoginIp = lastLoginIp;
 	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 
 }

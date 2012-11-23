@@ -24,7 +24,7 @@ import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
 @Entity
-@Table(name = "fitness_order")
+@Table
 public class Basket {
 
 	@Id
