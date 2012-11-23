@@ -1,7 +1,8 @@
 package com.acme.fitness.domain.orders;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,7 +41,7 @@ public class Basket {
 	
 	@OneToMany(mappedBy="basket",cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<OrderItem> orderItems;
+	private Set<OrderItem> orderItems;
 	
 	@Transient
 	private List<MemberShip> memberShips;
@@ -50,7 +51,7 @@ public class Basket {
 
 	public Basket() {
 		super();
-		orderItems=new ArrayList<OrderItem>();
+		orderItems=new HashSet<OrderItem>();
 	}
 
 
@@ -58,7 +59,7 @@ public class Basket {
 		super();
 		this.delivered = delivered;
 		this.user = user;
-		orderItems=new ArrayList<OrderItem>();
+		orderItems=new HashSet<OrderItem>();
 	}
 
 
@@ -92,11 +93,11 @@ public class Basket {
 		this.user = user;
 	}
 
-	public List<OrderItem> getOrderItems() {
+	public Set<OrderItem> getOrderItems() {
 		return orderItems;
 	}
 
-	public void setOrderItems(List<OrderItem> orderItems) {
+	public void setOrderItems(Set<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
 
