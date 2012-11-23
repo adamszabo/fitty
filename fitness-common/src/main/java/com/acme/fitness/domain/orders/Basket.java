@@ -44,10 +44,10 @@ public class Basket {
 	private Set<OrderItem> orderItems;
 	
 	@Transient
-	private List<MemberShip> memberShips;
+	private Set<MemberShip> memberShips;
 	
 	@Transient
-	private List<Training> trainings;
+	private Set<Training> trainings;
 
 	public Basket() {
 		super();
@@ -102,22 +102,22 @@ public class Basket {
 	}
 
 
-	public List<MemberShip> getMemberShips() {
+	public Set<MemberShip> getMemberShips() {
 		return memberShips;
 	}
 
 
-	public void setMemberShips(List<MemberShip> memberShips) {
+	public void setMemberShips(Set<MemberShip> memberShips) {
 		this.memberShips = memberShips;
 	}
 
 
-	public List<Training> getTrainings() {
+	public Set<Training> getTrainings() {
 		return trainings;
 	}
 
 
-	public void setTrainings(List<Training> trainings) {
+	public void setTrainings(Set<Training> trainings) {
 		this.trainings = trainings;
 	}
 
