@@ -20,29 +20,29 @@ public class Training {
 	@Column
 	@GeneratedValue
 	private long id;
-	
+
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User trainer;
-	
+
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User client;
-	
+
 	@Column
 	private Date trainingStartDate;
-	
+
 	@Column
 	private boolean isAnalyzed;
-	
+
 	@Column
 	private int burnedCalories;
-	
+
 	@Column
 	private String review;
-	
+
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
 
 	public Training() {
@@ -63,9 +63,11 @@ public class Training {
 
 	@Override
 	public String toString() {
-		return "Training [id=" + id + ", trainerId=" + trainer.getId() + ", clientId="
-				+ client.getId() + ", trainingStartDate=" + trainingStartDate + ", burnedCalories=" + burnedCalories
-				+ ", isAnalyzed=" + isAnalyzed + ", basketId=" + basket.getId() + "]";
+		return "Training [id=" + id + ", trainerId=" + trainer.getId()
+				+ ", clientId=" + client.getId() + ", trainingStartDate="
+				+ trainingStartDate + ", burnedCalories=" + burnedCalories
+				+ ", isAnalyzed=" + isAnalyzed + ", basketId=" + basket.getId()
+				+ "]";
 	}
 
 	public long getId() {
@@ -131,5 +133,5 @@ public class Training {
 	public void setBasket(Basket order) {
 		this.basket = order;
 	}
-	
+
 }

@@ -35,37 +35,35 @@ public class Basket {
 	private boolean delivered;
 
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
-	
-	@OneToMany(mappedBy="basket",cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy = "basket", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<OrderItem> orderItems;
-	
+
 	@Transient
 	private Set<MemberShip> memberShips;
-	
+
 	@Transient
 	private Set<Training> trainings;
 
 	public Basket() {
 		super();
-		orderItems=new HashSet<OrderItem>();
+		orderItems = new HashSet<OrderItem>();
 	}
-
 
 	public Basket(boolean delivered, User user) {
 		super();
 		this.delivered = delivered;
 		this.user = user;
-		orderItems=new HashSet<OrderItem>();
+		orderItems = new HashSet<OrderItem>();
 	}
-
 
 	@Override
 	public String toString() {
 		return "Basket [id=" + id + ", delivered=" + delivered + ", user="
-				+ user  + "]"; //+ ", orderItems=" + orderItems.toString()
+				+ user + "]"; // + ", orderItems=" + orderItems.toString()
 	}
 
 	public long getId() {
@@ -100,21 +98,17 @@ public class Basket {
 		this.orderItems = orderItems;
 	}
 
-
 	public Set<MemberShip> getMemberShips() {
 		return memberShips;
 	}
-
 
 	public void setMemberShips(Set<MemberShip> memberShips) {
 		this.memberShips = memberShips;
 	}
 
-
 	public Set<Training> getTrainings() {
 		return trainings;
 	}
-
 
 	public void setTrainings(Set<Training> trainings) {
 		this.trainings = trainings;

@@ -13,16 +13,16 @@ import com.acme.fitness.domain.products.Product;
 
 @Entity
 public class Store {
-	
+
 	@Id
 	@Column
 	@GeneratedValue
 	private long id;
-	
+
 	@OneToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Product product;
-	
+
 	@Column
 	private int quantity;
 
@@ -65,5 +65,5 @@ public class Store {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
+
 }

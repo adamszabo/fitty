@@ -20,14 +20,14 @@ public class OrderItem {
 	private long id;
 
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Product product;
 
 	@Column
 	private int quantity;
 
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
 
 	public OrderItem() {

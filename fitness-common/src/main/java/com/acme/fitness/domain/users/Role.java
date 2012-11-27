@@ -11,16 +11,16 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Role {
-	
+
 	@Id
 	@Column
 	@GeneratedValue
 	private long id;
-	
-	@OnDelete(action=OnDeleteAction.CASCADE)
+
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	private User user;
-	
+
 	@Column
 	private String name;
 
@@ -62,5 +62,5 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

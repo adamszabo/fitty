@@ -9,24 +9,24 @@ import javax.persistence.Id;
 
 @Entity
 public class Product {
-	
+
 	@Id
 	@Column
 	@GeneratedValue
 	private long id;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column
 	private String details;
-	
+
 	@Column
 	private double price;
 
 	@Column
 	private String manufacturer;
-	
+
 	@Column
 	private Date creation;
 
@@ -47,7 +47,8 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", price=" + price
-				+ ", manufacturer=" + manufacturer + ", creation=" + creation + "]";
+				+ ", manufacturer=" + manufacturer + ", creation=" + creation
+				+ "]";
 	}
 
 	public long getId() {
@@ -97,5 +98,5 @@ public class Product {
 	public void setCreation(Date create) {
 		this.creation = create;
 	}
-	
+
 }

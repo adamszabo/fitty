@@ -15,12 +15,12 @@ import com.acme.fitness.domain.orders.Basket;
 
 @Entity
 public class MemberShip {
-	
+
 	@Id
 	@Column
 	@GeneratedValue
 	private long id;
-	
+
 	@Column
 	private String type;
 
@@ -35,9 +35,9 @@ public class MemberShip {
 
 	@Column
 	private double price;
-	
+
 	@ManyToOne
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
 
 	public MemberShip() {
@@ -118,5 +118,5 @@ public class MemberShip {
 	public void setBasket(Basket order) {
 		this.basket = order;
 	}
-	
+
 }
