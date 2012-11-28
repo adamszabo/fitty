@@ -66,6 +66,58 @@ public class Basket {
 				+ user + "]"; // + ", orderItems=" + orderItems.toString()
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (delivered ? 1231 : 1237);
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result
+				+ ((memberships == null) ? 0 : memberships.hashCode());
+		result = prime * result
+				+ ((orderItems == null) ? 0 : orderItems.hashCode());
+		result = prime * result
+				+ ((trainings == null) ? 0 : trainings.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Basket))
+			return false;
+		Basket other = (Basket) obj;
+		if (delivered != other.delivered)
+			return false;
+		if (id != other.id)
+			return false;
+		if (memberships == null) {
+			if (other.memberships != null)
+				return false;
+		} else if (!memberships.equals(other.memberships))
+			return false;
+		if (orderItems == null) {
+			if (other.orderItems != null)
+				return false;
+		} else if (!orderItems.equals(other.orderItems))
+			return false;
+		if (trainings == null) {
+			if (other.trainings != null)
+				return false;
+		} else if (!trainings.equals(other.trainings))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -113,5 +165,4 @@ public class Basket {
 	public void setTrainings(Set<Training> trainings) {
 		this.trainings = trainings;
 	}
-
 }

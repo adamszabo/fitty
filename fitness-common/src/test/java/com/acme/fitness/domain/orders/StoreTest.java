@@ -19,7 +19,7 @@ public class StoreTest {
 	
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(StoreTest.class);
+		MockitoAnnotations.initMocks(this);
 		underTest = new Store();
 	}
 

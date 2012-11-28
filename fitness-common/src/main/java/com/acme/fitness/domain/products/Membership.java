@@ -63,6 +63,59 @@ public class Membership {
 				+ ", price=" + price + ", basketId=" + basket.getId() + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((basket == null) ? 0 : basket.hashCode());
+		result = prime * result
+				+ ((expireDate == null) ? 0 : expireDate.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + maxNumberOfEntries;
+		result = prime * result + numberOfEntries;
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Membership))
+			return false;
+		Membership other = (Membership) obj;
+		if (basket == null) {
+			if (other.basket != null)
+				return false;
+		} else if (!basket.equals(other.basket))
+			return false;
+		if (expireDate == null) {
+			if (other.expireDate != null)
+				return false;
+		} else if (!expireDate.equals(other.expireDate))
+			return false;
+		if (id != other.id)
+			return false;
+		if (maxNumberOfEntries != other.maxNumberOfEntries)
+			return false;
+		if (numberOfEntries != other.numberOfEntries)
+			return false;
+		if (Double.doubleToLongBits(price) != Double
+				.doubleToLongBits(other.price))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
+
 	public long getId() {
 		return id;
 	}
