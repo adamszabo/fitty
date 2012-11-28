@@ -1,4 +1,4 @@
-package com.acme.fitness.users.fitty;
+package com.acme.fitness.users.simple;
 
 import java.util.List;
 

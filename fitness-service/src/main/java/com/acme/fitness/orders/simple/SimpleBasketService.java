@@ -1,4 +1,4 @@
-package com.acme.fitness.orders.fitty;
+package com.acme.fitness.orders.simple;
 
 import java.util.List;
 

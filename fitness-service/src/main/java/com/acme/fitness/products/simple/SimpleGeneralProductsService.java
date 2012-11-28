@@ -1,4 +1,4 @@
-package com.acme.fitness.products.fitty;
+package com.acme.fitness.products.simple;
 
 import java.util.Date;
 import java.util.List;

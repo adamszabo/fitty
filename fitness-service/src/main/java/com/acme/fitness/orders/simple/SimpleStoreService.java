@@ -1,4 +1,4 @@
-package com.acme.fitness.orders.fitty;
+package com.acme.fitness.orders.simple;
 
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
