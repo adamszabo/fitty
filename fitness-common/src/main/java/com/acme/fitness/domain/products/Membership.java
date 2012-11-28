@@ -14,7 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.acme.fitness.domain.orders.Basket;
 
 @Entity
-public class Membershipke {
+public class Membership {
 //
 	@Id
 	@Column
@@ -40,11 +40,11 @@ public class Membershipke {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
 
-	public Membershipke() {
+	public Membership() {
 		super();
 	}
 
-	public Membershipke(String type, int numberOfEntries, int maxNumberOfEntries,
+	public Membership(String type, int numberOfEntries, int maxNumberOfEntries,
 			Date expireDate, double price, Basket order) {
 		super();
 		this.type = type;

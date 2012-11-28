@@ -13,7 +13,7 @@ import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.users.User;
 
 @Repository
-public class HibernateMembershipkeDao extends AbstractHibernateGenericDao<Membership> implements MembershipDao {
+public class HibernateMembershipDao extends AbstractHibernateGenericDao<Membership> implements MembershipDao {
 //
 	@SuppressWarnings("unchecked")
 	@Override
