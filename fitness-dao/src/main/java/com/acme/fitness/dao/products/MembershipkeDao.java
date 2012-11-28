@@ -7,7 +7,7 @@ import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.users.User;
 
-public interface MembershipDao extends GenericDao<Membership> {
+public interface MembershipkeDao extends GenericDao<Membership> {
 	//
 	public List<Membership> getAllMemberships();
 	
