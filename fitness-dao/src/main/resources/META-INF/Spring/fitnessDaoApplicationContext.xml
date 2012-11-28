@@ -16,7 +16,7 @@
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/fitness" />
 		<property name="username" value="postgres" />
-		<property name="password" value="root" />
+		<property name="password" value="password" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -31,7 +31,7 @@
 				<value>com.acme.fitness.domain.orders.OrderItem</value>
 				<value>com.acme.fitness.domain.orders.Basket</value>
 				<value>com.acme.fitness.domain.products.Training</value>
-				<value>com.acme.fitness.domain.products.MemberShip</value>
+				<value>com.acme.fitness.domain.products.Membership</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

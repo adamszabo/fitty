@@ -18,7 +18,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
@@ -43,7 +43,7 @@ public class Basket {
 	private Set<OrderItem> orderItems;
 
 	@Transient
-	private Set<MemberShip> memberships;
+	private Set<Membership> memberships;
 
 	@Transient
 	private Set<Training> trainings;
@@ -98,11 +98,11 @@ public class Basket {
 		this.orderItems = orderItems;
 	}
 
-	public Set<MemberShip> getMemberShips() {
+	public Set<Membership> getMemberships() {
 		return memberships;
 	}
 
-	public void setMemberShips(Set<MemberShip> memberships) {
+	public void setMemberships(Set<Membership> memberships) {
 		this.memberships = memberships;
 	}
 
