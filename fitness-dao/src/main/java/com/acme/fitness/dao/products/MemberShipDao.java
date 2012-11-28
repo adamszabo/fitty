@@ -4,16 +4,16 @@ import java.util.List;
 
 import com.acme.fitness.dao.GenericDao;
 import com.acme.fitness.domain.orders.Basket;
-import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.users.User;
 
-public interface MemberShipDao extends GenericDao<MemberShip> {
+public interface MembershipDao extends GenericDao<Membership> {
 	
-	public List<MemberShip> getAllMemberShips();
+	public List<Membership> getAllMemberships();
 	
-	public MemberShip getMemberShipById(long id);
+	public Membership getMembershipById(long id);
 	
-	public List<MemberShip> getMemberShipsByOrder(Basket order);
+	public List<Membership> getMembershipsByOrder(Basket order);
 	
-	public List<MemberShip> getMemberShipsByUser(User user);
+	public List<Membership> getMembershipsByUser(User user);
 }

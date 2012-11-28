@@ -3,7 +3,7 @@ package com.acme.fitness.users;
 import java.util.Date;
 import java.util.List;
 
-import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
@@ -18,7 +18,7 @@ public interface UserService {
 	User getUserByMobile(String mobile);
 	Date getLastLoginDate(Date loginDate);
 	String getLastLoginIp(String lastLoginIp);
-	List<MemberShip> getMembershipsByUser(User user);
+	List<Membership> getMembershipsByUser(User user);
 	List<Training> getTrainingsByUser(User user);
 	void addLastLOginDate(Date lastLoginDate);
 	void addLastLoginIp(String lastLoginIp);

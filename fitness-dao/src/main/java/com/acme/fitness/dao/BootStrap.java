@@ -11,7 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.acme.fitness.dao.orders.BasketDao;
 import com.acme.fitness.dao.orders.OrderItemDao;
 import com.acme.fitness.dao.orders.StoreDao;
-import com.acme.fitness.dao.products.MemberShipDao;
+import com.acme.fitness.dao.products.MembershipDao;
 import com.acme.fitness.dao.products.ProductDao;
 import com.acme.fitness.dao.products.TrainingDao;
 import com.acme.fitness.dao.users.RoleDao;
@@ -19,7 +19,7 @@ import com.acme.fitness.dao.users.UserDao;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
-import com.acme.fitness.domain.products.MemberShip;
+import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.Role;
@@ -39,7 +39,7 @@ public class BootStrap {
 		StoreDao storeDao=ctx.getBean(StoreDao.class);
 		OrderItemDao orderItemDao=ctx.getBean(OrderItemDao.class);
 		BasketDao orderDao=ctx.getBean(BasketDao.class);
-		MemberShipDao memberShipDao=ctx.getBean(MemberShipDao.class);
+		MembershipDao membershipDao=ctx.getBean(MembershipDao.class);
 		TrainingDao trainingDao=ctx.getBean(TrainingDao.class);
 		
 		/*--- User and Role ---*/
@@ -112,20 +112,20 @@ public class BootStrap {
 		
 		orderDao.update(o1);
 		
-		MemberShip ms=new MemberShip("alkalmi", 0, 12, new Date(), 10000, o1);
-		MemberShip ms2=new MemberShip("alkalmi", 0, 10, new Date(), 10000, o1);
-		memberShipDao.save(ms);
-		memberShipDao.save(ms2);
+		Membership ms=new Membership("alkalmi", 0, 12, new Date(), 10000, o1);
+		Membership ms2=new Membership("alkalmi", 0, 10, new Date(), 10000, o1);
+		membershipDao.save(ms);
+		membershipDao.save(ms2);
 		
 		Training t1=new Training(u2, u, new Date(), false, 150, "lorem ipsum", o1);
 		Training t2=new Training(u2, u, new Date(), false, 170, "xyllll", o1);
 		trainingDao.save(t1);
 		trainingDao.save(t2);
 		
-		memberShipDao.delete(ms);
-		logger.info("All MemberShip: "+memberShipDao.getAllMemberShips().toString());
-		logger.info("MemberShip by id: "+memberShipDao.getMemberShipById(ms2.getId()).toString());
-		logger.info("MemberShips by Order: "+memberShipDao.getMemberShipsByOrder(o1).toString());
+		membershipDao.delete(ms);
+		logger.info("All MemberShip: "+membershipDao.getAllMemberships().toString());
+		logger.info("MemberShip by id: "+membershipDao.getMembershipById(ms2.getId()).toString());
+		logger.info("MemberShips by Order: "+membershipDao.getMembershipsByOrder(o1).toString());
 		
 		logger.info("Training by id: "+trainingDao.getTrainingById(t1.getId()).toString());
 		logger.info("Training by Order: "+trainingDao.getTrainingByOrder(o1).toString());
@@ -147,8 +147,8 @@ public class BootStrap {
 		logger.info("Trainer trainings: "+trainingDao.getTrainingByTrainer(u));
 		logger.info("Trainer trainings: "+trainingDao.getTrainingByTrainer(u2));
 		
-		List<MemberShip> memberShips=memberShipDao.getMemberShipsByUser(u);
-		logger.info("User memberShips quantity:"+memberShips.size()+" products:"+memberShips);
+		List<Membership> memberships=membershipDao.getMembershipsByUser(u);
+		logger.info("User memberShips quantity:"+memberships.size()+" products:"+memberships);
 		
 			
 	}
