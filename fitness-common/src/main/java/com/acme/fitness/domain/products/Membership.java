@@ -15,7 +15,7 @@ import com.acme.fitness.domain.orders.Basket;
 
 @Entity
 public class Membership {
-
+//
 	@Id
 	@Column
 	@GeneratedValue
