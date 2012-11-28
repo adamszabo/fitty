@@ -43,7 +43,7 @@ public class Basket {
 	private Set<OrderItem> orderItems;
 
 	@Transient
-	private Set<MemberShip> memberShips;
+	private Set<MemberShip> memberships;
 
 	@Transient
 	private Set<Training> trainings;
@@ -99,11 +99,11 @@ public class Basket {
 	}
 
 	public Set<MemberShip> getMemberShips() {
-		return memberShips;
+		return memberships;
 	}
 
-	public void setMemberShips(Set<MemberShip> memberShips) {
-		this.memberShips = memberShips;
+	public void setMemberShips(Set<MemberShip> memberships) {
+		this.memberships = memberships;
 	}
 
 	public Set<Training> getTrainings() {

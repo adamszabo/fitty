@@ -10,6 +10,7 @@
 
 		<module>fitness-common</module>
 		<module>fitness-dao</module>
+		<module>fitness-service</module>
 	</modules>
 
 	<properties>
