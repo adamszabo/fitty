@@ -44,7 +44,7 @@ public class BootStrap {
 		
 		/*--- User and Role ---*/
 		User u=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date(), new Date(), "127.0.0.1");
-		User u2=new User("Kicsi Ádám", "kicsi_adam", "password", "kicsi_adam@freemail.hu", "203333355", new Date(), new Date(), "127.0.0.1");
+		User u2=new User("Kicsi Adám", "kicsi_adam", "password", "kicsi_adam@freemail.hu", "203333355", new Date(), new Date(), "127.0.0.1");
 		userDao.save(u);
 		userDao.save(u2);
 		
