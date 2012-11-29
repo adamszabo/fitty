@@ -15,6 +15,7 @@ public class BootStrap {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/Spring/*.xml");
 		User u=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date(1100), new Date(1100), "127.0.0.1");
 		
+		
 		UserDao userDao=ctx.getBean(UserDao.class);
 		userDao.save(u);
 		
@@ -23,5 +24,7 @@ public class BootStrap {
 		rs.addRoleToUser(Roles.SystemAdmin.toString(), u);
 		
 		rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
+		
+		System.out.println(rs.getRolesByUser(u));
 	}
 }
