@@ -65,19 +65,13 @@ public class Basket {
 		return "Basket [id=" + id + ", delivered=" + delivered + ", user="
 				+ user + "]"; // + ", orderItems=" + orderItems.toString()
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (delivered ? 1231 : 1237);
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result
-				+ ((memberships == null) ? 0 : memberships.hashCode());
-		result = prime * result
-				+ ((orderItems == null) ? 0 : orderItems.hashCode());
-		result = prime * result
-				+ ((trainings == null) ? 0 : trainings.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
@@ -94,21 +88,6 @@ public class Basket {
 		if (delivered != other.delivered)
 			return false;
 		if (id != other.id)
-			return false;
-		if (memberships == null) {
-			if (other.memberships != null)
-				return false;
-		} else if (!memberships.equals(other.memberships))
-			return false;
-		if (orderItems == null) {
-			if (other.orderItems != null)
-				return false;
-		} else if (!orderItems.equals(other.orderItems))
-			return false;
-		if (trainings == null) {
-			if (other.trainings != null)
-				return false;
-		} else if (!trainings.equals(other.trainings))
 			return false;
 		if (user == null) {
 			if (other.user != null)
