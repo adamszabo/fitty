@@ -3,36 +3,41 @@ package com.acme.fitness.users.simple;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.acme.fitness.dao.users.UserDao;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.UserService;
 
+@Component
 public class SimpleUserService implements UserService {
-
+	
+	@Autowired
+	private UserDao userDao;
+	
 	@Override
-	public void addUser(String fullName, String userName, String password,
-			String email, String mobile, Date registration) {
-		// TODO Auto-generated method stub
-
+	public User addUser(String fullName, String userName, String password, String email, String mobile, Date registration) {
+		User user=new User(fullName, userName, password, email, mobile, registration, null, null);
+		userDao.save(user);
+		return user;
 	}
 
 	@Override
 	public void deleteUser(User user) {
-		// TODO Auto-generated method stub
-
+		userDao.delete(user);
 	}
 
 	@Override
 	public void updateUser(User user) {
-		// TODO Auto-generated method stub
-
+		userDao.update(user);
 	}
 
 	@Override
 	public User getUserById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDao.getUserById(id);
 	}
 
 	@Override
@@ -118,5 +123,14 @@ public class SimpleUserService implements UserService {
 		// TODO Auto-generated method stub
 
 	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
 
 }

@@ -5,23 +5,23 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.acme.fitness.dao.users.UserDao;
 import com.acme.fitness.domain.users.Roles;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.RoleService;
+import com.acme.fitness.users.UserService;
 
 public class BootStrap {
 	public static void main(String[] args) {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/Spring/*.xml");
 		User u=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date(1100), new Date(1100), "127.0.0.1");
 		
-		UserDao userDao=ctx.getBean(UserDao.class);
-		userDao.save(u);
+		UserService userService=ctx.getBean(UserService.class);
+		User newUser=userService.addUser("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date());
 		
 		RoleService rs = ctx.getBean(RoleService.class);
-		rs.addRoleToUser(Roles.Client.toString(), u);
-		rs.addRoleToUser(Roles.SystemAdmin.toString(), u);
+		rs.addRoleToUser(Roles.Client.toString(), newUser);
+		rs.addRoleToUser(Roles.SystemAdmin.toString(), newUser);
 		
-		rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
+		rs.removeRoleFromUser(Roles.Recepcionist.toString(), newUser);
 	}
 }
