@@ -15,7 +15,7 @@ public class SimpleRoleService implements RoleService {
 
 	@Autowired
 	private RoleDao roleDao;
-	
+
 	@Override
 	public void addRoleToUser(String roleName, User user) {
 		Role role = new Role(user, roleName);
@@ -23,15 +23,17 @@ public class SimpleRoleService implements RoleService {
 	}
 
 	@Override
-	public List<Role> getRolesByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeRoleFromUser(String roleName, User user) {
+		List<Role> roles = roleDao.getRolesByUser(user);
+		for (Role r : roles) {
+			if (r.getName().equals(roleName)) {
+				roleDao.delete(r);
+			}
+		}
 	}
 
 	@Override
-	public void removeRoleFromUser(String roleName, User user) {
-		// TODO Auto-generated method stub
-		
+	public List<Role> getRolesByUser(User user) {
+		return roleDao.getRolesByUser(user);
 	}
-
 }

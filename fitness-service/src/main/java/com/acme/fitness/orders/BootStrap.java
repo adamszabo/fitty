@@ -21,5 +21,7 @@ public class BootStrap {
 		RoleService rs = ctx.getBean(RoleService.class);
 		rs.addRoleToUser(Roles.Client.toString(), u);
 		rs.addRoleToUser(Roles.SystemAdmin.toString(), u);
+		
+		rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
 	}
 }

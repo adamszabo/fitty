@@ -16,7 +16,7 @@
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/fitness" />
 		<property name="username" value="postgres" />
-		<property name="password" value="password" />
+		<property name="password" value="root" />
 	</bean>
 
 	<bean id="sessionFactory"
