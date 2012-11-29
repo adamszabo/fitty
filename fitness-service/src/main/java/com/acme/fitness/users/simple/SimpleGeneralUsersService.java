@@ -11,39 +11,34 @@ import com.acme.fitness.users.GeneralUsersService;
 public class SimpleGeneralUsersService implements GeneralUsersService {
 
 	@Override
-	public void addTraning(User trainer, User client, Date date, Basket basket) {
+	public void addUser(String fullName, String password, String email,
+			String mobile, Date registration) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void deleteTraining(Training training) {
+	public boolean isLoginValidByUser(String userName, String ipAddress) {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
 
 	@Override
-	public void updateTraining(Training training) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void recordTrainingResult(int burnedCalories, String review) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<Training> getTrainingsByTrainer(User trainer) {
+	public List<User> getAllUser() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Training> getTrainingsByClient(User client) {
+	public void addUserRole(String roleName, User user) {
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	@Override
+	public void removeUserRole(String roleName, User user) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
