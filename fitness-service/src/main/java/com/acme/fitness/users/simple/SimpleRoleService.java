@@ -36,4 +36,13 @@ public class SimpleRoleService implements RoleService {
 	public List<Role> getRolesByUser(User user) {
 		return roleDao.getRolesByUser(user);
 	}
+	
+
+	public RoleDao getRoleDao() {
+		return roleDao;
+	}
+
+	public void setRoleDao(RoleDao roleDao) {
+		this.roleDao = roleDao;
+	}
 }
