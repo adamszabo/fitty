@@ -9,11 +9,12 @@ import com.acme.fitness.domain.users.User;
 public interface UserService {
 	User addUser(String fullName, String userName, String password, String email, String mobile, Date registration);
 	void deleteUser(User user);
+	List<User> getAllUsers();
 	void updateUser(User user);
 	User getUserById(long id) throws FitnessDaoException;
-	User getUserByUserName(String username);
+	User getUserByUserName(String username) throws FitnessDaoException;
 	List<User> getUsersByFullName(String fullName);
-	User getUserByEmail(String email);
+	User getUserByEmail(String email) throws FitnessDaoException;
 	void addLastLoginDate(User user, Date lastLoginDate);
 	void addLastLoginIp(User user, String lastLoginIp);
 	boolean isLoggedIn(User user);
