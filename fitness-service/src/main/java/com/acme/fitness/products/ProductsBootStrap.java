@@ -1,4 +1,4 @@
-package com.acme.fitness.orders;
+package com.acme.fitness.products;
 
 import java.util.Date;
 
@@ -7,27 +7,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.Product;
-import com.acme.fitness.domain.users.Roles;
-import com.acme.fitness.domain.users.User;
-import com.acme.fitness.products.ProductService;
-import com.acme.fitness.users.RoleService;
-import com.acme.fitness.users.UserService;
 
-public class BootStrap {
+public class ProductsBootStrap {
 	public static void main(String[] args) {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/Spring/*.xml");
-		
-		UserService userService=ctx.getBean(UserService.class);
-		User newUser = userService.addUser("Kicsi Andár Béla", "kicsi007a", "passworda", "kicsi007a@freemail.hu", "203333333", new Date());
-		
-		RoleService rs = ctx.getBean(RoleService.class);
-		rs.addRoleToUser(Roles.Client.toString(), newUser);
-		rs.addRoleToUser(Roles.SystemAdmin.toString(), newUser);
-		
-		//rs.removeRoleFromUser(Roles.Recepcionist.toString(), newUser);
-		//rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
-		
-		System.out.println(rs.getRolesByUser(newUser));
+		ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"META-INF/Spring/*.xml");
 		
 		ProductService ps = ctx.getBean(ProductService.class);
 		Date date = new Date();
@@ -49,7 +33,7 @@ public class BootStrap {
 			// TODO Auto-generated catch block
 			e.fillInStackTrace().printStackTrace();
 		}
-		System.out.println(rs.getRolesByUser(newUser));
 		System.out.println(ps.getProductsByPriceInterval(10000.0, 12000.0));
+
 	}
 }
