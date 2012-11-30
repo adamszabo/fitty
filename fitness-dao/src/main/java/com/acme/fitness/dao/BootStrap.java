@@ -154,12 +154,14 @@ public class BootStrap {
 			logger.info("getUserById: "+userDao.getUserById(u.getId()));
 			logger.info("getUserByUsername: "+userDao.getUserByUsername(u.getUsername()));
 			logger.info("getUserByEmail: "+userDao.getUserByEmail(u.getEmail()));
+			logger.info("getProductById: " + productDao.getProductById(p1.getId()));
 		} catch (FitnessDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		logger.info("Products by price interval '12500 to 13500': " + productDao.getProductsByPriceInterval(12500.0, 13500.0));
 		
-			
+		
 	}
 
 }
