@@ -27,8 +27,8 @@ public class UserTest {
 
 	@Test
 	public void testGetterSetterBehaviourOfUserName() {
-		underTest.setUserName("USERNAME");
-		Assert.assertEquals("USERNAME", underTest.getUserName());
+		underTest.setUsername("USERNAME");
+		Assert.assertEquals("USERNAME", underTest.getUsername());
 	}
 
 	@Test

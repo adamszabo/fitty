@@ -39,4 +39,10 @@ public class SimpleGeneralUsersService implements GeneralUsersService {
 		
 	}
 
+	@Override
+	public void addLastLoginInfo(String lastIp, Date lastLoginDate) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

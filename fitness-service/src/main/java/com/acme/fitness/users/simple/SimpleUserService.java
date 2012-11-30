@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.acme.fitness.dao.users.UserDao;
-import com.acme.fitness.domain.products.Membership;
-import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.UserService;
 
@@ -36,22 +35,16 @@ public class SimpleUserService implements UserService {
 	}
 
 	@Override
-	public User getUserById(long id) {
+	public User getUserById(long id) throws FitnessDaoException {
 		return userDao.getUserById(id);
 	}
 
 	@Override
-	public User getUserByUserName(String userName) {
+	public User getUserByUserName(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public List<User> getUsersByFullName(String fullName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public User getUserByEmail(String email) {
 		// TODO Auto-generated method stub
@@ -59,45 +52,20 @@ public class SimpleUserService implements UserService {
 	}
 
 	@Override
-	public User getUserByMobile(String mobile) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> getUsersByFullName(String fullName) {
+		return userDao.getUsersByFullName(fullName);
 	}
 
 	@Override
-	public Date getLastLoginDate(Date loginDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public void addLastLoginDate(User user, Date lastLoginDate) {
+		user.setLastLogin(lastLoginDate);
+		userDao.update(user);
 	}
 
 	@Override
-	public String getLastLoginIp(String lastLoginIp) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Membership> getMembershipsByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Training> getTrainingsByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addLastLOginDate(Date lastLoginDate) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addLastLoginIp(String lastLoginIp) {
-		// TODO Auto-generated method stub
-
+	public void addLastLoginIp(User user, String lastLoginIp) {
+		user.setLastLoginIp(lastLoginIp);
+		userDao.update(user);
 	}
 
 	@Override
@@ -108,20 +76,14 @@ public class SimpleUserService implements UserService {
 
 	@Override
 	public void setEnabled(User user, boolean toEnabled) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfEntries(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+		user.setEnabled(toEnabled);
+		userDao.update(user);
 	}
 
 	@Override
 	public void setNumberOfEntries(User user, int numberOfEntries) {
-		// TODO Auto-generated method stub
-
+		user.setNumberOfRetries(numberOfEntries);
+		userDao.update(user);
 	}
 
 	public UserDao getUserDao() {

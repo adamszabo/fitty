@@ -16,6 +16,7 @@ import com.acme.fitness.dao.products.ProductDao;
 import com.acme.fitness.dao.products.TrainingDao;
 import com.acme.fitness.dao.users.RoleDao;
 import com.acme.fitness.dao.users.UserDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
@@ -149,6 +150,12 @@ public class BootStrap {
 		
 		List<Membership> memberships=membershipDao.getMembershipsByUser(u);
 		logger.info("User memberShips quantity:"+memberships.size()+" products:"+memberships);
+		try {
+			logger.info("getUserById: "+userDao.getUserById(u.getId()));
+		} catch (FitnessDaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 			
 	}

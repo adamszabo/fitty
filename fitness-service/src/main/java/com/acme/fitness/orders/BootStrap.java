@@ -19,9 +19,6 @@ public class BootStrap {
 		UserService userService=ctx.getBean(UserService.class);
 		User newUser=userService.addUser("Kicsi Andár Béla", "kicsi007a", "passworda", "kicsi007a@freemail.hu", "203333333", new Date());
 		
-		UserDao userDao=ctx.getBean(UserDao.class);
-		userDao.save(u);
-		
 		RoleService rs = ctx.getBean(RoleService.class);
 		rs.addRoleToUser(Roles.Client.toString(), newUser);
 		rs.addRoleToUser(Roles.SystemAdmin.toString(), newUser);
@@ -29,6 +26,6 @@ public class BootStrap {
 		//rs.removeRoleFromUser(Roles.Recepcionist.toString(), newUser);
 		//rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
 		
-		System.out.println(rs.getRolesByUser(u));
+		System.out.println(rs.getRolesByUser(newUser));
 	}
 }
