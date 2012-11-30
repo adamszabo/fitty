@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acme.fitness.dao.products.ProductDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.products.ProductService;
 
@@ -35,28 +36,28 @@ public class SimpleProductService implements ProductService {
 	}
 
 	@Override
-	public Product getProductById(long id) {
+	public Product getProductById(long id) throws FitnessDaoException {
 		Product result = productDao.getProductById(id);
 		return result;
 	}
 
 	@Override
-	public Product getProductByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Product> getProductByName(String name) {
+		List<Product> result = productDao.getProductsByName(name);
+		return result;
 	}
 
 	@Override
 	public List<Product> getProductsByManufacturer(String manufacturer) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> result = productDao.getProductsByManufacturer(manufacturer);
+		return result;
 	}
 
 	@Override
 	public List<Product> getProductsByPriceInterval(double fromPrice,
 			double toPrice) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> result = productDao.getProductsByPriceInterval(fromPrice, toPrice);
+		return result;
 	}
 
 	public ProductDao getProductDao() {

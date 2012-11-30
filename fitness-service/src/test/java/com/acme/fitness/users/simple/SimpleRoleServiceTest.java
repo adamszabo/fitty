@@ -33,7 +33,7 @@ public class SimpleRoleServiceTest {
 	public void testAddRoleToUserShouldRunProperly(){
 		String expectedRoleName = Roles.Client.toString();
 		User expectedUser = new User();
-		expectedUser.setUserName("Test");
+		expectedUser.setUsername("Test");
 		Role role = new Role(expectedUser, expectedRoleName);
 		underTest.setRoleDao(roleDao);
 		underTest.addRoleToUser(expectedRoleName, expectedUser);
@@ -44,7 +44,7 @@ public class SimpleRoleServiceTest {
 	public void testRemoveRoleFromUserShouldInvokeTheDeleteMethodProperly(){
 		String expectedRoleName = Roles.ProductAdmin.toString();
 		User expectedUser = new User();
-		expectedUser.setUserName("Test");
+		expectedUser.setUsername("Test");
 		List<Role> roles = new ArrayList<Role>();
 		Role expectedRole = new Role(expectedUser, expectedRoleName);
 		Role notExpectedRole = new Role(expectedUser, Roles.Client.toString());
@@ -59,7 +59,7 @@ public class SimpleRoleServiceTest {
 	@Test
 	public void testGetRolesByUserShouldReturnTheRightList(){
 		User expectedUser = new User();
-		expectedUser.setUserName("Test");
+		expectedUser.setUsername("Test");
 		List<Role> expectedRoles = new ArrayList<Role>();
 		Role r1 = new Role(expectedUser, Roles.Recepcionist.toString());
 		Role r2 = new Role(expectedUser, Roles.Client.toString());

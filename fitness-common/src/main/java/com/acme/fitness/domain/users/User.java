@@ -21,7 +21,7 @@ public class User {
 	private String fullName;
 
 	@Column(unique = true)
-	private String userName;
+	private String username;
 
 	@Column
 	private String password;
@@ -58,7 +58,7 @@ public class User {
 			String lastLoginIp) {
 		super();
 		this.fullName = fullName;
-		this.userName = userName;
+		this.username = userName;
 		this.password = password;
 		this.email = email;
 		this.mobile = mobile;
@@ -72,7 +72,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", fullName=" + fullName + ", userName="
-				+ userName + ", email=" + email + ", registration="
+				+ username + ", email=" + email + ", registration="
 				+ registration + ", lastLogin=" + lastLogin + ", lastLoginIp="
 				+ lastLoginIp + ", isEnabled=" + enabled + ", numberOfRetries="
 				+ numberOfRetries + "]";
@@ -98,7 +98,7 @@ public class User {
 		result = prime * result
 				+ ((registration == null) ? 0 : registration.hashCode());
 		result = prime * result
-				+ ((userName == null) ? 0 : userName.hashCode());
+				+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -152,10 +152,10 @@ public class User {
 				return false;
 		} else if (!registration.equals(other.registration))
 			return false;
-		if (userName == null) {
-			if (other.userName != null)
+		if (username == null) {
+			if (other.username != null)
 				return false;
-		} else if (!userName.equals(other.userName))
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}
@@ -176,12 +176,12 @@ public class User {
 		this.fullName = fullName;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String userName) {
+		this.username = userName;
 	}
 
 	public String getPassword() {

@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.acme.fitness.dao.users.UserDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.users.Roles;
 import com.acme.fitness.domain.users.User;
@@ -16,13 +16,9 @@ import com.acme.fitness.users.UserService;
 public class BootStrap {
 	public static void main(String[] args) {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/Spring/*.xml");
-		User u=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date(1100), new Date(1100), "127.0.0.1");
 		
 		UserService userService=ctx.getBean(UserService.class);
-		User newUser=userService.addUser("Kicsi Andár Béla", "kicsi007a", "passworda", "kicsi007a@freemail.hu", "203333333", new Date());
-		
-		UserDao userDao=ctx.getBean(UserDao.class);
-		userDao.save(u);
+		User newUser = userService.addUser("Kicsi Andár Béla", "kicsi007a", "passworda", "kicsi007a@freemail.hu", "203333333", new Date());
 		
 		RoleService rs = ctx.getBean(RoleService.class);
 		rs.addRoleToUser(Roles.Client.toString(), newUser);
@@ -31,7 +27,7 @@ public class BootStrap {
 		//rs.removeRoleFromUser(Roles.Recepcionist.toString(), newUser);
 		//rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
 		
-		System.out.println(rs.getRolesByUser(u));
+		System.out.println(rs.getRolesByUser(newUser));
 		
 		ProductService ps = ctx.getBean(ProductService.class);
 		Date date = new Date();
@@ -47,6 +43,13 @@ public class BootStrap {
 		test1.setManufacturer("new manufacturer");
 		ps.updateProduct(test1);
 		System.out.println("After update " + test1);
-		System.out.println(ps.getProductById(7L));
+		try {
+			System.out.println(ps.getProductById(5L));
+		} catch (FitnessDaoException e) {
+			// TODO Auto-generated catch block
+			e.fillInStackTrace().printStackTrace();
+		}
+		System.out.println(rs.getRolesByUser(newUser));
+		System.out.println(ps.getProductsByPriceInterval(10000.0, 12000.0));
 	}
 }
