@@ -3,16 +3,24 @@ package com.acme.fitness.products.simple;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.acme.fitness.dao.products.ProductDao;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.products.ProductService;
 
+@Service
 public class SimpleProductService implements ProductService {
+	
+	@Autowired
+	private ProductDao productDao;
 
 	@Override
 	public void addProduct(String name, String details, double price,
 			String manufacturer, Date creation) {
-		// TODO Auto-generated method stub
-
+		Product product = new Product(name, details, price, manufacturer, creation);
+		productDao.save(product);
 	}
 
 	@Override
@@ -52,4 +60,11 @@ public class SimpleProductService implements ProductService {
 		return null;
 	}
 
+	public ProductDao getProductDao() {
+		return productDao;
+	}
+
+	public void setProductDao(ProductDao productDao) {
+		this.productDao = productDao;
+	}
 }

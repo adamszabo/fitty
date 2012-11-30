@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.acme.fitness.dao.users.UserDao;
 import com.acme.fitness.domain.users.Roles;
 import com.acme.fitness.domain.users.User;
+import com.acme.fitness.products.ProductService;
 import com.acme.fitness.users.RoleService;
 
 public class BootStrap {
@@ -26,5 +27,11 @@ public class BootStrap {
 		rs.removeRoleFromUser(Roles.Recepcionist.toString(), u);
 		
 		System.out.println(rs.getRolesByUser(u));
+		
+		ProductService ps = ctx.getBean(ProductService.class);
+		Date date = new Date();
+		date.setTime(1351321321221L);
+		System.out.println(date);
+		ps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
 	}
 }
