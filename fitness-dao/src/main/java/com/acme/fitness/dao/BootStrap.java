@@ -1,4 +1,4 @@
-﻿package com.acme.fitness.dao;
+package com.acme.fitness.dao;
 
 import java.util.Date;
 import java.util.List;

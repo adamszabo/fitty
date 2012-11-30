@@ -8,7 +8,7 @@ import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
 public interface UserService {
-	void addUser(String fullName, String userName, String password, String email, String mobile, Date registration);
+	User addUser(String fullName, String userName, String password, String email, String mobile, Date registration);
 	void deleteUser(User user);
 	void updateUser(User user);
 	User getUserById(long id);
