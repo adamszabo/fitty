@@ -6,7 +6,7 @@ import java.util.List;
 import com.acme.fitness.domain.products.Product;
 
 public interface ProductService {
-	void addProduct(String name, String details, double price, String manufacturer, Date creation);
+	Product addProduct(String name, String details, double price, String manufacturer, Date creation);
 	void deleteProduct(Product product);
 	void updateProduct(Product product);
 	Product getProductById(long id);

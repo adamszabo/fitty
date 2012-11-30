@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.acme.fitness.dao.users.UserDao;
+import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.users.Roles;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.ProductService;
@@ -36,6 +37,16 @@ public class BootStrap {
 		Date date = new Date();
 		date.setTime(1351321321221L);
 		System.out.println(date);
-		ps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
+		Product test1 = ps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
+		Product test2 = ps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date());
+		System.out.println("Before update "  + test1);
+		test1.setName("new name");
+		test1.setCreation(new Date(123213412412L));
+		test1.setDetails("new detail");
+		test1.setPrice(4L);
+		test1.setManufacturer("new manufacturer");
+		ps.updateProduct(test1);
+		System.out.println("After update " + test1);
+		System.out.println(ps.getProductById(7L));
 	}
 }

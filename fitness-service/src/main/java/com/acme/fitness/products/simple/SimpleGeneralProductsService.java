@@ -11,9 +11,9 @@ import com.acme.fitness.products.GeneralProductsService;
 public class SimpleGeneralProductsService implements GeneralProductsService {
 
 	@Override
-	public void addProduct(String name, String details, double price,
+	public Product addProduct(String name, String details, double price,
 			String manufacturer, Date creation) {
-		// TODO Auto-generated method stub
+		return null;
 
 	}
 
