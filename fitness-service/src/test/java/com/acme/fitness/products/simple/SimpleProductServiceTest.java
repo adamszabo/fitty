@@ -94,7 +94,7 @@ public class SimpleProductServiceTest {
 	}
 	
 	@Test
-	public void testGetProductsByNameShouldReturnRightWhenTheNameIsAppropriate() throws FitnessDaoException {
+	public void testGetProductsByNameShouldReturnRightWhenTheNameIsAppropriate() {
 		//GIVEN
 		String expectedName = "Gabi";
 		List<Product> expectedProducts = new ArrayList<Product>();
@@ -108,7 +108,7 @@ public class SimpleProductServiceTest {
 	}
 	
 	@Test
-	public void testGetProductsByManufacturerShouldReturnRightWhenTheManufacturerIsAppropriate() throws FitnessDaoException {
+	public void testGetProductsByManufacturerShouldReturnRightWhenTheManufacturerIsAppropriate() {
 		//GIVEN
 		String expectedName = "Nike";
 		List<Product> expectedProducts = new ArrayList<Product>();
@@ -122,7 +122,7 @@ public class SimpleProductServiceTest {
 	}
 	
 	@Test
-	public void testGetProductsByPriceIntervalShouldReturnRightWhenTheIntervalIsAppropriate() throws FitnessDaoException {
+	public void testGetProductsByPriceIntervalShouldReturnRightWhenTheIntervalIsAppropriate() {
 		//GIVEN
 		double expectedFromPrice = 11.0;
 		double expectedToPrice = 12.0;
