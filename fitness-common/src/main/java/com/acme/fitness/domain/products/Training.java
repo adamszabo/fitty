@@ -50,7 +50,7 @@ public class Training {
 	}
 
 	public Training(User trainer, User client, Date trainingStartDate,
-			boolean isAnalyzed, int burnedCalories, String review, Basket order) {
+			boolean isAnalyzed, int burnedCalories, String review, Basket basket) {
 		super();
 		this.trainer = trainer;
 		this.client = client;
@@ -58,7 +58,7 @@ public class Training {
 		this.isAnalyzed = isAnalyzed;
 		this.burnedCalories = burnedCalories;
 		this.review = review;
-		this.basket = order;
+		this.basket = basket;
 	}
 
 	@Override
@@ -193,8 +193,8 @@ public class Training {
 		return basket;
 	}
 
-	public void setBasket(Basket order) {
-		this.basket = order;
+	public void setBasket(Basket basket) {
+		this.basket = basket;
 	}
 
 }

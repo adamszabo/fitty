@@ -128,9 +128,14 @@ public class BootStrap {
 		logger.info("MemberShip by id: "+membershipDao.getMembershipById(ms2.getId()).toString());
 		logger.info("MemberShips by Order: "+membershipDao.getMembershipsByOrder(o1).toString());
 		
-		logger.info("Training by id: "+trainingDao.getTrainingById(t1.getId()).toString());
-		logger.info("Training by Order: "+trainingDao.getTrainingByOrder(o1).toString());
-		logger.info("Training by trainer: "+trainingDao.getTrainingByTrainer(u2).toString());
+		try {
+			logger.info("Training by id: "+trainingDao.getTrainingById(t1.getId()).toString());
+		} catch (FitnessDaoException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		logger.info("Training by Order: "+trainingDao.getTrainingsByOrder(o1).toString());
+		logger.info("Training by trainer: "+trainingDao.getTrainingsByTrainer(u2).toString());
 		t1.setBurnedCalories(10000);
 		trainingDao.update(t1);
 		//trainingDao.delete(t2);
@@ -142,11 +147,11 @@ public class BootStrap {
 		logger.info("Orders by user:"+orderDao.getBasketsByUser(u));
 		logger.info("First order orderItems:" + orders.get(0).getOrderItems());
 		
-		logger.info("User trainings: "+trainingDao.getTrainingByClient(u));
-		logger.info("User trainings: "+trainingDao.getTrainingByClient(u2));
+		logger.info("User trainings: "+trainingDao.getTrainingsByClient(u));
+		logger.info("User trainings: "+trainingDao.getTrainingsByClient(u2));
 		
-		logger.info("Trainer trainings: "+trainingDao.getTrainingByTrainer(u));
-		logger.info("Trainer trainings: "+trainingDao.getTrainingByTrainer(u2));
+		logger.info("Trainer trainings: "+trainingDao.getTrainingsByTrainer(u));
+		logger.info("Trainer trainings: "+trainingDao.getTrainingsByTrainer(u2));
 		
 		List<Membership> memberships=membershipDao.getMembershipsByUser(u);
 		logger.info("User memberShips quantity:"+memberships.size()+" products:"+memberships);
