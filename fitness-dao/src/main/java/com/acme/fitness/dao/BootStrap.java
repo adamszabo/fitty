@@ -31,8 +31,9 @@ public class BootStrap {
 	private static Logger logger=LoggerFactory.getLogger(BootStrap.class);
 	/**
 	 * @param args
+	 * @throws FitnessDaoException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FitnessDaoException {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/Spring/*.xml");
 		UserDao userDao=ctx.getBean(UserDao.class);
 		RoleDao roleDao=ctx.getBean(RoleDao.class);
