@@ -86,8 +86,14 @@ public class BootStrap {
 		storeDao.save(s3);
 		
 		logger.info(storeDao.getAllStores().toString());
-		logger.info(storeDao.getStoreByProdctId(p1.getId()).toString());
-		logger.info(storeDao.getStoreByProdctId(p2.getId()).toString());
+		try {
+			logger.info(storeDao.getStoreByProductId(p1.getId()).toString());
+			logger.info(storeDao.getStoreByProductId(p2.getId()).toString());
+		} catch (FitnessDaoException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
 		logger.info("--getStoreByProductName: "+storeDao.getStoresByProductName(p1.getName()));
 		logger.info("--getStoreByProductManufacturer: "+storeDao.getStoresByProductManufacturer(p1.getManufacturer()));
 		

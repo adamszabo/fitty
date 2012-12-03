@@ -1,51 +1,66 @@
 package com.acme.fitness.orders.simple;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.acme.fitness.dao.orders.StoreDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.orders.StoreService;
 
+@Service
 public class SimpleStoreService implements StoreService {
 
-	@Override
-	public void addProduct(Product product, int quantity) {
-		// TODO Auto-generated method stub
+	@Autowired
+	private StoreDao storeDao;
 
+	@Override
+	public Store addProduct(Product product, int quantity) {
+		Store store = new Store(product, quantity);
+		storeDao.save(store);
+		return store;
 	}
 
 	@Override
-	public Store getStoreById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Store getStoreById(long id) throws FitnessDaoException {
+		return storeDao.getStoreById(id);
 	}
 
 	@Override
-	public Product getPrductById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Store getStoreByProduct(Product product) throws FitnessDaoException {
+		return storeDao.getStoreByProductId(product.getId());
 	}
 
 	@Override
-	public int getQuantityByProduct(Product product) {
-		// TODO Auto-generated method stub
-		return 0;
+	public boolean takeOutProduct(Product product, int quantity)
+			throws FitnessDaoException {
+		boolean result = false;
+		Store store = storeDao.getStoreByProductId(product.getId());
+		if ((store.getQuantity() - quantity) >= 0) {
+			result = true;
+			updateStoreQuantity(store, store.getQuantity() - quantity);
+		}
+		return result;
 	}
 
 	@Override
-	public int getQuantityById(long id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void putInProduct(Product product, int quantity)
+			throws FitnessDaoException {
+		Store store = storeDao.getStoreByProductId(product.getId());
+		updateStoreQuantity(store, store.getQuantity() + quantity);
 	}
 
-	@Override
-	public void takeOutProduct(Product product, int quantity) {
-		// TODO Auto-generated method stub
-
+	public StoreDao getStoreDao() {
+		return storeDao;
 	}
 
-	@Override
-	public void putInProduct(Product product, int quantity) {
-		// TODO Auto-generated method stub
-
+	public void setStoreDao(StoreDao storeDao) {
+		this.storeDao = storeDao;
 	}
 
+	private void updateStoreQuantity(Store store, int quantity) {
+		store.setQuantity(quantity);
+		storeDao.update(store);
+	}
 }
