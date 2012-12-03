@@ -5,14 +5,22 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.acme.fitness.dao.orders.BasketDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.users.User;
+import com.acme.fitness.users.UserService;
 
 public class ProductsBootStrap {
 	public static void main(String[] args) {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"META-INF/Spring/*.xml");
 		
+		/*
+		 * Product Service Test
+		 */
 		ProductService ps = ctx.getBean(ProductService.class);
 		Date date = new Date();
 		date.setTime(1351321321221L);
@@ -31,10 +39,28 @@ public class ProductsBootStrap {
 		try {
 			System.out.println(ps.getProductById(5L));
 		} catch (FitnessDaoException e) {
-			// TODO Auto-generated catch block
 			e.fillInStackTrace().printStackTrace();
 		}
 		System.out.println(ps.getProductsByPriceInterval(10000.0, 12000.0));
 
+		/*
+		 * Training Service Test
+		 */
+		TrainingService ts = ctx.getBean(TrainingService.class);
+		UserService us = ctx.getBean(UserService.class);
+		User client = us.addUser("Thomas", "thoom", "1234", "thomi@email.hu", "+34864611", new Date());
+		User trainer = us.addUser("Feri", "ferko", "pass", "feri@email.hu", "+361646511", new Date());
+		Basket basket = new Basket(false, client);
+		BasketDao basketDao = ctx.getBean(BasketDao.class);
+		basketDao.save(basket);
+		Training training = ts.addTraining(trainer, client, date, basket);
+		ts.deleteTraining(training);
+		training = ts.addTraining(trainer, client, date, basket);
+		trainer.setUsername("ferenc");
+		training.setTrainer(trainer);
+		training.setBurnedCalories(12);
+		ts.updateTraining(training);
+		System.out.println(ts.getTrainingsByTrainer(trainer));
+		System.out.println(ts.getTrainingsByClient(client));
 	}
 }

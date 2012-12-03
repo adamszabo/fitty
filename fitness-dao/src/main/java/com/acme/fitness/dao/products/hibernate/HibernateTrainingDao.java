@@ -8,12 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.products.TrainingDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
 @Repository
-public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training> implements TrainingDao {
+public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training>
+		implements TrainingDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -22,32 +24,42 @@ public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training> 
 	}
 
 	@Override
-	public Training getTrainingById(long id) {
-		return (Training) getSession().createCriteria(Training.class).add(Restrictions.eq("id", id)).uniqueResult();
+	public Training getTrainingById(long id) throws FitnessDaoException {
+		Training result = (Training) getSession()
+				.createCriteria(Training.class).add(Restrictions.eq("id", id))
+				.uniqueResult();
+		if (result != null)
+			return result;
+		else
+			throw new FitnessDaoException("Training doesn't found with id:" + id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Training> getTrainingByTrainer(User trainer) {
-		return getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).list();
+	public List<Training> getTrainingsByTrainer(User trainer) {
+		return getSession().createCriteria(Training.class)
+				.add(Restrictions.eq("trainer", trainer)).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Training> getTrainingByClient(User client) {
-		return getSession().createCriteria(Training.class).add(Restrictions.eq("client", client)).list();
+	public List<Training> getTrainingsByClient(User client) {
+		return getSession().createCriteria(Training.class)
+				.add(Restrictions.eq("client", client)).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Training> getTrainingByOrder(Basket basket) {
-		return getSession().createCriteria(Training.class).add(Restrictions.eq("basket", basket)).list();
+	public List<Training> getTrainingsByOrder(Basket basket) {
+		return getSession().createCriteria(Training.class)
+				.add(Restrictions.eq("basket", basket)).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Training> getTrainingAfterDate(Date date) {
-		return getSession().createCriteria(Training.class).add(Restrictions.gt("trainingStartDate", date)).list();
+	public List<Training> getTrainingsAfterDate(Date date) {
+		return getSession().createCriteria(Training.class)
+				.add(Restrictions.gt("trainingStartDate", date)).list();
 	}
 
 }
