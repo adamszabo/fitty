@@ -25,6 +25,10 @@ public class OrdersBootStrap {
 		UserService userService=ctx.getBean(UserService.class);
 		OrderItemService os=ctx.getBean(OrderItemService.class);
 		ProductService ps = ctx.getBean(ProductService.class);
+		
+		/**
+		 * Tests for StoreService
+		 */
 		Product product = ps.addProduct("labda", "detail", 12340.0, "manufacturer", new Date());
 		Store store = ss.addProduct(product, 10);
 		try {
