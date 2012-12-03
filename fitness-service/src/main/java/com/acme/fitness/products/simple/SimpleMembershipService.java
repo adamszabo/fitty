@@ -3,30 +3,36 @@ package com.acme.fitness.products.simple;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.acme.fitness.dao.products.MembershipDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.MembershipService;
 
+@Service
 public class SimpleMembershipService implements MembershipService {
-
+	
+	@Autowired
+	private MembershipDao membershipDao;
 	@Override
-	public void addMemberShip(Basket basket, String type, int maxEntries,
-			Date expireDate, double price) {
-		// TODO Auto-generated method stub
-
+	public Membership addMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price) {
+		Membership membership=new Membership(type, 0, maxEntries, expireDate, price, basket);
+		membershipDao.save(membership);
+		return membership;
 	}
 
 	@Override
 	public void deleteMembership(Membership membership) {
-		// TODO Auto-generated method stub
-
+		membershipDao.delete(membership);
 	}
 
 	@Override
 	public void updateMembership(Membership membership) {
-		// TODO Auto-generated method stub
-
+		membershipDao.update(membership);
 	}
 
 	@Override
@@ -36,39 +42,32 @@ public class SimpleMembershipService implements MembershipService {
 	}
 
 	@Override
-	public int getPrice(Membership membership) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getNumberOfEntries(Membership membership) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Membership getMembershipById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Membership getMembershipById(long id) throws FitnessDaoException {
+		return membershipDao.getMembershipById(id);
 	}
 
 	@Override
 	public List<Membership> getMembershipByBasket(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+		return membershipDao.getMembershipsByOrder(basket);
 	}
 
 	@Override
 	public List<Membership> getMembershipByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return membershipDao.getMembershipsByUser(user);
 	}
 
 	@Override
-	public void increaseClientEntries(User user) {
-		// TODO Auto-generated method stub
-
+	public void increaseClientEntries(Membership membership) {
+		membership.setNumberOfEntries(membership.getNumberOfEntries()+1);
+		membershipDao.update(membership);
 	}
 
+	public MembershipDao getMembershipDao() {
+		return membershipDao;
+	}
+
+	public void setMembershipDao(MembershipDao membershipDao) {
+		this.membershipDao = membershipDao;
+	}
+	
 }

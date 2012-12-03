@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.products.MembershipDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.users.User;
@@ -22,8 +23,12 @@ public class HibernateMembershipDao extends AbstractHibernateGenericDao<Membersh
 	}
 
 	@Override
-	public Membership getMembershipById(long id) {
-		return (Membership) getSession().createCriteria(Membership.class).add(Restrictions.eq("id", id)).uniqueResult();
+	public Membership getMembershipById(long id) throws FitnessDaoException {
+		Membership result=(Membership) getSession().createCriteria(Membership.class).add(Restrictions.eq("id", id)).uniqueResult();
+		if(result!=null)
+			return result;
+		else
+			throw new FitnessDaoException("User doesn't found with id:"+id);
 	}
 
 	@SuppressWarnings("unchecked")
