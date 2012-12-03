@@ -40,7 +40,7 @@ public class MembershipsBootStrap {
 		mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
 		Membership m2=mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
 		mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		Membership m3=mService.addMemberShip(b3, "occasionally", 0, new Date(), 18900.0);
+		mService.addMemberShip(b3, "occasionally", 0, new Date(), 18900.0);
 		List<Membership> result=mService.getMembershipByBasket(b2);
 		System.out.println("Membership by basket number: "+result.size()+" values: "+result.toString());
 		mService.deleteMembership(m2);
