@@ -40,15 +40,13 @@ public class SimpleUserService implements UserService {
 	}
 
 	@Override
-	public User getUserByUserName(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUserByUserName(String username) throws FitnessDaoException {
+		return userDao.getUserByUsername(username);
 	}
 	
 	@Override
-	public User getUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUserByEmail(String email) throws FitnessDaoException {
+		return userDao.getUserByEmail(email);
 	}
 
 	@Override
@@ -92,6 +90,11 @@ public class SimpleUserService implements UserService {
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		return userDao.getAllUsers();
 	}
 	
 

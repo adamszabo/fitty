@@ -88,6 +88,30 @@ public class SimpleUserServiceTest {
 	}
 	
 	@Test
+	public void testGetUserByUserNameShouldReturnProperly() throws FitnessDaoException{
+		//GIVEN
+		underTest.setUserDao(userDao);
+		BDDMockito.given(userDao.getUserByUsername(Mockito.anyString())).willReturn(userMock);
+		//WHEN
+		User result=underTest.getUserByUserName(Mockito.anyString());
+		//THEN
+		BDDMockito.verify(userDao).getUserByUsername(Mockito.anyString());
+		Assert.assertEquals(userMock, result);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testGetUserByUserNameWhenNoResultFoundShouldThrowException() throws FitnessDaoException{
+		//GIVEN
+		underTest.setUserDao(userDao);
+		BDDMockito.given(userDao.getUserByUsername(Mockito.anyString())).willThrow(new FitnessDaoException());
+		//WHEN
+		User result=underTest.getUserByUserName(Mockito.anyString());
+		//THEN
+		BDDMockito.verify(userDao).getUserByUsername(Mockito.anyString());
+		Assert.assertEquals(userMock, result);
+	}
+	
+	@Test
 	public void testGetUsersByFullNameSouldReturnProperly(){
 		//GIVEN
 		underTest.setUserDao(userDao);
@@ -138,5 +162,48 @@ public class SimpleUserServiceTest {
 		underTest.setEnabled(userMock, Mockito.anyBoolean());
 		//THEN
 		BDDMockito.verify(userDao).update(userMock);
+	}
+	
+	@Test
+	public void testGetUserByEmailShouldReturnProperly() throws FitnessDaoException{
+		//GIVEN
+		underTest.setUserDao(userDao);
+		BDDMockito.given(userDao.getUserByEmail(Mockito.anyString())).willReturn(userMock);
+		//WHEN
+		User result=underTest.getUserByEmail(Mockito.anyString());
+		//THEN
+		BDDMockito.verify(userDao).getUserByEmail(Mockito.anyString());
+		Assert.assertEquals(userMock, result);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testGetUserByEmailWhenNoResultFoundShouldThrowException() throws FitnessDaoException{
+		//GIVEN
+		underTest.setUserDao(userDao);
+		BDDMockito.given(userDao.getUserByEmail(Mockito.anyString())).willThrow(new FitnessDaoException());
+		//WHEN
+		User result=underTest.getUserByEmail(Mockito.anyString());
+		//THEN
+		BDDMockito.verify(userDao).getUserByEmail(Mockito.anyString());
+		Assert.assertEquals(userMock, result);
+	}
+	
+	@Test
+	public void testUserDaoGetterSetterBehaviour(){
+		underTest.setUserDao(userDao);
+		Assert.assertEquals(userDao, underTest.getUserDao());
+	}
+	
+	@Test
+	public void testGetAllUsersShouldReturnProperly(){
+		//GIVEN
+		underTest.setUserDao(userDao);
+		List<User> expected=new ArrayList<User>();
+		BDDMockito.given(userDao.getAllUsers()).willReturn(expected);
+		//WHEN
+		List<User> result=underTest.getAllUsers();
+		//THEN
+		BDDMockito.verify(userDao).getAllUsers();
+		Assert.assertEquals(expected, result);
 	}
 }

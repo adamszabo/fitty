@@ -26,6 +26,7 @@ public class ProductsBootStrap {
 		date.setTime(1351321321221L);
 		System.out.println(date);
 		Product test1 = ps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
+		@SuppressWarnings("unused")
 		Product test2 = ps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date());
 		System.out.println("Before update "  + test1);
 		test1.setName("new name");

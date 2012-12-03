@@ -34,5 +34,23 @@ public class HibernateUserDao extends AbstractHibernateGenericDao<User> implemen
 	public List<User> getUsersByFullName(String fullName) {
 		return getSession().createCriteria(User.class).add(Restrictions.eq("fullName", fullName)).list();
 	}
+
+	@Override
+	public User getUserByUsername(String username) throws FitnessDaoException {
+		User result=(User) getSession().createCriteria(User.class).add(Restrictions.eq("username", username)).uniqueResult();
+		if(result!=null)
+			return result;
+		else
+			throw new FitnessDaoException("User doesn't found with username:"+username);
+	}
+
+	@Override
+	public User getUserByEmail(String email) throws FitnessDaoException {
+		User result=(User) getSession().createCriteria(User.class).add(Restrictions.eq("email", email)).uniqueResult();
+		if(result!=null)
+			return result;
+		else
+			throw new FitnessDaoException("User doesn't found with email:"+email);
+	}
 	
 }

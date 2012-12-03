@@ -157,6 +157,8 @@ public class BootStrap {
 		logger.info("User memberShips quantity:"+memberships.size()+" products:"+memberships);
 		try {
 			logger.info("getUserById: "+userDao.getUserById(u.getId()));
+			logger.info("getUserByUsername: "+userDao.getUserByUsername(u.getUsername()));
+			logger.info("getUserByEmail: "+userDao.getUserByEmail(u.getEmail()));
 			logger.info("getProductById: " + productDao.getProductById(p1.getId()));
 		} catch (FitnessDaoException e) {
 			// TODO Auto-generated catch block
