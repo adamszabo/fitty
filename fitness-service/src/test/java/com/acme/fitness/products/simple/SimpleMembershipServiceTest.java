@@ -20,114 +20,159 @@ import com.acme.fitness.domain.users.User;
 
 public class SimpleMembershipServiceTest {
 	private SimpleMembershipService underTest;
-	
+
 	@Mock
 	private MembershipDao membershipDaoMock;
-	
+
 	@Mock
 	private Basket basketMock;
-	
+
 	@Mock
 	private Membership membershipMock;
-	
+
 	@Mock
 	private User userMock;
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleMembershipService();
+		underTest = new SimpleMembershipService();
+	}
+
+	@Test
+	public void testNewMembershipShouldReturnTheRightObject() {
+		// GIVEN
+		String exceptedType = "type";
+		int expectedMaxEntries = 10;
+		Date expectedExpireDate = new Date();
+		double expectedPrice = 1230.0;
+		Membership expected = new Membership(exceptedType, 0,
+				expectedMaxEntries, expectedExpireDate, expectedPrice, null);
+		// WHEN
+		Membership result = underTest.newMemberShip(exceptedType,
+				expectedMaxEntries, expectedExpireDate, expectedPrice);
+		// THEN
+		Assert.assertEquals(expected, result);
+	}
+
+	@Test
+	public void testSaveMembershipShouldInvokeTheRightMethod() {
+		// GIVEN
+		Basket basket = new Basket();
+		basket.setId(1L);
+		Membership membership = new Membership();
+		membership.setId(2L);
+		Membership expectedMembership = new Membership();
+		expectedMembership.setId(2L);
+		expectedMembership.setBasket(basket);
+		underTest.setMembershipDao(membershipDaoMock);
+		// WHEN
+		underTest.saveMemberShip(basket, membership);
+		// THEN
+		BDDMockito.verify(membershipDaoMock).save(expectedMembership);
 	}
 	
 	@Test
-	public void testAddMembershipShouldReturnProperly(){
-		//GIVEN
+	public void testSaveNewMembershipShouldReturnProperly() {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		Membership expected=new Membership("TESTSTRING", 0, 0, new Date(), 0.0, basketMock);
-		//WHEN
-		Membership result=underTest.saveNewMemberShip(basketMock, "TESTSTRING", 0, new Date(), 0.0);
-		//THEN
+		Membership expected = new Membership("TESTSTRING", 0, 0, new Date(),
+				0.0, basketMock);
+		// WHEN
+		Membership result = underTest.saveNewMemberShip(basketMock,
+				"TESTSTRING", 0, new Date(), 0.0);
+		// THEN
 		BDDMockito.verify(membershipDaoMock).save(expected);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testDeleteMembershipShouldReturnProperly(){
-		//GIVEN
+	public void testDeleteMembershipShouldReturnProperly() {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		//WHEN
+		// WHEN
 		underTest.deleteMembership(membershipMock);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipDaoMock).delete(membershipMock);
 	}
-	
+
 	@Test
-	public void testUpdateMembershipShouldReturnProperly(){
-		//GIVEN
+	public void testUpdateMembershipShouldReturnProperly() {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		//WHEN
+		// WHEN
 		underTest.updateMembership(membershipMock);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipDaoMock).update(membershipMock);
 	}
-	
+
 	@Test
-	public void testGetMembershipByIdWhenHasResultShouldReturnProperly() throws FitnessDaoException{
-		//GIVEN
+	public void testGetMembershipByIdWhenHasResultShouldReturnProperly()
+			throws FitnessDaoException {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		BDDMockito.given(membershipDaoMock.getMembershipById(Mockito.anyLong())).willReturn(membershipMock);
-		//WHEN
-		Membership result=underTest.getMembershipById(Mockito.anyLong());
-		//THEN
-		BDDMockito.verify(membershipDaoMock).getMembershipById(Mockito.anyLong());
+		BDDMockito
+				.given(membershipDaoMock.getMembershipById(Mockito.anyLong()))
+				.willReturn(membershipMock);
+		// WHEN
+		Membership result = underTest.getMembershipById(Mockito.anyLong());
+		// THEN
+		BDDMockito.verify(membershipDaoMock).getMembershipById(
+				Mockito.anyLong());
 		Assert.assertEquals(membershipMock, result);
 	}
-	
-	@Test(expected=FitnessDaoException.class)
-	public void testGetMembershipByIdWhenHasResultShouldThrowFitnessDaoException() throws FitnessDaoException{
-		//GIVEN
+
+	@Test(expected = FitnessDaoException.class)
+	public void testGetMembershipByIdWhenHasResultShouldThrowFitnessDaoException()
+			throws FitnessDaoException {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		BDDMockito.given(membershipDaoMock.getMembershipById(Mockito.anyLong())).willThrow(new FitnessDaoException());
-		//WHEN
-		Membership result=underTest.getMembershipById(Mockito.anyLong());
-		//THEN
-		BDDMockito.verify(membershipDaoMock).getMembershipById(Mockito.anyLong());
+		BDDMockito
+				.given(membershipDaoMock.getMembershipById(Mockito.anyLong()))
+				.willThrow(new FitnessDaoException());
+		// WHEN
+		Membership result = underTest.getMembershipById(Mockito.anyLong());
+		// THEN
+		BDDMockito.verify(membershipDaoMock).getMembershipById(
+				Mockito.anyLong());
 		Assert.assertEquals(membershipMock, result);
 	}
-	
+
 	@Test
-	public void testGetMembershipByBasketShouldReturnProperly(){
-		//GIVEN
+	public void testGetMembershipByBasketShouldReturnProperly() {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		List<Membership> expected=new ArrayList<Membership>();
-		BDDMockito.given(membershipDaoMock.getMembershipsByOrder(basketMock)).willReturn(expected);
-		//WHEN
-		List<Membership> result=underTest.getMembershipByBasket(basketMock);
-		//THEN
+		List<Membership> expected = new ArrayList<Membership>();
+		BDDMockito.given(membershipDaoMock.getMembershipsByOrder(basketMock))
+				.willReturn(expected);
+		// WHEN
+		List<Membership> result = underTest.getMembershipByBasket(basketMock);
+		// THEN
 		BDDMockito.verify(membershipDaoMock).getMembershipsByOrder(basketMock);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testGetMembershipByUserShouldReturnProperly(){
-		//GIVEN
+	public void testGetMembershipByUserShouldReturnProperly() {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		List<Membership> expected=new ArrayList<Membership>();
-		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock)).willReturn(expected);
-		//WHEN
-		List<Membership> result=underTest.getMembershipByUser(userMock);
-		//THEN
+		List<Membership> expected = new ArrayList<Membership>();
+		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock))
+				.willReturn(expected);
+		// WHEN
+		List<Membership> result = underTest.getMembershipByUser(userMock);
+		// THEN
 		BDDMockito.verify(membershipDaoMock).getMembershipsByUser(userMock);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testincreaseClientEntriesShouldReturnProperly(){
-		//GIVEN
+	public void testincreaseClientEntriesShouldReturnProperly() {
+		// GIVEN
 		underTest.setMembershipDao(membershipDaoMock);
-		//WHEN
+		// WHEN
 		underTest.increaseClientEntries(membershipMock);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipMock).setNumberOfEntries(Mockito.anyInt());
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		BDDMockito.verify(membershipDaoMock).update(membershipMock);

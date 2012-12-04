@@ -36,7 +36,35 @@ public class SimpleOrderItemServiceTest {
 	}
 	
 	@Test
-	public void testAddOrderItemShouldReturnProperly(){
+	public void testNewOrderItemShouldReturnProperly() {
+		//GIVEN
+		Product product = new Product();
+		product.setId(1L);
+		OrderItem expected = new OrderItem();
+		expected.setProduct(product);
+		expected.setQuantity(0);
+		//WHEN
+		OrderItem result = underTest.newOrderItem(product, 0);
+		//THEN
+		Assert.assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testSaveOrderItemShouldInvokeTheMethodRight() {
+		//GIVEN
+		Basket basket = new Basket();
+		OrderItem orderItem = new OrderItem();
+		underTest.setOrderItemDao(orderItemDaoMock);
+		OrderItem expectedOrderItem = new OrderItem();
+		expectedOrderItem.setBasket(basket);
+		//WHEN
+		underTest.saveOrderItem(basket, orderItem);
+		//THEN
+		BDDMockito.verify(orderItemDaoMock).save(expectedOrderItem);
+	}
+	
+	@Test
+	public void testSaveNewOrderItemShouldReturnProperly(){
 		//GIVEN
 		underTest.setOrderItemDao(orderItemDaoMock);
 		OrderItem expected=new OrderItem(productMock, 0, basketMock);

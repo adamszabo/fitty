@@ -204,7 +204,7 @@ public class SimpleBasketServiceTest {
 		//WHEN
 		underTest.deliver(basket);
 		//THEN
-		BDDMockito.verify(basketDao).save(expectedBasket);
+		BDDMockito.verify(basketDao).update(expectedBasket);
 	}
 		
 }

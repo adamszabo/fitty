@@ -31,6 +31,35 @@ public class SimpleTrainingServiceTest {
 	}
 	
 	@Test
+	public void testNewTrainingShouldInvokeTheMethodRight() {
+		// GIVEN
+		User expectedClient = new User();
+		expectedClient.setId(1L);
+		User expectedTrainer = new User();
+		expectedTrainer.setId(2L);
+		Date expectedDate = new Date();
+		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, null);
+		// WHEN
+		Training result = underTest.newTraining(expectedTrainer, expectedClient, expectedDate);
+		// THEN
+		Assert.assertEquals(expectedTraining, result);
+	}
+
+	@Test
+	public void testSaveTrainingShouldInvokeTheRightMethod() {
+		// GIVEN
+		Basket basket = new Basket();
+		Training training = new Training();
+		Training expectedTraining = new Training();
+		expectedTraining.setBasket(basket);
+		underTest.setTrainingDao(trainingDao);
+		// WHEN
+		underTest.saveTraining(basket, training);
+		// THEN
+		BDDMockito.verify(trainingDao).save(expectedTraining);
+	}
+	
+	@Test
 	public void testAddTrainingShouldInvokeTheMethodRight() {
 		//GIVEN
 		User expectedClient = new User();
