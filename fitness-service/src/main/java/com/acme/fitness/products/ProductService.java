@@ -16,7 +16,7 @@ public interface ProductService {
 
 	Product getProductById(long id) throws FitnessDaoException;
 
-	List<Product> getProductByName(String name);
+	List<Product> getProductsByName(String name);
 
 	List<Product> getProductsByManufacturer(String manufacturer);
 

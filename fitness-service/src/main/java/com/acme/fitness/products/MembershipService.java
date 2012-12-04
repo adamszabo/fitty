@@ -12,8 +12,7 @@ public interface MembershipService {
 	
 	Membership saveNewMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price);
 
-	Membership newMemberShip(String type, int maxEntries, Date expireDate,
-			double price);
+	Membership newMemberShip(String type, int maxEntries, Date expireDate, double price);
 	
 	Membership saveMemberShip(Basket basket, Membership membership);
 

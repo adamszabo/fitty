@@ -74,4 +74,10 @@ public class SimpleTrainingService implements TrainingService {
 	public void setTrainingDao(TrainingDao trainingDao) {
 		this.trainingDao = trainingDao;
 	}
+
+	@Override
+	public List<Training> getTrainingsByBasket(Basket basket) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
