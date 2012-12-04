@@ -42,7 +42,7 @@ public class SimpleProductService implements ProductService {
 	}
 
 	@Override
-	public List<Product> getProductByName(String name) {
+	public List<Product> getProductsByName(String name) {
 		List<Product> result = productDao.getProductsByName(name);
 		return result;
 	}

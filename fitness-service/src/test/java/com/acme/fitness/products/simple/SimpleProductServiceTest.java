@@ -101,7 +101,7 @@ public class SimpleProductServiceTest {
 		BDDMockito.given(productDao.getProductsByName(expectedName)).willReturn(expectedProducts);
 		underTest.setProductDao(productDao);
 		//WHEN
-		List<Product> result = underTest.getProductByName(expectedName);
+		List<Product> result = underTest.getProductsByName(expectedName);
 		//THEN
 		Assert.assertEquals(expectedProducts, result);
 		BDDMockito.verify(productDao).getProductsByName(expectedName);
@@ -115,7 +115,7 @@ public class SimpleProductServiceTest {
 		BDDMockito.given(productDao.getProductsByName(expectedName)).willReturn(expectedProducts);
 		underTest.setProductDao(productDao);
 		//WHEN
-		List<Product> result = underTest.getProductByName(expectedName);
+		List<Product> result = underTest.getProductsByName(expectedName);
 		//THEN
 		Assert.assertEquals(expectedProducts, result);
 		BDDMockito.verify(productDao).getProductsByName(expectedName);
