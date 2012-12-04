@@ -45,7 +45,7 @@ public class SimpleMembershipServiceTest {
 		underTest.setMembershipDao(membershipDaoMock);
 		Membership expected=new Membership("TESTSTRING", 0, 0, new Date(), 0.0, basketMock);
 		//WHEN
-		Membership result=underTest.addMemberShip(basketMock, "TESTSTRING", 0, new Date(), 0.0);
+		Membership result=underTest.saveNewMemberShip(basketMock, "TESTSTRING", 0, new Date(), 0.0);
 		//THEN
 		BDDMockito.verify(membershipDaoMock).save(expected);
 		Assert.assertEquals(expected, result);

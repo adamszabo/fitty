@@ -41,7 +41,7 @@ public class SimpleOrderItemServiceTest {
 		underTest.setOrderItemDao(orderItemDaoMock);
 		OrderItem expected=new OrderItem(productMock, 0, basketMock);
 		//WHEN
-		OrderItem result=underTest.addOrderItem(productMock, 0, basketMock);
+		OrderItem result=underTest.saveNewOrderItem(productMock, 0, basketMock);
 		//THEN
 		BDDMockito.verify(orderItemDaoMock).save(expected);
 		Assert.assertEquals(expected, result);

@@ -40,7 +40,7 @@ public class SimpleTrainingServiceTest {
 		Training expectedTraining = new Training(expectedClient, expectedTrainer, expectedDate, false, 0, null, expectedBasket);
 		underTest.setTrainingDao(trainingDao);
 		//WHEN
-		underTest.addTraining(expectedTrainer, expectedClient, expectedDate, expectedBasket);
+		underTest.saveNewTraining(expectedTrainer, expectedClient, expectedDate, expectedBasket);
 		//THEN
 		BDDMockito.verify(trainingDao).save(expectedTraining);
 	}

@@ -18,8 +18,22 @@ public class SimpleMembershipService implements MembershipService {
 	
 	@Autowired
 	private MembershipDao membershipDao;
+	
 	@Override
-	public Membership addMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price) {
+	public Membership newMemberShip(String type, int maxEntries, Date expireDate, double price) {
+		Membership membership=new Membership(type, 0, maxEntries, expireDate, price, null);
+		return membership;
+	}
+	
+	@Override
+	public Membership saveMemberShip(Basket basket, Membership membership) {
+		membership.setBasket(basket);
+		membershipDao.save(membership);
+		return membership;
+	}
+	
+	@Override
+	public Membership saveNewMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price) {
 		Membership membership=new Membership(type, 0, maxEntries, expireDate, price, basket);
 		membershipDao.save(membership);
 		return membership;

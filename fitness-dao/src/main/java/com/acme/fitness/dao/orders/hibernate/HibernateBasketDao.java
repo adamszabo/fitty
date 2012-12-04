@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.orders.BasketDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.users.User;
 
@@ -22,8 +23,12 @@ public class HibernateBasketDao extends AbstractHibernateGenericDao<Basket> impl
 	}
 
 	@Override
-	public Basket getBasketById(long id) {
-		return (Basket) getSession().createCriteria(Basket.class).add(Restrictions.eq("id", id)).uniqueResult();
+	public Basket getBasketById(long id) throws FitnessDaoException {
+		Basket result = (Basket) getSession().createCriteria(Basket.class).add(Restrictions.eq("id", id)).uniqueResult();
+		if(result!=null)
+			return result;
+		else
+			throw new FitnessDaoException("Doesn't have Basket with id: "+id);
 	}
 
 	@SuppressWarnings("unchecked")

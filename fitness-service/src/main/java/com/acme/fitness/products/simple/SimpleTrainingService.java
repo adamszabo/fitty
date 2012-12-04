@@ -19,7 +19,20 @@ public class SimpleTrainingService implements TrainingService {
 	private TrainingDao trainingDao;
 	
 	@Override
-	public Training addTraining(User trainer, User client, Date date, Basket basket) {
+	public Training newTraining(User trainer, User client, Date date) {
+		Training training = new Training(trainer, client, date, false, 0, null, null);
+		return training;
+	}
+	
+	@Override
+	public Training saveTraining(Basket basket, Training training) {
+		training.setBasket(basket);
+		trainingDao.save(training);
+		return training;
+	}
+	
+	@Override
+	public Training saveNewTraining(User trainer, User client, Date date, Basket basket) {
 		Training training = new Training(trainer, client, date, false, 0, null, basket);
 		trainingDao.save(training);
 		return training;
