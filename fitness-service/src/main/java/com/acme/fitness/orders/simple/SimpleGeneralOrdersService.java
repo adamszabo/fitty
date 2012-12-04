@@ -3,22 +3,36 @@ package com.acme.fitness.orders.simple;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.users.User;
+import com.acme.fitness.orders.BasketService;
 import com.acme.fitness.orders.GeneralOrdersService;
+import com.acme.fitness.orders.OrderItemService;
+import com.acme.fitness.orders.StoreService;
 
+@Service
 public class SimpleGeneralOrdersService implements GeneralOrdersService {
 
+	@Autowired
+	private BasketService basketService;
+	
+	@Autowired
+	private OrderItemService orderItemService;
+	
+	@Autowired
+	private StoreService storeService;
+	
 	@Override
 	public void addProductToOrderItem(User user, Product product, int quantity) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void addMembership(User user, String membershipType) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -30,8 +44,7 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 
 	@Override
 	public void basketCheckOut(Basket basket) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
