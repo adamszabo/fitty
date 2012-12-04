@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.dao.orders.StoreDao;
@@ -42,8 +43,7 @@ public class SimpleStoreServiceTest {
 	}
 
 	@Test
-	public void testGetStoreByIdShouldInvokeTheMethodRight()
-			throws FitnessDaoException {
+	public void testGetStoreByIdShouldInvokeTheMethodRight() throws FitnessDaoException {
 		// GIVEN
 		long expectedId = 1L;
 		Store expectedStore = new Store();
@@ -55,6 +55,17 @@ public class SimpleStoreServiceTest {
 		// THEN
 		BDDMockito.verify(storeDao).getStoreById(expectedId);
 		Assert.assertEquals(expectedStore, result);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testGetStoreByIdShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
+		//GIVEN
+		BDDMockito.given(storeDao.getStoreById(Mockito.anyLong())).willThrow(new FitnessDaoException());
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.getStoreById(1L);
+		//THEN
+		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
 	}
 	
 	@Test
@@ -71,6 +82,17 @@ public class SimpleStoreServiceTest {
 		//THEN
 		BDDMockito.verify(storeDao).getStoreByProductId(expectedProduct.getId());
 		Assert.assertEquals(expectedStore, result);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testGetStoreByProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
+		//GIVEN
+		BDDMockito.given(storeDao.getStoreByProductId(Mockito.anyLong())).willThrow(new FitnessDaoException());
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.getStoreByProduct(new Product());
+		//THEN
+		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
 	}
 	
 	@Test
@@ -111,6 +133,17 @@ public class SimpleStoreServiceTest {
 		Assert.assertEquals(expectedAvaiablility, result);
 	}
 	
+	@Test(expected=FitnessDaoException.class)
+	public void testTakeOutProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
+		//GIVEN
+		BDDMockito.given(storeDao.getStoreByProductId(Mockito.anyLong())).willThrow(new FitnessDaoException());
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.takeOutProduct(new Product(), 1);
+		//THEN
+		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
+	}
+	
 	@Test
 	public void testPutInProductShouldInvokeTheMethodRight() throws FitnessDaoException {
 		//GIVEN
@@ -127,5 +160,16 @@ public class SimpleStoreServiceTest {
 		//THEN
 		BDDMockito.verify(storeDao).getStoreByProductId(product.getId());
 		BDDMockito.verify(storeDao).update(expectedStore);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testPutInProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
+		//GIVEN
+		BDDMockito.given(storeDao.getStoreByProductId(Mockito.anyLong())).willThrow(new FitnessDaoException());
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.putInProduct(new Product(), 1);
+		//THEN
+		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
 	}
 }

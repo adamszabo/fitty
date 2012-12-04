@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.users.RoleDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.users.Role;
 import com.acme.fitness.domain.users.User;
 
@@ -20,8 +21,12 @@ public class HibernateRoleDao extends AbstractHibernateGenericDao<Role> implemen
 	}
 
 	@Override
-	public Role getRoleById(long id) {
-		return (Role) getSession().createCriteria(Role.class).add(Restrictions.eq("id", id)).uniqueResult();
+	public Role getRoleById(long id) throws FitnessDaoException {
+		Role result = (Role) getSession().createCriteria(Role.class).add(Restrictions.eq("id", id)).uniqueResult();
+		if(result!=null)
+			return result;
+		else
+			throw new FitnessDaoException("Role doesn't found with id:"+id);
 	}
 
 	@SuppressWarnings("unchecked")
