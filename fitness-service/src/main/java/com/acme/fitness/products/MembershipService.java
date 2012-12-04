@@ -10,7 +10,12 @@ import com.acme.fitness.domain.users.User;
 
 public interface MembershipService {
 	
-	Membership addMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price);
+	Membership saveNewMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price);
+
+	Membership newMemberShip(String type, int maxEntries, Date expireDate,
+			double price);
+	
+	Membership saveMemberShip(Basket basket, Membership membership);
 
 	void deleteMembership(Membership membership);
 
@@ -25,4 +30,5 @@ public interface MembershipService {
 	List<Membership> getMembershipByUser(User user);
 
 	void increaseClientEntries(Membership membership);
+
 }

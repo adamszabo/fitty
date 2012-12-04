@@ -17,7 +17,20 @@ public class SimpleOrderItemService implements OrderItemService {
 	private OrderItemDao orderItemDao;
 
 	@Override
-	public OrderItem addOrderItem(Product product, int quantity, Basket basket) {
+	public OrderItem newOrderItem(Product product, int quantity) {
+		OrderItem orderItem=new OrderItem(product, quantity, null);
+		return orderItem;
+	}
+	
+	@Override
+	public OrderItem saveOrderItem(Basket basket, OrderItem orderItem) {
+		orderItem.setBasket(basket);
+		orderItemDao.save(orderItem);
+		return orderItem;
+	}
+	
+	@Override
+	public OrderItem saveNewOrderItem(Product product, int quantity, Basket basket) {
 		OrderItem orderItem=new OrderItem(product, quantity, basket);
 		orderItemDao.save(orderItem);
 		return orderItem;

@@ -55,9 +55,9 @@ public class ProductsBootStrap {
 		Basket basket = new Basket(false, client);
 		BasketDao basketDao = ctx.getBean(BasketDao.class);
 		basketDao.save(basket);
-		Training training = ts.addTraining(trainer, client, date, basket);
+		Training training = ts.saveNewTraining(trainer, client, date, basket);
 		ts.deleteTraining(training);
-		training = ts.addTraining(trainer, client, date, basket);
+		training = ts.saveNewTraining(trainer, client, date, basket);
 		trainer.setUsername("ferenc");
 		training.setTrainer(trainer);
 		training.setBurnedCalories(12);
@@ -80,11 +80,11 @@ public class ProductsBootStrap {
 		basketDao.save(b2);
 		basketDao.save(b3);
 		
-		mService.addMemberShip(b1, "occasionally", 0, new Date(), 18900.0);
-		Membership m1=mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		Membership m2=mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		mService.addMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+		mService.saveNewMemberShip(b1, "occasionally", 0, new Date(), 18900.0);
+		Membership m1=mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+		mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+		Membership m2=mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+		mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
 		List<Membership> result=mService.getMembershipByBasket(b2);
 		System.out.println("Membership by basket number: "+result.size()+" values: "+result.toString());
 		mService.deleteMembership(m2);

@@ -50,6 +50,8 @@ public class Basket {
 
 	public Basket() {
 		super();
+		trainings = new HashSet<Training>();
+		memberships = new HashSet<Membership>();
 		orderItems = new HashSet<OrderItem>();
 	}
 
@@ -57,7 +59,21 @@ public class Basket {
 		super();
 		this.delivered = delivered;
 		this.user = user;
+		trainings = new HashSet<Training>();
+		memberships = new HashSet<Membership>();
 		orderItems = new HashSet<OrderItem>();
+	}
+	
+	public void addMembership(Membership m) {
+		memberships.add(m);
+	}
+	
+	public void addTraining(Training t) {
+		trainings.add(t);
+	}
+	
+	public void addOrderItem(OrderItem o) {
+		orderItems.add(o);
 	}
 
 	@Override

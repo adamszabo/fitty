@@ -10,8 +10,10 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
+import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.users.User;
+import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.users.UserService;
 
@@ -25,6 +27,8 @@ public class OrdersBootStrap {
 		UserService userService=ctx.getBean(UserService.class);
 		OrderItemService os=ctx.getBean(OrderItemService.class);
 		ProductService ps = ctx.getBean(ProductService.class);
+		BasketService bs = ctx.getBean(BasketService.class);
+		MembershipService ms = ctx.getBean(MembershipService.class);
 		
 		/**
 		 * Tests for StoreService
@@ -53,8 +57,8 @@ public class OrdersBootStrap {
 		bd.save(b1);
 		bd.save(b2);
 		
-		OrderItem oi1=os.addOrderItem(product, 0, b1);
-		OrderItem oi2=os.addOrderItem(product, 0, b2);
+		OrderItem oi1=os.saveNewOrderItem(product, 0, b1);
+		OrderItem oi2=os.saveNewOrderItem(product, 0, b2);
 		
 		try {
 			System.out.println("Get OrderItem by id: "+os.getOrderItemById(oi1.getId()));
@@ -68,6 +72,16 @@ public class OrdersBootStrap {
 			e.fillInStackTrace().printStackTrace();
 		}
 		
+		/**
+		 * Tests for BasketService
+		 */
+		Basket basket1 = bs.newBasket(u1);
+		Membership membership1 = ms.newMemberShip("ocassionaly", 10, null, 18000);
+		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
 		
+		bs.addMembershipToBasket(basket1, membership1);
+		bs.addMembershipToBasket(basket1, membership2);
+		bs.checkOutBasket(basket1);
+		bs.deliver(basket1);
 	}
 }

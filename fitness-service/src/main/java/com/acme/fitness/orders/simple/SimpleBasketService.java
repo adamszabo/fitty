@@ -1,87 +1,112 @@
 package com.acme.fitness.orders.simple;
 
-import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.acme.fitness.dao.orders.BasketDao;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Membership;
-import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.BasketService;
+import com.acme.fitness.orders.OrderItemService;
+import com.acme.fitness.products.MembershipService;
+import com.acme.fitness.products.TrainingService;
 
+@Service
 public class SimpleBasketService implements BasketService {
 
+	@Autowired
+	private BasketDao basketDao;
+	
+	@Autowired
+	private MembershipService membershipService;
+	
+	@Autowired 
+	private TrainingService trainingService;
+	
+	@Autowired
+	private OrderItemService orderItemService;
+	
 	@Override
-	public void newBasket(User client) {
-		// TODO Auto-generated method stub
-
+	public Basket newBasket(User client) {
+		Basket basket = new Basket(false, client);
+		return basket;
 	}
 
 	@Override
 	public void deleteBasket(Basket basket) {
-		// TODO Auto-generated method stub
-
+		basketDao.delete(basket);
 	}
 
 	@Override
 	public void updateBasket(Basket basket) {
-		// TODO Auto-generated method stub
-
+		basketDao.update(basket);
 	}
 
 	@Override
 	public void addMembershipToBasket(Basket basket, Membership membership) {
-		// TODO Auto-generated method stub
-
+		basket.addMembership(membership);
 	}
 
 	@Override
 	public void addTrainingToBasket(Basket basket, Training training) {
-		// TODO Auto-generated method stub
-
+		basket.addTraining(training);
 	}
 
 	@Override
 	public void addOrderItemToBasket(Basket basket, OrderItem orderItem) {
-		// TODO Auto-generated method stub
-
+		basket.addOrderItem(orderItem);
 	}
 
 	@Override
-	public List<Membership> getMemberships(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Membership> getMemberships(Basket basket) {
+		return basket.getMemberships();
 	}
 
 	@Override
-	public List<Training> getTrainings(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Training> getTrainings(Basket basket) {
+		return basket.getTrainings();
 	}
 
 	@Override
-	public List<Product> getProducts(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<OrderItem> getOrderItems(Basket basket) {
+		return basket.getOrderItems();
 	}
 
 	@Override
 	public boolean isDelivered(Basket basket) {
-		// TODO Auto-generated method stub
-		return false;
+		return basket.isDelivered();
 	}
 
 	@Override
 	public void checkOutBasket(Basket basket) {
-		// TODO Auto-generated method stub
-
+		basketDao.save(basket);
+		for(Membership m : basket.getMemberships()) {
+			membershipService.saveMemberShip(basket, m);
+		}
+		for(Training t : basket.getTrainings()) {
+			trainingService.saveTraining(basket, t);
+		}
+		for(OrderItem o : basket.getOrderItems()) {
+			orderItemService.saveOrderItem(basket, o);
+		}
 	}
 
 	@Override
 	public void deliver(Basket basket) {
-		// TODO Auto-generated method stub
-
+		basket.setDelivered(true);
+		basketDao.update(basket);
 	}
 
+	public BasketDao getBasketDao() {
+		return basketDao;
+	}
+
+	public void setBasketDao(BasketDao basketDao) {
+		this.basketDao = basketDao;
+	}
 }
