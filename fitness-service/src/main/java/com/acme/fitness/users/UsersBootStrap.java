@@ -38,5 +38,35 @@ public class UsersBootStrap {
 		rs.removeRoleFromUser(Roles.Recepcionist.toString(), newUser);
 		
 		System.out.println(rs.getRolesByUser(newUser));
+		
+		/**
+		 * GeneralUserService test
+		 */
+		GeneralUsersService gus=ctx.getBean(GeneralUsersService.class);
+		User u1=gus.addUser("Kicsi Andár Béla", "kicsi07a", "passworda", "kicsi07a@freemail.hu", "203333333", new Date());
+		User u2=gus.addUser("Kicsi Andár Béla", "kicsi07aa", "passworda", "kicsi07aa@freemail.hu", "203333333", new Date());
+		User u3=gus.addUser("Kicsi Andár Béla", "kicsi07aaa", "passworda", "kicsi07aaa@freemail.hu", "203333333", new Date());
+		System.out.println("All users: "+gus.getAllUsers());
+		gus.deleteUser(u2);
+		u2.setFullName("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+		gus.updateUser(u1);
+		try {
+			System.out.println("GetUser by Username: "+gus.getUserByUsername(u3.getUsername()));
+			System.out.println("GetUser by Email: "+gus.getUserByEmail(u1.getEmail()));
+			gus.addLastLoginInfo(u1, "LASTIP", new Date(1000000));
+			System.out.println("GetUser by Id: "+gus.getUserById(u1.getId()));
+			System.out.println("GetUser by Id: "+gus.getUserById(u2.getId()));
+		} catch (FitnessDaoException e) {
+			e.fillInStackTrace().printStackTrace();
+		}
+		gus.addUserRole(Roles.Client.toString(), u3);
+		gus.addUserRole(Roles.ProductAdmin.toString(), u3);
+		gus.addUserRole(Roles.Recepcionist.toString(), u3);
+		System.out.println("All users: "+gus.getAllUsers());
+		System.out.println("All roles: "+gus.getRolesbyUser(u3));
+		gus.removeUserRole(Roles.Client.toString(), u3);
+		gus.removeUserRole(Roles.Recepcionist.toString(), u3);
+		System.out.println("All roles: "+gus.getRolesbyUser(u3));
+		
 	}
 }

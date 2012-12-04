@@ -20,4 +20,5 @@ public interface UserService {
 	boolean isLoggedIn(User user);
 	void setEnabled(User user, boolean toEnabled);
 	void setNumberOfEntries(User user, int numberOfEntries);
+	//User getActualUser(String userName);
 }

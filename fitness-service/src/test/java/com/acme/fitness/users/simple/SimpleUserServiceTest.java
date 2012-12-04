@@ -35,9 +35,10 @@ public class SimpleUserServiceTest {
 	public void testAddUserShouldReturnProperly(){
 		//GIVEN
 		underTest.setUserDao(userDao);
-		User user=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date(),null, null);
+		Date date=new Date();
+		User user=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", date,null, null);
 		//WHEN
-		User result=underTest.addUser("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date());
+		User result=underTest.addUser("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", date);
 		//THEN
 		BDDMockito.verify(userDao).save(user);
 		Assert.assertEquals(user, result);
