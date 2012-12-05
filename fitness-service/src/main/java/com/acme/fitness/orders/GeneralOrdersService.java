@@ -38,5 +38,6 @@ public interface GeneralOrdersService {
 	Store getStoreByProduct(Product product) throws FitnessDaoException;
 	boolean takeOutProduct(Product product, int quantity) throws FitnessDaoException;
 	void putInProduct(Product product, int quantity) throws FitnessDaoException;
+	Set<Store> getAllStores();
 	
 }

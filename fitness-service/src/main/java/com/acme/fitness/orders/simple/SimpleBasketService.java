@@ -1,6 +1,7 @@
 package com.acme.fitness.orders.simple;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -69,6 +70,7 @@ public class SimpleBasketService implements BasketService {
 	@Override
 	public void addOrderItemToBasket(Basket basket, OrderItem orderItem) {
 		basket.addOrderItem(orderItem);
+		orderItem.setBasket(basket);
 	}
 
 	@Override
@@ -103,7 +105,8 @@ public class SimpleBasketService implements BasketService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Basket> getBasketsByUser(User user) {
-		return (Set<Basket>) basketDao.getBasketsByUser(user);
+		Set<Basket> set = new HashSet<Basket>(basketDao.getBasketsByUser(user));
+		return set;
 	}
 
 	@Override
@@ -168,7 +171,7 @@ public class SimpleBasketService implements BasketService {
 	
 	private void takeOutProduct(Basket basket, List<Product> missingProducts, OrderItem o) throws FitnessDaoException {
 		if (storeService.takeOutProduct(o.getProduct(), o.getQuantity())) {
-			orderItemService.saveOrderItem(basket, o);
+			orderItemService.updateOrderItem(o);
 		} else {
 			missingProducts.add(o.getProduct());
 		}

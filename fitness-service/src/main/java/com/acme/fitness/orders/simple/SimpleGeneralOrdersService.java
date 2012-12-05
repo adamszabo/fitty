@@ -143,9 +143,13 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	}
 
 	@Override
-	public void putInProduct(Product product, int quantity)
-			throws FitnessDaoException {
+	public void putInProduct(Product product, int quantity) throws FitnessDaoException {
 		storeService.putInProduct(product, quantity);
+	}
+	
+	@Override
+	public Set<Store> getAllStores() {
+		return storeService.getAllStores();
 	}
 
 	public BasketService getBasketService() {

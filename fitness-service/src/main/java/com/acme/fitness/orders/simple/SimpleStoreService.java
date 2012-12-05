@@ -1,9 +1,12 @@
 package com.acme.fitness.orders.simple;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acme.fitness.dao.orders.StoreDao;
+import com.acme.fitness.dao.products.ProductDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
@@ -14,6 +17,9 @@ public class SimpleStoreService implements StoreService {
 
 	@Autowired
 	private StoreDao storeDao;
+	
+	@Autowired
+	private ProductDao productDao;
 
 	@Override
 	public Store addProduct(Product product, int quantity) {
@@ -45,10 +51,26 @@ public class SimpleStoreService implements StoreService {
 	}
 
 	@Override
-	public void putInProduct(Product product, int quantity)
-			throws FitnessDaoException {
-		Store store = storeDao.getStoreByProductId(product.getId());
-		updateStoreQuantity(store, store.getQuantity() + quantity);
+	public void putInProduct(Product product, int quantity) throws FitnessDaoException {
+		if(!isProductExistInDatabase(product))
+			throw new FitnessDaoException("No product found in Database: " + product.toString());
+		Store store;
+		try {
+			store = storeDao.getStoreByProductId(product.getId());
+			updateStoreQuantity(store, store.getQuantity() + quantity);
+		} catch (FitnessDaoException e) {
+			store = new Store(product, quantity);
+			storeDao.save(store);
+		}
+	}
+
+	@Override
+	public Set<Store> getAllStores() {
+		return (Set<Store>) storeDao.getAllStores();
+	}
+	
+	private boolean isProductExistInDatabase(Product product) {
+		return productDao.getAllProduct().contains(product);
 	}
 	
 	@Override
