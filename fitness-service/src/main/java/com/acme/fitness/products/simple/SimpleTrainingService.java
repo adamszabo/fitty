@@ -77,7 +77,6 @@ public class SimpleTrainingService implements TrainingService {
 
 	@Override
 	public List<Training> getTrainingsByBasket(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+		return trainingDao.getTrainingsByOrder(basket);
 	}
 }

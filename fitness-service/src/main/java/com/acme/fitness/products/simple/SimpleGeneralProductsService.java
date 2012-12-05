@@ -3,6 +3,9 @@ package com.acme.fitness.products.simple;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
@@ -10,150 +13,153 @@ import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
+import com.acme.fitness.products.MembershipService;
+import com.acme.fitness.products.ProductService;
+import com.acme.fitness.products.TrainingService;
 
+@Service
 public class SimpleGeneralProductsService implements GeneralProductsService {
 
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private MembershipService membershipService;
+
+	@Autowired
+	private TrainingService trainingService;
+
 	@Override
-	public Product addProduct(String name, String details, double price,
-			String manufacturer, Date creation) {
-		// TODO Auto-generated method stub
-		return null;
+	public Product addProduct(String name, String details, double price, String manufacturer, Date creation) {
+		return productService.addProduct(name, details, price, manufacturer, creation);
 	}
 
 	@Override
 	public void deleteProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		productService.deleteProduct(product);
 	}
 
 	@Override
 	public void updateProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		productService.updateProduct(product);
 	}
 
 	@Override
 	public List<Product> getAllProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		return productService.getAllProducts();
 	}
 
 	@Override
 	public List<Product> getProductsByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return productService.getProductsByName(name);
 	}
 
 	@Override
 	public List<Product> getProductsByManufacturer(String manufacturer) {
-		// TODO Auto-generated method stub
-		return null;
+		return productService.getProductsByManufacturer(manufacturer);
 	}
 
 	@Override
-	public List<Product> getProductsByPriceInterval(double fromPrice,
-			double toPrice) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Product> getProductsByPriceInterval(double fromPrice, double toPrice) {
+		return productService.getProductsByPriceInterval(fromPrice, toPrice);
 	}
 
 	@Override
 	public Training newTraining(User trainer, User client, Date date) {
-		// TODO Auto-generated method stub
-		return null;
+		return trainingService.newTraining(trainer, client, date);
 	}
 
 	@Override
 	public void deleteTraining(Training training) {
-		// TODO Auto-generated method stub
-		
+		trainingService.deleteTraining(training);
 	}
 
 	@Override
 	public void updateTraining(Training training) {
-		// TODO Auto-generated method stub
-		
+		trainingService.updateTraining(training);
 	}
 
 	@Override
-	public void addReviewToClient(Training training) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void recordTrainingResults(Training training, int burnedCalories,
-			String review) {
-		// TODO Auto-generated method stub
-		
+	public void recordTrainingResults(Training training, int burnedCalories, String review) {
+		trainingService.recordTrainingResults(training, burnedCalories, review);
 	}
 
 	@Override
 	public List<Training> getTrainingsByTrainer(User trainer) {
-		// TODO Auto-generated method stub
-		return null;
+		return trainingService.getTrainingsByTrainer(trainer);
 	}
 
 	@Override
 	public List<Training> getTrainingsByClient(User client) {
-		// TODO Auto-generated method stub
-		return null;
+		return trainingService.getTrainingsByClient(client);
 	}
 
 	@Override
 	public List<Training> getTrainingsByBasket(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+		return trainingService.getTrainingsByBasket(basket);
 	}
 
 	@Override
-	public Membership newMemberShip(String type, int maxEntries,
-			Date expireDate, double price) {
-		// TODO Auto-generated method stub
-		return null;
+	public Membership newMemberShip(String type, int maxEntries, Date expireDate, double price) {
+		return membershipService.newMemberShip(type, maxEntries, expireDate, price);
 	}
 
 	@Override
 	public void deleteMembership(Membership membership) {
-		// TODO Auto-generated method stub
-		
+		membershipService.deleteMembership(membership);
 	}
 
 	@Override
 	public void updateMembership(Membership membership) {
-		// TODO Auto-generated method stub
-		
+		membershipService.updateMembership(membership);
 	}
 
 	@Override
 	public boolean isValid(Membership membership) {
-		// TODO Auto-generated method stub
-		return false;
+		return membershipService.isValid(membership);
 	}
 
 	@Override
 	public Membership getMembershipById(long id) throws FitnessDaoException {
-		// TODO Auto-generated method stub
-		return null;
+		return membershipService.getMembershipById(id);
 	}
 
 	@Override
 	public List<Membership> getMembershipByBasket(Basket basket) {
-		// TODO Auto-generated method stub
-		return null;
+		return membershipService.getMembershipByBasket(basket);
 	}
 
 	@Override
 	public List<Membership> getMembershipByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return membershipService.getMembershipByUser(user);
 	}
 
 	@Override
 	public void increaseClientEntries(Membership membership) {
-		// TODO Auto-generated method stub
-		
+		membershipService.increaseClientEntries(membership);
 	}
 
+	public ProductService getProductService() {
+		return productService;
+	}
 
+	public void setProductService(ProductService productService) {
+		this.productService = productService;
+	}
+
+	public MembershipService getMembershipService() {
+		return membershipService;
+	}
+
+	public void setMembershipService(MembershipService membershipService) {
+		this.membershipService = membershipService;
+	}
+
+	public TrainingService getTrainingService() {
+		return trainingService;
+	}
+
+	public void setTrainingService(TrainingService trainingService) {
+		this.trainingService = trainingService;
+	}
 }

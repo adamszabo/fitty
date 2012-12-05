@@ -13,6 +13,8 @@ public interface ProductService {
 	void deleteProduct(Product product);
 
 	void updateProduct(Product product);
+	
+	List<Product> getAllProducts();
 
 	Product getProductById(long id) throws FitnessDaoException;
 
