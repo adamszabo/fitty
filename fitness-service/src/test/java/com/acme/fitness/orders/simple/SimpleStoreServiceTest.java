@@ -172,4 +172,26 @@ public class SimpleStoreServiceTest {
 		//THEN
 		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
 	}
+	
+	@Test
+	public void testDeleteStoreShouldInvokeTheMethodRight() {
+		//GIVEN
+		Store store = new Store();
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.deleteStore(store);
+		//THEN
+		BDDMockito.verify(storeDao).delete(store);
+	}
+	
+	@Test
+	public void testUpdateStoreShouldInvokeTheMethodRight() {
+		//GIVEN
+		Store store = new Store();
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.updateStore(store);
+		//THEN
+		BDDMockito.verify(storeDao).update(store);
+	}
 }

@@ -50,6 +50,16 @@ public class SimpleStoreService implements StoreService {
 		Store store = storeDao.getStoreByProductId(product.getId());
 		updateStoreQuantity(store, store.getQuantity() + quantity);
 	}
+	
+	@Override
+	public void deleteStore(Store store) {
+		storeDao.delete(store);
+	}
+
+	@Override
+	public void updateStore(Store store) {
+		storeDao.update(store);
+	}
 
 	public StoreDao getStoreDao() {
 		return storeDao;
@@ -63,4 +73,5 @@ public class SimpleStoreService implements StoreService {
 		store.setQuantity(quantity);
 		storeDao.update(store);
 	}
+
 }

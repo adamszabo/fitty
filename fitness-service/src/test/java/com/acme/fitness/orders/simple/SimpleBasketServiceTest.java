@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.dao.orders.BasketDao;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Membership;
@@ -173,17 +174,7 @@ public class SimpleBasketServiceTest {
 	}
 	
 	@Test
-	public void testIsDeliveredShouldReturnTheRightBoolean() {
-		//GIVEN
-		BDDMockito.given(basketMock.isDelivered()).willReturn(true);
-		//WHEN
-		underTest.isDelivered(basketMock);
-		//THEN
-		BDDMockito.verify(basketMock).isDelivered();
-	}
-	
-	@Test
-	public void testCheckOutBasketShouldInvokeTheMethodRight() {
+	public void testCheckOutBasketShouldInvokeTheMethodRight() throws StoreQuantityException {
 		//GIVEN
 		underTest.setBasketDao(basketDao);
 		//WHEN

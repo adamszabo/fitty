@@ -7,21 +7,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.acme.fitness.dao.orders.BasketDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.ProductService;
+import com.acme.fitness.products.TrainingService;
 import com.acme.fitness.users.UserService;
 
 public class OrdersBootStrap {
 	public static void main(String[] args){
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/Spring/*.xml");
 		StoreService ss = ctx.getBean(StoreService.class);
-		
 		BasketDao bd=ctx.getBean(BasketDao.class);
 		
 		UserService userService=ctx.getBean(UserService.class);
@@ -29,6 +31,9 @@ public class OrdersBootStrap {
 		ProductService ps = ctx.getBean(ProductService.class);
 		BasketService bs = ctx.getBean(BasketService.class);
 		MembershipService ms = ctx.getBean(MembershipService.class);
+		TrainingService ts = ctx.getBean(TrainingService.class);
+		
+		GeneralOrdersService gos = ctx.getBean(GeneralOrdersService.class);
 		
 		/**
 		 * Tests for StoreService
@@ -75,13 +80,38 @@ public class OrdersBootStrap {
 		/**
 		 * Tests for BasketService
 		 */
-		Basket basket1 = bs.newBasket(u1);
+//		Basket basket1 = bs.newBasket(u1);
 		Membership membership1 = ms.newMemberShip("ocassionaly", 10, null, 18000);
 		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
 		
-		bs.addMembershipToBasket(basket1, membership1);
-		bs.addMembershipToBasket(basket1, membership2);
-		bs.checkOutBasket(basket1);
-		bs.deliver(basket1);
+//		bs.addMembershipToBasket(basket1, membership1);
+//		bs.addMembershipToBasket(basket1, membership2);
+//		bs.checkOutBasket(basket1);
+//		bs.deliver(basket1);
+
+		/**
+		 * Tests for GeneralOrdersService
+		 */
+		
+		Basket basket = gos.newBasket(u1);
+		gos.addMembershipToBasket(basket, membership1);
+		Training t1 = ts.newTraining(u1, u2, new Date());
+		gos.addTrainingToBasket(basket, t1);
+		System.out.println();
+		Product p1 = ps.addProduct("product", "kicsi ócsó", 1.0, "csína", new Date());
+		try {
+			gos.putInProduct(p1, 10);
+		} catch (FitnessDaoException e) {
+			e.fillInStackTrace().printStackTrace();
+		}
+		OrderItem oi = gos.newOrderItem(p1, 9);
+		gos.addOrderItemToBasket(basket, oi);
+		try {
+			gos.checkOutBasket(basket);
+		} catch (StoreQuantityException e) {
+			e.printStackTrace();
+		}
+		
 	}
+	
 }

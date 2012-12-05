@@ -2,6 +2,8 @@ package com.acme.fitness.orders;
 
 import java.util.Set;
 
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Membership;
@@ -18,7 +20,8 @@ public interface BasketService {
 	Set<Membership> getMemberships(Basket basket);
 	Set<Training> getTrainings(Basket basket);
 	Set<OrderItem> getOrderItems(Basket basket);
-	boolean isDelivered(Basket basket);
-	void checkOutBasket(Basket basket);
+	void checkOutBasket(Basket basket) throws StoreQuantityException;
 	void deliver(Basket basket);
+	Set<Basket> getBasketsByUser(User user);
+	Basket getBasketById(long id) throws FitnessDaoException;
 }

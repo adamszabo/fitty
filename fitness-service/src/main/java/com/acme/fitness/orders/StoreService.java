@@ -7,7 +7,9 @@ import com.acme.fitness.domain.products.Product;
 public interface StoreService {
 	Store addProduct(Product product, int quantity);
 	Store getStoreById(long id) throws FitnessDaoException;
+	Store getStoreByProduct(Product product) throws FitnessDaoException;
 	boolean takeOutProduct(Product product, int quantity) throws FitnessDaoException;
 	void putInProduct(Product product, int quantity) throws FitnessDaoException;
-	Store getStoreByProduct(Product product) throws FitnessDaoException;
+	void deleteStore(Store store);
+	void updateStore(Store store);
 }
