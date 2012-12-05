@@ -101,6 +101,49 @@ public class ProductsBootStrap {
 		System.out.println("Membership by User, number:"+mService.getMembershipByUser(newUser).size()+" values:"+mService.getMembershipByUser(newUser));
 		System.out.println("Membership by User, number:"+mService.getMembershipByUser(newUser2).size()+" values:"+mService.getMembershipByUser(newUser2));
 		
+		/*
+		 *  GeneralProductServiceTest
+		 */
 		
+		GeneralProductsService gps=ctx.getBean(GeneralProductsService.class);
+		Product p1=gps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
+		Product p2=gps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date());
+		gps.deleteProduct(p1);
+		p2.setPrice(222222L);
+		gps.updateProduct(p2);
+		System.out.println("GeneralProductServiceTest.getAllProudcts: "+gps.getAllProduct());
+		System.out.println("GeneralProductServiceTest.getProductsByManufacturer: "+gps.getProductsByManufacturer(p2.getManufacturer()));
+		System.out.println("GeneralProductServiceTest.getProductsByName: "+gps.getProductsByName(p2.getName()));
+		System.out.println("GeneralProductServiceTest.getProductsByPriceInterval: "+gps.getProductsByPriceInterval(11L, 200000000L));
+		
+		Membership mem1=gps.newMemberShip("GeneralProductServiceTest", 0, new Date(), 18900.0);
+		Membership mem2=gps.newMemberShip("GeneralProductServiceTest", 10, new Date(), 18900.0);
+		mService.saveMemberShip(b1, mem1);
+		mService.saveMemberShip(b1, mem2);
+		gps.deleteMembership(mem1);
+		mem2.setMaxNumberOfEntries(1200000);
+		gps.updateMembership(mem2);
+		System.out.println("GeneralProductServiceTest.getMembershipsByBasket: "+gps.getMembershipByBasket(b1));
+		System.out.println("GeneralProductServiceTest.getMembershipsByUser: "+gps.getMembershipByUser(b1.getUser()));
+		try {
+			gps.increaseClientEntries(mem2);
+			gps.increaseClientEntries(mem2);
+			System.out.println("GeneralProductServiceTest.getMembershipsById: "+gps.getMembershipById(mem2.getId()));
+			System.out.println("GeneralProductServiceTest.getMembershipsById: "+gps.getMembershipById(mem1.getId()));
+		} catch (FitnessDaoException e) {
+			e.fillInStackTrace().printStackTrace();
+		}
+		
+		Training tr1=gps.newTraining(trainer, client, date);
+		Training tr2=gps.newTraining(trainer, client, new Date());
+		ts.saveTraining(b1, tr1);
+		ts.saveTraining(b1, tr2);
+		gps.deleteTraining(tr1);
+		tr2.setBurnedCalories(1000000);
+		gps.updateTraining(tr2);
+		System.out.println("GeneralProductServiceTest.getTrainingByTrainer: "+gps.getTrainingsByTrainer(tr2.getTrainer()));
+		System.out.println("GeneralProductServiceTest.getTrainingByClient: "+gps.getTrainingsByClient(tr2.getClient()));
+		gps.recordTrainingResults(tr2, 100, "DO HARD OR GO HOME");
+		System.out.println("GeneralProductServiceTest.getTrainingByBasket: "+gps.getTrainingsByBasket(b1));
 	}
 }

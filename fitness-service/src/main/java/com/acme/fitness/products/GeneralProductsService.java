@@ -22,7 +22,6 @@ public interface GeneralProductsService {
 	Training newTraining(User trainer, User client, Date date);
 	void deleteTraining(Training training);
 	void updateTraining(Training training);
-	void addReviewToClient(Training training);
 	void recordTrainingResults(Training training, int burnedCalories, String review);
 	List<Training> getTrainingsByTrainer(User trainer);
 	List<Training> getTrainingsByClient(User client);

@@ -34,6 +34,11 @@ public class SimpleProductService implements ProductService {
 	public void updateProduct(Product product) {
 		productDao.update(product);
 	}
+	
+	@Override
+	public List<Product> getAllProducts() {
+		return productDao.getAllProduct();
+	}
 
 	@Override
 	public Product getProductById(long id) throws FitnessDaoException {
@@ -67,4 +72,5 @@ public class SimpleProductService implements ProductService {
 	public void setProductDao(ProductDao productDao) {
 		this.productDao = productDao;
 	}
+
 }
