@@ -31,7 +31,7 @@ public class OrdersBootStrap {
 		UserService userService = ctx.getBean(UserService.class);
 		OrderItemService os = ctx.getBean(OrderItemService.class);
 		ProductService ps = ctx.getBean(ProductService.class);
-		BasketService bs = ctx.getBean(BasketService.class);
+//		BasketService bs = ctx.getBean(BasketService.class);
 		MembershipService ms = ctx.getBean(MembershipService.class);
 		TrainingService ts = ctx.getBean(TrainingService.class);
 
@@ -93,7 +93,7 @@ public class OrdersBootStrap {
 		// Basket basket1 = bs.newBasket(u1);
 		Membership membership1 = ms.newMemberShip("ocassionaly", 10, null,
 				18000);
-		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
+//		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
 
 		// bs.addMembershipToBasket(basket1, membership1);
 		// bs.addMembershipToBasket(basket1, membership2);
