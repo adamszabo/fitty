@@ -2,7 +2,7 @@ fitty
 =====
 
 ======SONAR==========
-Download and unpack sonar.
+Download and unpack sonar. We use postgreSQL database our projects so we store the reports that database.
 In the sonar's configuration file (.../sonar-x.y.z/conf/sonar.properties):
 
 Comment this line:
@@ -39,6 +39,11 @@ Add new profile to maven's configuration file "M2_HOME/conf/settings.xml" :
 			<sonar.host.url>http://localhost:9000</sonar.host.url>
 		</properties>
 	</profile>
+
+Have to add in project's pom.xml:
+	<sonar.language>java</sonar.language>
+	<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
+	<sonar.core.codeCoveragePlugin>cobertura</sonar.core.codeCoveragePlugin>	
 	
 Run:
 	Project's root (.../fitness-studio/ where exists pom.xml) maven sonar:sonar
