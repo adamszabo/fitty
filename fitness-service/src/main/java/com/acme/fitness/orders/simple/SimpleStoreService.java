@@ -65,7 +65,6 @@ public class SimpleStoreService implements StoreService {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Store> getAllStores() {
 		return  new HashSet<Store>(storeDao.getAllStores());
