@@ -31,7 +31,6 @@ public class OrdersBootStrap {
 		UserService userService = ctx.getBean(UserService.class);
 		OrderItemService os = ctx.getBean(OrderItemService.class);
 		ProductService ps = ctx.getBean(ProductService.class);
-		BasketService bs = ctx.getBean(BasketService.class);
 		MembershipService ms = ctx.getBean(MembershipService.class);
 		TrainingService ts = ctx.getBean(TrainingService.class);
 
@@ -93,6 +92,7 @@ public class OrdersBootStrap {
 		// Basket basket1 = bs.newBasket(u1);
 		Membership membership1 = ms.newMemberShip("ocassionaly", 10, null,
 				18000);
+		@SuppressWarnings("unused")
 		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
 
 		// bs.addMembershipToBasket(basket1, membership1);
@@ -134,9 +134,18 @@ public class OrdersBootStrap {
 			System.out.println("!!!!!!!!!!!MiSSING PRODUCTS: " + e.getProduct());
 		}
 		
+		System.out.println("**Get Memberships by Basket: ** " + gos.getMemberships(basket));
+		System.out.println("**Get Baskets by User: ** " + gos.getBasketsByUser(u1));
+		
 		gos.deliver(basket);
 
 		System.out.println(gos.getBasketsByUser(u1));
+		System.out.println(gos.getAllStores());
+		try {
+			System.out.println("**Get Store by Product: ** " + gos.getStoreByProduct(p2));
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

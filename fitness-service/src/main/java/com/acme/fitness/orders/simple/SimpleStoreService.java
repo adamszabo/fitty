@@ -1,5 +1,6 @@
 package com.acme.fitness.orders.simple;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,11 +67,16 @@ public class SimpleStoreService implements StoreService {
 
 	@Override
 	public Set<Store> getAllStores() {
-		return (Set<Store>) storeDao.getAllStores();
+		return  new HashSet<Store>(storeDao.getAllStores());
 	}
 	
 	private boolean isProductExistInDatabase(Product product) {
 		return productDao.getAllProduct().contains(product);
+	}
+
+	private void updateStoreQuantity(Store store, int quantity) {
+		store.setQuantity(quantity);
+		storeDao.update(store);
 	}
 	
 	@Override
@@ -91,9 +97,12 @@ public class SimpleStoreService implements StoreService {
 		this.storeDao = storeDao;
 	}
 
-	private void updateStoreQuantity(Store store, int quantity) {
-		store.setQuantity(quantity);
-		storeDao.update(store);
+
+	public ProductDao getProductDao() {
+		return productDao;
 	}
 
+	public void setProductDao(ProductDao productDao) {
+		this.productDao = productDao;
+	}
 }

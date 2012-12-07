@@ -251,4 +251,20 @@ public class SimpleGeneralUsersServiceTest {
 		BDDMockito.verify(userServiceMock).getUserById(Mockito.anyLong());
 		Assert.assertEquals(userMock, result);
 	}
+	
+	@Test
+	public void testUserServicesGetterAndSetterBehaviour() {
+		//WHEN
+		underTest.setUserService(userServiceMock);
+		//THEN
+		Assert.assertEquals(userServiceMock, underTest.getUserService());
+	}
+	
+	@Test
+	public void testRoleServicesGetterAndSetterBehaviour() {
+		//WHEN
+		underTest.setRoleService(roleServiceMock);
+		//THEN
+		Assert.assertEquals(roleServiceMock, underTest.getRoleService());
+	}
 }

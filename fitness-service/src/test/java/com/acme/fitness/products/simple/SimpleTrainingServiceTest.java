@@ -142,4 +142,26 @@ public class SimpleTrainingServiceTest {
 		BDDMockito.verify(trainingDao).getTrainingsByClient(client);
 		Assert.assertEquals(expectedTrainings, result);
 	}
+	
+	@Test
+	public void testGetTrainingsByBasketShouldReturnProperly() {
+		//GIVEN
+		Basket basket = new Basket();
+		List<Training> expectedTrainings = new ArrayList<Training>();
+		BDDMockito.given(trainingDao.getTrainingsByOrder(basket)).willReturn(expectedTrainings);
+		underTest.setTrainingDao(trainingDao);
+		//WHEN
+		List<Training> result = underTest.getTrainingsByBasket(basket);
+		//THEN
+		Assert.assertEquals(expectedTrainings, result);
+		BDDMockito.verify(trainingDao).getTrainingsByOrder(basket);
+	}
+	
+	@Test
+	public void testTrainingDaosGetterAndSetterBehaviour() {
+		//WHEN
+		underTest.setTrainingDao(trainingDao);
+		//THEN
+		Assert.assertEquals(trainingDao, underTest.getTrainingDao());
+	}
 }

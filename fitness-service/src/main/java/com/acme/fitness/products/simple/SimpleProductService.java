@@ -54,8 +54,7 @@ public class SimpleProductService implements ProductService {
 
 	@Override
 	public List<Product> getProductsByManufacturer(String manufacturer) {
-		List<Product> result = productDao.getProductsByManufacturer(manufacturer);
-		return result;
+		return productDao.getProductsByManufacturer(manufacturer);
 	}
 
 	@Override

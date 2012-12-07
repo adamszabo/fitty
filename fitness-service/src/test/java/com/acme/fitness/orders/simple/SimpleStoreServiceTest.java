@@ -1,6 +1,10 @@
 package com.acme.fitness.orders.simple;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -12,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.dao.orders.StoreDao;
+import com.acme.fitness.dao.products.ProductDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
@@ -22,6 +27,9 @@ public class SimpleStoreServiceTest {
 
 	@Mock
 	private StoreDao storeDao;
+	
+	@Mock
+	private ProductDao productDao;
 
 	@Before
 	public void setUp() {
@@ -144,33 +152,72 @@ public class SimpleStoreServiceTest {
 		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
 	}
 	
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testPutInProductShouldThrowsExceptionWhenTheProductIsNotFoundInDatabase() throws FitnessDaoException {
+		//GIVEN
+		Product product = new Product();
+		product.setId(1L);
+		BDDMockito.given(productDao.getAllProduct()).willReturn(new ArrayList<Product>());
+		underTest.setProductDao(productDao);
+		//WHEN
+		underTest.putInProduct(product, 1);
+		//THEN
+		BDDMockito.verify(productDao).getAllProduct().contains(product);
+	}
+	
+	@Test
+	public void testPutInProductShouldThrowsExceptionWhenTheProductIsNotFoundInStoreTable() throws FitnessDaoException {
+		//GIVEN
+		List<Product> products = new ArrayList<Product>();
+		Product product = new Product("name", null, 1.0, null, new Date());
+		product.setId(1L);
+		products.add(product);
+		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
+		BDDMockito.when(storeDao.getStoreByProductId(product.getId())).thenThrow(new FitnessDaoException());
+		underTest.setProductDao(productDao);
+		underTest.setStoreDao(storeDao);
+		//WHEN
+		underTest.putInProduct(product, 1);
+		//THEN
+		BDDMockito.verify(productDao).getAllProduct();
+		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
+		BDDMockito.verify(storeDao).save(new Store(product, 1)); 
+	}
+	
 	@Test
 	public void testPutInProductShouldInvokeTheMethodRight() throws FitnessDaoException {
 		//GIVEN
+		List<Product> products = new ArrayList<Product>();
 		Product product = new Product("name", null, 1.0, null, new Date());
 		product.setId(1L);
+		products.add(product);
 		int quantity = 7;
 		int putInQuantity = 11;
 		Store store = new Store(product, quantity);
 		BDDMockito.given(storeDao.getStoreByProductId(product.getId())).willReturn(store);
+		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
 		Store expectedStore = new Store(product, quantity + putInQuantity);
 		underTest.setStoreDao(storeDao);
+		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.putInProduct(product, putInQuantity);
 		//THEN
 		BDDMockito.verify(storeDao).getStoreByProductId(product.getId());
 		BDDMockito.verify(storeDao).update(expectedStore);
+		BDDMockito.verify(productDao).getAllProduct();
 	}
 	
-	@Test(expected=FitnessDaoException.class)
-	public void testPutInProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
+	@Test
+	public void testGetAllStoresShouldReturnProperly() {
 		//GIVEN
-		BDDMockito.given(storeDao.getStoreByProductId(Mockito.anyLong())).willThrow(new FitnessDaoException());
+		BDDMockito.given(storeDao.getAllStores()).willReturn(new ArrayList<Store>());
 		underTest.setStoreDao(storeDao);
 		//WHEN
-		underTest.putInProduct(new Product(), 1);
+		Set<Store> result = underTest.getAllStores();
 		//THEN
-		BDDMockito.verify(storeDao).getStoreByProductId(Mockito.anyLong());
+		BDDMockito.verify(storeDao).getAllStores();
+		Assert.assertEquals(new HashSet<Store>(), result);
 	}
 	
 	@Test
@@ -193,5 +240,23 @@ public class SimpleStoreServiceTest {
 		underTest.updateStore(store);
 		//THEN
 		BDDMockito.verify(storeDao).update(store);
+	}
+	
+	@Test
+	public void testProductDaosGetterAndSetterBehaviour() {
+		//GIVEN
+		//WHEN
+		underTest.setProductDao(productDao);
+		//THEN
+		Assert.assertEquals(productDao, underTest.getProductDao());
+	}
+	
+	@Test
+	public void testStoreDaosGetterAndSetterBehaviour() {
+		//GIVEN
+		//WHEN
+		underTest.setStoreDao(storeDao);
+		//THEN
+		Assert.assertEquals(storeDao, underTest.getStoreDao());
 	}
 }

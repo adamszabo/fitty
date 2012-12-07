@@ -136,5 +136,45 @@ public class SimpleProductServiceTest {
 		BDDMockito.verify(productDao).getProductsByPriceInterval(expectedFromPrice, expectedToPrice);
 	}
 	
+	@Test
+	public void testGetAllProductsShouldReturnProperly() {
+		//GIVEN
+		List<Product> products = new ArrayList<Product>();
+		Product product = new Product();
+		product.setId(1L);
+		products.add(product);
+		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
+		underTest.setProductDao(productDao);
+		//WHEN
+		List<Product> result = underTest.getAllProducts();
+		//THEN
+		BDDMockito.verify(productDao).getAllProduct();
+		Assert.assertEquals(products, result);
+	}
+	
+	@Test
+	public void testGetProductsByManufacturerShouldReturnProperly() {
+		//GIVEN
+		List<Product> products = new ArrayList<Product>();
+		Product product = new Product();
+		product.setId(1L);
+		products.add(product);
+		BDDMockito.given(productDao.getProductsByManufacturer("manu")).willReturn(products);
+		underTest.setProductDao(productDao);
+		//WHEN
+		List<Product> result = underTest.getProductsByManufacturer("manu");
+		//THEN
+		BDDMockito.verify(productDao).getProductsByManufacturer("manu");
+		Assert.assertEquals(products, result);
+	}
+	
+	@Test
+	public void testProductDaosGetterAndSetterBehaviour() {
+		//GIVEN
+		//WHEN
+		underTest.setProductDao(productDao);
+		//THEN
+		Assert.assertEquals(productDao, underTest.getProductDao());
+	}
 	
 }

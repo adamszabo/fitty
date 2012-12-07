@@ -102,11 +102,9 @@ public class SimpleBasketService implements BasketService {
 		basketDao.update(basket);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Basket> getBasketsByUser(User user) {
-		Set<Basket> set = new HashSet<Basket>(basketDao.getBasketsByUser(user));
-		return set;
+		return new HashSet<Basket>(basketDao.getBasketsByUser(user));
 	}
 
 	@Override

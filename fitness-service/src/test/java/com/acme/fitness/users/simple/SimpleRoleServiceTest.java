@@ -72,6 +72,13 @@ public class SimpleRoleServiceTest {
 		BDDMockito.verify(roleDao).getRolesByUser(expectedUser);
 	}
 	
+	@Test
+	public void testRoleDaosGetterAndSetterBehaviour() {
+		//WHEN
+		underTest.setRoleDao(roleDao);
+		//THEn
+		Assert.assertEquals(roleDao, underTest.getRoleDao());
+	}
 	
 	
 }

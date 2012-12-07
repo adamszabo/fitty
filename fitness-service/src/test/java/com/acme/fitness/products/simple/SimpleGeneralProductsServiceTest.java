@@ -326,4 +326,28 @@ public class SimpleGeneralProductsServiceTest {
 		// THEN
 		BDDMockito.verify(membershipService).increaseClientEntries(membership);
 	}
+	
+	@Test
+	public void testProductServicesGetterAndSetterBehaviour() {
+		//WHEN
+		underTest.setProductService(productService);
+		//THEN
+		Assert.assertEquals(productService, underTest.getProductService());
+	}
+	
+	@Test
+	public void testMembershipServicesGetterAndSetterBehaviour() {
+		//WHEN
+		underTest.setMembershipService(membershipService);
+		//THEN
+		Assert.assertEquals(membershipService, underTest.getMembershipService());
+	}
+
+	@Test
+	public void testTrainingServicesGetterAndSetterBehaviour() {
+		//WHEn
+		underTest.setTrainingService(trainingService);
+		//THEN
+		Assert.assertEquals(trainingService, underTest.getTrainingService());
+	}
 }
