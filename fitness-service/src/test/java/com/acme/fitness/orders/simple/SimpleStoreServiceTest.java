@@ -209,7 +209,7 @@ public class SimpleStoreServiceTest {
 	}
 	
 	@Test
-	public void testGetAllStoresShouldReturnProperly() {
+	public void testPutInProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
 		//GIVEN
 		BDDMockito.given(storeDao.getAllStores()).willReturn(new ArrayList<Store>());
 		underTest.setStoreDao(storeDao);

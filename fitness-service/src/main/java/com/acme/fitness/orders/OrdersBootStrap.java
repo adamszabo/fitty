@@ -31,6 +31,7 @@ public class OrdersBootStrap {
 		UserService userService = ctx.getBean(UserService.class);
 		OrderItemService os = ctx.getBean(OrderItemService.class);
 		ProductService ps = ctx.getBean(ProductService.class);
+//		BasketService bs = ctx.getBean(BasketService.class);
 		MembershipService ms = ctx.getBean(MembershipService.class);
 		TrainingService ts = ctx.getBean(TrainingService.class);
 
