@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.acme</groupId>
 	<artifactId>fitness-studio</artifactId>
@@ -11,8 +12,8 @@
 		<module>fitness-common</module>
 		<module>fitness-dao</module>
 		<module>fitness-service</module>
-    <module>fitness-webmvc</module>
-  </modules>
+		<module>fitness-webmvc</module>
+	</modules>
 
 	<properties>
 		<spring.version>3.1.0.RELEASE</spring.version>
@@ -20,10 +21,9 @@
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
 		<sonar.language>java</sonar.language>
-  		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
-  		<sonar.core.codeCoveragePlugin>cobertura</sonar.core.codeCoveragePlugin>
+		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
+		<sonar.core.codeCoveragePlugin>cobertura</sonar.core.codeCoveragePlugin>
 	</properties>
 
 	<dependencies>

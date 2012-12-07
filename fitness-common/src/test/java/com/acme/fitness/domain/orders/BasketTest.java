@@ -71,4 +71,62 @@ public class BasketTest {
 	public void testEqualsWithEqualsVeryfier(){
 		EqualsVerifier.forClass(User.class).suppress(Warning.STRICT_INHERITANCE).verify();
 	}
+	
+	@Test
+	public void testConstructorWithDeliveredAndUserArgumentsShouldCreateNewInstanceRight() {
+		//GIVEN
+		Basket expected = new Basket();
+		expected.setDelivered(false);
+		expected.setUser(new User());
+		//WHEN
+		underTest = new Basket(false, new User());
+		//THEN
+		Assert.assertEquals(expected, underTest);
+	}
+	
+	@Test
+	public void testAddMembershipShouldInvokeTheMethodRight() {
+		//GIVEN
+		Membership membership = new Membership();
+		Set<Membership> expected = new HashSet<Membership>();
+		expected.add(membership);
+		//WHEN
+		underTest.addMembership(membership);
+		//THEN
+		Assert.assertEquals(expected, underTest.getMemberships());
+	}
+	
+	@Test
+	public void testAddTrainingShouldInvokeTheMethodRight() {
+		//GIVEN
+		Training training = new Training();
+		Set<Training> expected = new HashSet<Training>();
+		expected.add(training);
+		//WHEN
+		underTest.addTraining(training);
+		//THEN
+		Assert.assertEquals(expected, underTest.getTrainings());
+	}
+	
+	@Test
+	public void testAddOrderItemShouldInvokeTheMethodRight() {
+		//GIVEN
+		OrderItem orderItem = new OrderItem();
+		Set<OrderItem> expected = new HashSet<OrderItem>();
+		expected.add(orderItem);
+		//WHEN
+		underTest.addOrderItem(orderItem);
+		//THEN
+		Assert.assertEquals(expected, underTest.getOrderItems());
+	}
+	
+	@Test
+	public void testToStringShouldReturnProperly() {
+		//GIVEN
+		underTest = new Basket(false, new User());
+		//WHEN
+		String result = underTest.toString();
+		//THEN
+		Assert.assertEquals("Basket [id=0, delivered=false, user=User [id=0, fullName=null, userName=null, email=null, registration=null, lastLogin=null, lastLoginIp=null, isEnabled=true, numberOfRetries=0]]", result);
+	}
 }

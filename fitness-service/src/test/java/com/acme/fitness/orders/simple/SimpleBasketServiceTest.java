@@ -11,9 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.verification.VerificationMode;
 
 import com.acme.fitness.dao.orders.BasketDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;

@@ -56,4 +56,17 @@ public class OrderItemTest {
 		EqualsVerifier.forClass(OrderItem.class)
 				.suppress(Warning.STRICT_INHERITANCE).suppress(Warning.NULL_FIELDS).verify();
 	}
+	
+	@Test
+	public void testConstructorWithProductQuantityAndBasketArguments() {
+		//GIVEN
+		OrderItem expected = new OrderItem();
+		expected.setBasket(new Basket());
+		expected.setQuantity(1);
+		expected.setProduct(new Product());
+		//WHEN
+		underTest = new OrderItem(new Product(), 1, new Basket());
+		//THEN
+		Assert.assertEquals(expected, underTest);
+	}
 }
