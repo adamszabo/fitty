@@ -2,7 +2,7 @@ fitty
 =====
 
 ======SONAR==========
-Download and unpack sonar.
+Download and unpack sonar. We use postgreSQL database our projects so we store the reports that database.
 In the sonar's configuration file (.../sonar-x.y.z/conf/sonar.properties):
 
 Comment this line:
