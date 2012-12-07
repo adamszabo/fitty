@@ -1,6 +1,6 @@
 package com.acme.fitness.domain.products;
 
-import java.sql.Date;
+import java.util.Date;
 
 import junit.framework.Assert;
 
@@ -68,6 +68,29 @@ public class MembershipTest {
 	public void testEqualsWithEqualsVeryfier() {
 		EqualsVerifier.forClass(Membership.class)
 				.suppress(Warning.STRICT_INHERITANCE).suppress(Warning.NULL_FIELDS).verify();
+	}
+	
+	@Test
+	public void testMaxNumberOfEntiresGetterAndSetterBehaviour() {
+		underTest.setMaxNumberOfEntries(2);
+		Assert.assertEquals(2, underTest.getMaxNumberOfEntries());
+	}
+	
+	@Test
+	public void testMembershipContructorWithArguments() {
+		//GIVEN
+		Date date = new Date();
+		Membership expected = new Membership();
+		expected.setType("type");
+		expected.setNumberOfEntries(1);
+		expected.setMaxNumberOfEntries(1);
+		expected.setExpireDate(date);
+		expected.setPrice(1.0);
+		expected.setBasket(new Basket());
+		//WHEN
+		underTest = new Membership("type", 1, 1, date, 1.0, new Basket());
+		//THEN
+		Assert.assertEquals(expected, underTest);
 	}
 
 }

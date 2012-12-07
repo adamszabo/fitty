@@ -85,4 +85,30 @@ public class UserTest {
 	public void testEqualsWithEqualsVeryfier(){
 		EqualsVerifier.forClass(User.class).suppress(Warning.STRICT_INHERITANCE).verify();
 	}
+	
+	@Test
+	public void testFullNamesGetterAndSetterBehaviour() {
+		underTest.setFullName("fullName");
+		Assert.assertEquals("fullName", underTest.getFullName());
+	}
+	
+	@Test
+	public void testUserConstructorWithArguments() {
+		//GIVEN
+		Date registration = new Date(100000);
+		Date lastLogin = new Date(1100000);
+		User expected = new User();
+		expected.setFullName("fullName");
+		expected.setUsername("userName");
+		expected.setPassword("password");
+		expected.setEmail("email");
+		expected.setMobile("mobile");
+		expected.setRegistration(registration);
+		expected.setLastLogin(lastLogin);
+		expected.setLastLoginIp("ip");
+		//WHEN
+		underTest = new User("fullName", "userName", "password", "email", "mobile", registration, lastLogin, "ip");
+		//THEN
+		Assert.assertEquals(expected, underTest);
+	}
 }
