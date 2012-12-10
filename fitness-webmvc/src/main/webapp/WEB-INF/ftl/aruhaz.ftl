@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="utf-8">
+	<meta charset="utf-8">
 	<title>Zsír-Szabó Fitness</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
@@ -69,9 +69,9 @@
                         <p class="lead">Welcome</p>
                 </div>
         </header>
-	<div class="container">
-			
-		<h2>Kezdőlap</h2>
+        <div class="container">
+		
+		<h2>Áruház</h2>
 		<h2>Server time: ${serverTime}</h2>     
 	 
 	</div>
