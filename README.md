@@ -47,3 +47,7 @@ Have to add in project's pom.xml:
 	
 Run:
 	Project's root (.../fitness-studio/ where exists pom.xml) maven sonar:sonar
+	
+Install JBoss Tools 3.3.x for Eclipse(Indigo):
+	- Help -> Install new Software and add new page with url: http://download.jboss.org/jbosstools/updates/stable/indigo
+	- Then check in JBoss Tools.

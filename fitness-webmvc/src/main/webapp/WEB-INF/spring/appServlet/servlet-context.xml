@@ -17,16 +17,27 @@
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
-	<beans:bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jsp" />
+	<!-- <beans:bean -->
+	<!-- class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+	<!-- <beans:property name="prefix" value="/WEB-INF/views/" /> -->
+	<!-- <beans:property name="suffix" value=".jsp" /> -->
+	<!-- </beans:bean> -->
+	
+	<!-- freemarker config -->
+    <beans:bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+      <beans:property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+    </beans:bean>
+    
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<beans:property name="cache" value="true" />
+		<beans:property name="prefix" value="" />
+		<beans:property name="suffix" value=".ftl" />
 	</beans:bean>
 
 	<context:component-scan base-package="com.acme.fitness" />
 
-<!-- 	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" -->
-<!-- 	p:basename="messages"> -->
-<!-- 	</beans:bean> -->
+	<!-- <beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" -->
+	<!-- p:basename="messages"> -->
+	<!-- </beans:bean> -->
 
 </beans:beans>
