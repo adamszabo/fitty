@@ -20,4 +20,8 @@ $(document).ready(function() {
 			isLoginFormHided=true;
 		}
 	});
+	
+	$('#registrationButton').click(function(e){
+		$('#registrationDialog').modal('show');
+	});
 });
