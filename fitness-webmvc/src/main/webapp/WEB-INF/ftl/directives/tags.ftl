@@ -4,7 +4,7 @@
 		  <fieldset>
 		    <input type="text" placeholder="Felhasználó név">
 		    <input type="text" placeholder="Jelszó">
-		    <button type="submit" class="btn">Bejelentkezés</button>
+		    <button type="submit" class="btn btn-medium btn-primary">OK</button>
 		  </fieldset>
 		</form>
     </div>
