@@ -1,15 +1,18 @@
 $(document).ready(function() {
 			$('#navDiv ul li a').removeClass('active');
 			$('#navDiv ul li a[href="'+location.pathname+'"]').parent().addClass('active');
-			$('#loginForm').hide();
 			var isLoginFormHided=true;
 			$('#loginFormButton').click(function(e){
 				if(isLoginFormHided){
-					$('#loginForm').show();
+					$('#loginForm').fadeIn('slow');
+					$('#loginFormButton i').removeClass('icon-chevron-down');
+					$('#loginFormButton i').addClass('icon-chevron-up');
 					isLoginFormHided=false;
 				}
 				else{
-					$('#loginForm').hide();
+					$('#loginForm').fadeOut('slow');
+					$('#loginFormButton i').removeClass('icon-chevron-up');
+					$('#loginFormButton i').addClass('icon-chevron-down');
 					isLoginFormHided=true;
 				}
 			});
