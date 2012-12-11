@@ -13,8 +13,8 @@
                                     	<@tags.url path="" name="Kezdőlap" />
 										<@tags.url path="aruhaz" name="Áruház" />
 										<@tags.url path="edzesek" name="Edzések" />
+										<li><a href="#registrationDialog" role="button" class="" data-toggle="modal">Regisztráció</a></li>
                                         <li><button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button></li>
-                                        <a href="#registrationDialog" role="button" class="btn btn-primary" data-toggle="modal">Regisztráció</a>
                                     </ul>
                             </div>
                             <!--/.nav-collapse -->
