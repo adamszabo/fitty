@@ -2,6 +2,7 @@ $(document).ready(function() {
 			$('#navDiv ul li a').removeClass('active');
 			$('#navDiv ul li a[href="'+location.pathname+'"]').parent().addClass('active');
 			var isLoginFormHided=true;
+			$('#loginForm').hide();
 			$('#loginFormButton').click(function(e){
 				if(isLoginFormHided){
 					$('#loginForm').fadeIn('slow');

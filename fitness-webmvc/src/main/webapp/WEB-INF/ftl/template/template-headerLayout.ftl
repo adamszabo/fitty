@@ -14,13 +14,14 @@
 										<@tags.url path="aruhaz" name="Áruház" />
 										<@tags.url path="edzesek" name="Edzések" />
                                         <li><button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button></li>
+                                        <a href="#registrationDialog" role="button" class="btn btn-primary" data-toggle="modal">Regisztráció</a>
                                     </ul>
                             </div>
                             <!--/.nav-collapse -->
                     </div>
             </div>
     </div>
-    
+    <@tags.registrationDialog />
    <div id="loginForm" class="navbar-inverse" style="background-color:black;position:absolute; z-index:2;width: 100%;" hidden="true">
 	    <div class="navbar-inner">
 	    	<div class="container">
