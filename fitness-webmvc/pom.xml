@@ -39,6 +39,11 @@
 			<version>2.3.18</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.acme</groupId>
+			<artifactId>fitness-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>fitness-webmvc</finalName>

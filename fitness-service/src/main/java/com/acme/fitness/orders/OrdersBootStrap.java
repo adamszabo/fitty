@@ -19,6 +19,7 @@ import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
+import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.users.UserService;
 
 public class OrdersBootStrap {
@@ -37,7 +38,8 @@ public class OrdersBootStrap {
 
 		GeneralProductsService gps = ctx.getBean(GeneralProductsService.class);
 		GeneralOrdersService gos = ctx.getBean(GeneralOrdersService.class);
-
+		GeneralUsersService gus = ctx.getBean(GeneralUsersService.class);
+		
 		/**
 		 * Tests for StoreService
 		 */
@@ -147,6 +149,10 @@ public class OrdersBootStrap {
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
 		}
+		
+		gus.addLastLoginInfo(u1, "0.0.0.0", new Date());
+		gus.addUserRole("admin", u1);
+		
 	}
 
 }
