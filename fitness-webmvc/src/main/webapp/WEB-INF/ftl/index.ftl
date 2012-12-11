@@ -39,15 +39,10 @@
                                 </a> <a class="brand" href="#">Fitness</a>
                                 <div id="navDiv" class="nav-collapse collapse">
                                         <ul class="nav">
-                                                <script type="text/javascript">
-													var url = location.pathname;
-													url = url.split('/');
-													url = url[1];
-													document.write('<li><a href="/' + url +'/">Kezdőlap</a></li>');
-													document.write('<li><a href="/' + url +'/aruhaz">Online Áruház</a></li>');
-													document.write('<li><a href="/' + url +'/edzesek">Edzések</a></li>');
-								               	</script>
-                                                <li><a id="loginFormButton" class="btn-small btn-primary">Bejelentkezés</a></li>
+                                        	<@tags.url path="" name="Kezdőlap" />
+											<@tags.url path="aruhaz" name="Áruház" />
+											<@tags.url path="edzesek" name="Edzések" />
+                                            <li><a id="loginFormButton" class="btn-small btn-primary">Bejelentkezés</a></li>
                                         </ul>
                                 </div>
                                 <!--/.nav-collapse -->
