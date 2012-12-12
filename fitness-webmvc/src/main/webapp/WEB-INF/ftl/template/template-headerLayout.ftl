@@ -1,4 +1,5 @@
 <#import "/directives/tags.ftl" as tags />
+<#import "/spring.ftl" as spring />
 
 <#macro headerLayout>
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -10,9 +11,11 @@
                             </a> <a class="brand" href="#">Fitness</a>
                             <div id="navDiv" class="nav-collapse collapse">
                                     <ul class="nav">
-                                    	<@tags.url path="" name="Kezdőlap" />
-										<@tags.url path="aruhaz" name="Áruház" />
-										<@tags.url path="edzesek" name="Edzések" />
+                                    	<li><a href="<@spring.url relativeUrl="/"/>">Kezdőlap</a></li>
+                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
+										<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
+										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
+										<li><a id="registrationButton">Regisztráció</a></li>
                                         <li><button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button></li>
                                     </ul>
                             </div>
@@ -20,7 +23,7 @@
                     </div>
             </div>
     </div>
-    
+    <@tags.registrationDialog />
    <div id="loginForm" class="navbar-inverse" style="background-color:black;position:absolute; z-index:2;width: 100%;" hidden="true">
 	    <div class="navbar-inner">
 	    	<div class="container">

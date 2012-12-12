@@ -46,9 +46,8 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/aruhaz", method = RequestMethod.GET)
-	public String aruhaz(Locale locale, Model model, @PathVariable String page) {
+	public String aruhaz(Locale locale, Model model) {
 		logger.info("Üdvözöljük az ÁRUHÁZBAN! the client locale is "+ locale.toString());
-		System.out.println("PAGE NUMBER IS : " + page);
 		model.addAttribute("products", gps.getAllProduct());
 		return "aruhaz";
 	}

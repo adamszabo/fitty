@@ -1,5 +1,5 @@
 <#import "/template/master-template.ftl" as template />
-
+<#import "/spring.ftl" as spring />
 <@template.masterTemplate title="Áruház">
 	
 <h2>Áruház</h2>
@@ -8,7 +8,7 @@
 	<#list products as product>
 		<li class="span4">
 			<div class="thumbnail">
-				<img src="300x200.png" alt="">
+				<img src="<@spring.url relativeUrl="/resources/300x200.png"/>" alt="">
 				<dl class="dl-horizontal">
 					<dt style="font-size:17px">Termék név</dt>
 				  	<dd style="font-size:17px">${product.name}</dd>
