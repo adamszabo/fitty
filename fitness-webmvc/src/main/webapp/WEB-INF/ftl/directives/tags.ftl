@@ -1,9 +1,9 @@
 <#macro login>
 	<div style="padding-top:4px">
-    	<form class="form-inline" style="margin-bottom:0px">
+    	<form action="./bejelentkezes" class="form-inline" style="margin-bottom:0px" method="post">
 		  <fieldset>
-		    <input type="text" placeholder="Felhasználó név">
-		    <input type="text" placeholder="Jelszó">
+		    <input name="userName" type="text" placeholder="Felhasználó név">
+		    <input name="password" type="text" placeholder="Jelszó">
 		    <button type="submit" class="btn btn-medium btn-primary">OK</button>
 		  </fieldset>
 		</form>

@@ -6,10 +6,15 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.acme.fitness.products.GeneralProductsService;
 
 /**
  * Handles requests for the application home page.
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private GeneralProductsService gps;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -38,16 +46,18 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/aruhaz", method = RequestMethod.GET)
-	public String aruhaz(Locale locale, Model model) {
+	public String aruhaz(Locale locale, Model model, @PathVariable String page) {
 		logger.info("Üdvözöljük az ÁRUHÁZBAN! the client locale is "+ locale.toString());
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
+		System.out.println("PAGE NUMBER IS : " + page);
+		model.addAttribute("products", gps.getAllProduct());
 		return "aruhaz";
 	}
+
+	@RequestMapping(value = "/addToCart", method = RequestMethod.POST)
+	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, Model model) {
+		logger.info("Product added to cart with id: " + id + " - quantity: " + quantity);
+		model.addAttribute("products", gps.getAllProduct());
+		return "aruhaz";
+	}
+	
 }

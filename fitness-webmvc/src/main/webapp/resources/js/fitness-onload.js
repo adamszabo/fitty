@@ -16,4 +16,9 @@ $(document).ready(function() {
 					isLoginFormHided=true;
 				}
 			});
+			
+			$('.slimScroll').slimScroll({
+			    height: '75px',
+			    width: '90%'
+			});
 		});
