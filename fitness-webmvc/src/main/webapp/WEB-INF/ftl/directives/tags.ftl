@@ -1,28 +1,22 @@
+<#import "/spring.ftl" as spring />
+
 <#macro login>
 	<div style="padding-top:4px">
-    	<form class="form-inline" style="margin-bottom:0px">
+    	<form action="<@spring.url relativeUrl="/j_spring_security_check"/>" method="POST" class="form-inline" style="margin-bottom:0px">
 		  <fieldset>
-		    <input type="text" placeholder="Felhasználó név">
-		    <input type="text" placeholder="Jelszó">
+		    <input type="text" name="j_username" placeholder="Felhasználó név">
+		    <input type="password" name="j_password" placeholder="Jelszó">
 		    <button type="submit" class="btn btn-medium btn-primary">OK</button>
 		  </fieldset>
 		</form>
     </div>
 </#macro>
 
-<#macro url path name>
-	<script type="text/javascript">
-		var url = location.pathname;
-		url = url.split('/')[1];
-		document.write('<li><a href="/' + url +'/${path}">${name}</a></li>');
-	</script>
-</#macro>
-
 <#macro registrationDialog>
 	<div id="registrationDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button-->
-			<h3 id="myModalLabel">Regisztróció</h3>
+			<h3 id="myModalLabel">Regisztráció</h3>
 		</div>
 		<div class="modal-body">
 			<form id="registrationForm" class="form-horizontal">

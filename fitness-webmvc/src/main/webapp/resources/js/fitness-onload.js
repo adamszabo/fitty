@@ -24,4 +24,17 @@ $(document).ready(function() {
 	$('#registrationButton').click(function(e){
 		$('#registrationDialog').modal('show');
 	});
+	
+	$('#registrationDialog').on("hide", function(){
+		deleteFormDatas("registrationForm");
+	});
+	
 });
+
+function deleteFormDatas(id){
+	$(':input','#'+id)
+	 .not(':button, :submit, :reset, :hidden')
+	 .val('')
+	 .removeAttr('checked')
+	 .removeAttr('selected');
+};
