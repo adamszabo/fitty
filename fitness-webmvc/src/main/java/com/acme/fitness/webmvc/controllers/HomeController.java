@@ -44,19 +44,4 @@ public class HomeController {
 		
 		return "index";
 	}
-	
-	@RequestMapping(value = "/aruhaz", method = RequestMethod.GET)
-	public String aruhaz(Locale locale, Model model) {
-		logger.info("Üdvözöljük az ÁRUHÁZBAN! the client locale is "+ locale.toString());
-		model.addAttribute("products", gps.getAllProduct());
-		return "aruhaz";
-	}
-
-	@RequestMapping(value = "/addToCart", method = RequestMethod.POST)
-	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, Model model) {
-		logger.info("Product added to cart with id: " + id + " - quantity: " + quantity);
-		model.addAttribute("products", gps.getAllProduct());
-		return "aruhaz";
-	}
-	
 }

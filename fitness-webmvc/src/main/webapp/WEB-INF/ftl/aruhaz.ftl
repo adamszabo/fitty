@@ -32,7 +32,8 @@
 </ul>
 	
 <ul class="pager">
-  <li><a href="#">Previous</a></li>
-  <li><a href="#">Next</a></li>
+  <li id="previousPage"><a href="${pageNumber-1}">Előző</a></li>
+  <li><span id="actualPageNumber" class="badge badge-info" style="color:#08C;">${pageNumber}</span></li>
+  <li id="nextPage"><a href="${pageNumber+1}">Következő</a></li>
 </ul>
 </@template.masterTemplate>
