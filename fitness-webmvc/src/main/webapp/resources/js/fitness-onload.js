@@ -5,7 +5,6 @@ $(document).ready(function() {
 	
 	//show and hide dialog to login
 	var isLoginFormHided=true;
-	$('#loginForm').hide();
 	$('#loginFormButton').click(function(e){
 		if(isLoginFormHided){
 			$('#loginForm').fadeIn('slow');
