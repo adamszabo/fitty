@@ -7,6 +7,7 @@
 		    <input type="text" name="j_username" placeholder="Felhasználó név">
 		    <input type="password" name="j_password" placeholder="Jelszó">
 		    <button type="submit" class="btn btn-medium btn-primary">OK</button>
+		    <!--@spring.showErrors "---" "color:white;" /-->
 		  </fieldset>
 		</form>
     </div>

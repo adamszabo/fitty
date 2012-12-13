@@ -1,5 +1,6 @@
 <#import "/directives/tags.ftl" as tags />
 <#import "/spring.ftl" as spring />
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
 <#macro headerLayout>
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -12,19 +13,29 @@
                             <div id="navDiv" class="nav-collapse collapse">
                                     <ul class="nav">
                                     	<li><a href="<@spring.url relativeUrl="/"/>">Kezdőlap</a></li>
-                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
+                                    	<li><a href="<@spring.url relativeUrl="/aruhaz/1"/>">Áruház</a></li>
 										<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
 										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
-										<li><a id="registrationButton">Regisztráció</a></li>
-                                        <li><button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button></li>
+										<@security.authorize access="isAnonymous()">
+											<li><a id="registrationButton">Regisztráció</a></li>
+										</@security.authorize>
                                     </ul>
+                                    <div style="float:right;">
+                                    	<@security.authorize access="isAnonymous()">
+                                        	<button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button>
+										</@security.authorize>
+                                    	<@security.authorize access="isAuthenticated()">
+											<span style="color:white;vertical-align: middle;">Üdvözlet: <@security.authentication property="principal.username"/></span>
+											<a class="btn btn-danger" href="<@spring.url relativeUrl="/j_spring_security_logout"/>">Kijelentkezés</a>
+										</@security.authorize>
+									</div>
                             </div>
                             <!--/.nav-collapse -->
                     </div>
             </div>
     </div>
     <@tags.registrationDialog />
-   <div id="loginForm" class="navbar-inverse" style="background-color:black;position:absolute; z-index:2;width: 100%;" hidden="true">
+   <div id="loginForm" class="navbar-inverse" style="background-color:black;position:absolute; z-index:2;width: 100%; display: none;">
 	    <div class="navbar-inner">
 	    	<div class="container">
 				<@tags.login/>

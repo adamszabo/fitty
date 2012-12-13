@@ -4,8 +4,10 @@
 	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<import resource="classpath:META-INF/Spring/fitnessServiceApplicationContext.xml" />
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->	
 	<sec:global-method-security secured-annotations="enabled" />
 
 	<sec:http auto-config="true">
@@ -14,12 +16,15 @@
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">
-    <sec:authentication-provider>
-      <sec:user-service>
-        <sec:user name="jimi" password="pass" authorities="ROLE_USER, ROLE_ADMIN" />
-        <sec:user name="bob" password="pass" authorities="ROLE_USER" />
-      </sec:user-service>
-    </sec:authentication-provider>
-  </sec:authentication-manager>
-
+    	<sec:authentication-provider user-service-ref="simpleFitnessUserDetailsService">
+<!--       		<sec:password-encoder ref="passwordEncoder"></sec:password-encoder> -->
+    	</sec:authentication-provider>
+	</sec:authentication-manager>
+  
+	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg value="256"></constructor-arg>
+	</bean>
+  
+  <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+  
 </beans>
