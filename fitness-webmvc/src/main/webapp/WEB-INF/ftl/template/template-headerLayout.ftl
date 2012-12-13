@@ -13,7 +13,7 @@
                             <div id="navDiv" class="nav-collapse collapse">
                                     <ul class="nav">
                                     	<li><a href="<@spring.url relativeUrl="/"/>">Kezdőlap</a></li>
-                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
+                                    	<li><a href="<@spring.url relativeUrl="/aruhaz/1"/>">Áruház</a></li>
 										<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
 										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
 										<@security.authorize access="isAnonymous()">
@@ -26,7 +26,7 @@
 										</@security.authorize>
                                     	<@security.authorize access="isAuthenticated()">
 											<span style="color:white;vertical-align: middle;">Üdvözlet: <@security.authentication property="principal.username"/></span>
-											<a class="btn btn-danger" href="<@spring.url relativeUrl="/j_spring_security_logout"/>">Logout</a>
+											<a class="btn btn-danger" href="<@spring.url relativeUrl="/j_spring_security_logout"/>">Kijelentkezés</a>
 										</@security.authorize>
 									</div>
                             </div>
