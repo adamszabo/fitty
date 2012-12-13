@@ -20,6 +20,13 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('.slimScroll').slimScroll({
+	    height: '75px',
+	    width: '90%',
+	});
+	
+	paginatorCheck();
+	
 	$('#registrationButton').click(function(e){
 		$('#registrationDialog').modal('show');
 	});
@@ -29,6 +36,16 @@ $(document).ready(function() {
 	});
 	
 });
+
+function paginatorCheck(){
+	console.log($('#actualPageNumber').html());
+	$('previousPage').removeClass('disabled');
+	$('nextPage').removeClass('disabled');
+	
+	if($('#actualPageNumber').html()==1){
+		$('#previousPage').addClass('disabled');
+	}
+}
 
 function deleteFormDatas(id){
 	$(':input','#'+id)

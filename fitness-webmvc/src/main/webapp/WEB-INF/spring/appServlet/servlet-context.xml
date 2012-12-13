@@ -33,7 +33,7 @@
 	<!-- <beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" -->
 	<!-- p:basename="messages"> -->
 	<!-- </beans:bean> -->
-	
+
 	<beans:import resource="classpath:META-INF/Spring/fitnessServiceApplicationContext.xml" />
-	
+
 </beans:beans>

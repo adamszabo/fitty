@@ -190,7 +190,7 @@ INSERT INTO fitness_user(
             0, 'admin', '2012-12-11 9:00:00.0', 'admin');
 INSERT INTO role(
             id, name, user_id)
-    VALUES (2, 'SystemAdmin', 1);
+    VALUES (2, 'ROLE_USER', 1);
 INSERT INTO product(
             id, creation, details, manufacturer, name, price)
     VALUES (3, '2012-12-11 11:00:00.0', 'Fekete színű', 'Nike', 'Kapus kesztyű', 12000);
