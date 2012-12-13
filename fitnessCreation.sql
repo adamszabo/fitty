@@ -200,3 +200,48 @@ INSERT INTO product(
 INSERT INTO product(
             id, creation, details, manufacturer, name, price)
     VALUES (5, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (6, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+    INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (7, '2012-12-11 11:02:00.0', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sodales consectetur bibendum. Quisque quis tortor sed tortor pharetra pretium. Nunc vitae diam id ipsum gravida iaculis sagittis eu ligula.', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (8, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (9, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (10, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (11, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (12, '2012-12-11 11:02:00.0', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sodales consectetur bibendum. Quisque quis tortor sed tortor pharetra pretium. Nunc vitae diam id ipsum gravida iaculis sagittis eu ligula.', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (13, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (14, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (15, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (16, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (17, '2012-12-11 11:02:00.0', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sodales consectetur bibendum. Quisque quis tortor sed tortor pharetra pretium. Nunc vitae diam id ipsum gravida iaculis sagittis eu ligula.', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (18, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (19, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Póló', 7000);
+INSERT INTO product(
+            id, creation, details, manufacturer, name, price)
+    VALUES (20, '2012-12-11 11:02:00.0', 'Kék színű', 'Adidas', 'Pólójaaaa', 7000);

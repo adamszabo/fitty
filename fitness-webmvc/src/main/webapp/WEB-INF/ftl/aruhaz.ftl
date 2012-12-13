@@ -19,7 +19,7 @@
 				  	<dt>Ár</dt>
 				  	<dd>${product.price}</dd>
 				</dl>
-				<form class="form-search" action="addToCart" method="post" style="text-align:center">
+				<form class="form-search" action="<@spring.url relativeUrl="/aruhaz/${pageNumber}/addToCart"/>" method="post" style="text-align:center">
 				  <div class="input-append">
 				    <input name="quantity" type="number" class="span1 search-query" min="0" max="20" step="1" value="1">
 				   	<input name="productId" type="hidden" value="${product.id}"> 
@@ -32,8 +32,8 @@
 </ul>
 	
 <ul class="pager">
-  <li id="previousPage"><a href="${pageNumber-1}">Előző</a></li>
+  <li id="previousPage"><a href="<@spring.url relativeUrl="/aruhaz/${pageNumber-1}"/>">&larr; Előző</a></li>
   <li><span id="actualPageNumber" class="badge badge-info" style="color:#08C;">${pageNumber}</span></li>
-  <li id="nextPage"><a href="${pageNumber+1}">Következő</a></li>
+  <li id="nextPage"><a href="<@spring.url relativeUrl="/aruhaz/${pageNumber+1}"/>">Következő &rarr;</a></li>
 </ul>
 </@template.masterTemplate>

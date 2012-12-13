@@ -1,5 +1,6 @@
 package com.acme.fitness.webmvc.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,43 +29,52 @@ public class WebShopController {
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public void aruhaz(Locale locale, Model model) {
-		setPage(locale, model, "1");
+		setPage(model, "1");
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public void aruhazWithSlash(Locale locale, Model model) {
-		setPage(locale, model, "1");
+		setPage(model, "1");
+		
 	}
 
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
-	public String setPage(Locale locale, Model model, @PathVariable String page) {
-		logger.info("Üdvözöljük az ÁRUHÁZBAN! the client locale is "
-				+ locale.toString());
-		int pageNumber;
+	public String setPage(Model model, @PathVariable String page) {
+		int pageNumber = parsePageNumber(page);
 		int productSize = gps.getAllProduct().size();
-		try {
-			pageNumber = Integer.parseInt(page);
-		} catch (NumberFormatException e) {
-			pageNumber = 1;
-		}
-		if(pageNumber < 1 ) {
-			pageNumber = 1;
-		} else if(pageNumber > (productSize%9)) {
-			pageNumber = productSize%9;
-		}
-		List<Product> productsOnPage = gps.getAllProduct().subList((pageNumber - 1) * 9, Math.min(pageNumber * 9, productSize));
+		pageNumber = validatePageNumber(pageNumber, productSize);
+		List<Product> productsOnPage = new ArrayList<Product>();
+		if(productSize > 0)
+			productsOnPage = gps.getAllProduct().subList((pageNumber - 1) * 9, Math.min(pageNumber * 9, productSize));
 		model.addAttribute("products", productsOnPage);
 		model.addAttribute("pageNumber", pageNumber);
 		return "aruhaz";
 	}
 
-	@RequestMapping(value = "/addToCart", method = RequestMethod.POST)
-	public String addProductToCart(@ModelAttribute("productId") long id,
-			@ModelAttribute("quantity") int quantity, Model model) {
+
+	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
+	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, Model model) {
 		logger.info("Product added to cart with id: " + id + " - quantity: "
 				+ quantity);
-		model.addAttribute("products", gps.getAllProduct());
-		return "aruhaz";
+		return setPage(model, page);
+	}
+	
+	private int validatePageNumber(int pageNumber, int productSize) {
+		if(pageNumber < 1 ) {
+			pageNumber = 1;
+		} else if(pageNumber > (Math.ceil(productSize/9.0))) {
+			pageNumber = (int) Math.ceil(productSize/9.0);
+		}
+		return pageNumber;
 	}
 
+	private int parsePageNumber(String page) {
+		int pageNumber;
+		try {
+			pageNumber = Integer.parseInt(page);
+		} catch (NumberFormatException e) {
+			pageNumber = 1;
+		}
+		return pageNumber;
+	}
 }
