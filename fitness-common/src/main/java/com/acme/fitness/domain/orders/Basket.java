@@ -79,7 +79,7 @@ public class Basket {
 	@Override
 	public String toString() {
 		return "Basket [id=" + id + ", delivered=" + delivered + ", user="
-				+ user + "]"; // + ", orderItems=" + orderItems.toString()
+				+ user + "]" + ", orderItems=" + orderItems.toString();
 	}
 	
 	@Override

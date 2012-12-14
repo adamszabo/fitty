@@ -74,3 +74,55 @@
 	  <strong>Hiba! </strong><span>${message}</span>
 	</div>
 </#macro>
+<#macro basketDialog>
+	<#if basket?exists>
+	<div id="basketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Kosár tartalma</h3>
+	  </div>
+	  <div class="modal-body">
+	  	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Név</th>
+					<th>Gyártó</th>
+					<th>Egység Ár</th>
+					<th>Mennyiség</th>
+					<th>Össz ár</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#assign iterate = 0>
+				<#assign sum = 0>
+				<#list basket["orderItems"] as item>
+					<#assign iterate = iterate +1>
+					<#assign sum = sum + item["quantity"] * item["product"]["price"]>
+					<tr>
+						<td>${iterate}</td>
+						<td>${item.product.name}</td>
+						<td>${item.product.manufacturer}</td>
+						<td>${item.product.price}</td>
+						<td>${item.quantity}</td>
+						<td>${item.quantity * item.product.price}</td>
+					</tr>
+				</#list>
+						<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>${sum}</td>
+					</tr>
+			</tbody>
+		</table>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
+	    <button class="btn btn-primary">Megrendelés</button>
+	  </div>
+	</div>
+	</#if>
+</#macro>

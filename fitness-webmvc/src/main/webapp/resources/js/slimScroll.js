@@ -13,7 +13,7 @@
       var defaults = {
         wheelStep : 20,
         width : 'auto',
-        height : '250px',
+        height : '400px',
         size : '7px',
         color: '#000',
         position : 'right',
@@ -249,9 +249,9 @@
           } 
           else
           {
-            document.attachEvent("onmousewheel", _onWheel)
+            document.attachEvent("onmousewheel", _onWheel);
           }
-        }
+        };
 
         // attach scroll events
         attachWheel();

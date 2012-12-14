@@ -35,4 +35,5 @@ public interface GeneralProductsService {
 	List<Membership> getMembershipByBasket(Basket basket);
 	List<Membership> getMembershipByUser(User user);
 	void increaseClientEntries(Membership membership);
+	Product getProductById(long id) throws FitnessDaoException;
 }
