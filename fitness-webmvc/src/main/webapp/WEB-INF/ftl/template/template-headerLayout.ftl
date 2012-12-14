@@ -35,7 +35,7 @@
             </div>
     </div>
     <@tags.registrationDialog />
-   <div id="loginForm" class="navbar-inverse" style="background-color:black;position:absolute; z-index:2;width: 100%; display: none;">
+   <div id="loginForm" class="navbar-inverse" style="background-color:black;position:fixed; z-index:7;width: 100%; display: none;">
 	    <div class="navbar-inner">
 	    	<div class="container">
 				<@tags.login/>

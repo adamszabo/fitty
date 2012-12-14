@@ -186,11 +186,11 @@ ALTER TABLE training
 INSERT INTO fitness_user(
             id, email, enabled, fullname, lastlogin, lastloginip, mobile, 
             numberofretries, password, registration, username)
-    VALUES (1, 'admin@fitness.hu', true, 'Admin', '2012-12-11 10:00:00.0', '0.0.0.0', '+36303464978', 
+    VALUES (0, 'admin@fitness.hu', true, 'Admin', '2012-12-11 10:00:00.0', '0.0.0.0', '+36303464978', 
             0, 'admin', '2012-12-11 9:00:00.0', 'admin');
 INSERT INTO role(
             id, name, user_id)
-    VALUES (2, 'ROLE_USER', 1);
+    VALUES (0, 'ROLE_USER', 0);
 INSERT INTO product(
             id, creation, details, manufacturer, name, price)
     VALUES (3, '2012-12-11 11:00:00.0', 'Fekete színű', 'Nike', 'Kapus kesztyű', 12000);
