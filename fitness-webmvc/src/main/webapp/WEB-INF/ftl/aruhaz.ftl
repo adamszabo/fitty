@@ -1,9 +1,9 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/directives/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
 	
-<h2>Áruház</h2>
-
+<div id="page-container" class="wrapper wrapper-home">
 <ul class="thumbnails">
 	<#list products as product>
 		<li class="span4">
@@ -15,7 +15,7 @@
 					<dt>Gyártó</dt>
 				  	<dd>${product.manufacturer}</dd>
 				  	<dt>Leírás</dt>
-				  	<dd><div class="slimScroll">${product.details}</div></dd>
+				  	<dd><div class="detailSlimScroll">${product.details}</div></dd>
 				  	<dt>Ár</dt>
 				  	<dd>${product.price}</dd>
 				</dl>
@@ -31,9 +31,26 @@
 	 </#list>
 </ul>
 	
+	<#if basket?exists>
+		<div class="btn-group">
+		  <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+		    Kosár
+		    <span class="caret"></span>
+		  </a>
+		  <ul class="dropdown-menu">
+			<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
+			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/deleteBasket"/>">Kosár törlése</a></li>
+		  </ul>
+		</div>
+	</#if>
+
+<@tags.basketDialog />
+
 <ul class="pager">
   <li id="previousPage"><a href="<@spring.url relativeUrl="/aruhaz/${pageNumber-1}"/>">&larr; Előző</a></li>
   <li><span id="actualPageNumber" class="badge badge-info" style="color:#08C;">${pageNumber}</span></li>
   <li id="nextPage"><a href="<@spring.url relativeUrl="/aruhaz/${pageNumber+1}"/>">Következő &rarr;</a></li>
 </ul>
+
+</div>
 </@template.masterTemplate>

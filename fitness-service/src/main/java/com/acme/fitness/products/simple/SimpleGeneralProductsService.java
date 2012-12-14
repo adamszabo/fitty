@@ -50,6 +50,11 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 
 	@Override
+	public Product getProductById(long id) throws FitnessDaoException {
+		return productService.getProductById(id);
+	}
+	
+	@Override
 	public List<Product> getProductsByName(String name) {
 		return productService.getProductsByName(name);
 	}

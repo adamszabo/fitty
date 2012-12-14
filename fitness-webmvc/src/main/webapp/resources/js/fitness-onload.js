@@ -20,10 +20,16 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('.slimScroll').slimScroll({
+	$('.detailSlimScroll').slimScroll({
 	    height: '75px',
 	    width: '90%',
 	});
+	
+	percentedHeight=window.innerHeight*0.65;
+	$('.pageSlimScroll').slimScroll({
+		height: ''+percentedHeight + 'px'
+	});
+	
 	
 	paginatorCheck();
 	
@@ -34,7 +40,6 @@ $(document).ready(function() {
 	$('#registrationDialog').on("hide", function(){
 		deleteFormDatas("registrationForm");
 	});
-	
 });
 
 function paginatorCheck(){
