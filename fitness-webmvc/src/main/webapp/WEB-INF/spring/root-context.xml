@@ -12,18 +12,16 @@
 
 	<sec:http auto-config="true">
 		<sec:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<sec:form-login login-page="/" default-target-url="/aruhaz"/>
+		<sec:form-login login-page="/" default-target-url="/aruhaz/1" authentication-failure-url="/aruhaz/1" />
 	</sec:http>
 
 	<sec:authentication-manager alias="authenticationManager">
     	<sec:authentication-provider user-service-ref="simpleFitnessUserDetailsService">
-<!--       		<sec:password-encoder ref="passwordEncoder"></sec:password-encoder> -->
+      		<sec:password-encoder ref="passwordEncoder"></sec:password-encoder>
     	</sec:authentication-provider>
 	</sec:authentication-manager>
   
-	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
-		<constructor-arg value="256"></constructor-arg>
-	</bean>
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"></bean>
   
   <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
   
