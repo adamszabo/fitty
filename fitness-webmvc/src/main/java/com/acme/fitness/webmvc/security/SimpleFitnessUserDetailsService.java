@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
@@ -25,9 +22,6 @@ public class SimpleFitnessUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private GeneralUsersService gus;
-	
-	@Autowired
-	StandardPasswordEncoder spe;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username)
@@ -61,18 +55,5 @@ public class SimpleFitnessUserDetailsService implements UserDetailsService {
 
 	public void setGus(GeneralUsersService gus) {
 		this.gus = gus;
-	}
-	
-	@PostConstruct
-	public void init(){
-		try {
-			User admin=gus.getUserByUsername("admin");
-			admin.setPassword(spe.encode("admin"));
-			gus.updateUser(admin);
-			System.out.println("HASHED: "+admin.getPassword());
-		} catch (FitnessDaoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

@@ -37,6 +37,10 @@ $(document).ready(function() {
 		$('#registrationDialog').modal('show');
 	});
 	
+	$('#reRegistrationDialogButton').click(function(e){
+		$('#registrationDialog').modal('show');
+	});
+	
 	$('#registrationDialog').on("hide", function(){
 		deleteFormDatas("registrationForm");
 		$('.alert').hide();
@@ -47,37 +51,82 @@ $(document).ready(function() {
 });
 
 function validateRegistration(){
-		var emailReg = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 		emailAddress=$('#email').val();
-		isValidEmail=false;
-		if(!emailReg.test(emailAddress)){
-			$('#emailAlert').show();
-			isValidEmail=false;
-		}
-		else{
-			$('#emailAlert').hide();
-			isValidEmail=true;
-		}
+		isValidEmail=validateEmailWithRegular(emailAddress);
+		isValidPasswordRe=validatePasswords();
+		isAllInputFilled=isAllInputsFilled();
 		
-		password=$('#password').val();
-		passwordRe=$('#passwordRe').val();
-		isValidPasswordRe=false;
-		if(password!=passwordRe){
-			$('#passwordAlert').show();
-			isValidPasswordRe=false;
-		}
-		else{
-			$('#passwordAlert').hide();
-			isValidPasswordRe=true;
-		}
-		
-		if(isValidEmail && isValidPasswordRe && isAllInputsFilled()){
-			$('#registrationForm').submit();
+		if( isAllInputFilled){
 			$('#inputs').hide();
 		}
 		else{
 			$('#inputs').show();
 		}
+		
+		if(isValidEmail && isValidPasswordRe && isAllInputFilled){
+			checkUsernameAndEmail($('#username').val(),emailAddress);
+		}
+}
+
+function checkUsernameAndEmail(username,emailUser){
+	console.log('ajax post with username: '+username+' and email: '+emailUser);
+	 $.ajax({
+		 url: location.href + "checkUser",
+         type: 'POST',
+         data: ({
+             username: username,
+             email: emailUser
+         }),
+         beforeSend: function () {
+         },
+         success: function (data){
+        	 ajaxCheckSuccess(data);
+         } 
+     });
+}
+
+function ajaxCheckSuccess(data){
+	console.log(data.existUsername+', '+data.existEmail);
+	$('#usernameAlert').hide();
+	$('#emailCheckAlert').hide();
+	
+	if(!data.existUsername && !data.existEmail){
+		$('#registrationForm').submit();
+	}
+	else{
+		if(data.existUsername){
+			$('#usernameAlert').show();
+		}
+		if(data.existEmail){
+			$('#emailCheckAlert').show();
+		}
+	}
+}
+
+function validateEmailWithRegular(emailAddress){
+	var emailReg = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+	if(!emailReg.test(emailAddress)){
+		$('#emailAlert').show();
+		return false;
+	}
+	else{
+		$('#emailAlert').hide();
+		return true;
+	}
+}
+
+function validatePasswords(){
+	password=$('#password').val();
+	passwordRe=$('#passwordRe').val();
+	
+	if(password!=passwordRe){
+		$('#passwordAlert').show();
+		return false;
+	}
+	else{
+		$('#passwordAlert').hide();
+		return true;
+	}
 }
 
 function isAllInputsFilled(){

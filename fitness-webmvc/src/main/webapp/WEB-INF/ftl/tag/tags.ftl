@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as spring />
+<#assign springTags=JspTaglibs["http://www.springframework.org/tags"] />
 
 <#macro login>
 	<div style="padding-top:4px;">
@@ -7,7 +8,6 @@
 		    <input type="text" name="j_username" placeholder="Felhasználó név">
 		    <input type="password" name="j_password" placeholder="Jelszó">
 		    <button type="submit" class="btn btn-medium btn-primary">OK</button>
-		    <!--@spring.showErrors "---" "color:white;" /-->
 		  </fieldset>
 		</form>
     </div>
@@ -27,6 +27,7 @@
 				    	<input type="text" id="fullName" name="fullName" placeholder="Teljes név">
 				    </div>
 			  	</div>
+			  	<@errorAlert "usernameAlert" "Ilyen névvel már létezik felhasználó!" />
 			  	<div class="control-group">
 			    	<label class="control-label" for="username">Felhasználó név</label>
 				    <div class="controls">
@@ -34,6 +35,7 @@
 				    </div>
 			  	</div>
 			  	<@errorAlert "emailAlert" "Nem email címet adott meg!" />
+			  	<@errorAlert "emailCheckAlert" "Ezzel az email címmel már regisztráltak!" />
 				<div class="control-group">
 				    <label class="control-label" for="email">Email</label>
 				    <div class="controls">

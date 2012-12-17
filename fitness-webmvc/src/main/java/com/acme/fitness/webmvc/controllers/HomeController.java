@@ -14,11 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.GeneralUsersService;
+import com.acme.fitness.webmvc.dto.CheckUserFieldDTO;
 
 /**
  * Handles requests for the application home page.
@@ -47,29 +49,14 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		model.addAttribute("kiskutya", "dándog");
 		
 		return "index";
 	}
 	
 	@RequestMapping(value="/registration", method=RequestMethod.POST)
-	public String registration(Locale locale, RedirectAttributes model, @Valid User user){
-		boolean existUsername;
-		boolean existEmail;
-		
-		try {
-			gus.getUserByUsername(user.getUsername());
-			existUsername=true;
-		} catch (FitnessDaoException e) {
-			existUsername=false;
-		}
-		
-		try {
-			gus.getUserByEmail(user.getEmail());
-			existEmail=true;
-		} catch (FitnessDaoException e) {
-			existEmail=false;
-		}
+	public String registration(Locale locale, Model model, @Valid User user){
+		boolean existUsername=existUserName(user.getUsername());
+		boolean existEmail=existEmail(user.getEmail());
 		
 		if(!existUsername && !existEmail){
 			gus.addUser(user.getFullName(), user.getUsername(), spe.encode(user.getPassword()), user.getEmail(), user.getMobile(), new Date());
@@ -81,4 +68,37 @@ public class HomeController {
 				
 		return "redirect:/";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/checkUser", method=RequestMethod.POST)
+	public CheckUserFieldDTO isUsernameValid(Model model,@RequestParam(value="username") String username, @RequestParam(value="email") String userEmail){
+		logger.info("Request param username: "+username+" email: "+userEmail);
+		CheckUserFieldDTO result=new CheckUserFieldDTO();
+		result.setExistUsername(existUserName(username));
+		result.setExistEmail(existEmail(userEmail));
+		return result;
+	}
+
+	private boolean existEmail(String userEmail) {
+		boolean existEmail;
+		try {
+			gus.getUserByEmail(userEmail);
+			existEmail=true;
+		} catch (FitnessDaoException e) {
+			existEmail=false;
+		}
+		return existEmail;
+	}
+	
+	private boolean existUserName(String username) {
+		boolean existUsername;
+		try {
+			gus.getUserByUsername(username);
+			existUsername=true;
+		} catch (FitnessDaoException e) {
+			existUsername=false;
+		}
+		return existUsername;
+	}
+	
 }
