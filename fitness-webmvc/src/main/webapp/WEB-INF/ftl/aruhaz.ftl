@@ -2,6 +2,7 @@
 <#import "/spring.ftl" as spring />
 <#import "/directives/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
+
 	
 <div id="page-container" class="wrapper wrapper-home">
 <ul class="thumbnails">
