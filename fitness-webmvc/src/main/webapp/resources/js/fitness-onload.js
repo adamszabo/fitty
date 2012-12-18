@@ -37,59 +37,18 @@ $(document).ready(function() {
 		$('#registrationDialog').modal('show');
 	});
 	
+	$('#reRegistrationDialogButton').click(function(e){
+		$('#registrationDialog').modal('show');
+	});
+	
 	$('#registrationDialog').on("hide", function(){
 		deleteFormDatas("registrationForm");
 		$('.alert').hide();
 	});
 	
-	$('#registerButton').on("click",validateRegistration);
+	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
 });
-
-function validateRegistration(){
-		var emailReg = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-		emailAddress=$('#email').val();
-		isValidEmail=false;
-		if(!emailReg.test(emailAddress)){
-			$('#emailAlert').show();
-			isValidEmail=false;
-		}
-		else{
-			$('#emailAlert').hide();
-			isValidEmail=true;
-		}
-		
-		password=$('#password').val();
-		passwordRe=$('#passwordRe').val();
-		isValidPasswordRe=false;
-		if(password!=passwordRe){
-			$('#passwordAlert').show();
-			isValidPasswordRe=false;
-		}
-		else{
-			$('#passwordAlert').hide();
-			isValidPasswordRe=true;
-		}
-		
-		if(isValidEmail && isValidPasswordRe && isAllInputsFilled()){
-			$('#registrationForm').submit();
-			$('#inputs').hide();
-		}
-		else{
-			$('#inputs').show();
-		}
-}
-
-function isAllInputsFilled(){
-	$inputs=$('#registrationForm .control-group .controls input');
-	filled=true;
-	$inputs.each(function(index,value){
-		input=$(value);
-		if(input.val()=="")
-			filled=false;
-	});
-	return filled;
-}
 
 function paginatorCheck(){
 	console.log($('#actualPageNumber').html());

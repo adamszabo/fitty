@@ -18,5 +18,6 @@
     <script src="<@spring.url relativeUrl="/resources/js/bootstrap-carousel.js"/>"></script>
     <script src="<@spring.url relativeUrl="/resources/js/bootstrap-typeahead.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/fitness-onload.js"/>"></script>
+	<script src="<@spring.url relativeUrl="/resources/js/registration-validator.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/slimScroll.js"/>"></script>
 </#macro>

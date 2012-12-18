@@ -56,6 +56,12 @@
 			<artifactId>fitness-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!--with this dependency spring mvc will return with json where @ResponseBody is exist-->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.9</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>fitness-webmvc</finalName>

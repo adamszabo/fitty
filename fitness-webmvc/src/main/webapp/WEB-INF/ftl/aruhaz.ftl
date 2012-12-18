@@ -1,6 +1,6 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
-<#import "/directives/tags.ftl" as tags />
+<#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
 
 	

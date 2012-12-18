@@ -1,4 +1,4 @@
-<#import "/directives/tags.ftl" as tags />
+<#import "/tag/tags.ftl" as tags />
 <#import "/spring.ftl" as spring />
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
