@@ -1,9 +1,7 @@
 package com.acme.fitness.orders.simple;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,17 +72,17 @@ public class SimpleBasketService implements BasketService {
 	}
 
 	@Override
-	public Set<Membership> getMemberships(Basket basket) {
+	public List<Membership> getMemberships(Basket basket) {
 		return basket.getMemberships();
 	}
 
 	@Override
-	public Set<Training> getTrainings(Basket basket) {
+	public List<Training> getTrainings(Basket basket) {
 		return basket.getTrainings();
 	}
 
 	@Override
-	public Set<OrderItem> getOrderItems(Basket basket) {
+	public List<OrderItem> getOrderItems(Basket basket) {
 		return basket.getOrderItems();
 	}
 
@@ -103,8 +101,8 @@ public class SimpleBasketService implements BasketService {
 	}
 
 	@Override
-	public Set<Basket> getBasketsByUser(User user) {
-		return new HashSet<Basket>(basketDao.getBasketsByUser(user));
+	public List<Basket> getBasketsByUser(User user) {
+		return basketDao.getBasketsByUser(user);
 	}
 
 	@Override

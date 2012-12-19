@@ -1,6 +1,6 @@
 package com.acme.fitness.orders;
 
-import java.util.Set;
+import java.util.List;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Store;
@@ -14,5 +14,5 @@ public interface StoreService {
 	void putInProduct(Product product, int quantity) throws FitnessDaoException;
 	void deleteStore(Store store);
 	void updateStore(Store store);
-	Set<Store> getAllStores();
+	List<Store> getAllStores();
 }

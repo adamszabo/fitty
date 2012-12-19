@@ -1,7 +1,7 @@
 package com.acme.fitness.domain.orders;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,28 +40,25 @@ public class Basket {
 
 	@OneToMany(mappedBy = "basket", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private Set<OrderItem> orderItems;
+	private List<OrderItem> orderItems;
 
 	@Transient
-	private Set<Membership> memberships;
+	private List<Membership> memberships;
 
 	@Transient
-	private Set<Training> trainings;
+	private List<Training> trainings;
 
 	public Basket() {
-		super();
-		trainings = new HashSet<Training>();
-		memberships = new HashSet<Membership>();
-		orderItems = new HashSet<OrderItem>();
+		this(false, null);
 	}
 
 	public Basket(boolean delivered, User user) {
 		super();
 		this.delivered = delivered;
 		this.user = user;
-		trainings = new HashSet<Training>();
-		memberships = new HashSet<Membership>();
-		orderItems = new HashSet<OrderItem>();
+		trainings = new ArrayList<Training>();
+		memberships = new ArrayList<Membership>();
+		orderItems = new ArrayList<OrderItem>();
 	}
 	
 	public void addMembership(Membership m) {
@@ -137,27 +134,27 @@ public class Basket {
 		this.user = user;
 	}
 
-	public Set<OrderItem> getOrderItems() {
+	public List<OrderItem> getOrderItems() {
 		return orderItems;
 	}
 
-	public void setOrderItems(Set<OrderItem> orderItems) {
+	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
 
-	public Set<Membership> getMemberships() {
+	public List<Membership> getMemberships() {
 		return memberships;
 	}
 
-	public void setMemberships(Set<Membership> memberships) {
+	public void setMemberships(List<Membership> memberships) {
 		this.memberships = memberships;
 	}
 
-	public Set<Training> getTrainings() {
+	public List<Training> getTrainings() {
 		return trainings;
 	}
 
-	public void setTrainings(Set<Training> trainings) {
+	public void setTrainings(List<Training> trainings) {
 		this.trainings = trainings;
 	}
 }

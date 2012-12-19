@@ -1,9 +1,7 @@
 package com.acme.fitness.orders.simple;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -151,7 +149,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testGetMembershipsShouldReturnTheRightObject() {
 		// GIVEN
-		Set<Membership> memberships = new HashSet<Membership>();
+		List<Membership> memberships = new ArrayList<Membership>();
 		memberships.add(new Membership());
 		memberships.add(new Membership());
 		Basket basket = new Basket();
@@ -159,7 +157,7 @@ public class SimpleBasketServiceTest {
 			basket.addMembership(m);
 		}
 		// WHEN
-		Set<Membership> result = underTest.getMemberships(basket);
+		List<Membership> result = underTest.getMemberships(basket);
 		// THEN
 		Assert.assertEquals(memberships, result);
 	}
@@ -167,7 +165,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testGetTrainingsShouldReturnTheRightObject() {
 		// GIVEN
-		Set<Training> trainings = new HashSet<Training>();
+		List<Training> trainings = new ArrayList<Training>();
 		trainings.add(new Training());
 		trainings.add(new Training());
 		Basket basket = new Basket();
@@ -175,7 +173,7 @@ public class SimpleBasketServiceTest {
 			basket.addTraining(t);
 		}
 		// WHEN
-		Set<Training> result = underTest.getTrainings(basket);
+		List<Training> result = underTest.getTrainings(basket);
 		// THEN
 		Assert.assertEquals(trainings, result);
 	}
@@ -183,7 +181,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testGetOrderItemsShouldReturnTheRightObject() {
 		// GIVEN
-		Set<OrderItem> orderItems = new HashSet<OrderItem>();
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(new OrderItem());
 		orderItems.add(new OrderItem());
 		Basket basket = new Basket();
@@ -191,7 +189,7 @@ public class SimpleBasketServiceTest {
 			basket.addOrderItem(o);
 		}
 		// WHEN
-		Set<OrderItem> result = underTest.getOrderItems(basket);
+		List<OrderItem> result = underTest.getOrderItems(basket);
 		// THEN
 		Assert.assertEquals(orderItems, result);
 	}
@@ -219,10 +217,10 @@ public class SimpleBasketServiceTest {
 				new ArrayList<Basket>());
 		underTest.setBasketDao(basketDao);
 		// WHEN
-		Set<Basket> result = underTest.getBasketsByUser(user);
+		List<Basket> result = underTest.getBasketsByUser(user);
 		// THEN
 		BDDMockito.verify(basketDao).getBasketsByUser(user);
-		Assert.assertEquals(new HashSet<Basket>(), result);
+		Assert.assertEquals(new ArrayList<Basket>(), result);
 	}
 
 	@Test
@@ -285,8 +283,8 @@ public class SimpleBasketServiceTest {
 		// GIVEN
 		Training training = new Training();
 		Membership membership = new Membership();
-		Set<Training> trainings = new HashSet<Training>();
-		Set<Membership> memberships = new HashSet<Membership>();
+		List<Training> trainings = new ArrayList<Training>();
+		List<Membership> memberships = new ArrayList<Membership>();
 		trainings.add(training);
 		memberships.add(membership);
 		BDDMockito.given(basketMock.getTrainings()).willReturn(trainings);
@@ -306,7 +304,7 @@ public class SimpleBasketServiceTest {
 	public void testCheckOutBasketShouldInvokeTheUpdateOrderItemMethodRight()
 			throws StoreQuantityException, FitnessDaoException {
 		// GIVEN
-		Set<OrderItem> orderItems = new HashSet<OrderItem>();
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(orderItemMock);
 		BDDMockito.given(basketMock.getOrderItems()).willReturn(orderItems);
 		BDDMockito.given(orderItemMock.getProduct()).willReturn(new Product());
@@ -333,7 +331,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testCheckOutBasketShouldThrowExpcetionWhenInvokeTheUpdateOrderItemMethod() throws FitnessDaoException {
 		//GIVEN
-		Set<OrderItem> orderItems = new HashSet<OrderItem>();
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(orderItemMock);
 		Product expectedProduct = new Product();
 		expectedProduct.setId(1L);
@@ -367,7 +365,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testCheckOutBasketShouldInvokeTakeOutProductsElseBranchWhenTakeOUtProductMethodReturnsFalse() throws FitnessDaoException {
 		//GIVEN
-		Set<OrderItem> orderItems = new HashSet<OrderItem>();
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(orderItemMock);
 		Product expectedProduct = new Product();
 		expectedProduct.setId(1L);

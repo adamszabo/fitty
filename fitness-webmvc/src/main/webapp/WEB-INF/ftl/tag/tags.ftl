@@ -128,3 +128,49 @@
 	</div>
 	</#if>
 </#macro>
+
+<#macro newProductDialog>
+<div id="newProductModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Új termék</h3>
+  </div>
+  <div class="modal-body">
+  		<form class="form-horizontal" action="<@spring.url relativeUrl="/admin/ujtermek"/>" method="post" accept-charset="UTF-8">
+		  <div class="control-group">
+		    <label class="control-label" for="name">Termék név</label>
+		    <div class="controls">
+		      <input type="text" id="name" name="name" placeholder="Termék neve">
+		    </div>
+		  </div>
+		  <div class="control-group">
+		    <label class="control-label" for="details">Leírás</label>
+		    <div class="controls">
+		      <input type="text" id="details" name="details" placeholder="Termékhez kapcsolódó leírás">
+		    </div>
+		  </div>
+  		  <div class="control-group">
+		    <label class="control-label" for="manufacturer">Gyártó</label>
+		    <div class="controls">
+		      <input type="text" id="manufacturer" name="manufacturer" placeholder="Termék gyártója">
+		    </div>
+		  </div>
+  		  <div class="control-group">
+		    <label class="control-label" for="price">Ár</label>
+		    <div class="controls">
+		      <input type="number" id="price" name="price" placeholder="Termék ára">
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+		  	<div class="control-group">
+		  		<div class="controls">
+			    	<button class="btn" data-dismiss="modal" aria-hidden="true">Bezár</button>
+			    	<button class="btn btn-primary" type ="submit">Hozzáadás</button>
+		 		</div>
+		 	</div>
+		 </div>
+		  
+		</form>
+  </div>
+</div>
+</#macro>

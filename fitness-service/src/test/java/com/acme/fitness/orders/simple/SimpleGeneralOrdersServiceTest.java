@@ -1,7 +1,7 @@
 package com.acme.fitness.orders.simple;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -125,12 +125,12 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testGetMembershipsShouldReturnProperly() {
 		// GIVEN
 		Basket basket = new Basket();
-		Set<Membership> expected = new HashSet<Membership>();
+		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(basketServiceMock.getMemberships(basket)).willReturn(
 				expected);
 		underTest.setBasketService(basketServiceMock);
 		// WHEN
-		Set<Membership> result = underTest.getMemberships(basket);
+		List<Membership> result = underTest.getMemberships(basket);
 		// THEN
 		BDDMockito.verify(basketServiceMock).getMemberships(basket);
 		Assert.assertEquals(expected, result);
@@ -140,12 +140,12 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testGetTrainingsShouldReturnProperly() {
 		// GIVEN
 		Basket basket = new Basket();
-		Set<Training> expected = new HashSet<Training>();
+		List<Training> expected = new ArrayList<Training>();
 		BDDMockito.given(basketServiceMock.getTrainings(basket)).willReturn(
 				expected);
 		underTest.setBasketService(basketServiceMock);
 		// WHEN
-		Set<Training> result = underTest.getTrainings(basket);
+		List<Training> result = underTest.getTrainings(basket);
 		// THEN
 		BDDMockito.verify(basketServiceMock).getTrainings(basket);
 		Assert.assertEquals(expected, result);
@@ -155,12 +155,12 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testGetOrderItemsShouldReturnProperly() {
 		// GIVEN
 		Basket basket = new Basket();
-		Set<OrderItem> expected = new HashSet<OrderItem>();
+		List<OrderItem> expected = new ArrayList<OrderItem>();
 		BDDMockito.given(basketServiceMock.getOrderItems(basket)).willReturn(
 				expected);
 		underTest.setBasketService(basketServiceMock);
 		// WHEN
-		Set<OrderItem> result = underTest.getOrderItems(basket);
+		List<OrderItem> result = underTest.getOrderItems(basket);
 		// THEN
 		BDDMockito.verify(basketServiceMock).getOrderItems(basket);
 		Assert.assertEquals(expected, result);
@@ -193,12 +193,12 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testGetBasketsByUserShouldReturnProperly() {
 		// GIVEN
 		User user = new User();
-		Set<Basket> expected = new HashSet<Basket>();
+		List<Basket> expected = new ArrayList<Basket>();
 		BDDMockito.given(basketServiceMock.getBasketsByUser(user)).willReturn(
 				expected);
 		underTest.setBasketService(basketServiceMock);
 		// WHEN
-		Set<Basket> result = underTest.getBasketsByUser(user);
+		List<Basket> result = underTest.getBasketsByUser(user);
 		// THEN
 		BDDMockito.verify(basketServiceMock).getBasketsByUser(user);
 		Assert.assertEquals(expected, result);
@@ -450,13 +450,13 @@ public class SimpleGeneralOrdersServiceTest {
 	@Test
 	public void testGetAllStoresShouldReturnProperly() {
 		//GIVEN
-		BDDMockito.given(storeServiceMock.getAllStores()).willReturn(new HashSet<Store>());
+		BDDMockito.given(storeServiceMock.getAllStores()).willReturn(new ArrayList<Store>());
 		underTest.setStoreService(storeServiceMock);
 		//WHEN
-		Set<Store> result = underTest.getAllStores();
+		List<Store> result = underTest.getAllStores();
 		//THEN
 		BDDMockito.verify(storeServiceMock).getAllStores();
-		Assert.assertEquals(new HashSet<Store>(), result);
+		Assert.assertEquals(new ArrayList<Store>(), result);
 	}
 	
 	@Test

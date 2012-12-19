@@ -1,6 +1,6 @@
 package com.acme.fitness.orders.simple;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,17 +62,17 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	}
 
 	@Override
-	public Set<Membership> getMemberships(Basket basket) {
+	public List<Membership> getMemberships(Basket basket) {
 		return basketService.getMemberships(basket);
 	}
 
 	@Override
-	public Set<Training> getTrainings(Basket basket) {
+	public List<Training> getTrainings(Basket basket) {
 		return basketService.getTrainings(basket);
 	}
 
 	@Override
-	public Set<OrderItem> getOrderItems(Basket basket) {
+	public List<OrderItem> getOrderItems(Basket basket) {
 		return basketService.getOrderItems(basket);
 	}
 
@@ -87,7 +87,7 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	}
 
 	@Override
-	public Set<Basket> getBasketsByUser(User user) {
+	public List<Basket> getBasketsByUser(User user) {
 		return basketService.getBasketsByUser(user);
 	}
 
@@ -148,7 +148,7 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	}
 	
 	@Override
-	public Set<Store> getAllStores() {
+	public List<Store> getAllStores() {
 		return storeService.getAllStores();
 	}
 
@@ -175,6 +175,4 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	public void setStoreService(StoreService storeService) {
 		this.storeService = storeService;
 	}
-	
-	
 }

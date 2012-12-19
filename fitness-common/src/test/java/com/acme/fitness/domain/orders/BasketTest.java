@@ -1,7 +1,7 @@
 package com.acme.fitness.domain.orders;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -48,21 +48,21 @@ public class BasketTest {
 	
 	@Test
 	public void testGetterSetterBehaviourOfOrderItems() {
-		Set<OrderItem> expected=new HashSet<OrderItem>();
+		List<OrderItem> expected=new ArrayList<OrderItem>();
 		underTest.setOrderItems(expected);
 		Assert.assertEquals(expected, underTest.getOrderItems());
 	}
 	
 	@Test
 	public void testGetterSetterBehaviourOfTrainings() {
-		Set<Training> expected=new HashSet<Training>();
+		List<Training> expected=new ArrayList<Training>();
 		underTest.setTrainings(expected);
 		Assert.assertEquals(expected, underTest.getTrainings());
 	}
 	
 	@Test
 	public void testGetterSetterBehaviourOfMemeberships() {
-		Set<Membership> expected=new HashSet<Membership>();
+		List<Membership> expected=new ArrayList<Membership>();
 		underTest.setMemberships(expected);
 		Assert.assertEquals(expected, underTest.getMemberships());
 	}
@@ -88,7 +88,7 @@ public class BasketTest {
 	public void testAddMembershipShouldInvokeTheMethodRight() {
 		//GIVEN
 		Membership membership = new Membership();
-		Set<Membership> expected = new HashSet<Membership>();
+		List<Membership> expected = new ArrayList<Membership>();
 		expected.add(membership);
 		//WHEN
 		underTest.addMembership(membership);
@@ -100,7 +100,7 @@ public class BasketTest {
 	public void testAddTrainingShouldInvokeTheMethodRight() {
 		//GIVEN
 		Training training = new Training();
-		Set<Training> expected = new HashSet<Training>();
+		List<Training> expected = new ArrayList<Training>();
 		expected.add(training);
 		//WHEN
 		underTest.addTraining(training);
@@ -112,7 +112,7 @@ public class BasketTest {
 	public void testAddOrderItemShouldInvokeTheMethodRight() {
 		//GIVEN
 		OrderItem orderItem = new OrderItem();
-		Set<OrderItem> expected = new HashSet<OrderItem>();
+		List<OrderItem> expected = new ArrayList<OrderItem>();
 		expected.add(orderItem);
 		//WHEN
 		underTest.addOrderItem(orderItem);

@@ -1,7 +1,6 @@
 package com.acme.fitness.orders.simple;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,13 @@ public class SimpleStoreService implements StoreService {
 
 	@Override
 	public Store addProduct(Product product, int quantity) {
-		Store store = new Store(product, quantity);
-		storeDao.save(store);
+		Store store;
+		try {
+			store = storeDao.getStoreByProductId(product.getId());
+		} catch (FitnessDaoException e) {
+			store = new Store(product, quantity);
+			storeDao.save(store);
+		}
 		return store;
 	}
 
@@ -66,8 +70,8 @@ public class SimpleStoreService implements StoreService {
 	}
 
 	@Override
-	public Set<Store> getAllStores() {
-		return  new HashSet<Store>(storeDao.getAllStores());
+	public List<Store> getAllStores() {
+		return  storeDao.getAllStores();
 	}
 	
 	private boolean isProductExistInDatabase(Product product) {
