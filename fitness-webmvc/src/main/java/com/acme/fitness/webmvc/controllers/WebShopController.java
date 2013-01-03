@@ -132,15 +132,14 @@ public class WebShopController {
 				e.printStackTrace();
 			}
 			basket.setUser(user);
-			System.out.println(basket.getOrderItems());
 			try {
 				gos.checkOutBasket(basket);
 			} catch (StoreQuantityException e) {
-				System.out.println("Missing products: " + e.getProduct());
+				request.getSession().setAttribute("missingProduct", e.getProduct());
 			}
 		}
 
-		return "redirect:/aruhaz/" + page;
+		return "redirect:/aruhaz/" + page + "/deleteBasket";
 	}
 
 	private void addBasketToSessionFromCookie(HttpServletRequest request) {

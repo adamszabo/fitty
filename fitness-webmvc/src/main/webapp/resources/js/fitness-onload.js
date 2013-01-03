@@ -20,6 +20,7 @@ $(document).ready(function() {
 		}
 	});
 	
+	
 	$('.detailSlimScroll').slimScroll({
 	    height: '75px',
 	    width: '90%',

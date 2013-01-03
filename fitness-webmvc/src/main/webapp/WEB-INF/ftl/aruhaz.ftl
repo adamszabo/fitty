@@ -45,6 +45,15 @@
 		  </ul>
 		</div>
 	</#if>
+	
+	<@tags.missingElements />
+	
+	<#if missingProduct?exists>
+	
+		<#list missingProduct as product>
+			${product}
+		</#list>
+	</#if>
 
 <@tags.basketDialog />
 

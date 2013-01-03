@@ -10,13 +10,14 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>Raktári azonosító</th>
+			<th>Termék azonosító</th>
 			<th>Név</th>
 			<th>Gyártó</th>
 			<th>Leírás</th>
 			<th>Ár</th>
 			<th>Mennyiség</th>
 			<th>Érkezett mennyiség</th>
+			<th>Törlés</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,7 +27,7 @@
 			<#else>
 				<tr>
 			</#if>
-				<td>${product.id}</td>
+				<td>${product.product.id}</td>
 				<td>${product.product.name}</td>
 				<td>${product.product.manufacturer}</td>
 				<td class="span3">${product.product.details}</td>
@@ -40,6 +41,9 @@
 		  					<button class="btn" type="submit">Raktárba</button>
 					  	</div>
 					</form>
+				</td>
+				<td>
+					<a href="<@spring.url relativeUrl="/admin/termektorles/${product.product.id}"/>" class="btn btn-danger"><i class="icon-white icon-remove"></i></a>
 				</td>
 			</tr>
 		</#list>

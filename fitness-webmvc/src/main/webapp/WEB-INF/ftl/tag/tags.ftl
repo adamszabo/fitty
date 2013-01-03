@@ -174,3 +174,43 @@
   </div>
 </div>
 </#macro>
+
+<#macro missingElements>
+	<#if missingProduct?exists>
+	<div id="missesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Az alábbi termékből nem taláható meg megfelelő mennyiség a raktárban:</h3>
+	  </div>
+	  <div class="modal-body">
+	  	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Név</th>
+					<th>Gyártó</th>
+					<th>Egység Ár</th>
+					<th>Mennyiség</th>
+					<th>Raktár mennyisége</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#assign iterate = 0>
+				<#list missingProduct as item>
+					<#assign iterate = iterate +1>
+					<tr>
+						<td>${iterate}</td>
+						<td>${item.name}</td>
+						<td>${item.manufacturer}</td>
+						<td>${item.price}</td>
+					</tr>
+				</#list>
+			</tbody>
+		</table>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
+	  </div>
+	</div>
+	</#if>
+</#macro>

@@ -1,11 +1,9 @@
 package com.acme.fitness.webmvc.controllers;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -65,7 +62,7 @@ public class AdminController {
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
 		}
-		return store(locale, model, response, request);
+		return "redirect:/admin/raktar";
 	}
 	
 	@RequestMapping(value = "/ujtermek", method = RequestMethod.POST)
@@ -73,6 +70,18 @@ public class AdminController {
 			HttpServletResponse response, HttpServletRequest request, @ModelAttribute("product") Product product) {
 		Product newProduct = gps.addProduct(product.getName(), product.getDetails(), product.getPrice(), product.getManufacturer(), new Date());
 		logger.info("new product added: " + newProduct);
-		return store(locale, model, response, request);
+		return "redirect:/admin/raktar";
 	}
+	
+	@RequestMapping(value = "/termektorles/{productId}", method = RequestMethod.GET)
+	public String deleteProduct(Locale locale, Model model,
+			HttpServletResponse response, HttpServletRequest request, @PathVariable("productId") long productId) {
+		try {
+			gps.deleteProduct(gps.getProductById(productId));
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/admin/raktar";
+	}
+	
 }	
