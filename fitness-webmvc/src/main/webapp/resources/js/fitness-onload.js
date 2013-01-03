@@ -20,7 +20,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	
 	$('.detailSlimScroll').slimScroll({
 	    height: '75px',
 	    width: '90%',
@@ -31,9 +30,8 @@ $(document).ready(function() {
 		height: ''+percentedHeight + 'px'
 	});
 	
-	
 	paginatorCheck();
-	
+
 	$('#registrationButton').click(function(e){
 		$('#registrationDialog').modal('show');
 	});
