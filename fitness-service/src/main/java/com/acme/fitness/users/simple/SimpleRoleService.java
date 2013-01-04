@@ -18,8 +18,16 @@ public class SimpleRoleService implements RoleService {
 
 	@Override
 	public void addRoleToUser(String roleName, User user) {
+		boolean persistedEarlier = false;
 		Role role = new Role(user, roleName);
-		roleDao.save(role);
+		for (Role r : roleDao.getRolesByUser(user)) {
+			if (r.getName().equals(roleName)) {
+				persistedEarlier = true;
+			}
+		}
+		if (!persistedEarlier) {
+			roleDao.save(role);
+		}
 	}
 
 	@Override
@@ -36,7 +44,6 @@ public class SimpleRoleService implements RoleService {
 	public List<Role> getRolesByUser(User user) {
 		return roleDao.getRolesByUser(user);
 	}
-	
 
 	public RoleDao getRoleDao() {
 		return roleDao;
