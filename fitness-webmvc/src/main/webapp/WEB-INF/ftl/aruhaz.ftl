@@ -3,8 +3,27 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
 
-	
-<div id="page-container" class="wrapper wrapper-home">
+<ul class="nav nav-pills">
+<#if basket?exists>
+	<li class="dropdown">
+		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		    Kosár
+		    <span class="caret"></span>
+		  </a>
+		  <ul class="dropdown-menu">
+			<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
+			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/confirmBasket"/>">Megrendelés</a></li>
+			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/deleteBasket"/>">Kosár törlése</a></li>
+		  </ul>
+	</li>
+  </#if>
+  <#if missingProduct?exists>
+	<li>
+	  	<a href="#missesModal" data-toggle="modal">Hiányzó</a>
+	</li>
+  </#if>
+</ul>
+<div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%;">
 <ul class="thumbnails">
 	<#list products as product>
 		<li class="span4">
@@ -32,28 +51,7 @@
 	 </#list>
 </ul>
 	
-	<#if basket?exists>
-		<div class="btn-group">
-		  <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
-		    Kosár
-		    <span class="caret"></span>
-		  </a>
-		  <ul class="dropdown-menu">
-			<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
-			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/confirmBasket"/>">Megrendelés</a></li>
-			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/deleteBasket"/>">Kosár törlése</a></li>
-		  </ul>
-		</div>
-	</#if>
-	
-	<@tags.missingElements />
-	
-	<#if missingProduct?exists>
-	
-		<#list missingProduct as product>
-			${product}
-		</#list>
-	</#if>
+<@tags.missingElements />
 
 <@tags.basketDialog />
 
