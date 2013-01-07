@@ -41,6 +41,8 @@ public class IpUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         	isLoginValid=generalUsersService.isLoginValidByUser(username, request.getRemoteAddr(), isLoggedIn);
 		} catch (FitnessDaoException e) {
 			isLoginValid=false;
+			throw new BadCredentialsException(messages.getMessage(
+                    "AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
 		}
         
         if(isLoginValid){
