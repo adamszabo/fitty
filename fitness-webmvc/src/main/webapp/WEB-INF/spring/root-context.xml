@@ -2,27 +2,66 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:sec="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	<!-- Root Context: defines shared resources visible to all other web components -->
 	
-	<import resource="classpath:META-INF/Spring/fitnessServiceApplicationContext.xml" />
+	<context:component-scan base-package="com.acme.fitness"></context:component-scan>
 	
-	<!-- Root Context: defines shared resources visible to all other web components -->	
-	<sec:global-method-security secured-annotations="enabled" />
+	<import	resource="classpath:META-INF/Spring/fitnessServiceApplicationContext.xml" />
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages" />
+	
+	
+	<sec:global-method-security	secured-annotations="enabled" />
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider user-service-ref="simpleFitnessUserDetailsService">
+			<sec:password-encoder ref="passwordEncoder"></sec:password-encoder>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
 
-	<sec:http auto-config="true">
-		<sec:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<sec:form-login login-page="/" default-target-url="/aruhaz/1" authentication-failure-url="/aruhaz/1" />
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"></bean>
+
+	<bean id="webexpressionHandler"	class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+
+	<!-- To use concurrent session support for SessionRegistry -->
+	<sec:http auto-config="false" entry-point-ref="authenticationEntryPoint" use-expressions="true">
+		<sec:custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
+		<sec:custom-filter position="FORM_LOGIN_FILTER" ref="FormLoginFilter" />
+		<sec:session-management	session-authentication-strategy-ref="sas" />
+		<sec:logout logout-success-url="/"/>
 	</sec:http>
 
-	<sec:authentication-manager alias="authenticationManager">
-    	<sec:authentication-provider user-service-ref="simpleFitnessUserDetailsService">
-      		<sec:password-encoder ref="passwordEncoder"></sec:password-encoder>
-    	</sec:authentication-provider>
-	</sec:authentication-manager>
-  
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"></bean>
-  
-  <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
-  
+	<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<constructor-arg name="expiredUrl" value="/kijelentkezes" />
+	</bean>
+
+	<bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<constructor-arg name="sessionRegistry"	ref="sessionRegistry" />
+		<property name="maximumSessions" value="4" />
+		<property name="exceptionIfMaximumExceeded" value="true"></property>
+	</bean>
+
+	<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	
+	<!-- 	Define entry points for Authentication -->
+	<bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint" c:loginFormUrl="/"/>
+	<bean id="customAuthenticationSuccessHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler" p:defaultTargetUrl="/aruhaz/1" />
+	<bean id="customAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" p:defaultFailureUrl="/" />
+	<!-- 	Define entry points for Authentication -->
+	
+	<bean id="FormLoginFilter" class="com.acme.fitness.webmvc.security.authentication.IpUsernamePasswordAuthenticationFilter">
+		<property name="sessionAuthenticationStrategy" ref="sas" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"></property>
+		<property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"></property>
+	</bean>
+	
 </beans>

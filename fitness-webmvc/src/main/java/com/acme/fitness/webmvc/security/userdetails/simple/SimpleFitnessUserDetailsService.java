@@ -1,4 +1,4 @@
-package com.acme.fitness.webmvc.security;
+package com.acme.fitness.webmvc.security.userdetails.simple;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +29,6 @@ public class SimpleFitnessUserDetailsService implements UserDetailsService {
 		try {
 			User p = (User)this.gus.getUserByUsername(username);
 			List<Role> roles = this.gus.getRolesbyUser(p);
-			boolean enabled = true;
 			boolean accountNonExpired = true;
 			boolean credentialsNonExpired = true;
 			boolean accountNonLocked = true;
@@ -40,7 +39,7 @@ public class SimpleFitnessUserDetailsService implements UserDetailsService {
 			}
 			
 			org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User
-					(p.getUsername(), p.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
+					(p.getUsername(), p.getPassword(), p.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
 			
 			return user;
 			

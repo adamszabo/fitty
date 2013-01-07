@@ -152,12 +152,10 @@ public class SimpleGeneralUsersServiceTest {
 		//GIVEN
 		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
-		BDDMockito.given(userServiceMock.isLoggedIn(userMock)).willReturn(false);
 		//WHEN
-		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING);
+		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING, false);
 		//THEN
 		BDDMockito.verify(userServiceMock).getUserByUserName(TESTSTRING);
-		BDDMockito.verify(userServiceMock).isLoggedIn(userMock);
 		Assert.assertEquals(true, result);
 	}
 	
@@ -166,12 +164,10 @@ public class SimpleGeneralUsersServiceTest {
 		//GIVEN
 		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willThrow(new FitnessDaoException());
-		BDDMockito.given(userServiceMock.isLoggedIn(userMock)).willReturn(false);
 		//WHEN
-		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING);
+		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING, false);
 		//THEN
 		BDDMockito.verify(userServiceMock).getUserByUserName(TESTSTRING);
-		BDDMockito.verify(userServiceMock).isLoggedIn(userMock);
 		Assert.assertEquals(true, result);
 	}
 	
@@ -180,13 +176,11 @@ public class SimpleGeneralUsersServiceTest {
 		//GIVEN
 		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
-		BDDMockito.given(userServiceMock.isLoggedIn(userMock)).willReturn(true);
 		BDDMockito.given(userMock.getLastLoginIp()).willReturn(TESTSTRING);
 		//WHEN
-		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING);
+		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING, true);
 		//THEN
 		BDDMockito.verify(userServiceMock).getUserByUserName(TESTSTRING);
-		BDDMockito.verify(userServiceMock).isLoggedIn(userMock);
 		BDDMockito.verify(userMock).getLastLoginIp();
 		Assert.assertEquals(true, result);
 	}
@@ -196,13 +190,11 @@ public class SimpleGeneralUsersServiceTest {
 		//GIVEN
 		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
-		BDDMockito.given(userServiceMock.isLoggedIn(userMock)).willReturn(true);
 		BDDMockito.given(userMock.getLastLoginIp()).willReturn("asdf");
 		//WHEN
-		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING);
+		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING, true);
 		//THEN
 		BDDMockito.verify(userServiceMock).getUserByUserName(TESTSTRING);
-		BDDMockito.verify(userServiceMock).isLoggedIn(userMock);
 		BDDMockito.verify(userMock).getLastLoginIp();
 		Assert.assertEquals(false, result);
 	}

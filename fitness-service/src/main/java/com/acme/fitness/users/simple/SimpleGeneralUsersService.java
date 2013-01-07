@@ -28,9 +28,9 @@ public class SimpleGeneralUsersService implements GeneralUsersService {
 	}
 
 	@Override
-	public boolean isLoginValidByUser(String userName, String ipAddress) throws FitnessDaoException {
+	public boolean isLoginValidByUser(String userName, String ipAddress, boolean isLoggedIn) throws FitnessDaoException {
 		User user=userService.getUserByUserName(userName);
-		if(userService.isLoggedIn(user)){
+		if(isLoggedIn){
 			if(user.getLastLoginIp().equals(ipAddress))
 				return true;
 			else

@@ -15,7 +15,7 @@ public interface GeneralUsersService {
 	User getUserById(long id) throws FitnessDaoException;
 	User getUserByUsername(String username) throws FitnessDaoException;
 	User getUserByEmail(String email) throws FitnessDaoException;
-	boolean isLoginValidByUser(String userName, String ipAddress) throws FitnessDaoException;
+	boolean isLoginValidByUser(String userName, String ipAddress, boolean isLoggedIn) throws FitnessDaoException;
 	void addUserRole(String roleName, User user);
 	void removeUserRole(String roleName, User user);
 	void addLastLoginInfo(User user, String lastIp, Date lastLoginDate);

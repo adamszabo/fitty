@@ -67,12 +67,6 @@ public class SimpleUserService implements UserService {
 	}
 
 	@Override
-	public boolean isLoggedIn(User user) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void setEnabled(User user, boolean toEnabled) {
 		user.setEnabled(toEnabled);
 		userDao.update(user);
