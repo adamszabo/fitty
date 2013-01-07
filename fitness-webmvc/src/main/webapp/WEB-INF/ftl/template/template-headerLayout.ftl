@@ -16,10 +16,10 @@
                                     	<li><a href="<@spring.url relativeUrl="/aruhaz/1"/>">Áruház</a></li>
 										<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
 										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
-										<@security.authorize access="hasRole('ROLE_KISKUTYA')">
+										<@security.authorize access="hasRole('ROLE_ADMIN')">
 											<li><a href="<@spring.url relativeUrl="/admin/raktar"/>">Raktár</a></li>
 										</@security.authorize>
-										<@security.authorize access="hasRole('ROLE_USER')">
+										<@security.authorize access="hasRole('ROLE_ADMIN')">
 											<li><a href="<@spring.url relativeUrl="/admin"/>">Adminisztráció</a></li>
 										</@security.authorize>
 										<@security.authorize access="isAnonymous()">
