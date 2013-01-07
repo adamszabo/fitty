@@ -18,6 +18,7 @@
 										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
 										<@security.authorize access="hasRole('ROLE_KISKUTYA')">
 											<li><a href="<@spring.url relativeUrl="/admin/raktar"/>">Raktár</a></li>
+										</@security.authorize>
 										<@security.authorize access="hasRole('ROLE_USER')">
 											<li><a href="<@spring.url relativeUrl="/admin"/>">Adminisztráció</a></li>
 										</@security.authorize>
