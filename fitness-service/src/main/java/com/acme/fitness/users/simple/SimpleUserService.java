@@ -97,6 +97,11 @@ public class SimpleUserService implements UserService {
 		return userDao.getAllUsers();
 	}
 
+	@Override
+	public List<User> getAllTrainers() {
+		return userDao.getAllTrainers();
+	}
+
 //	@Override
 //	public User getActualUser(String userName) {
 //		// Get actual UserName from security

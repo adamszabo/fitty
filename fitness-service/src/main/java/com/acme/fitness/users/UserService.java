@@ -20,5 +20,6 @@ public interface UserService {
 	boolean isLoggedIn(User user);
 	void setEnabled(User user, boolean toEnabled);
 	void setNumberOfEntries(User user, int numberOfEntries);
+	List<User> getAllTrainers();
 	//User getActualUser(String userName);
 }

@@ -18,4 +18,6 @@ public interface UserDao extends GenericDao<User> {
 	
 	public List<User> getUsersByFullName(String fullName);
 	
+	public List<User> getAllTrainers();
+	
 }

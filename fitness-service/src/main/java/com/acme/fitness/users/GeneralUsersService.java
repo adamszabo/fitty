@@ -20,4 +20,5 @@ public interface GeneralUsersService {
 	void removeUserRole(String roleName, User user);
 	void addLastLoginInfo(User user, String lastIp, Date lastLoginDate);
 	List<Role> getRolesbyUser(User user);
+	List<User> getAllTrainers();
 }
