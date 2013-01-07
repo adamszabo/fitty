@@ -2,5 +2,8 @@
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Edzések">
-	edzééééé
+	<#list trainers as trainer>
+		${trainer.fullName}
+		<br/>
+	</#list>
 </@template.masterTemplate>

@@ -106,5 +106,10 @@ public class SimpleGeneralUsersService implements GeneralUsersService {
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
 	}
+
+	@Override
+	public List<User> getAllTrainers() {
+		return userService.getAllTrainers();
+	}
 	
 }

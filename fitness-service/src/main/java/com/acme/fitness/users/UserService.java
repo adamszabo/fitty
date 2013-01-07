@@ -19,5 +19,6 @@ public interface UserService {
 	void addLastLoginIp(User user, String lastLoginIp);
 	void setEnabled(User user, boolean toEnabled);
 	void setNumberOfEntries(User user, int numberOfEntries);
+	List<User> getAllTrainers();
 	//User getActualUser(String userName);
 }
