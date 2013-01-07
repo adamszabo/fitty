@@ -23,7 +23,6 @@ import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.users.GeneralUsersService;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,9 +37,6 @@ public class AdminController {
 	@Autowired
 	private GeneralOrdersService gos;
 
-	@Autowired
-	private GeneralUsersService gus;
-	
 	@RequestMapping(value = "/raktar", method = RequestMethod.GET)
 	public String store(Locale locale, Model model,
 			HttpServletResponse response, HttpServletRequest request) {

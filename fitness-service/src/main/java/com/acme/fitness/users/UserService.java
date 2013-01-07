@@ -17,7 +17,6 @@ public interface UserService {
 	User getUserByEmail(String email) throws FitnessDaoException;
 	void addLastLoginDate(User user, Date lastLoginDate);
 	void addLastLoginIp(User user, String lastLoginIp);
-	boolean isLoggedIn(User user);
 	void setEnabled(User user, boolean toEnabled);
 	void setNumberOfEntries(User user, int numberOfEntries);
 	//User getActualUser(String userName);

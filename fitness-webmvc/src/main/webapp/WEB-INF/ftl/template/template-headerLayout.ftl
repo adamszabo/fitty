@@ -16,7 +16,7 @@
                                     	<li><a href="<@spring.url relativeUrl="/aruhaz/1"/>">Áruház</a></li>
 										<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
 										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
-										<@security.authorize access="hasRole('ROLE_USER')">
+										<@security.authorize access="hasRole('ROLE_KISKUTYA')">
 											<li><a href="<@spring.url relativeUrl="/admin/raktar"/>">Raktár</a></li>
 										</@security.authorize>
 										<@security.authorize access="isAnonymous()">
@@ -24,6 +24,7 @@
 										</@security.authorize>
                                     </ul>
                                     <div style="float:right;">
+                                    	<#if SPRING_SECURITY_LAST_EXCEPTION?? >${SPRING_SECURITY_LAST_EXCEPTION.message}</#if>
                                     	<@security.authorize access="isAnonymous()">
                                         	<button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button>
 										</@security.authorize>

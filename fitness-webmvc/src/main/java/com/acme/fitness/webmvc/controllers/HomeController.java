@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,10 @@ public class HomeController {
 	@Autowired
 	StandardPasswordEncoder spe;
 	
+	@Autowired
+	@Qualifier("sessionRegistry")
+	SessionRegistryImpl sri;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -47,7 +53,9 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
-		
+		model.addAttribute("users", sri.getAllPrincipals());
+		logger.info(sri.getAllPrincipals().toString());
+		model.addAttribute("size", sri.getAllPrincipals().size());
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "index";
@@ -100,5 +108,15 @@ public class HomeController {
 		}
 		return existUsername;
 	}
+
+	public SessionRegistryImpl getSri() {
+		return sri;
+	}
+
+	public void setSri(SessionRegistryImpl sri) {
+		this.sri = sri;
+	}
+	
+	
 	
 }

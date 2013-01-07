@@ -18,7 +18,7 @@ var RegistrationValidator = function() {
 	}
 	
 	function checkUsernameAndEmail(username,emailUser){
-		console.log('ajax post with username: '+username+' and email: '+emailUser);
+//		console.log('ajax post with username: '+username+' and email: '+emailUser);
 		 $.ajax({
 			 url: location.href + "checkUser",
 	         type: 'POST',
@@ -35,7 +35,7 @@ var RegistrationValidator = function() {
 	}
 	
 	function ajaxCheckSuccess(data){
-		console.log(data.existUsername+', '+data.existEmail);
+//		console.log(data.existUsername+', '+data.existEmail);
 		$('#usernameAlert').hide();
 		$('#emailCheckAlert').hide();
 		
