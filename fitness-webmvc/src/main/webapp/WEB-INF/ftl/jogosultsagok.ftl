@@ -38,7 +38,7 @@
 						</td>
 						<td>
 							<label class="checkbox inline">
-							  <input type="checkbox" id="systemAdmin" name="SystemAdmin"<#if roles[key]?seq_contains("SystemAdmin")?string("yes", "no")=="yes">checked</#if>>
+							  <input type="checkbox" id="systemAdmin" name="ProductAdmin"<#if roles[key]?seq_contains("ProductAdmin")?string("yes", "no")=="yes">checked</#if>>
 							</label>
 						</td>
 						<td>
