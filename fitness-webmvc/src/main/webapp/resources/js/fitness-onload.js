@@ -10,6 +10,7 @@ $(document).ready(function() {
 			$('#loginForm').fadeIn('slow');
 			$('#loginFormButton i').removeClass('icon-chevron-down');
 			$('#loginFormButton i').addClass('icon-chevron-up');
+			$('#j_username').focus();
 			isLoginFormHided=false;
 		}
 		else{
@@ -19,6 +20,8 @@ $(document).ready(function() {
 			isLoginFormHided=true;
 		}
 	});
+	
+	checkLoginErrors();
 	
 	$('.detailSlimScroll').slimScroll({
 	    height: '75px',
@@ -57,6 +60,14 @@ $(document).ready(function() {
 	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
 });
+
+function checkLoginErrors(){
+	errorDialog=$('#loginErrorDialog');
+	if(errorDialog.html()!=undefined){
+		$('#loginFormButton').click();
+		$('#j_username').focus();
+	}
+}
 
 function paginatorCheck(){
 	console.log($('#actualPageNumber').html());

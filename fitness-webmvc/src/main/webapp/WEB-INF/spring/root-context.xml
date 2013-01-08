@@ -31,11 +31,13 @@
 	<bean id="webexpressionHandler"	class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
 
 	<!-- To use concurrent session support for SessionRegistry -->
-	<sec:http auto-config="false" entry-point-ref="authenticationEntryPoint" use-expressions="true">
+	<sec:http auto-config="false" entry-point-ref="authenticationEntryPoint" use-expressions="true" access-denied-page="/">
 		<sec:custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
 		<sec:custom-filter position="FORM_LOGIN_FILTER" ref="FormLoginFilter" />
 		<sec:session-management	session-authentication-strategy-ref="sas" />
 		<sec:logout logout-success-url="/"/>
+		
+		<sec:intercept-url pattern="/admin/**" access="hasRole('SystemAdmin')"/>
 	</sec:http>
 
 	<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">

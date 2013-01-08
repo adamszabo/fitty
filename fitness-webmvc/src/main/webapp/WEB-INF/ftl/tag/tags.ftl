@@ -5,10 +5,11 @@
 	<div style="padding-top:4px;">
     	<form action="<@spring.url relativeUrl="/j_spring_security_check"/>" method="POST" class="form-inline" style="margin-bottom:0px">
 		  <fieldset>
-		    <input type="text" name="j_username" placeholder="Felhasználó név">
+		    <input type="text" id="j_username" name="j_username" placeholder="Felhasználó név">
 		    <input type="password" name="j_password" placeholder="Jelszó">
 		    <button type="submit" class="btn btn-medium btn-primary">OK</button>
 		  </fieldset>
+		  <#if SPRING_SECURITY_LAST_EXCEPTION?? ><div id="loginErrorDialog" style="color:white; margin-bottom:5px;">${SPRING_SECURITY_LAST_EXCEPTION.message}</div></#if>
 		</form>
     </div>
 </#macro>
