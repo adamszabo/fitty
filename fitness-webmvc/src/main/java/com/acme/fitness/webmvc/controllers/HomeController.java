@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.users.Roles;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.dto.CheckUserFieldDTO;
@@ -67,7 +68,8 @@ public class HomeController {
 		boolean existEmail=existEmail(user.getEmail());
 		
 		if(!existUsername && !existEmail){
-			gus.addUser(user.getFullName(), user.getUsername(), spe.encode(user.getPassword()), user.getEmail(), user.getMobile(), new Date());
+			User registeredUser=gus.addUser(user.getFullName(), user.getUsername(), spe.encode(user.getPassword()), user.getEmail(), user.getMobile(), new Date());
+			gus.addUserRole(Roles.Client.toString(), registeredUser);
 			logger.info("User registered :"+user.toString()+" password: "+user.getPassword()+", mobile: "+user.getMobile());
 		}
 		else{
