@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
@@ -43,7 +45,7 @@ import com.acme.fitness.users.GeneralUsersService;
 public class WebShopController {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(HomeController.class);
+			.getLogger(WebShopController.class);
 
 	@Autowired
 	private GeneralProductsService gps;
@@ -114,12 +116,13 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, Model model,
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
 		String name = auth.getName();
 		if (name.equals("anonymousUser")) {
-
+			redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
+			return "redirect:/aruhaz/" + page; 
 		} else {
 			System.out.println(name);
 			Basket basket = (Basket) request.getSession()
@@ -136,10 +139,12 @@ public class WebShopController {
 				gos.checkOutBasket(basket);
 			} catch (StoreQuantityException e) {
 				request.getSession().setAttribute("missingProduct", e.getProduct());
+				redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
+				request.setAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
 			}
 		}
 
-		return "redirect:/aruhaz/" + page + "/deleteBasket";
+		return deleteBasket(page, model, request, response);
 	}
 
 	private void addBasketToSessionFromCookie(HttpServletRequest request) {
@@ -167,7 +172,7 @@ public class WebShopController {
 		addProductToBasketByProductId(id, quantity, basket);
 		request.getSession().setAttribute("basket", basket);
 		logger.info("Product : " + id + " with quantity : " + quantity
-				+ " added to " + basket.getUser().getUsername() + "'s user");
+				+ " added to " + RequestContextHolder.currentRequestAttributes().getSessionId() + " session's id");
 	}
 
 	private void addNewBasketToSession(HttpServletRequest request,

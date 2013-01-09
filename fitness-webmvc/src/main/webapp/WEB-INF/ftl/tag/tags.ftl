@@ -77,6 +77,7 @@
 	  <strong>Hiba! </strong><span>${message}</span>
 	</div>
 </#macro>
+
 <#macro basketDialog>
 	<#if basket?exists>
 	<div id="basketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -124,7 +125,7 @@
 	  </div>
 	  <div class="modal-footer">
 	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
-	    <button class="btn btn-primary">Megrendelés</button>
+	    <a href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/confirmBasket"/>" class="btn btn-primary">Megrendelés</a>
 	  </div>
 	</div>
 	</#if>
@@ -181,7 +182,7 @@
 	<div id="missesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h3 id="myModalLabel">Az alábbi termékből nem taláható meg megfelelő mennyiség a raktárban:</h3>
+	    <h3 id="myModalLabel">Az alábbi termékből nem taláható megfelelő mennyiség a raktárban:</h3>
 	  </div>
 	  <div class="modal-body">
 	  	<table class="table table-hover">
