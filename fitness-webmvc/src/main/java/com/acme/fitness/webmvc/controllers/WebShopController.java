@@ -187,8 +187,7 @@ public class WebShopController {
 	private void writeToCookies(long id, int quantity,
 			HttpServletResponse response, HttpServletRequest request,
 			ObjectMapper mapper, Map<String, Integer> map) {
-		if (map.containsKey(Long.toString(id))) {
-		} else {
+		if (!map.containsKey(Long.toString(id))) {
 			map.put(Long.toString(id), quantity);
 		}
 		String json = null;

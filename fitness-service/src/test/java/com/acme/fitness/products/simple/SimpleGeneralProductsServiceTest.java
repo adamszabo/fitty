@@ -54,13 +54,12 @@ public class SimpleGeneralProductsServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleGeneralProductsService();
+		underTest=new SimpleGeneralProductsService(productService, membershipService, trainingService);
 	}
 	
 	@Test
 	public void testAddProductShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		Date date=new Date();
 		BDDMockito.given(productService.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date)).willReturn(product);
 		// WHEN
@@ -73,7 +72,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testDeleteProductShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		// WHEN
 		underTest.deleteProduct(product);
 		// THEN
@@ -83,7 +81,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testUpdateProductShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		// WHEN
 		underTest.updateProduct(product);
 		// THEN
@@ -93,7 +90,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetAllProductShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		List<Product> expected=new ArrayList<Product>();
 		BDDMockito.given(productService.getAllProducts()).willReturn(expected);
 		// WHEN
@@ -106,7 +102,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetProductsByNameShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		List<Product> expected=new ArrayList<Product>();
 		BDDMockito.given(productService.getProductsByName(Mockito.anyString())).willReturn(expected);
 		// WHEN
@@ -119,7 +114,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetProductsByManufacturerShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		List<Product> expected=new ArrayList<Product>();
 		BDDMockito.given(productService.getProductsByManufacturer(Mockito.anyString())).willReturn(expected);
 		// WHEN
@@ -132,7 +126,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetProductsByPriceIntervalShouldReturnProperly(){
 		// GIVEN
-		underTest.setProductService(productService);
 		List<Product> expected=new ArrayList<Product>();
 		BDDMockito.given(productService.getProductsByPriceInterval(Mockito.anyDouble(), Mockito.anyDouble())).willReturn(expected);
 		// WHEN
@@ -145,7 +138,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testNewTrainingShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		Date date=new Date();
 		BDDMockito.given(trainingService.newTraining(user, user, date)).willReturn(training);
 		// WHEN
@@ -158,7 +150,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testDeleteTrainingShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		// WHEN
 		underTest.deleteTraining(training);
 		// THEN
@@ -168,7 +159,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testUpdateTrainingShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		// WHEN
 		underTest.updateTraining(training);
 		// THEN
@@ -178,7 +168,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testRecordTrainingResultsShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		// WHEN
 		underTest.recordTrainingResults(training, 0, TEST_STRING);
 		// THEN
@@ -188,7 +177,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetTrainingsByTrainerShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		List<Training> expected=new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsByTrainer(user)).willReturn(expected);
 		// WHEN
@@ -201,7 +189,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetTrainingsByClientShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		List<Training> expected=new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsByClient(user)).willReturn(expected);
 		// WHEN
@@ -214,7 +201,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetTrainingsByBasketShouldReturnProperly(){
 		// GIVEN
-		underTest.setTrainingService(trainingService);
 		List<Training> expected=new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsByBasket(basket)).willReturn(expected);
 		// WHEN
@@ -227,7 +213,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testNewMembershipShouldReturnProperly(){
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		Date date=new Date();
 		BDDMockito.given(membershipService.newMemberShip(TEST_STRING, 0, date, 0.0)).willReturn(membership);
 		// WHEN
@@ -240,7 +225,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testDeleteMembershipShouldReturnProperly(){
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		// WHEN
 		underTest.deleteMembership(membership);
 		// THEN
@@ -250,7 +234,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testUpdateMembershipShouldReturnProperly(){
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		// WHEN
 		underTest.updateMembership(membership);
 		// THEN
@@ -260,7 +243,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testIsValidMembershipShouldReturnProperly(){
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		// WHEN
 		underTest.isValid(membership);
 		// THEN
@@ -270,7 +252,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetMembershipByIdWhenHasResultShouldReturnProperly() throws FitnessDaoException{
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		BDDMockito.given(membershipService.getMembershipById(Mockito.anyLong())).willReturn(membership);
 		// WHEN
 		Membership result=underTest.getMembershipById(Mockito.anyLong());
@@ -282,7 +263,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetMembershipByIdWhenDoesNotHaveResultShouldReturnProperly() throws FitnessDaoException{
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		BDDMockito.given(membershipService.getMembershipById(Mockito.anyLong())).willThrow(new FitnessDaoException());
 		// WHEN
 		Membership result=underTest.getMembershipById(Mockito.anyLong());
@@ -294,7 +274,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetMembershipByBasketShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		List<Membership> expected=new ArrayList<Membership>();
 		BDDMockito.given(membershipService.getMembershipByBasket(basket)).willReturn(expected);
 		// WHEN
@@ -307,7 +286,6 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testGetMembershipByUserShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		List<Membership> expected=new ArrayList<Membership>();
 		BDDMockito.given(membershipService.getMembershipByUser(user)).willReturn(expected);
 		// WHEN
@@ -320,34 +298,9 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testMembershipIncreaseClientEntriesShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipService(membershipService);
 		// WHEN
 		underTest.increaseClientEntries(membership);
 		// THEN
 		BDDMockito.verify(membershipService).increaseClientEntries(membership);
-	}
-	
-	@Test
-	public void testProductServicesGetterAndSetterBehaviour() {
-		//WHEN
-		underTest.setProductService(productService);
-		//THEN
-		Assert.assertEquals(productService, underTest.getProductService());
-	}
-	
-	@Test
-	public void testMembershipServicesGetterAndSetterBehaviour() {
-		//WHEN
-		underTest.setMembershipService(membershipService);
-		//THEN
-		Assert.assertEquals(membershipService, underTest.getMembershipService());
-	}
-
-	@Test
-	public void testTrainingServicesGetterAndSetterBehaviour() {
-		//WHEn
-		underTest.setTrainingService(trainingService);
-		//THEN
-		Assert.assertEquals(trainingService, underTest.getTrainingService());
 	}
 }

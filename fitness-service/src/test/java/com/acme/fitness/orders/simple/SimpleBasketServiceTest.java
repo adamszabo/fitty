@@ -52,8 +52,8 @@ public class SimpleBasketServiceTest {
 
 	@Before
 	public void setUp() {
-		underTest = new SimpleBasketService();
 		MockitoAnnotations.initMocks(this);
+		underTest = new SimpleBasketService(basketDao, membershipService, trainingService, orderItemService, storeService);
 	}
 
 	@Test
@@ -73,7 +73,6 @@ public class SimpleBasketServiceTest {
 		// GIVEN
 		Basket expectedBasket = new Basket();
 		expectedBasket.setId(1L);
-		underTest.setBasketDao(basketDao);
 		// WHEN
 		underTest.deleteBasket(expectedBasket);
 		// THEN
@@ -85,7 +84,6 @@ public class SimpleBasketServiceTest {
 		// GIVEN
 		Basket expectedBasket = new Basket();
 		expectedBasket.setId(1L);
-		underTest.setBasketDao(basketDao);
 		// WHEN
 		underTest.updateBasket(expectedBasket);
 		// THEN
@@ -95,11 +93,12 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddMembershipToBasketShouldAddTheMembershipRight() {
 		// GIVEN
-		Basket basket = new Basket(false, new User());
+		User user=new User();
+		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		Membership membership = new Membership();
 		membership.setId(2L);
-		Basket expectedBasket = new Basket(false, new User());
+		Basket expectedBasket = new Basket(false, user);
 		expectedBasket.setId(1L);
 		Membership expectedMembership = new Membership();
 		expectedMembership.setId(2L);
@@ -113,11 +112,12 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddTrainingToBasketShouldAddTheTrainingRight() {
 		// GIVEN
-		Basket basket = new Basket(false, new User());
+		User user=new User();
+		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		Training training = new Training();
 		training.setId(2L);
-		Basket expectedBasket = new Basket(false, new User());
+		Basket expectedBasket = new Basket(false, user);
 		expectedBasket.setId(1L);
 		Training expectedTraining = new Training();
 		expectedTraining.setId(2L);
@@ -131,11 +131,12 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddOrderItemToBasketShouldAddTheOrderItemRight() {
 		// GIVEN
-		Basket basket = new Basket(false, new User());
+		User user=new User();
+		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		OrderItem orderItem = new OrderItem();
 		orderItem.setId(2L);
-		Basket expectedBasket = new Basket(false, new User());
+		Basket expectedBasket = new Basket(false, user);
 		expectedBasket.setId(1L);
 		OrderItem expectedOrderItem = new OrderItem();
 		expectedOrderItem.setId(2L);
@@ -202,7 +203,6 @@ public class SimpleBasketServiceTest {
 		Basket expectedBasket = new Basket();
 		expectedBasket.setId(1L);
 		expectedBasket.setDelivered(true);
-		underTest.setBasketDao(basketDao);
 		// WHEN
 		underTest.deliver(basket);
 		// THEN
@@ -215,7 +215,6 @@ public class SimpleBasketServiceTest {
 		User user = new User();
 		BDDMockito.given(basketDao.getBasketsByUser(user)).willReturn(
 				new ArrayList<Basket>());
-		underTest.setBasketDao(basketDao);
 		// WHEN
 		List<Basket> result = underTest.getBasketsByUser(user);
 		// THEN
@@ -229,52 +228,11 @@ public class SimpleBasketServiceTest {
 		// GIVEN
 		Basket expected = new Basket();
 		BDDMockito.given(basketDao.getBasketById(1L)).willReturn(expected);
-		underTest.setBasketDao(basketDao);
 		// WHEN
 		Basket result = underTest.getBasketById(1L);
 		// THEN
 		BDDMockito.verify(basketDao).getBasketById(1L);
 		Assert.assertEquals(expected, result);
-	}
-
-	@Test
-	public void testMembershipServicesGetterAndSetterBehaviour() {
-		// WHEN
-		underTest.setMembershipService(membershipService);
-		// THEN
-		Assert.assertEquals(membershipService, underTest.getMembershipService());
-	}
-
-	@Test
-	public void testTrainingServicesGetterAndSetterBehaviour() {
-		// WHEN
-		underTest.setTrainingService(trainingService);
-		// THEN
-		Assert.assertEquals(trainingService, underTest.getTrainingService());
-	}
-
-	@Test
-	public void testOrderItemServicesGetterAndSetterBehaviour() {
-		// WHEN
-		underTest.setOrderItemService(orderItemService);
-		// THEN
-		Assert.assertEquals(orderItemService, underTest.getOrderItemService());
-	}
-
-	@Test
-	public void testStoreServicesGetterAndSetterBehaviour() {
-		// WHEN
-		underTest.setStoreService(storeService);
-		// THEN
-		Assert.assertEquals(storeService, underTest.getStoreService());
-	}
-
-	@Test
-	public void testBasketDaoGetterAndSetterBehaviour() {
-		// WHEN
-		underTest.setBasketDao(basketDao);
-		// THEN
-		Assert.assertEquals(basketDao, underTest.getBasketDao());
 	}
 
 	@Test
@@ -289,9 +247,6 @@ public class SimpleBasketServiceTest {
 		memberships.add(membership);
 		BDDMockito.given(basketMock.getTrainings()).willReturn(trainings);
 		BDDMockito.given(basketMock.getMemberships()).willReturn(memberships);
-		underTest.setBasketDao(basketDao);
-		underTest.setMembershipService(membershipService);
-		underTest.setTrainingService(trainingService);
 		// WHEN
 		underTest.checkOutBasket(basketMock);
 		// THEN
@@ -314,9 +269,6 @@ public class SimpleBasketServiceTest {
 		BDDMockito.doNothing().when(basketDao).save(basketMock);
 		BDDMockito.doNothing().when(orderItemService)
 				.updateOrderItem(orderItemMock);
-		underTest.setBasketDao(basketDao);
-		underTest.setStoreService(storeService);
-		underTest.setOrderItemService(orderItemService);
 		// WHEN
 		underTest.checkOutBasket(basketMock);
 		// THEN
@@ -341,9 +293,6 @@ public class SimpleBasketServiceTest {
 		BDDMockito.given(storeService.takeOutProduct(expectedProduct, 1)).willThrow(new FitnessDaoException());
 		BDDMockito.doNothing().when(basketDao).save(basketMock);
 		BDDMockito.doNothing().when(orderItemService).updateOrderItem(orderItemMock);
-		underTest.setBasketDao(basketDao);
-		underTest.setStoreService(storeService);
-		underTest.setOrderItemService(orderItemService);
 		List<Product> result = null;
 		List<Product> products = new ArrayList<Product>();
 		products.add(expectedProduct);
@@ -374,9 +323,6 @@ public class SimpleBasketServiceTest {
 		BDDMockito.given(orderItemMock.getQuantity()).willReturn(1);
 		BDDMockito.given(storeService.takeOutProduct(expectedProduct, 1)).willReturn(false);
 		BDDMockito.doNothing().when(orderItemService).updateOrderItem(orderItemMock);
-		underTest.setBasketDao(basketDao);
-		underTest.setStoreService(storeService);
-		underTest.setOrderItemService(orderItemService);
 		List<Product> result = null;
 		List<Product> products = new ArrayList<Product>();
 		products.add(expectedProduct);

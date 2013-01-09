@@ -16,8 +16,12 @@ import com.acme.fitness.products.MembershipService;
 @Service
 public class SimpleMembershipService implements MembershipService {
 	
-	@Autowired
 	private MembershipDao membershipDao;
+	
+	@Autowired
+	public SimpleMembershipService(MembershipDao membershipDao){
+		this.membershipDao=membershipDao;
+	}
 	
 	@Override
 	public Membership newMemberShip(String type, int maxEntries, Date expireDate, double price) {
@@ -75,13 +79,4 @@ public class SimpleMembershipService implements MembershipService {
 		membership.setNumberOfEntries(membership.getNumberOfEntries()+1);
 		membershipDao.update(membership);
 	}
-
-	public MembershipDao getMembershipDao() {
-		return membershipDao;
-	}
-
-	public void setMembershipDao(MembershipDao membershipDao) {
-		this.membershipDao = membershipDao;
-	}
-	
 }

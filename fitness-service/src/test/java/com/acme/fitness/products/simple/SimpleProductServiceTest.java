@@ -24,8 +24,8 @@ public class SimpleProductServiceTest {
 	
 	@Before
 	public void setUp(){
-		underTest = new SimpleProductService();
 		MockitoAnnotations.initMocks(this);
+		underTest = new SimpleProductService(productDao);
 	}
 	
 	@Test
@@ -37,7 +37,6 @@ public class SimpleProductServiceTest {
 		String expectedManufacturer = "manufacturer";
 		Date expectedDate = new Date();
 		Product expectedProduct = new Product(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate);
-		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.addProduct(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate);
 		//THEN
@@ -48,7 +47,6 @@ public class SimpleProductServiceTest {
 	public void testDeleteProductShouldInvokeTheMethodRight(){
 		//GIVEN
 		Product expectedProduct = new Product("name", "details", 11L, "manufacturer", new Date());
-		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.deleteProduct(expectedProduct);
 		//THEN
@@ -59,7 +57,6 @@ public class SimpleProductServiceTest {
 	public void testUpdateProductShouldInvokeTheMethodRight() {
 		//GIVEN
 		Product expectedProduct = new Product("name", "details", 11L, "manufacturer", new Date());
-		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.updateProduct(expectedProduct);
 		//THEn
@@ -73,7 +70,6 @@ public class SimpleProductServiceTest {
 		Product expectedProduct = new Product();
 		expectedProduct.setName("test");
 		BDDMockito.given(productDao.getProductById(expectedId)).willReturn(expectedProduct);
-		underTest.setProductDao(productDao);
 		//WHEN
 		Product result = underTest.getProductById(expectedId);
 		//THEN
@@ -86,7 +82,6 @@ public class SimpleProductServiceTest {
 		//GIVEN
 		Long wrongExpectedId = 11L;
 		BDDMockito.given(productDao.getProductById(wrongExpectedId)).willThrow(new FitnessDaoException());
-		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.getProductById(wrongExpectedId);
 		//THEN
@@ -99,7 +94,6 @@ public class SimpleProductServiceTest {
 		String expectedName = "Gabi";
 		List<Product> expectedProducts = new ArrayList<Product>();
 		BDDMockito.given(productDao.getProductsByName(expectedName)).willReturn(expectedProducts);
-		underTest.setProductDao(productDao);
 		//WHEN
 		List<Product> result = underTest.getProductsByName(expectedName);
 		//THEN
@@ -113,7 +107,6 @@ public class SimpleProductServiceTest {
 		String expectedName = "Nike";
 		List<Product> expectedProducts = new ArrayList<Product>();
 		BDDMockito.given(productDao.getProductsByName(expectedName)).willReturn(expectedProducts);
-		underTest.setProductDao(productDao);
 		//WHEN
 		List<Product> result = underTest.getProductsByName(expectedName);
 		//THEN
@@ -128,7 +121,6 @@ public class SimpleProductServiceTest {
 		double expectedToPrice = 12.0;
 		List<Product> expectedProducts = new ArrayList<Product>();
 		BDDMockito.given(productDao.getProductsByPriceInterval(expectedFromPrice, expectedToPrice)).willReturn(expectedProducts);
-		underTest.setProductDao(productDao);
 		//WHEN
 		List<Product> result = underTest.getProductsByPriceInterval(expectedFromPrice, expectedToPrice);
 		//THEN
@@ -144,7 +136,6 @@ public class SimpleProductServiceTest {
 		product.setId(1L);
 		products.add(product);
 		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
-		underTest.setProductDao(productDao);
 		//WHEN
 		List<Product> result = underTest.getAllProducts();
 		//THEN
@@ -160,21 +151,10 @@ public class SimpleProductServiceTest {
 		product.setId(1L);
 		products.add(product);
 		BDDMockito.given(productDao.getProductsByManufacturer("manu")).willReturn(products);
-		underTest.setProductDao(productDao);
 		//WHEN
 		List<Product> result = underTest.getProductsByManufacturer("manu");
 		//THEN
 		BDDMockito.verify(productDao).getProductsByManufacturer("manu");
 		Assert.assertEquals(products, result);
 	}
-	
-	@Test
-	public void testProductDaosGetterAndSetterBehaviour() {
-		//GIVEN
-		//WHEN
-		underTest.setProductDao(productDao);
-		//THEN
-		Assert.assertEquals(productDao, underTest.getProductDao());
-	}
-	
 }

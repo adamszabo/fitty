@@ -35,13 +35,12 @@ public class SimpleGeneralUsersServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleGeneralUsersService();
+		underTest=new SimpleGeneralUsersService(roleServiceMock, userServiceMock);
 	}
 	
 	@Test
 	public void testAddUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		Date date=new Date();
 		User user=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", date,null, null);
 		BDDMockito.given(userServiceMock.addUser("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date())).willReturn(user);
@@ -56,8 +55,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testGetAllUsersShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserService(userServiceMock);
-		underTest.setRoleService(roleServiceMock);
 		List<User> users=new ArrayList<User>();
 		BDDMockito.given(userServiceMock.getAllUsers()).willReturn(users);
 		//WHEN
@@ -69,7 +66,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testAddUserRoleShouldReturnProperly(){
 		//GIVEN
-		underTest.setRoleService(roleServiceMock);
 		//WHEN
 		underTest.addUserRole(TESTSTRING, userMock);
 		//THEN
@@ -79,7 +75,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testGetRemoveUserRoleShouldReturnProperly(){
 		//GIVEN
-		underTest.setRoleService(roleServiceMock);
 		//WHEN
 		underTest.removeUserRole(TESTSTRING, userMock);
 		//THEN
@@ -89,7 +84,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testAddLastLoginInfoShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		Date date=new Date();
 		//WHEN
 		underTest.addLastLoginInfo(userMock, TESTSTRING, date);
@@ -102,7 +96,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testGetUserByUsernameWhenHasResultShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
 		//WHEN
 		User result=underTest.getUserByUsername(TESTSTRING);
@@ -114,7 +107,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetUserByUsernameWhenDoesNotHaveResultShouldThrowFitnessDaoException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willThrow(new FitnessDaoException());
 		//WHEN
 		User result=underTest.getUserByUsername(TESTSTRING);
@@ -126,7 +118,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testGetUserByEmailWhenHasResultShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByEmail(TESTSTRING)).willReturn(userMock);
 		//WHEN
 		User result=underTest.getUserByEmail(TESTSTRING);
@@ -138,7 +129,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetUserByEmailWhenDoesNotHaveResultShouldThrowFitnessDaoException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByEmail(TESTSTRING)).willThrow(new FitnessDaoException());
 		//WHEN
 		User result=underTest.getUserByEmail(TESTSTRING);
@@ -150,7 +140,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testIsLoginValidByUserWhenUserRecordExistsInDatabaseAndNotLoggedInShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
 		//WHEN
 		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING, false);
@@ -162,7 +151,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testIsLoginValidByUserWhenUserRecordDoesNotExistInDatabaseShouldThrowException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willThrow(new FitnessDaoException());
 		//WHEN
 		boolean result=underTest.isLoginValidByUser(TESTSTRING, TESTSTRING, false);
@@ -174,7 +162,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testIsLoginValidByUserWhenUserRecordExistsInDatabaseAndLoggedInWithSameIpShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
 		BDDMockito.given(userMock.getLastLoginIp()).willReturn(TESTSTRING);
 		//WHEN
@@ -188,7 +175,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testIsLoginValidByUserWhenUserRecordExistsInDatabaseAndLoggedInWithDifferentIpShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserByUserName(TESTSTRING)).willReturn(userMock);
 		BDDMockito.given(userMock.getLastLoginIp()).willReturn("asdf");
 		//WHEN
@@ -202,7 +188,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testDeleteUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		//WHEN
 		underTest.deleteUser(userMock);
 		//THEN
@@ -212,7 +197,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testUpdateUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		//WHEN
 		underTest.updateUser(userMock);
 		//THEN
@@ -222,7 +206,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testGetRolesByUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setRoleService(roleServiceMock);
 		List<Role> expected=new ArrayList<Role>();
 		BDDMockito.given(roleServiceMock.getRolesByUser(userMock)).willReturn(expected);
 		//WHEN
@@ -235,7 +218,6 @@ public class SimpleGeneralUsersServiceTest {
 	@Test
 	public void testGetRolesByIdShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserService(userServiceMock);
 		BDDMockito.given(userServiceMock.getUserById(Mockito.anyLong())).willReturn(userMock);
 		//WHEN
 		User result=underTest.getUserById(Mockito.anyLong());
@@ -244,19 +226,4 @@ public class SimpleGeneralUsersServiceTest {
 		Assert.assertEquals(userMock, result);
 	}
 	
-	@Test
-	public void testUserServicesGetterAndSetterBehaviour() {
-		//WHEN
-		underTest.setUserService(userServiceMock);
-		//THEN
-		Assert.assertEquals(userServiceMock, underTest.getUserService());
-	}
-	
-	@Test
-	public void testRoleServicesGetterAndSetterBehaviour() {
-		//WHEN
-		underTest.setRoleService(roleServiceMock);
-		//THEN
-		Assert.assertEquals(roleServiceMock, underTest.getRoleService());
-	}
 }

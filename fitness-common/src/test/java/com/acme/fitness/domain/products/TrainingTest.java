@@ -86,17 +86,18 @@ public class TrainingTest {
 	@Test
 	public void testTrainingConstructorWithArguments() {
 		//GIVEN
+		User user=new User();
 		Date date = new Date();
 		Training expected = new Training();
-		expected.setTrainer(new User());
-		expected.setClient(new User());
+		expected.setTrainer(user);
+		expected.setClient(user);
 		expected.setTrainingStartDate(date);
 		expected.setAnalyzed(true);
 		expected.setBurnedCalories(1);
 		expected.setReview("review");
 		expected.setBasket(new Basket());
 		//WHEN
-		underTest = new Training(new User(), new User(), date, true, 1, "review", new Basket());
+		underTest = new Training(user, user, date, true, 1, "review", new Basket());
 		//THEN
 		Assert.assertEquals(expected, underTest);
 	}

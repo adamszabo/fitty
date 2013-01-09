@@ -13,8 +13,12 @@ import com.acme.fitness.orders.OrderItemService;
 @Service
 public class SimpleOrderItemService implements OrderItemService {
 	
-	@Autowired
 	private OrderItemDao orderItemDao;
+	
+	@Autowired 
+	public SimpleOrderItemService(OrderItemDao orderItemDao){
+		this.orderItemDao=orderItemDao;
+	}
 
 	@Override
 	public OrderItem newOrderItem(Product product, int quantity) {
@@ -50,14 +54,4 @@ public class SimpleOrderItemService implements OrderItemService {
 	public OrderItem getOrderItemById(long id) throws FitnessDaoException {
 		return orderItemDao.getOrderItemById(id);
 	}
-
-	public OrderItemDao getOrderItemDao() {
-		return orderItemDao;
-	}
-
-	public void setOrderItemDao(OrderItemDao orderItemDao) {
-		this.orderItemDao = orderItemDao;
-	}
-	
-	
 }

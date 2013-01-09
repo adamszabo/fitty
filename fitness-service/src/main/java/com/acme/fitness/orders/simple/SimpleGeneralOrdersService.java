@@ -22,14 +22,16 @@ import com.acme.fitness.orders.StoreService;
 @Service
 public class SimpleGeneralOrdersService implements GeneralOrdersService {
 
-	@Autowired
 	private BasketService basketService;
-	
-	@Autowired
 	private OrderItemService orderItemService;
+	private StoreService storeService;
 	
 	@Autowired
-	private StoreService storeService;
+	public SimpleGeneralOrdersService(BasketService basketService, OrderItemService orderItemService, StoreService storeService){
+		this.basketService=basketService;
+		this.orderItemService=orderItemService;
+		this.storeService=storeService;
+	}
 
 	@Override
 	public Basket newBasket(User client) {
@@ -150,29 +152,5 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	@Override
 	public List<Store> getAllStores() {
 		return storeService.getAllStores();
-	}
-
-	public BasketService getBasketService() {
-		return basketService;
-	}
-
-	public void setBasketService(BasketService basketService) {
-		this.basketService = basketService;
-	}
-
-	public OrderItemService getOrderItemService() {
-		return orderItemService;
-	}
-
-	public void setOrderItemService(OrderItemService orderItemService) {
-		this.orderItemService = orderItemService;
-	}
-
-	public StoreService getStoreService() {
-		return storeService;
-	}
-
-	public void setStoreService(StoreService storeService) {
-		this.storeService = storeService;
 	}
 }

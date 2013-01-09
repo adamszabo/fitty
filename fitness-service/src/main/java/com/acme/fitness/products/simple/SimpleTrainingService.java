@@ -15,8 +15,12 @@ import com.acme.fitness.products.TrainingService;
 @Service
 public class SimpleTrainingService implements TrainingService {
 
-	@Autowired
 	private TrainingDao trainingDao;
+	
+	@Autowired
+	public SimpleTrainingService(TrainingDao trainingDao){
+		this.trainingDao=trainingDao;
+	}
 	
 	@Override
 	public Training newTraining(User trainer, User client, Date date) {
@@ -65,14 +69,6 @@ public class SimpleTrainingService implements TrainingService {
 	@Override
 	public List<Training> getTrainingsByClient(User client) {
 		return trainingDao.getTrainingsByClient(client);
-	}
-
-	public TrainingDao getTrainingDao() {
-		return trainingDao;
-	}
-
-	public void setTrainingDao(TrainingDao trainingDao) {
-		this.trainingDao = trainingDao;
 	}
 
 	@Override

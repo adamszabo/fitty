@@ -26,22 +26,22 @@ import com.acme.fitness.products.TrainingService;
 @Service
 public class SimpleBasketService implements BasketService {
 
-	@Autowired
 	private BasketDao basketDao;
-
-	@Autowired
 	private MembershipService membershipService;
-
-	@Autowired
 	private TrainingService trainingService;
-
-	@Autowired
 	private OrderItemService orderItemService;
-
-	@Autowired
 	private StoreService storeService;
 	
 	private Logger logger = LoggerFactory.getLogger(SimpleBasketService.class);
+	
+	@Autowired
+	public SimpleBasketService(BasketDao basketDao, MembershipService membershipService, TrainingService trainingService, OrderItemService orderItemService, StoreService storeService){
+		this.basketDao=basketDao;
+		this.membershipService=membershipService;
+		this.trainingService=trainingService;
+		this.orderItemService=orderItemService;
+		this.storeService=storeService;
+	}
 
 	@Override
 	public Basket newBasket(User client) {
@@ -122,46 +122,6 @@ public class SimpleBasketService implements BasketService {
 	@Override
 	public Basket getBasketById(long id) throws FitnessDaoException {
 		return basketDao.getBasketById(id);
-	}
-
-	public BasketDao getBasketDao() {
-		return basketDao;
-	}
-
-	public void setBasketDao(BasketDao basketDao) {
-		this.basketDao = basketDao;
-	}
-
-	public MembershipService getMembershipService() {
-		return membershipService;
-	}
-
-	public void setMembershipService(MembershipService membershipService) {
-		this.membershipService = membershipService;
-	}
-
-	public TrainingService getTrainingService() {
-		return trainingService;
-	}
-
-	public void setTrainingService(TrainingService trainingService) {
-		this.trainingService = trainingService;
-	}
-
-	public OrderItemService getOrderItemService() {
-		return orderItemService;
-	}
-
-	public void setOrderItemService(OrderItemService orderItemService) {
-		this.orderItemService = orderItemService;
-	}
-
-	public StoreService getStoreService() {
-		return storeService;
-	}
-
-	public void setStoreService(StoreService storeService) {
-		this.storeService = storeService;
 	}
 
 	private void saveProducts(Basket basket) throws StoreQuantityException {

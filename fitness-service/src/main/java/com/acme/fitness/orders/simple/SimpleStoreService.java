@@ -15,11 +15,14 @@ import com.acme.fitness.orders.StoreService;
 @Service
 public class SimpleStoreService implements StoreService {
 
-	@Autowired
 	private StoreDao storeDao;
+	private ProductDao productDao;
 	
 	@Autowired
-	private ProductDao productDao;
+	public SimpleStoreService(StoreDao storeDao, ProductDao productDao){
+		this.storeDao=storeDao;
+		this.productDao=productDao;
+	}
 
 	@Override
 	public Store addProduct(Product product, int quantity) {
@@ -91,22 +94,5 @@ public class SimpleStoreService implements StoreService {
 	@Override
 	public void updateStore(Store store) {
 		storeDao.update(store);
-	}
-
-	public StoreDao getStoreDao() {
-		return storeDao;
-	}
-
-	public void setStoreDao(StoreDao storeDao) {
-		this.storeDao = storeDao;
-	}
-
-
-	public ProductDao getProductDao() {
-		return productDao;
-	}
-
-	public void setProductDao(ProductDao productDao) {
-		this.productDao = productDao;
 	}
 }

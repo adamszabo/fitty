@@ -9,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.acme.fitness.dao.GenericDao;
 
 public abstract class AbstractHibernateGenericDao<T> implements GenericDao<T>{
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private SessionFactory sessionFactory;
-	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	protected Session getSession(){
 		return sessionFactory.getCurrentSession();

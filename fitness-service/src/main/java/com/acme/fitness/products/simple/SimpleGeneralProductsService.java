@@ -20,14 +20,16 @@ import com.acme.fitness.products.TrainingService;
 @Service
 public class SimpleGeneralProductsService implements GeneralProductsService {
 
-	@Autowired
 	private ProductService productService;
-
-	@Autowired
 	private MembershipService membershipService;
-
-	@Autowired
 	private TrainingService trainingService;
+	
+	@Autowired
+	public SimpleGeneralProductsService(ProductService productService, MembershipService membershipService, TrainingService trainingService){
+		this.productService=productService;
+		this.membershipService=membershipService;
+		this.trainingService=trainingService;
+	}
 
 	@Override
 	public Product addProduct(String name, String details, double price, String manufacturer, Date creation) {
@@ -142,29 +144,5 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	@Override
 	public void increaseClientEntries(Membership membership) {
 		membershipService.increaseClientEntries(membership);
-	}
-
-	public ProductService getProductService() {
-		return productService;
-	}
-
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
-	}
-
-	public MembershipService getMembershipService() {
-		return membershipService;
-	}
-
-	public void setMembershipService(MembershipService membershipService) {
-		this.membershipService = membershipService;
-	}
-
-	public TrainingService getTrainingService() {
-		return trainingService;
-	}
-
-	public void setTrainingService(TrainingService trainingService) {
-		this.trainingService = trainingService;
 	}
 }

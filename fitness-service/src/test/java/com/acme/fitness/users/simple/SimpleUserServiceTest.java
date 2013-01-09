@@ -28,13 +28,12 @@ public class SimpleUserServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleUserService();
+		underTest=new SimpleUserService(userDao);
 	}
 	
 	@Test
 	public void testAddUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		Date date=new Date();
 		User user=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", date,null, null);
 		//WHEN
@@ -47,7 +46,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testDeleteUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		//WHEN
 		underTest.deleteUser(userMock);
 		//THEN
@@ -57,7 +55,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testUpdateUserShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		//WHEN
 		underTest.updateUser(userMock);
 		//THEN
@@ -67,7 +64,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetUserByIdShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserDao(userDao);
 		BDDMockito.given(userDao.getUserById(1L)).willReturn(userMock);
 		//WHEN
 		User result=underTest.getUserById(1L);
@@ -79,7 +75,6 @@ public class SimpleUserServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetUserByIdWhenNoResultFoundShouldThrowException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserDao(userDao);
 		BDDMockito.given(userDao.getUserById(1L)).willThrow(new FitnessDaoException());
 		//WHEN
 		User result=underTest.getUserById(1L);
@@ -91,7 +86,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetUserByUserNameShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserDao(userDao);
 		BDDMockito.given(userDao.getUserByUsername(Mockito.anyString())).willReturn(userMock);
 		//WHEN
 		User result=underTest.getUserByUserName(Mockito.anyString());
@@ -103,7 +97,6 @@ public class SimpleUserServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetUserByUserNameWhenNoResultFoundShouldThrowException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserDao(userDao);
 		BDDMockito.given(userDao.getUserByUsername(Mockito.anyString())).willThrow(new FitnessDaoException());
 		//WHEN
 		User result=underTest.getUserByUserName(Mockito.anyString());
@@ -115,7 +108,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetUsersByFullNameSouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		List<User> expected=new ArrayList<User>();
 		BDDMockito.given(userDao.getUsersByFullName("TESTNAME")).willReturn(expected);
 		//WHEN
@@ -128,7 +120,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testSetNumberOfEntriesShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		//WHEN
 		underTest.setNumberOfEntries(userMock, Mockito.anyInt());
 		//THEN
@@ -138,7 +129,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testAddLastLoginDateShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		//WHEN
 		underTest.addLastLoginDate(userMock, new Date());
 		//THEN
@@ -148,7 +138,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testAddLastLoginIpShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		//WHEN
 		underTest.addLastLoginIp(userMock, Mockito.anyString());
 		//THEN
@@ -158,7 +147,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testSetEnabledShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		//WHEN
 		underTest.setEnabled(userMock, Mockito.anyBoolean());
 		//THEN
@@ -168,7 +156,6 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetUserByEmailShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserDao(userDao);
 		BDDMockito.given(userDao.getUserByEmail(Mockito.anyString())).willReturn(userMock);
 		//WHEN
 		User result=underTest.getUserByEmail(Mockito.anyString());
@@ -180,7 +167,6 @@ public class SimpleUserServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetUserByEmailWhenNoResultFoundShouldThrowException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setUserDao(userDao);
 		BDDMockito.given(userDao.getUserByEmail(Mockito.anyString())).willThrow(new FitnessDaoException());
 		//WHEN
 		User result=underTest.getUserByEmail(Mockito.anyString());
@@ -190,15 +176,8 @@ public class SimpleUserServiceTest {
 	}
 	
 	@Test
-	public void testUserDaoGetterSetterBehaviour(){
-		underTest.setUserDao(userDao);
-		Assert.assertEquals(userDao, underTest.getUserDao());
-	}
-	
-	@Test
 	public void testGetAllUsersShouldReturnProperly(){
 		//GIVEN
-		underTest.setUserDao(userDao);
 		List<User> expected=new ArrayList<User>();
 		BDDMockito.given(userDao.getAllUsers()).willReturn(expected);
 		//WHEN

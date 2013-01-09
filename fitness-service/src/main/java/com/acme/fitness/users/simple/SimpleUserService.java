@@ -14,8 +14,12 @@ import com.acme.fitness.users.UserService;
 @Component
 public class SimpleUserService implements UserService {
 	
-	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	public SimpleUserService(UserDao userDao){
+		this.userDao=userDao;
+	}
 	
 	@Override
 	public User addUser(String fullName, String userName, String password, String email, String mobile, Date registration) {
@@ -78,14 +82,6 @@ public class SimpleUserService implements UserService {
 		userDao.update(user);
 	}
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
 	@Override
 	public List<User> getAllUsers() {
 		return userDao.getAllUsers();
@@ -95,21 +91,5 @@ public class SimpleUserService implements UserService {
 	public List<User> getAllTrainers() {
 		return userDao.getAllTrainers();
 	}
-
-//	@Override
-//	public User getActualUser(String userName) {
-//		// Get actual UserName from security
-//		String actUserName;
-//		Object principal = SecurityContextHolder.getContext()
-//				.getAuthentication().getPrincipal();
-//		if (principal instanceof UserDetails) {
-//			actUserName = ((UserDetails) principal).getUsername();
-//		} else {
-//			actUserName = principal.toString();
-//		}
-//		// Get actual User Object from DataBase
-//		return null;
-//	}
-	
 
 }

@@ -40,8 +40,8 @@ public class SimpleGeneralOrdersServiceTest {
 
 	@Before
 	public void setUp() {
-		underTest = new SimpleGeneralOrdersService();
 		MockitoAnnotations.initMocks(this);
+		underTest = new SimpleGeneralOrdersService(basketServiceMock, orderItemServiceMock, storeServiceMock);
 	}
 
 	@Test
@@ -51,7 +51,6 @@ public class SimpleGeneralOrdersServiceTest {
 		Basket expected = new Basket();
 		BDDMockito.given(basketServiceMock.newBasket(client)).willReturn(
 				expected);
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		Basket result = underTest.newBasket(client);
 		// THEN
@@ -63,7 +62,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testDeleteBasketShouldInvokeTheMethodRight() {
 		// GIVEN
 		Basket basket = new Basket();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.deleteBasket(basket);
 		// THEN
@@ -74,7 +72,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testUpdateBasketShouldInvokeTheMethodRight() {
 		// GIVEN
 		Basket basket = new Basket();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.updateBasket(basket);
 		// THEN
@@ -86,7 +83,6 @@ public class SimpleGeneralOrdersServiceTest {
 		// GIVEN
 		Basket basket = new Basket();
 		Membership membership = new Membership();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.addMembershipToBasket(basket, membership);
 		// THEN
@@ -100,7 +96,6 @@ public class SimpleGeneralOrdersServiceTest {
 		// GIVEN
 		Basket basket = new Basket();
 		Training training = new Training();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.addTrainingToBasket(basket, training);
 		// THEN
@@ -113,7 +108,6 @@ public class SimpleGeneralOrdersServiceTest {
 		// GIVEN
 		Basket basket = new Basket();
 		OrderItem orderItem = new OrderItem();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.addOrderItemToBasket(basket, orderItem);
 		// THEN
@@ -128,7 +122,6 @@ public class SimpleGeneralOrdersServiceTest {
 		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(basketServiceMock.getMemberships(basket)).willReturn(
 				expected);
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		List<Membership> result = underTest.getMemberships(basket);
 		// THEN
@@ -143,7 +136,6 @@ public class SimpleGeneralOrdersServiceTest {
 		List<Training> expected = new ArrayList<Training>();
 		BDDMockito.given(basketServiceMock.getTrainings(basket)).willReturn(
 				expected);
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		List<Training> result = underTest.getTrainings(basket);
 		// THEN
@@ -158,7 +150,6 @@ public class SimpleGeneralOrdersServiceTest {
 		List<OrderItem> expected = new ArrayList<OrderItem>();
 		BDDMockito.given(basketServiceMock.getOrderItems(basket)).willReturn(
 				expected);
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		List<OrderItem> result = underTest.getOrderItems(basket);
 		// THEN
@@ -171,7 +162,6 @@ public class SimpleGeneralOrdersServiceTest {
 			throws StoreQuantityException {
 		// GIVEN
 		Basket basket = new Basket();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.checkOutBasket(basket);
 		// THEN
@@ -182,7 +172,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testDeliverShouldInvokeTheMethodRight() {
 		// GIVEN
 		Basket basket = new Basket();
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.deliver(basket);
 		// THEN
@@ -196,7 +185,6 @@ public class SimpleGeneralOrdersServiceTest {
 		List<Basket> expected = new ArrayList<Basket>();
 		BDDMockito.given(basketServiceMock.getBasketsByUser(user)).willReturn(
 				expected);
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		List<Basket> result = underTest.getBasketsByUser(user);
 		// THEN
@@ -211,7 +199,6 @@ public class SimpleGeneralOrdersServiceTest {
 		Basket expected = new Basket();
 		BDDMockito.given(basketServiceMock.getBasketById(Mockito.anyLong()))
 				.willReturn(expected);
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		Basket result = underTest.getBasketById(1L);
 		// THEN
@@ -225,7 +212,6 @@ public class SimpleGeneralOrdersServiceTest {
 		// GIVEN
 		BDDMockito.given(basketServiceMock.getBasketById(Mockito.anyLong()))
 				.willThrow(new FitnessDaoException());
-		underTest.setBasketService(basketServiceMock);
 		// WHEN
 		underTest.getBasketById(1L);
 		// THEN
@@ -240,7 +226,6 @@ public class SimpleGeneralOrdersServiceTest {
 		OrderItem expected = new OrderItem();
 		BDDMockito.given(orderItemServiceMock.newOrderItem(product, quantity))
 				.willReturn(expected);
-		underTest.setOrderItemService(orderItemServiceMock);
 		// WHEN
 		OrderItem result = underTest.newOrderItem(product, quantity);
 		// THEN
@@ -252,7 +237,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testDeleteOrderItemShouldInvokeTheMethodRight() {
 		// GIVEN
 		OrderItem orderItem = new OrderItem();
-		underTest.setOrderItemService(orderItemServiceMock);
 		// WHEN
 		underTest.deleteOrderItem(orderItem);
 		// THEN
@@ -263,7 +247,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testUpdateOrderItemShouldInvokeTheMethodRight() {
 		// GIVEN
 		OrderItem orderItem = new OrderItem();
-		underTest.setOrderItemService(orderItemServiceMock);
 		// WHEN
 		underTest.updateOrderItem(orderItem);
 		// THEN
@@ -278,7 +261,6 @@ public class SimpleGeneralOrdersServiceTest {
 		BDDMockito.given(
 				orderItemServiceMock.getOrderItemById(Mockito.anyLong()))
 				.willReturn(expected);
-		underTest.setOrderItemService(orderItemServiceMock);
 		// WHEN
 		OrderItem result = underTest.getOrderItemById(1L);
 		// THEN
@@ -294,7 +276,6 @@ public class SimpleGeneralOrdersServiceTest {
 		BDDMockito.given(
 				orderItemServiceMock.getOrderItemById(Mockito.anyLong()))
 				.willThrow(new FitnessDaoException());
-		underTest.setOrderItemService(orderItemServiceMock);
 		// WHEN
 		underTest.getOrderItemById(1L);
 		// THEN
@@ -310,7 +291,6 @@ public class SimpleGeneralOrdersServiceTest {
 		Store expected = new Store(product, quantity);
 		BDDMockito.given(storeServiceMock.addProduct(product, quantity))
 				.willReturn(expected);
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		Store result = underTest.addProductToStore(product, quantity);
 		// THEN
@@ -322,7 +302,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testDeleteStoreShouldInvokeTheMethodRight() {
 		// GIVEN
 		Store store = new Store();
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		underTest.deleteStore(store);
 		// THEN
@@ -333,7 +312,6 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testUpdateStoreShouldInvokeTheMethodRight() {
 		// GIVEN
 		Store store = new Store();
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		underTest.updateStore(store);
 		// THEN
@@ -348,7 +326,6 @@ public class SimpleGeneralOrdersServiceTest {
 		Store expected = new Store();
 		BDDMockito.given(storeServiceMock.getStoreByProduct(product))
 				.willReturn(expected);
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		Store result = underTest.getStoreByProduct(product);
 		// THEN
@@ -363,7 +340,6 @@ public class SimpleGeneralOrdersServiceTest {
 		Product product = new Product();
 		BDDMockito.given(storeServiceMock.getStoreByProduct(product))
 				.willThrow(new FitnessDaoException());
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		underTest.getStoreByProduct(product);
 		// THEN
@@ -379,7 +355,6 @@ public class SimpleGeneralOrdersServiceTest {
 		boolean expected = true;
 		BDDMockito.given(storeServiceMock.takeOutProduct(product, quantity))
 				.willReturn(expected);
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		boolean result = underTest.takeOutProduct(product, quantity);
 		// THEN
@@ -395,7 +370,6 @@ public class SimpleGeneralOrdersServiceTest {
 		int quantity = 1;
 		BDDMockito.given(storeServiceMock.takeOutProduct(product, quantity))
 				.willThrow(new FitnessDaoException());
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		underTest.takeOutProduct(product, quantity);
 		// THEN
@@ -411,7 +385,6 @@ public class SimpleGeneralOrdersServiceTest {
 		boolean expected = true;
 		BDDMockito.given(storeServiceMock.takeOutProduct(product, quantity))
 				.willReturn(expected);
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		boolean result = underTest.takeOutProduct(product, quantity);
 		// THEN
@@ -427,7 +400,6 @@ public class SimpleGeneralOrdersServiceTest {
 		int quantity = 1;
 		BDDMockito.doThrow(new FitnessDaoException()).when(storeServiceMock)
 				.putInProduct(product, quantity);
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		underTest.putInProduct(product, quantity);
 		// THEN
@@ -440,7 +412,6 @@ public class SimpleGeneralOrdersServiceTest {
 		Product product = new Product();
 		int quantity = 1;
 		BDDMockito.doNothing().when(storeServiceMock).putInProduct(product, quantity);
-		underTest.setStoreService(storeServiceMock);
 		// WHEN
 		underTest.putInProduct(product, quantity);
 		// THEN
@@ -451,35 +422,10 @@ public class SimpleGeneralOrdersServiceTest {
 	public void testGetAllStoresShouldReturnProperly() {
 		//GIVEN
 		BDDMockito.given(storeServiceMock.getAllStores()).willReturn(new ArrayList<Store>());
-		underTest.setStoreService(storeServiceMock);
 		//WHEN
 		List<Store> result = underTest.getAllStores();
 		//THEN
 		BDDMockito.verify(storeServiceMock).getAllStores();
 		Assert.assertEquals(new ArrayList<Store>(), result);
-	}
-	
-	@Test
-	public void testBasketServicesGettersAndSettersBehaviour() {
-		//WHEN
-		underTest.setBasketService(basketServiceMock);
-		//THEN
-		Assert.assertEquals(basketServiceMock, underTest.getBasketService());
-	}
-	
-	@Test
-	public void testStoreServicesGettersAndSettersBehaviour() {
-		//WHEN
-		underTest.setStoreService(storeServiceMock);
-		//THEN
-		Assert.assertEquals(storeServiceMock, underTest.getStoreService());
-	}
-	
-	@Test
-	public void testOrderItemsGettersAndSettersBehaviour() {
-		//WHEN
-		underTest.setOrderItemService(orderItemServiceMock);
-		//THEN
-		Assert.assertEquals(orderItemServiceMock, underTest.getOrderItemService());
 	}
 }

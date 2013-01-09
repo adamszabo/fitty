@@ -31,8 +31,8 @@ public class SimpleStoreServiceTest {
 
 	@Before
 	public void setUp() {
-		underTest = new SimpleStoreService();
 		MockitoAnnotations.initMocks(this);
+		underTest = new SimpleStoreService(storeDao, productDao);
 	}
 
 	@Test
@@ -40,12 +40,9 @@ public class SimpleStoreServiceTest {
 		// GIVEN
 		Product expectedProduct = new Product();
 		int expectedQuantity = 11;
-//		Store expectedStore = new Store(expectedProduct, expectedQuantity);
-		underTest.setStoreDao(storeDao);
 		// WHEN
 		underTest.addProduct(expectedProduct, expectedQuantity);
 		// THEN
-//		BDDMockito.verify(storeDao).save(expectedStore);
 	}
 
 	@Test
@@ -55,7 +52,6 @@ public class SimpleStoreServiceTest {
 		Store expectedStore = new Store();
 		BDDMockito.given(storeDao.getStoreById(expectedId)).willReturn(
 				expectedStore);
-		underTest.setStoreDao(storeDao);
 		// WHEN
 		Store result = underTest.getStoreById(expectedId);
 		// THEN
@@ -67,7 +63,6 @@ public class SimpleStoreServiceTest {
 	public void testGetStoreByIdShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
 		//GIVEN
 		BDDMockito.given(storeDao.getStoreById(Mockito.anyLong())).willThrow(new FitnessDaoException());
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		underTest.getStoreById(1L);
 		//THEN
@@ -82,7 +77,6 @@ public class SimpleStoreServiceTest {
 		Store expectedStore = new Store();
 		expectedStore.setId(1L);
 		BDDMockito.given(storeDao.getStoreByProductId(expectedProduct.getId())).willReturn(expectedStore);
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		Store result = underTest.getStoreByProduct(expectedProduct);
 		//THEN
@@ -94,7 +88,6 @@ public class SimpleStoreServiceTest {
 	public void testGetStoreByProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
 		//GIVEN
 		BDDMockito.given(storeDao.getStoreByProductId(Mockito.anyLong())).willThrow(new FitnessDaoException());
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		underTest.getStoreByProduct(new Product());
 		//THEN
@@ -112,7 +105,6 @@ public class SimpleStoreServiceTest {
 		Store store = new Store(product, quantity);
 		BDDMockito.given(storeDao.getStoreByProductId(product.getId())).willReturn(store);
 		Store expectedStore = new Store(product, quantity - takeOutQuantity);
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		boolean result = underTest.takeOutProduct(product, takeOutQuantity);
 		//THEN
@@ -131,7 +123,6 @@ public class SimpleStoreServiceTest {
 		boolean expectedAvaiablility = false;
 		Store store = new Store(product, quantity);
 		BDDMockito.given(storeDao.getStoreByProductId(product.getId())).willReturn(store);
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		boolean result = underTest.takeOutProduct(product, takeOutQuantity);
 		//THEN
@@ -143,7 +134,6 @@ public class SimpleStoreServiceTest {
 	public void testTakeOutProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
 		//GIVEN
 		BDDMockito.given(storeDao.getStoreByProductId(Mockito.anyLong())).willThrow(new FitnessDaoException());
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		underTest.takeOutProduct(new Product(), 1);
 		//THEN
@@ -157,7 +147,6 @@ public class SimpleStoreServiceTest {
 		Product product = new Product();
 		product.setId(1L);
 		BDDMockito.given(productDao.getAllProduct()).willReturn(new ArrayList<Product>());
-		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.putInProduct(product, 1);
 		//THEN
@@ -173,8 +162,6 @@ public class SimpleStoreServiceTest {
 		products.add(product);
 		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
 		BDDMockito.when(storeDao.getStoreByProductId(product.getId())).thenThrow(new FitnessDaoException());
-		underTest.setProductDao(productDao);
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		underTest.putInProduct(product, 1);
 		//THEN
@@ -196,8 +183,6 @@ public class SimpleStoreServiceTest {
 		BDDMockito.given(storeDao.getStoreByProductId(product.getId())).willReturn(store);
 		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
 		Store expectedStore = new Store(product, quantity + putInQuantity);
-		underTest.setStoreDao(storeDao);
-		underTest.setProductDao(productDao);
 		//WHEN
 		underTest.putInProduct(product, putInQuantity);
 		//THEN
@@ -210,7 +195,6 @@ public class SimpleStoreServiceTest {
 	public void testPutInProductShouldThrowsExceptionWhenTheProductIdsNotFound() throws FitnessDaoException {
 		//GIVEN
 		BDDMockito.given(storeDao.getAllStores()).willReturn(new ArrayList<Store>());
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		List<Store> result = underTest.getAllStores();
 		//THEN
@@ -222,7 +206,6 @@ public class SimpleStoreServiceTest {
 	public void testDeleteStoreShouldInvokeTheMethodRight() {
 		//GIVEN
 		Store store = new Store();
-		underTest.setStoreDao(storeDao);
 		//WHEN
 		underTest.deleteStore(store);
 		//THEN
@@ -233,28 +216,8 @@ public class SimpleStoreServiceTest {
 	public void testUpdateStoreShouldInvokeTheMethodRight() {
 		//GIVEN
 		Store store = new Store();
-		underTest.setStoreDao(storeDao);
-		//WHEN
 		underTest.updateStore(store);
 		//THEN
 		BDDMockito.verify(storeDao).update(store);
-	}
-	
-	@Test
-	public void testProductDaosGetterAndSetterBehaviour() {
-		//GIVEN
-		//WHEN
-		underTest.setProductDao(productDao);
-		//THEN
-		Assert.assertEquals(productDao, underTest.getProductDao());
-	}
-	
-	@Test
-	public void testStoreDaosGetterAndSetterBehaviour() {
-		//GIVEN
-		//WHEN
-		underTest.setStoreDao(storeDao);
-		//THEN
-		Assert.assertEquals(storeDao, underTest.getStoreDao());
 	}
 }
