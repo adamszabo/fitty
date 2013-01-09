@@ -101,7 +101,6 @@ public class SimpleBasketService implements BasketService {
 
 	@Override
 	public void checkOutBasket(Basket basket) throws StoreQuantityException {
-		logger.info("Follower items ordered by " + basket.getUser().getUsername());
 		basketDao.save(basket);
 		saveMemberships(basket);
 		saveTrainings(basket);
@@ -142,7 +141,6 @@ public class SimpleBasketService implements BasketService {
 	private void takeOutProduct(Basket basket, List<Product> missingProducts,
 			OrderItem o) throws FitnessDaoException {
 		if (storeService.takeOutProduct(o.getProduct(), o.getQuantity())) {
-			logger.info("Product id: " + o.getProduct().getId() + " quantity: " + o.getQuantity());
 			orderItemService.updateOrderItem(o);
 		} else {
 			missingProducts.add(o.getProduct());

@@ -110,6 +110,7 @@
 						<td>${item.product.price}</td>
 						<td>${item.quantity}</td>
 						<td>${item.quantity * item.product.price}</td>
+						<td></td>
 					</tr>
 				</#list>
 						<tr>
