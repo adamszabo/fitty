@@ -26,8 +26,8 @@ public class SimpleTrainingServiceTest {
 	
 	@Before
 	public void setUp() {
-		underTest = new SimpleTrainingService();
 		MockitoAnnotations.initMocks(this);
+		underTest = new SimpleTrainingService(trainingDao);
 	}
 	
 	@Test
@@ -52,7 +52,6 @@ public class SimpleTrainingServiceTest {
 		Training training = new Training();
 		Training expectedTraining = training;
 		expectedTraining.setBasket(basket);
-		underTest.setTrainingDao(trainingDao);
 		// WHEN
 		underTest.saveTraining(basket, training);
 		// THEN
@@ -67,7 +66,6 @@ public class SimpleTrainingServiceTest {
 		Date expectedDate = new Date();
 		Basket expectedBasket = new Basket();
 		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, expectedBasket);
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		underTest.saveNewTraining(expectedTrainer, expectedClient, expectedDate, expectedBasket);
 		//THEN
@@ -78,7 +76,6 @@ public class SimpleTrainingServiceTest {
 	public void testDeleteTrainingShouldInvokeTheMethodRight() {
 		//GIVEN
 		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 0, null, new Basket());
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		underTest.deleteTraining(expectedTraining);
 		//THEN
@@ -89,7 +86,6 @@ public class SimpleTrainingServiceTest {
 	public void testUpdateTrainingShouldInvokeTheMethodRight() {
 		//GIVEN
 		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 12, "review", new Basket());
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		underTest.updateTraining(expectedTraining);
 		//THEN
@@ -108,7 +104,6 @@ public class SimpleTrainingServiceTest {
 		expectedTraining.setBurnedCalories(expectedBurnedCalories);
 		expectedTraining.setReview(expectedReview);
 		expectedTraining.setAnalyzed(expectedAnalyzed);
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		underTest.recordTrainingResults(training, expectedBurnedCalories, expectedReview);
 		//THEN
@@ -122,7 +117,6 @@ public class SimpleTrainingServiceTest {
 		List<Training> expectedTrainings = new ArrayList<Training>();
 		User trainer = new User();
 		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(expectedTrainings);
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		List<Training> result = underTest.getTrainingsByTrainer(trainer);
 		//THEN
@@ -136,7 +130,6 @@ public class SimpleTrainingServiceTest {
 		List<Training> expectedTrainings = new ArrayList<Training>();
 		User client = new User();
 		BDDMockito.given(trainingDao.getTrainingsByClient(client)).willReturn(expectedTrainings);
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		List<Training> result = underTest.getTrainingsByClient(client);
 		//THEN
@@ -150,19 +143,10 @@ public class SimpleTrainingServiceTest {
 		Basket basket = new Basket();
 		List<Training> expectedTrainings = new ArrayList<Training>();
 		BDDMockito.given(trainingDao.getTrainingsByOrder(basket)).willReturn(expectedTrainings);
-		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		List<Training> result = underTest.getTrainingsByBasket(basket);
 		//THEN
 		Assert.assertEquals(expectedTrainings, result);
 		BDDMockito.verify(trainingDao).getTrainingsByOrder(basket);
-	}
-	
-	@Test
-	public void testTrainingDaosGetterAndSetterBehaviour() {
-		//WHEN
-		underTest.setTrainingDao(trainingDao);
-		//THEN
-		Assert.assertEquals(trainingDao, underTest.getTrainingDao());
 	}
 }

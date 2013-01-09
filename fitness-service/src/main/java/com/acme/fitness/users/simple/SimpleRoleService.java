@@ -13,8 +13,12 @@ import com.acme.fitness.users.RoleService;
 @Service
 public class SimpleRoleService implements RoleService {
 
-	@Autowired
 	private RoleDao roleDao;
+	
+	@Autowired
+	public SimpleRoleService(RoleDao roleDao){
+		this.roleDao=roleDao;
+	}
 
 	@Override
 	public void addRoleToUser(String roleName, User user) {
@@ -43,13 +47,5 @@ public class SimpleRoleService implements RoleService {
 	@Override
 	public List<Role> getRolesByUser(User user) {
 		return roleDao.getRolesByUser(user);
-	}
-
-	public RoleDao getRoleDao() {
-		return roleDao;
-	}
-
-	public void setRoleDao(RoleDao roleDao) {
-		this.roleDao = roleDao;
 	}
 }

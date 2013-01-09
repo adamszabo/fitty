@@ -26,7 +26,7 @@ public class SimpleRoleServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest = new SimpleRoleService();
+		underTest = new SimpleRoleService(roleDao);
 	}
 	
 	@Test
@@ -35,7 +35,6 @@ public class SimpleRoleServiceTest {
 		User expectedUser = new User();
 		expectedUser.setUsername("Test");
 		Role role = new Role(expectedUser, expectedRoleName);
-		underTest.setRoleDao(roleDao);
 		underTest.addRoleToUser(expectedRoleName, expectedUser);
 		BDDMockito.verify(roleDao).save(role);
 	}
@@ -51,7 +50,6 @@ public class SimpleRoleServiceTest {
 		roles.add(expectedRole);
 		roles.add(notExpectedRole);
 		BDDMockito.given(roleDao.getRolesByUser(expectedUser)).willReturn(roles);
-		underTest.setRoleDao(roleDao);
 		underTest.removeRoleFromUser(expectedRoleName, expectedUser);
 		BDDMockito.verify(roleDao).delete(expectedRole);
 	}
@@ -66,19 +64,9 @@ public class SimpleRoleServiceTest {
 		expectedRoles.add(r1);
 		expectedRoles.add(r2);
 		BDDMockito.given(roleDao.getRolesByUser(expectedUser)).willReturn(expectedRoles);
-		underTest.setRoleDao(roleDao);
 		List<Role> result = underTest.getRolesByUser(expectedUser); 
 		Assert.assertEquals(expectedRoles, result);
 		BDDMockito.verify(roleDao).getRolesByUser(expectedUser);
 	}
-	
-	@Test
-	public void testRoleDaosGetterAndSetterBehaviour() {
-		//WHEN
-		underTest.setRoleDao(roleDao);
-		//THEn
-		Assert.assertEquals(roleDao, underTest.getRoleDao());
-	}
-	
 	
 }

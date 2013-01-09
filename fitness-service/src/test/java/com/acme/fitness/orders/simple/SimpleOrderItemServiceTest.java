@@ -32,7 +32,7 @@ public class SimpleOrderItemServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleOrderItemService();
+		underTest=new SimpleOrderItemService(orderItemDaoMock);
 	}
 	
 	@Test
@@ -54,7 +54,6 @@ public class SimpleOrderItemServiceTest {
 		//GIVEN
 		Basket basket = new Basket();
 		OrderItem orderItem = new OrderItem();
-		underTest.setOrderItemDao(orderItemDaoMock);
 		OrderItem expectedOrderItem = new OrderItem();
 		expectedOrderItem.setBasket(basket);
 		//WHEN
@@ -66,7 +65,6 @@ public class SimpleOrderItemServiceTest {
 	@Test
 	public void testSaveNewOrderItemShouldReturnProperly(){
 		//GIVEN
-		underTest.setOrderItemDao(orderItemDaoMock);
 		OrderItem expected=new OrderItem(productMock, 0, basketMock);
 		//WHEN
 		OrderItem result=underTest.saveNewOrderItem(productMock, 0, basketMock);
@@ -78,7 +76,6 @@ public class SimpleOrderItemServiceTest {
 	@Test
 	public void testDeleteOrderItemShouldReturnProperly(){
 		//GIVEN
-		underTest.setOrderItemDao(orderItemDaoMock);
 		//WHEN
 		underTest.deleteOrderItem(orderItemMock);
 		//THEN
@@ -88,7 +85,6 @@ public class SimpleOrderItemServiceTest {
 	@Test
 	public void testUpdateOrderItemShouldReturnProperly(){
 		//GIVEN
-		underTest.setOrderItemDao(orderItemDaoMock);
 		//WHEN
 		underTest.updateOrderItem(orderItemMock);
 		//THEN
@@ -98,7 +94,6 @@ public class SimpleOrderItemServiceTest {
 	@Test
 	public void testGetOrderItemByIdWhenHasResultShouldReturnProperly() throws FitnessDaoException{
 		//GIVEN
-		underTest.setOrderItemDao(orderItemDaoMock);
 		BDDMockito.given(orderItemDaoMock.getOrderItemById(Mockito.anyLong())).willReturn(orderItemMock);
 		//WHEN
 		OrderItem result=underTest.getOrderItemById(Mockito.anyLong());
@@ -110,7 +105,6 @@ public class SimpleOrderItemServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testGetOrderItemByIdWhenHasNotResultShouldThrowFitnessDaoException() throws FitnessDaoException{
 		//GIVEN
-		underTest.setOrderItemDao(orderItemDaoMock);
 		BDDMockito.given(orderItemDaoMock.getOrderItemById(Mockito.anyLong())).willThrow(new FitnessDaoException());
 		//WHEN
 		OrderItem result=underTest.getOrderItemById(Mockito.anyLong());

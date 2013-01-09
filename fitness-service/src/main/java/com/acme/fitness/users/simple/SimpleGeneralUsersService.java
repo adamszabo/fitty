@@ -16,11 +16,14 @@ import com.acme.fitness.users.UserService;
 @Service
 public class SimpleGeneralUsersService implements GeneralUsersService {
 	
-	@Autowired
 	private UserService userService;
+	private RoleService roleService;
 	
 	@Autowired
-	private RoleService roleService;
+	public SimpleGeneralUsersService(RoleService roleService, UserService userService){
+		this.roleService=roleService;
+		this.userService=userService;
+	}
 	
 	@Override
 	public User addUser(String fullName, String username, String password, String email, String mobile, Date registration) {
@@ -89,22 +92,6 @@ public class SimpleGeneralUsersService implements GeneralUsersService {
 	@Override
 	public User getUserById(long id) throws FitnessDaoException {
 		return userService.getUserById(id);
-	}
-
-	public UserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	public RoleService getRoleService() {
-		return roleService;
-	}
-
-	public void setRoleService(RoleService roleService) {
-		this.roleService = roleService;
 	}
 
 	@Override

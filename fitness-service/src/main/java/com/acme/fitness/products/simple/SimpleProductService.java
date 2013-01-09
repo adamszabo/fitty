@@ -14,8 +14,12 @@ import com.acme.fitness.products.ProductService;
 @Service
 public class SimpleProductService implements ProductService {
 	
-	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	public SimpleProductService(ProductDao productDao){
+		this.productDao=productDao;
+	}
 
 	@Override
 	public Product addProduct(String name, String details, double price,
@@ -63,13 +67,4 @@ public class SimpleProductService implements ProductService {
 		List<Product> result = productDao.getProductsByPriceInterval(fromPrice, toPrice);
 		return result;
 	}
-
-	public ProductDao getProductDao() {
-		return productDao;
-	}
-
-	public void setProductDao(ProductDao productDao) {
-		this.productDao = productDao;
-	}
-
 }

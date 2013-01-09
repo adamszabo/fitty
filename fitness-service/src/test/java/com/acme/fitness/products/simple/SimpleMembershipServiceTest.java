@@ -36,7 +36,7 @@ public class SimpleMembershipServiceTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		underTest = new SimpleMembershipService();
+		underTest = new SimpleMembershipService(membershipDaoMock);
 	}
 
 	@Test
@@ -65,7 +65,6 @@ public class SimpleMembershipServiceTest {
 		Membership expectedMembership = new Membership();
 		expectedMembership.setId(2L);
 		expectedMembership.setBasket(basket);
-		underTest.setMembershipDao(membershipDaoMock);
 		// WHEN
 		underTest.saveMemberShip(basket, membership);
 		// THEN
@@ -75,7 +74,6 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testSaveNewMembershipShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		Membership expected = new Membership("TESTSTRING", 0, 0, new Date(),
 				0.0, basketMock);
 		// WHEN
@@ -89,7 +87,6 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testDeleteMembershipShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		// WHEN
 		underTest.deleteMembership(membershipMock);
 		// THEN
@@ -99,7 +96,6 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testUpdateMembershipShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		// WHEN
 		underTest.updateMembership(membershipMock);
 		// THEN
@@ -110,7 +106,6 @@ public class SimpleMembershipServiceTest {
 	public void testGetMembershipByIdWhenHasResultShouldReturnProperly()
 			throws FitnessDaoException {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		BDDMockito
 				.given(membershipDaoMock.getMembershipById(Mockito.anyLong()))
 				.willReturn(membershipMock);
@@ -126,7 +121,6 @@ public class SimpleMembershipServiceTest {
 	public void testGetMembershipByIdWhenHasResultShouldThrowFitnessDaoException()
 			throws FitnessDaoException {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		BDDMockito
 				.given(membershipDaoMock.getMembershipById(Mockito.anyLong()))
 				.willThrow(new FitnessDaoException());
@@ -141,7 +135,6 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testGetMembershipByBasketShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(membershipDaoMock.getMembershipsByOrder(basketMock))
 				.willReturn(expected);
@@ -155,7 +148,6 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testGetMembershipByUserShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock))
 				.willReturn(expected);
@@ -169,7 +161,6 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testincreaseClientEntriesShouldReturnProperly() {
 		// GIVEN
-		underTest.setMembershipDao(membershipDaoMock);
 		// WHEN
 		underTest.increaseClientEntries(membershipMock);
 		// THEN
