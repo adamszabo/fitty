@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "fitness_user")
@@ -18,15 +19,19 @@ public class User {
 	private long id;
 
 	@Column
+	@NotNull
 	private String fullName;
 
 	@Column(unique = true)
+	@NotNull
 	private String username;
 
 	@Column
+	@NotNull
 	private String password;
 
 	@Column(unique = true)
+	@NotNull
 	private String email;
 
 	@Column
@@ -77,7 +82,7 @@ public class User {
 				+ lastLoginIp + ", isEnabled=" + enabled + ", numberOfRetries="
 				+ numberOfRetries + "]";
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,16 +92,9 @@ public class User {
 		result = prime * result
 				+ ((fullName == null) ? 0 : fullName.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result
-				+ ((lastLogin == null) ? 0 : lastLogin.hashCode());
-		result = prime * result
-				+ ((lastLoginIp == null) ? 0 : lastLoginIp.hashCode());
-		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + numberOfRetries;
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result
-				+ ((registration == null) ? 0 : registration.hashCode());
 		result = prime * result
 				+ ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -104,60 +102,26 @@ public class User {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj){
 			return true;
-		if (obj == null)
+		}
+		if (obj == null || !(obj instanceof User)){
 			return false;
-		if (!(obj instanceof User))
-			return false;
+		}
+
 		User other = (User) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (enabled != other.enabled)
-			return false;
-		if (fullName == null) {
-			if (other.fullName != null)
-				return false;
-		} else if (!fullName.equals(other.fullName))
-			return false;
-		if (id != other.id)
-			return false;
-		if (lastLogin == null) {
-			if (other.lastLogin != null)
-				return false;
-		} else if (!lastLogin.equals(other.lastLogin))
-			return false;
-		if (lastLoginIp == null) {
-			if (other.lastLoginIp != null)
-				return false;
-		} else if (!lastLoginIp.equals(other.lastLoginIp))
-			return false;
-		if (mobile == null) {
-			if (other.mobile != null)
-				return false;
-		} else if (!mobile.equals(other.mobile))
-			return false;
-		if (numberOfRetries != other.numberOfRetries)
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (registration == null) {
-			if (other.registration != null)
-				return false;
-		} else if (!registration.equals(other.registration))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
+		boolean result = false;
+		if (username != null && email != null && fullName != null && password != null) {
+			result = numberOfRetries == other.numberOfRetries 
+					&& id == other.id
+					&& enabled == other.enabled
+					&& username.equals(other.getUsername())
+					&& email.equals(other.getEmail())
+					&& fullName.equals(other.getFullName())
+					&& password.equals(other.getPassword());
+		}
+
+		return result;
 	}
 
 	public long getId() {

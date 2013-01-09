@@ -118,9 +118,7 @@ public class WebShopController {
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
 		String name = auth.getName();
-		if (name.equals("anonymousUser")) {
-
-		} else {
+		if (!name.equals("anonymousUser")) {
 			System.out.println(name);
 			Basket basket = (Basket) request.getSession()
 					.getAttribute("basket");
@@ -182,8 +180,7 @@ public class WebShopController {
 	private void writeToCookies(long id, int quantity,
 			HttpServletResponse response, HttpServletRequest request,
 			ObjectMapper mapper, Map<String, Integer> map) {
-		if (map.containsKey(Long.toString(id))) {
-		} else {
+		if (!map.containsKey(Long.toString(id))) {
 			map.put(Long.toString(id), quantity);
 		}
 		String json = null;

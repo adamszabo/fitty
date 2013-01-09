@@ -50,7 +50,7 @@ public class SimpleTrainingServiceTest {
 		// GIVEN
 		Basket basket = new Basket();
 		Training training = new Training();
-		Training expectedTraining = new Training();
+		Training expectedTraining = training;
 		expectedTraining.setBasket(basket);
 		underTest.setTrainingDao(trainingDao);
 		// WHEN
@@ -66,7 +66,7 @@ public class SimpleTrainingServiceTest {
 		User expectedTrainer = new User();
 		Date expectedDate = new Date();
 		Basket expectedBasket = new Basket();
-		Training expectedTraining = new Training(expectedClient, expectedTrainer, expectedDate, false, 0, null, expectedBasket);
+		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, expectedBasket);
 		underTest.setTrainingDao(trainingDao);
 		//WHEN
 		underTest.saveNewTraining(expectedTrainer, expectedClient, expectedDate, expectedBasket);
@@ -99,11 +99,12 @@ public class SimpleTrainingServiceTest {
 	@Test
 	public void testRecordTrainingShouldInvokeTheMethodRight() {
 		//GIVEN
-		Training training = new Training(new User(), new User(), new Date(), false, 0, null, new Basket());
+		User user=new User();
+		Training training = new Training(user, user, new Date(), false, 0, null, new Basket());
 		int expectedBurnedCalories = 12;
 		String expectedReview = "review";
 		boolean expectedAnalyzed = true;
-		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 0, null, new Basket());
+		Training expectedTraining = new Training(user, user, new Date(), false, 0, null, new Basket());
 		expectedTraining.setBurnedCalories(expectedBurnedCalories);
 		expectedTraining.setReview(expectedReview);
 		expectedTraining.setAnalyzed(expectedAnalyzed);

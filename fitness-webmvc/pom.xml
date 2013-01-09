@@ -47,11 +47,6 @@
 			<version>2.3.18</version>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.8.5</version>
-		</dependency>
-		<dependency>
 			<groupId>com.acme</groupId>
 			<artifactId>fitness-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

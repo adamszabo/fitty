@@ -95,11 +95,12 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddMembershipToBasketShouldAddTheMembershipRight() {
 		// GIVEN
-		Basket basket = new Basket(false, new User());
+		User user=new User();
+		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		Membership membership = new Membership();
 		membership.setId(2L);
-		Basket expectedBasket = new Basket(false, new User());
+		Basket expectedBasket = new Basket(false, user);
 		expectedBasket.setId(1L);
 		Membership expectedMembership = new Membership();
 		expectedMembership.setId(2L);
@@ -113,11 +114,12 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddTrainingToBasketShouldAddTheTrainingRight() {
 		// GIVEN
-		Basket basket = new Basket(false, new User());
+		User user=new User();
+		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		Training training = new Training();
 		training.setId(2L);
-		Basket expectedBasket = new Basket(false, new User());
+		Basket expectedBasket = new Basket(false, user);
 		expectedBasket.setId(1L);
 		Training expectedTraining = new Training();
 		expectedTraining.setId(2L);
@@ -131,11 +133,12 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddOrderItemToBasketShouldAddTheOrderItemRight() {
 		// GIVEN
-		Basket basket = new Basket(false, new User());
+		User user=new User();
+		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		OrderItem orderItem = new OrderItem();
 		orderItem.setId(2L);
-		Basket expectedBasket = new Basket(false, new User());
+		Basket expectedBasket = new Basket(false, user);
 		expectedBasket.setId(1L);
 		OrderItem expectedOrderItem = new OrderItem();
 		expectedOrderItem.setId(2L);

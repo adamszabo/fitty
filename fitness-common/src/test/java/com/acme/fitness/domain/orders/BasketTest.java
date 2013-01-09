@@ -75,11 +75,12 @@ public class BasketTest {
 	@Test
 	public void testConstructorWithDeliveredAndUserArgumentsShouldCreateNewInstanceRight() {
 		//GIVEN
+		User user=new User();
 		Basket expected = new Basket();
 		expected.setDelivered(false);
-		expected.setUser(new User());
+		expected.setUser(user);
 		//WHEN
-		underTest = new Basket(false, new User());
+		underTest = new Basket(false, user);
 		//THEN
 		Assert.assertEquals(expected, underTest);
 	}
