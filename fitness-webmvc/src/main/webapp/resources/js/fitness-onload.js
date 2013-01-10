@@ -59,6 +59,19 @@ $(document).ready(function() {
 	
 	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
+	// /admin/jogosultsagok userDelete confirm dialog
+	var deleteUserFormId=null;
+	$('.deleteUserForm').on("submit", function(e){
+		$('#deleteUserConfirmDialog').modal('show');
+		deleteUserFormId=e.srcElement.id;
+		return false;
+	});
+	
+	$('#deleteUserConfirmButton').on("click", function(){
+		$form=document.getElementById(deleteUserFormId);
+		$form.submit();
+	});
+	
 });
 
 function checkLoginErrors(){

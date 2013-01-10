@@ -217,3 +217,19 @@
 	</div>
 	</#if>
 </#macro>
+
+<#macro confirmDialog type message confirmButtonMessage>
+	<div id="${type}ConfirmDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button-->
+	    <h3 id="myModalLabel">Figyelem!</h3>
+	  </div>
+	  <div class="modal-body">
+	  	${message}
+	  </div>
+	  <div class="modal-footer">
+	  	<button id="${type}ConfirmButton" class="btn btn-danger">${confirmButtonMessage}</button>
+	    <button id="${type}CancelButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Mégse</button>
+	  </div>
+	</div>
+</#macro>

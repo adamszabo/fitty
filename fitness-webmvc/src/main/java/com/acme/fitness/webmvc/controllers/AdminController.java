@@ -67,6 +67,19 @@ public class AdminController {
 		request.setAttribute("roles", usersRoles);
 		return "jogosultsagok";
 	}
+	
+	@RequestMapping(value = "/jogosultsagok/torol")
+	public String deleteUser(Model model, HttpServletRequest request) {
+		User user = null;
+		try {
+			user = gus.getUserByUsername(request.getParameter("username-torol"));
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+		logger.info("DELETED USER: "+user.getUsername());
+		gus.deleteUser(user);
+		return "redirect:/admin/jogosultsagok";
+	}
 
 	@RequestMapping(value = "/jogosultsagok/valtoztat")
 	public String roleModify(Model model, HttpServletRequest request) {

@@ -102,26 +102,24 @@ public class User {
 
 	@Override
 	public boolean equals(Object obj) {
+		boolean isEquals = false;
 		if (this == obj){
-			return true;
+			isEquals = true;
 		}
-		if (obj == null || !(obj instanceof User)){
-			return false;
-		}
-
-		User other = (User) obj;
-		boolean result = false;
-		if (username != null && email != null && fullName != null && password != null) {
-			result = numberOfRetries == other.numberOfRetries 
-					&& id == other.id
-					&& enabled == other.enabled
-					&& username.equals(other.getUsername())
-					&& email.equals(other.getEmail())
-					&& fullName.equals(other.getFullName())
-					&& password.equals(other.getPassword());
+		else if (obj instanceof User){
+			User other = (User) obj;
+			if (fullName != null && password != null) {
+				isEquals = numberOfRetries == other.numberOfRetries 
+						&& id == other.id
+						&& enabled == other.enabled
+						&& username.equals(other.getUsername())
+						&& (email.equals(other.getEmail()))
+						&& password.equals(other.getPassword())
+						&& (fullName.equals(other.getFullName()) || fullName==null && other.fullName==null);
+			}
 		}
 
-		return result;
+		return isEquals;
 	}
 
 	public long getId() {
