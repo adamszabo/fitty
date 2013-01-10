@@ -33,8 +33,7 @@ import com.acme.fitness.users.GeneralUsersService;
 @RequestMapping("/admin")
 public class AdminController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
 	private GeneralProductsService gps;
@@ -45,10 +44,15 @@ public class AdminController {
 	@Autowired
 	private GeneralUsersService gus;
 
+	public AdminController(){
+		super();
+	}
+
 	@RequestMapping(value = "")
 	public String defaultPage() {
 		return "adminPage";
 	}
+	
 
 	@RequestMapping(value = "/jogosultsagok")
 	public String roles(Model model, HttpServletRequest request) {

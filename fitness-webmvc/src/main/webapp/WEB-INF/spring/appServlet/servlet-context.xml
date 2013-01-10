@@ -10,6 +10,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<context:component-scan base-package="com.acme.fitness.webmvc.controllers" />
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -28,13 +29,5 @@
 		<beans:property name="contentType" value="text/html;charset=UTF-8"/>
 		<beans:property name="exposeSessionAttributes" value="true"/>
 	</beans:bean>
-
-	<context:component-scan base-package="com.acme.fitness" />
 	
-	<beans:import	resource="classpath:META-INF/Spring/fitnessServiceApplicationContext.xml" />
-	
-	<!-- <beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" -->
-	<!-- p:basename="messages"> -->
-	<!-- </beans:bean> -->
-
 </beans:beans>

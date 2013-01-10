@@ -43,6 +43,10 @@ public class HomeController {
 	@Qualifier("sessionRegistry")
 	SessionRegistryImpl sri;
 	
+	public HomeController(){
+		super();
+	}
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */

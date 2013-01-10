@@ -4,8 +4,6 @@
 	<classpath>
 		<dir name="D:/AdamRepository/fitty/fitness-webmvc/target/classes">
 		</dir>
-		<dir name="D:/AdamRepository/fitty/fitness-webmvc/target/test-classes">
-		</dir>
 	</classpath>
 
 	<web>
