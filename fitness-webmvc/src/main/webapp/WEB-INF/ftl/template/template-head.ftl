@@ -10,6 +10,8 @@
 		<!-- Le styles -->
 		<link href="<@spring.url relativeUrl="/resources/css/bootstrap.css"/>" rel="stylesheet">
 		<link href="<@spring.url relativeUrl="/resources/css/docs.css"/>" rel="stylesheet">
+		<link href="<@spring.url relativeUrl="/resources/less/datepicker.less"/>" rel="stylesheet" />
+		<link href="<@spring.url relativeUrl="/resources/css/datepicker.css"/>" rel="stylesheet" />
 		<style> body {}	</style>
 		<link href="<@spring.url relativeUrl="/resources/css/bootstrap-responsive.css"/>" rel="stylesheet">
 		 

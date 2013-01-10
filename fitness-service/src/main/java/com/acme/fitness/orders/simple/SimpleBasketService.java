@@ -3,6 +3,8 @@ package com.acme.fitness.orders.simple;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,8 @@ public class SimpleBasketService implements BasketService {
 	private TrainingService trainingService;
 	private OrderItemService orderItemService;
 	private StoreService storeService;
+	
+	private Logger logger = LoggerFactory.getLogger(SimpleBasketService.class);
 	
 	@Autowired
 	public SimpleBasketService(BasketDao basketDao, MembershipService membershipService, TrainingService trainingService, OrderItemService orderItemService, StoreService storeService){
@@ -67,8 +71,17 @@ public class SimpleBasketService implements BasketService {
 
 	@Override
 	public void addOrderItemToBasket(Basket basket, OrderItem orderItem) {
-		basket.addOrderItem(orderItem);
-		orderItem.setBasket(basket);
+		boolean isProductExists = false;
+		for (OrderItem oi : basket.getOrderItems()) {
+			if (oi.getProduct().equals(orderItem.getProduct())) {
+				isProductExists = true;
+				oi.setQuantity(oi.getQuantity() + orderItem.getQuantity());
+			}
+		}
+		if (!isProductExists) {
+			basket.addOrderItem(orderItem);
+			orderItem.setBasket(basket);
+		}
 	}
 
 	@Override
@@ -124,21 +137,22 @@ public class SimpleBasketService implements BasketService {
 			throw new StoreQuantityException(missingProducts);
 		}
 	}
-	
-	private void takeOutProduct(Basket basket, List<Product> missingProducts, OrderItem o) throws FitnessDaoException {
+
+	private void takeOutProduct(Basket basket, List<Product> missingProducts,
+			OrderItem o) throws FitnessDaoException {
 		if (storeService.takeOutProduct(o.getProduct(), o.getQuantity())) {
 			orderItemService.updateOrderItem(o);
 		} else {
 			missingProducts.add(o.getProduct());
 		}
 	}
-	
+
 	private void saveTrainings(Basket basket) {
 		for (Training t : basket.getTrainings()) {
 			trainingService.saveTraining(basket, t);
 		}
 	}
-	
+
 	private void saveMemberships(Basket basket) {
 		for (Membership m : basket.getMemberships()) {
 			membershipService.saveMemberShip(basket, m);

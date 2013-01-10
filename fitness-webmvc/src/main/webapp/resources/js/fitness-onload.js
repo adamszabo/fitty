@@ -28,6 +28,15 @@ $(document).ready(function() {
 	    width: '90%',
 	});
 	
+	$('#datepicker').datepicker({
+	    format: 'mm-dd-yyyy'
+	});
+	
+	$('.trainer-select-radio-button').on('click', function(e) {
+		$('.trainer-select-radio-button').removeClass("active");
+		$(e.target).addClass("active");
+	});
+	
 	percentedHeight=window.innerHeight*0.65;
 	$('.pageSlimScroll').slimScroll({
 		height: ''+percentedHeight + 'px'

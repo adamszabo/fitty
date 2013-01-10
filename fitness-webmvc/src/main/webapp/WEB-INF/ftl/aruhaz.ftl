@@ -3,6 +3,15 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
 
+<#if message?exists>
+	<div class="alert alert-block">
+  	<button type="button" class="close" data-dismiss="alert">x</button>
+  		<h4>Hiba!</h4>
+		${message}
+	</div>
+</#if>
+
+
 <ul class="nav nav-pills">
 <#if basket?exists>
 	<li class="dropdown">
@@ -19,10 +28,12 @@
   </#if>
   <#if missingProduct?exists>
 	<li>
-	  	<a href="#missesModal" data-toggle="modal">Hiányzó</a>
+	  	<a href="#missesModal" data-toggle="modal">Hiányzó termékek</a>
 	</li>
   </#if>
 </ul>
+
+
 <div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%;">
 <ul class="thumbnails">
 	<#list products as product>
