@@ -27,9 +27,9 @@ public class ProductsBootStrap {
 		Date date = new Date();
 		date.setTime(1351321321221L);
 		System.out.println(date);
-		Product test1 = ps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
+		Product test1 = ps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L),null);
 		@SuppressWarnings("unused")
-		Product test2 = ps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date());
+		Product test2 = ps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date(),null);
 		System.out.println("Before update "  + test1);
 		test1.setName("new name");
 		test1.setCreation(new Date(123213412412L));
@@ -106,8 +106,8 @@ public class ProductsBootStrap {
 		 */
 		
 		GeneralProductsService gps=ctx.getBean(GeneralProductsService.class);
-		Product p1=gps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L));
-		Product p2=gps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date());
+		Product p1=gps.addProduct("labda", "piros", 5600.0, "Nike", new Date(1351321321221L), null);
+		Product p2=gps.addProduct("kesztyű", "nagy drága lila macsó kesztyű", 11111L, "Drága kesztyű gyártó", new Date(), null);
 		gps.deleteProduct(p1);
 		p2.setPrice(222222L);
 		gps.updateProduct(p2);

@@ -28,8 +28,8 @@ $(document).ready(function() {
 	    width: '90%',
 	});
 	
-	$('#datepicker').datepicker({
-	    format: 'mm-dd-yyyy'
+	$('.datepicker').datepicker({
+	    format: 'yyyy-mm-dd'
 	});
 	
 	$('.trainer-select-radio-button').on('click', function(e) {

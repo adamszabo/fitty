@@ -2,10 +2,12 @@ package com.acme.fitness.domain.products;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Product {
@@ -29,25 +31,30 @@ public class Product {
 
 	@Column
 	private Date creation;
-
+	
+	@OneToOne(cascade=CascadeType.REMOVE)
+	private ProductImage productImage;
+	
 	public Product() {
 		super();
+		this.productImage=null;
 	}
 
 	public Product(String name, String details, double price,
-			String manufacturer, Date creation) {
+			String manufacturer, Date creation, ProductImage productImage) {
 		super();
 		this.name = name;
 		this.details = details;
 		this.price = price;
 		this.manufacturer = manufacturer;
 		this.creation = creation;
+		this.productImage=productImage;
 	}
 
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", price=" + price
-				+ ", manufacturer=" + manufacturer + ", creation=" + creation
+				+ ", manufacturer=" + manufacturer + ", creation=" + creation + ", productImage="+productImage
 				+ "]";
 	}
 	
@@ -153,4 +160,11 @@ public class Product {
 		this.creation = create;
 	}
 
+	public ProductImage getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(ProductImage productImage) {
+		this.productImage = productImage;
+	}
 }

@@ -16,6 +16,7 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.MembershipService;
@@ -51,6 +52,9 @@ public class SimpleGeneralProductsServiceTest {
 	@Mock
 	private TrainingService trainingService;
 	
+	@Mock
+	private ProductImage productImage;
+	
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
@@ -61,11 +65,11 @@ public class SimpleGeneralProductsServiceTest {
 	public void testAddProductShouldReturnProperly(){
 		// GIVEN
 		Date date=new Date();
-		BDDMockito.given(productService.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date)).willReturn(product);
+		BDDMockito.given(productService.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage)).willReturn(product);
 		// WHEN
-		Product result=underTest.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date);
+		Product result=underTest.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage);
 		// THEN
-		BDDMockito.verify(productService).addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date);
+		BDDMockito.verify(productService).addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage);
 		Assert.assertEquals(product, result);
 	}
 	

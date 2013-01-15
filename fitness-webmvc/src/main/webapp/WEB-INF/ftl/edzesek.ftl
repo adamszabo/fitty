@@ -4,7 +4,7 @@
 <@template.masterTemplate title="Edzések">
 
 	<form action="">
-		<input id="datepicker" type="text" value="12-02-2012"> 
+		<input id="datepicker" class="datepicker" type="text" value="12-02-2012"> 
 		<div class="input-append bootstrap-timepicker-component">
 		    <input type="text" class="timepicker-default input-small">
 		    <span class="add-on">

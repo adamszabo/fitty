@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.ProductImage;
 
 public interface ProductService {
 	
-	Product addProduct(String name, String details, double price, String manufacturer, Date creation);
+	Product addProduct(String name, String details, double price, String manufacturer, Date creation, ProductImage productImage);
 
 	void deleteProduct(Product product);
 

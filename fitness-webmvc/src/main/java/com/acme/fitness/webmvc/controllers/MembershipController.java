@@ -25,10 +25,10 @@ public class MembershipController {
 	}
 	
 	@RequestMapping("/ujberlet")
-	public String newMembership(@RequestParam("datepicker") String datepicker, @RequestParam("membership") String type) {
+	public String newMembership(@RequestParam("datepicker") String datepicker, @RequestParam("membershipType") String type) {
 		System.out.println(datepicker);
 		System.out.println(type);
-		return "berletek";
+		return "redirect:/berletek";
 	}
 	
 }

@@ -8,12 +8,18 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class ProductTest {
 	private Product underTest;
-
+	
+	@Mock
+	private ProductImage productImage;
+	
 	@Before
 	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 		underTest = new Product();
 	}
 
@@ -39,6 +45,12 @@ public class ProductTest {
 	public void testGetterSetterBehaviourOfPrice() {
 		underTest.setPrice(1.0);
 		Assert.assertEquals(1.0, underTest.getPrice(), 0.0001);
+	}
+	
+	@Test
+	public void testGetterSetterBehaviourOfProductImage(){
+		underTest.setProductImage(productImage);
+		Assert.assertEquals(productImage, underTest.getProductImage());
 	}
 
 	@Test

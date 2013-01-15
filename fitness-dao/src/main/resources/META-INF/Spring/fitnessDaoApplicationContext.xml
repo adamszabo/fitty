@@ -33,6 +33,7 @@
 				<value>com.acme.fitness.domain.orders.Basket</value>
 				<value>com.acme.fitness.domain.products.Training</value>
 				<value>com.acme.fitness.domain.products.Membership</value>
+				<value>com.acme.fitness.domain.products.ProductImage</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

@@ -28,7 +28,10 @@ public class SimpleStoreServiceTest {
 	
 	@Mock
 	private ProductDao productDao;
-
+	
+	@Mock
+	private Product product;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -97,7 +100,7 @@ public class SimpleStoreServiceTest {
 	@Test
 	public void testTakeOutProductShouldReturnTrueWhenThereIsEnoughQuantityOfTheProduct() throws FitnessDaoException {
 		//GIVEN
-		Product product = new Product("name", null, 1.0, null, new Date());
+		Product product = new Product("name", null, 1.0, null, new Date(), null);
 		product.setId(1L);
 		int quantity = 11;
 		int takeOutQuantity = 7;
@@ -116,7 +119,6 @@ public class SimpleStoreServiceTest {
 	@Test
 	public void testTakeOutProductShouldReturnFalseWhenThereIsNotEnoughQuantityOfTheProduct() throws FitnessDaoException {
 		//GIVEN
-		Product product = new Product("name", null, 1.0, null, new Date());
 		product.setId(1L);
 		int quantity = 7;
 		int takeOutQuantity = 11;
@@ -144,7 +146,6 @@ public class SimpleStoreServiceTest {
 	@Test(expected=FitnessDaoException.class)
 	public void testPutInProductShouldThrowsExceptionWhenTheProductIsNotFoundInDatabase() throws FitnessDaoException {
 		//GIVEN
-		Product product = new Product();
 		product.setId(1L);
 		BDDMockito.given(productDao.getAllProduct()).willReturn(new ArrayList<Product>());
 		//WHEN
@@ -157,7 +158,6 @@ public class SimpleStoreServiceTest {
 	public void testPutInProductShouldThrowsExceptionWhenTheProductIsNotFoundInStoreTable() throws FitnessDaoException {
 		//GIVEN
 		List<Product> products = new ArrayList<Product>();
-		Product product = new Product("name", null, 1.0, null, new Date());
 		product.setId(1L);
 		products.add(product);
 		BDDMockito.given(productDao.getAllProduct()).willReturn(products);
@@ -174,8 +174,6 @@ public class SimpleStoreServiceTest {
 	public void testPutInProductShouldInvokeTheMethodRight() throws FitnessDaoException {
 		//GIVEN
 		List<Product> products = new ArrayList<Product>();
-		Product product = new Product("name", null, 1.0, null, new Date());
-		product.setId(1L);
 		products.add(product);
 		int quantity = 7;
 		int putInQuantity = 11;

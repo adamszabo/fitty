@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -29,7 +28,7 @@ public class OrderItem {
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
-
+	
 	public OrderItem() {
 		super();
 	}

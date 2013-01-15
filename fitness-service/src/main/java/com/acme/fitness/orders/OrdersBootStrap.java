@@ -44,7 +44,7 @@ public class OrdersBootStrap {
 		 * Tests for StoreService
 		 */
 		Product product = ps.addProduct("labda", "detail", 12340.0,
-				"manufacturer", new Date());
+				"manufacturer", new Date(), null);
 		Store store = ss.addProduct(product, 10);
 		try {
 			System.out.println(ss.getStoreById(store.getId()));
@@ -112,9 +112,8 @@ public class OrdersBootStrap {
 		Training t1 = ts.newTraining(u1, u2, new Date());
 		gos.addTrainingToBasket(basket, t1);
 
-		Product p1 = gps.addProduct("pálcika", "kici ócó", 1.0, "csína",
-				new Date());
-		Product p2 = gps.addProduct("evő", "asd", 12321.0, "sd", new Date());
+		Product p1 = gps.addProduct("pálcika", "kici ócó", 1.0, "csína", new Date(), null);
+		Product p2 = gps.addProduct("evő", "asd", 12321.0, "sd", new Date(), null);
 
 		gos.addProductToStore(p1, 10);
 		gos.addProductToStore(p2, 15);

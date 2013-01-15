@@ -39,7 +39,11 @@
 	<#list products as product>
 		<li class="span4">
 			<div class="thumbnail">
-				<img src="<@spring.url relativeUrl="/resources/300x200.png"/>" alt="">
+				<#if product.productImage??>
+					<img src="<@spring.url relativeUrl="/imageController/${product.productImage.id}"/>" alt="${product.name}" style="max-width: 300px;max-height: 200px;">
+				<#else>
+					<img src="<@spring.url relativeUrl="/resources/img/300x200.png"/>" alt="${product.name}" style="max-width: 300px;max-height: 200px;">
+				</#if>
 				<dl class="dl-horizontal">
 					<dt style="font-size:17px">Termék név</dt>
 				  	<dd style="font-size:17px">${product.name}</dd>

@@ -38,7 +38,7 @@ public class Basket {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
-	@OneToMany(mappedBy = "basket", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "basket", cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<OrderItem> orderItems;
 
@@ -47,7 +47,7 @@ public class Basket {
 
 	@Transient
 	private List<Training> trainings;
-
+	
 	public Basket() {
 		this(false, null);
 	}

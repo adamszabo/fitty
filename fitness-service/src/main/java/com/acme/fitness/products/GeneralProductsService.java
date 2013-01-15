@@ -7,11 +7,12 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
 public interface GeneralProductsService {
-	Product addProduct(String name, String details, double price, String manufacturer, Date creation);
+	Product addProduct(String name, String details, double price, String manufacturer, Date creation, ProductImage productImage);
 	void deleteProduct(Product product);
 	void updateProduct(Product product);
 	List<Product> getAllProduct();

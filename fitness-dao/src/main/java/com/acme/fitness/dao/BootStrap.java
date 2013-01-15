@@ -13,6 +13,7 @@ import com.acme.fitness.dao.orders.OrderItemDao;
 import com.acme.fitness.dao.orders.StoreDao;
 import com.acme.fitness.dao.products.MembershipDao;
 import com.acme.fitness.dao.products.ProductDao;
+import com.acme.fitness.dao.products.ProductImageDao;
 import com.acme.fitness.dao.products.TrainingDao;
 import com.acme.fitness.dao.users.RoleDao;
 import com.acme.fitness.dao.users.UserDao;
@@ -22,6 +23,7 @@ import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.Role;
 import com.acme.fitness.domain.users.User;
@@ -43,10 +45,11 @@ public class BootStrap {
 		BasketDao orderDao=ctx.getBean(BasketDao.class);
 		MembershipDao membershipDao=ctx.getBean(MembershipDao.class);
 		TrainingDao trainingDao=ctx.getBean(TrainingDao.class);
+		ProductImageDao productImageDao=ctx.getBean(ProductImageDao.class);
 		
 		/*--- User and Role ---*/
-		User u=new User("Kicsi Andár Béla", "kicsi007", "password", "kicsi007@freemail.hu", "203333333", new Date(1000), new Date(1000), "127.0.0.1");
-		User u2=new User("Kicsi Kari", "kicsi_kari", "password", "kicsi_kari@freemail.hu", "203333355", new Date(), new Date(), "127.0.0.1");
+		User u=new User("Kicsi Andár Béla", "kicsi007aasdf", "password", "kicsiasdf007@freemail.hu", "203333333", new Date(1000), new Date(1000), "127.0.0.1");
+		User u2=new User("Kicsi Kari", "kicsi_kariasdf", "password", "kicsi_kariasdf@freemail.hu", "203333355", new Date(), new Date(), "127.0.0.1");
 		userDao.save(u);
 		userDao.save(u2);
 		
@@ -70,9 +73,9 @@ public class BootStrap {
 		System.out.println(roleDao.getAllRoles());
 		/*--- User and Role ---*/
 		
-		Product p1=new Product("Prod1", "Lorem ipsum", 12000, "manufacturer", new Date());
-		Product p2=new Product("Prod2", "Lorem ipsum", 13000, "manufacturer", new Date());
-		Product p3=new Product("Prod3", "Lorem ipsum", 14000, "manufacturer", new Date());
+		Product p1=new Product("Prod1", "Lorem ipsum", 12000, "manufacturer", new Date(),null);
+		Product p2=new Product("Prod2", "Lorem ipsum", 13000, "manufacturer", new Date(),null);
+		Product p3=new Product("Prod3", "Lorem ipsum", 14000, "manufacturer", new Date(),null);
 		productDao.save(p1);
 		productDao.save(p2);
 		productDao.save(p3);
@@ -119,6 +122,7 @@ public class BootStrap {
 		orderItemDao.save(oi2);
 		
 		orderDao.update(o1);
+//		orderDao.delete(o1);
 		
 		Membership ms=new Membership("alkalmi", 0, 12, new Date(), 10000, o1);
 		Membership ms2=new Membership("alkalmi", 0, 10, new Date(), 10000, o1);
@@ -173,7 +177,24 @@ public class BootStrap {
 		}
 		logger.info("Products by price interval '12500 to 13500': " + productDao.getProductsByPriceInterval(12500.0, 13500.0));
 		
+		ProductImage pi1=new ProductImage("jpg", "asdfa".getBytes());
+		ProductImage pi2=new ProductImage("jpg", "asdfa".getBytes());
 		
+		productImageDao.save(pi1);
+		productImageDao.save(pi2);
+		
+		Product p20=new Product("Prod20", "Lorem ipsum", 13000, "manufacturer", new Date(),pi1);
+		Product p30=new Product("Prod3", "Lorem ipsum", 14000, "manufacturer", new Date(),pi2);
+		
+		productDao.save(p20);
+		
+		p20.setCreation(new Date());
+		productDao.update(p20);
+		
+		productDao.save(p30);
+		
+		logger.info("All product: "+productDao.getAllProduct());
+		productDao.delete(p30);
 	}
 
 }

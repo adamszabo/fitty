@@ -3,7 +3,7 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Raktár">
 
-<button class="btn" type="button" data-toggle="modal" href="#newProductModal">Új termék hozzáadása</button>
+<button class="btn btn-primary" type="button" data-toggle="modal" href="#newProductModal">Új termék hozzáadása</button>
 
 <@tags.newProductDialog/>
 
@@ -34,7 +34,7 @@
 				<td>${product.product.price}</td>
 				<td>${product.quantity}</td>
 				<td>
-					<form class="form-search" action="<@spring.url relativeUrl="/admin/ujmennyiseg"/>" method="post" style="text-align:left">
+					<form class="form-search" action="<@spring.url relativeUrl="/raktar/ujmennyiseg"/>" method="post" style="text-align:left">
 						<div class="input-append span2">
 		  					<input name="quantity" class="span1 search-query" type="number">
 		  					<input name="productId" type="hidden" value="${product.product.id}">
@@ -43,7 +43,7 @@
 					</form>
 				</td>
 				<td>
-					<a href="<@spring.url relativeUrl="/admin/termektorles/${product.product.id}"/>" class="btn btn-danger"><i class="icon-white icon-remove"></i></a>
+					<a href="<@spring.url relativeUrl="/raktar/termektorles/${product.product.id}"/>" class="btn btn-danger"><i class="icon-white icon-remove"></i></a>
 				</td>
 			</tr>
 		</#list>

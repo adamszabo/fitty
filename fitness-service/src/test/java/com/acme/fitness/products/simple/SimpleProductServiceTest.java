@@ -12,8 +12,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.dao.products.ProductDao;
+import com.acme.fitness.dao.products.ProductImageDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.ProductImage;
 
 public class SimpleProductServiceTest {
 	
@@ -22,31 +24,53 @@ public class SimpleProductServiceTest {
 	@Mock
 	private ProductDao productDao;
 	
+	@Mock
+	private ProductImageDao productImageDao;
+	
+	@Mock
+	private ProductImage productImage;
+	
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest = new SimpleProductService(productDao);
+		underTest = new SimpleProductService(productDao, productImageDao);
 	}
 	
 	@Test
-	public void testAddProductShouldInvokeTheMethodRight(){
+	public void testAddProductShouldInvokeTheMethodRightWhenTheProductImageIsNull(){
 		//GIVEN
 		String expectedName = "name";
 		String expectedDetails = "details";
 		double expectedPrice = 11.0;
 		String expectedManufacturer = "manufacturer";
 		Date expectedDate = new Date();
-		Product expectedProduct = new Product(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate);
+		Product expectedProduct = new Product(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate, productImage);
 		//WHEN
-		underTest.addProduct(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate);
+		underTest.addProduct(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate, productImage);
 		//THEN
+		BDDMockito.verify(productDao).save(expectedProduct);
+	}
+	
+	@Test
+	public void testAddProductShouldInvokeTheMethodRightWhenTheProductImageIsNotNull(){
+		//GIVEN
+		String expectedName = "name";
+		String expectedDetails = "details";
+		double expectedPrice = 11.0;
+		String expectedManufacturer = "manufacturer";
+		Date expectedDate = new Date();
+		Product expectedProduct = new Product(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate, productImage);
+		//WHEN
+		underTest.addProduct(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate, productImage);
+		//THEN
+		BDDMockito.verify(productImageDao).save(productImage);
 		BDDMockito.verify(productDao).save(expectedProduct);
 	}
 	
 	@Test
 	public void testDeleteProductShouldInvokeTheMethodRight(){
 		//GIVEN
-		Product expectedProduct = new Product("name", "details", 11L, "manufacturer", new Date());
+		Product expectedProduct = new Product("name", "details", 11L, "manufacturer", new Date(), productImage);
 		//WHEN
 		underTest.deleteProduct(expectedProduct);
 		//THEN
@@ -56,7 +80,7 @@ public class SimpleProductServiceTest {
 	@Test
 	public void testUpdateProductShouldInvokeTheMethodRight() {
 		//GIVEN
-		Product expectedProduct = new Product("name", "details", 11L, "manufacturer", new Date());
+		Product expectedProduct = new Product("name", "details", 11L, "manufacturer", new Date(), productImage);
 		//WHEN
 		underTest.updateProduct(expectedProduct);
 		//THEn

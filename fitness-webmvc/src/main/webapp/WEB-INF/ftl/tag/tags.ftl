@@ -139,40 +139,52 @@
     <h3 id="myModalLabel">Új termék</h3>
   </div>
   <div class="modal-body">
-  		<form class="form-horizontal" action="<@spring.url relativeUrl="/admin/ujtermek"/>" method="post" accept-charset="UTF-8">
-		  <div class="control-group">
-		    <label class="control-label" for="name">Termék név</label>
-		    <div class="controls">
-		      <input type="text" id="name" name="name" placeholder="Termék neve">
-		    </div>
-		  </div>
-		  <div class="control-group">
-		    <label class="control-label" for="details">Leírás</label>
-		    <div class="controls">
-		      <input type="text" id="details" name="details" placeholder="Termékhez kapcsolódó leírás">
-		    </div>
-		  </div>
-  		  <div class="control-group">
-		    <label class="control-label" for="manufacturer">Gyártó</label>
-		    <div class="controls">
-		      <input type="text" id="manufacturer" name="manufacturer" placeholder="Termék gyártója">
-		    </div>
-		  </div>
-  		  <div class="control-group">
-		    <label class="control-label" for="price">Ár</label>
-		    <div class="controls">
-		      <input type="number" id="price" name="price" placeholder="Termék ára">
-		    </div>
-		  </div>
-		  <div class="modal-footer">
-		  	<div class="control-group">
-		  		<div class="controls">
-			    	<button class="btn" data-dismiss="modal" aria-hidden="true">Bezár</button>
-			    	<button class="btn btn-primary" type ="submit">Hozzáadás</button>
-		 		</div>
-		 	</div>
-		 </div>
-		  
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/ujtermek"/>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+			<div class="control-group">
+				<label class="control-label" for="name">Termék név</label>
+				<div class="controls">
+					<input type="text" id="name" name="name" placeholder="Termék neve">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="details">Leírás</label>
+				<div class="controls">
+					<input type="text" id="details" name="details" placeholder="Termékhez kapcsolódó leírás">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="manufacturer">Gyártó</label>
+				<div class="controls">
+					<input type="text" id="manufacturer" name="manufacturer" placeholder="Termék gyártója">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="price">Ár</label>
+				<div class="controls">
+					<input type="number" id="price" name="price" placeholder="Termék ára">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="fileName">Kép</label>
+			    <div class="controls">
+			    		<input type="text" id="fileName" class="file_input_textbox" readonly="readonly">
+			    		<div class="file_input_div">
+			            	<button class="file_input_button btn btn-primary" type="button">Tallóz</button>
+						    <input type="file" name="file" class="file_input_hidden" onchange="javascript: document.getElementById('fileName').value = this.value" accept="image/gif,image/png,image/pjpeg">	
+			            </div>
+			            <div style="text-align:left !important;">
+							<span>(JPG,PNG,GIF max 500KB)</span>
+						</div>
+			    </div>
+			</div>
+			<div class="modal-footer">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn" data-dismiss="modal" aria-hidden="true">Bezár</button>
+						<button class="btn btn-success" type ="submit">Hozzáadás</button>
+					</div>
+				</div>
+			</div>
 		</form>
   </div>
 </div>
