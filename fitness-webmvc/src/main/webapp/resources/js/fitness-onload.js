@@ -83,7 +83,6 @@ function checkLoginErrors(){
 }
 
 function paginatorCheck(){
-	console.log($('#actualPageNumber').html());
 	$('previousPage').removeClass('disabled');
 	$('nextPage').removeClass('disabled');
 	

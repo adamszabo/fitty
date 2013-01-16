@@ -4,7 +4,7 @@
 <@template.masterTemplate title="Bérletek">
 	
 		<form action="<@spring.url relativeUrl="/berletek/ujberlet"/>" method="post">
-			<table class="table span5">
+			<table class="table span6">
 			<thead>
 				<tr>
 					<th><span>Bérlet típusa</span></th>

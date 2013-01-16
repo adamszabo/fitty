@@ -6,7 +6,7 @@
 <button class="btn btn-primary" type="button" data-toggle="modal" href="#newProductModal">Új termék hozzáadása</button>
 
 <@tags.newProductDialog/>
-
+<link href="<@spring.url relativeUrl="/resources/css/bootstrap-fileupload.css"/>" rel="stylesheet" />
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -50,5 +50,4 @@
 	</tbody>
 
 </table>
-
 </@template.masterTemplate>

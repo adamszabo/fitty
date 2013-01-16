@@ -165,22 +165,12 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="fileName">Kép</label>
-			    <div class="controls">
-			    		<input type="text" id="fileName" class="file_input_textbox" readonly="readonly">
-			    		<div class="file_input_div">
-			            	<button class="file_input_button btn btn-primary" type="button">Tallóz</button>
-						    <input type="file" name="file" class="file_input_hidden" onchange="javascript: document.getElementById('fileName').value = this.value" accept="image/gif,image/png,image/pjpeg">	
-			            </div>
-			            <div style="text-align:left !important;">
-							<span>(JPG,PNG,GIF max 500KB)</span>
-						</div>
-			    </div>
+					<@bootstrapFileUpload />
 			</div>
 			<div class="modal-footer">
 				<div class="control-group">
 					<div class="controls">
-						<button class="btn" data-dismiss="modal" aria-hidden="true">Bezár</button>
+						<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Bezár</button>
 						<button class="btn btn-success" type ="submit">Hozzáadás</button>
 					</div>
 				</div>
@@ -188,6 +178,19 @@
 		</form>
   </div>
 </div>
+</#macro>
+
+<#macro bootstrapFileUpload>
+	<div class="fileupload fileupload-new" data-provides="fileupload">
+		<div class="control-label">
+			<div class="fileupload-new thumbnail" style="width: 100px; height: 75px;"><img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image" /></div>
+	  		<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 100px; max-height: 75px; line-height: 20px;"></div>
+		</div>
+	  <div class="controls">
+	    <span class="btn btn-file btn-primary"><span class="fileupload-new">Kép tallózása</span><span class="fileupload-exists">Változtat</span><input type="file" name="file" accept="image/gif,image/png,image/pjpeg"/></span>
+	    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Eltávolít</a>
+	  </div>
+	</div>
 </#macro>
 
 <#macro missingElements>
