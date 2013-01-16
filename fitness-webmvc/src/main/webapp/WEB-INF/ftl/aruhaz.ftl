@@ -34,7 +34,7 @@
 </ul>
 
 
-<div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%;">
+<div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%">
 <ul class="thumbnails">
 	<#list products as product>
 		<li class="span4">

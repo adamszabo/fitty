@@ -20,7 +20,7 @@
 											<li><a href="<@spring.url relativeUrl="/raktar"/>">Raktár</a></li>
 										</@security.authorize>
 										<@security.authorize access="hasRole('SystemAdmin')">
-											<li><a href="<@spring.url relativeUrl="/admin"/>">Adminisztráció</a></li>
+											<li><a href="<@spring.url relativeUrl="/admin/jogosultsagok"/>">Jogosultsagok</a></li>
 										</@security.authorize>
 										<@security.authorize access="isAnonymous()">
 											<li><a id="registrationButton">Regisztráció</a></li>
