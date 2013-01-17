@@ -64,7 +64,7 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page,
 			HttpServletResponse response, HttpServletRequest request) {
-		
+
 		addBasketToSessionIfExists(request, new ObjectMapper());
 
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps
@@ -91,7 +91,7 @@ public class WebShopController {
 	}
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
-	public String deleteBasket(@PathVariable String page, Model model,
+	public String deleteBasket(@PathVariable String page,
 			HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().removeAttribute("basket");
 		deleteAllCookies(response, request.getCookies());
@@ -100,45 +100,63 @@ public class WebShopController {
 	}
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
-	public String confirmOrder(@PathVariable String page, Model model,
+	public String confirmOrder(@PathVariable String page,
 			HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		String name = auth.getName();
-		if (name.equals("anonymousUser")) {
-			redirectAttributes.addFlashAttribute("message",
-					"Termék rendeléséhez be kell jelentkezni!");
-			return "redirect:/aruhaz/" + page;
+
+		if (getUserName().equals("anonymousUser")) {
+			return failToCheckOut(page, redirectAttributes);
 		} else {
-			System.out.println(name);
-			Basket basket = (Basket) request.getSession()
-					.getAttribute("basket");
-			User user = null;
-			try {
-				user = gus.getUserByUsername(name);
-			} catch (FitnessDaoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			basket.setUser(user);
-			try {
-				gos.checkOutBasket(basket);
-				logger.info("Basket with id: " + basket.getId() + " has confirmed!");
-			} catch (StoreQuantityException e) {
-				request.getSession().setAttribute("missingProduct",
-						e.getProduct());
-				redirectAttributes
-						.addFlashAttribute(
-								"message",
-								"Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
-				request.setAttribute(
-						"message",
-						"Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
-			}
+			checkOutBasket(redirectAttributes, getBasketFromSession(request));
 		}
 
-		return deleteBasket(page, model, request, response);
+		return deleteBasket(page, request, response);
+	}
+
+	private Basket getBasketFromSession(HttpServletRequest request) {
+		return (Basket) request.getSession().getAttribute("basket");
+	}
+
+	private String failToCheckOut(String page,
+			RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message",
+				"Termék rendeléséhez be kell jelentkezni!");
+		return "redirect:/aruhaz/" + page;
+	}
+
+	private void checkOutBasket(RedirectAttributes redirectAttributes,
+			Basket basket) {
+		setBasketToUser(basket);
+		try {
+			gos.checkOutBasket(basket);
+			logger.info("Basket with id: " + basket.getId() + " has confirmed!");
+		} catch (StoreQuantityException e) {
+			addMissingProductsMessages(redirectAttributes, e.getProduct());
+		}
+	}
+
+	private void addMissingProductsMessages(
+			RedirectAttributes redirectAttributes, List<Product> list) {
+		redirectAttributes.addFlashAttribute("missingProduct", list);
+		redirectAttributes
+				.addFlashAttribute(
+						"message",
+						"Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
+	}
+
+	private void setBasketToUser(Basket basket) {
+		try {
+			User user = gus.getUserByUsername(getUserName());
+			basket.setUser(user);
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String getUserName() {
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		return auth.getName();
 	}
 
 	private void addOrderItemToMap(long id, int quantity,
@@ -150,7 +168,7 @@ public class WebShopController {
 			value = new Integer(value + quantity);
 		}
 	}
-	
+
 	private Map<String, Integer> addBasketToSessionIfExists(
 			HttpServletRequest request, ObjectMapper mapper) {
 		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
