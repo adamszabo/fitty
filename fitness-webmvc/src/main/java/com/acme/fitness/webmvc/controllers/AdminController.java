@@ -1,9 +1,7 @@
 package com.acme.fitness.webmvc.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +16,7 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.users.Role;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.GeneralUsersService;
+import com.acme.fitness.webmvc.dto.UserWithRoles;
 
 @Controller
 @RequestMapping("/admin")
@@ -33,21 +32,24 @@ public class AdminController {
 
 	@RequestMapping(value = "")
 	public String defaultPage() {
-		return "adminPage";
+		return "jogosultsagok";
 	}
 	
 
 	@RequestMapping(value = "/jogosultsagok")
 	public String roles(Model model, HttpServletRequest request) {
-		Map<String, List<String>> usersRoles = new HashMap<String, List<String>>();
+		List<UserWithRoles> usersWithRoles=new ArrayList<UserWithRoles>();
 		for (User u : gus.getAllUsers()) {
 			List<String> roleNames = new ArrayList<String>();
 			for (Role r : gus.getRolesbyUser(u)) {
 				roleNames.add(r.getName());
 			}
-			usersRoles.put(u.getUsername(), roleNames);
+			UserWithRoles uwr=new UserWithRoles();
+			uwr.setUser(u);
+			uwr.setRoleNames(roleNames);
+			usersWithRoles.add(uwr);
 		}
-		request.setAttribute("roles", usersRoles);
+		request.setAttribute("UsersWithRoles", usersWithRoles);
 		return "jogosultsagok";
 	}
 	
@@ -60,7 +62,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		logger.info("DELETED USER: "+user.toString());
-		user.setEnabled(false);
+		user.setEnabled(!user.isEnabled());
 		gus.updateUser(user);
 		return "redirect:/admin/jogosultsagok";
 	}
