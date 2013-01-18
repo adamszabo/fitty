@@ -15,11 +15,13 @@ import org.mockito.MockitoAnnotations;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
+import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.MembershipService;
+import com.acme.fitness.products.MembershipTypeService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
 
@@ -47,6 +49,9 @@ public class SimpleGeneralProductsServiceTest {
 	private Training training;
 	
 	@Mock
+	private MembershipType membershipType;
+	
+	@Mock
 	private MembershipService membershipService;
 	
 	@Mock
@@ -55,10 +60,13 @@ public class SimpleGeneralProductsServiceTest {
 	@Mock
 	private ProductImage productImage;
 	
+	@Mock
+	private MembershipTypeService membershipTypeService;
+	
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleGeneralProductsService(productService, membershipService, trainingService);
+		underTest=new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService);
 	}
 	
 	@Test
@@ -306,5 +314,66 @@ public class SimpleGeneralProductsServiceTest {
 		underTest.increaseClientEntries(membership);
 		// THEN
 		BDDMockito.verify(membershipService).increaseClientEntries(membership);
+	}
+	
+	@Test
+	public void testNewMembershipTypeShouldReturnProperly() {
+		// GIVEN
+		BDDMockito.given(membershipTypeService.newMembershipType(TEST_STRING, 1, 1, 1.0)).willReturn(membershipType);
+		// WHEN
+		MembershipType result = underTest.newMembershipType(TEST_STRING, 1, 1, 1.0);
+		// THEN
+		BDDMockito.verify(membershipTypeService).newMembershipType(TEST_STRING, 1, 1, 1.0);
+		Assert.assertEquals(membershipType, result);
+	}
+	
+	@Test
+	public void testDeleteMembershipTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.deleteMembershipType(membershipType);
+		//THEN
+		BDDMockito.verify(membershipTypeService).deleteMembershipType(membershipType);
+	}
+	
+	@Test
+	public void testUpdateMembershipTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.updateMembershipType(membershipType);
+		//THEn
+		BDDMockito.verify(membershipTypeService).updateMembershipType(membershipType);
+	}
+	
+	@Test
+	public void testGetMembershipTypeByIdShouldReturnProperlyWhenTheIdExists() throws FitnessDaoException {
+		//GIVEN
+		BDDMockito.given(membershipTypeService.getMembershipTypeById(1L)).willReturn(membershipType);
+		//WHEN
+		MembershipType result = underTest.getMembershipTypeById(1L);
+		//THEN
+		Assert.assertEquals(result, membershipType);
+		BDDMockito.verify(membershipTypeService).getMembershipTypeById(1L);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testGetMembershipTypeByIdShouldThrowExpcetionWhenTheIdDoesntExist() throws FitnessDaoException {
+		//GIVEN
+		BDDMockito.given(membershipTypeService.getMembershipTypeById(1L)).willThrow(new FitnessDaoException());
+		//WHEN
+		underTest.getMembershipTypeById(1L);
+		//THEN
+		BDDMockito.verify(membershipTypeService).getMembershipTypeById(1L);
+	}
+	
+	@Test
+	public void testGetAllMembershipTypesShouldReturnProperly() {
+		//GIVEN
+		List<MembershipType> expected = new ArrayList<MembershipType>();
+		expected.add(membershipType);
+		BDDMockito.given(membershipTypeService.getAllMembershipTypes()).willReturn(expected);
+		//WHEN
+		List<MembershipType> result = underTest.getAllMembershipTypes();
+		//THEN
+		Assert.assertEquals(expected, result);
+		BDDMockito.verify(membershipTypeService).getAllMembershipTypes();
 	}
 }

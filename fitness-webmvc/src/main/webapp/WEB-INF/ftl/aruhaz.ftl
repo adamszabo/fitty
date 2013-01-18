@@ -13,7 +13,7 @@
 
 
 <ul class="nav nav-pills">
-<#if basket?exists>
+<#if productsInBasket?exists>
 	<li class="dropdown">
 		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 		    Kosár

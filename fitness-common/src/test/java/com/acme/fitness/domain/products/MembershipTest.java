@@ -77,7 +77,7 @@ public class MembershipTest {
 	}
 	
 	@Test
-	public void testMembershipContructorWithArguments() {
+	public void testMembershipConstructorWithArguments() {
 		//GIVEN
 		Date date = new Date();
 		Membership expected = new Membership();

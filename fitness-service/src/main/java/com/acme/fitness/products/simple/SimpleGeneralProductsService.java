@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
+import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.products.MembershipService;
+import com.acme.fitness.products.MembershipTypeService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
 
@@ -24,12 +26,14 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	private ProductService productService;
 	private MembershipService membershipService;
 	private TrainingService trainingService;
+	private MembershipTypeService membershipTypeService;
 	
 	@Autowired
-	public SimpleGeneralProductsService(ProductService productService, MembershipService membershipService, TrainingService trainingService){
+	public SimpleGeneralProductsService(ProductService productService, MembershipService membershipService, TrainingService trainingService, MembershipTypeService membershipTypeService){
 		this.productService=productService;
 		this.membershipService=membershipService;
 		this.trainingService=trainingService;
+		this.membershipTypeService=membershipTypeService;
 	}
 
 	@Override
@@ -145,5 +149,32 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	@Override
 	public void increaseClientEntries(Membership membership) {
 		membershipService.increaseClientEntries(membership);
+	}
+
+	@Override
+	public MembershipType newMembershipType(String type,
+			int maxNumberOfEntries, int expireDateInDays, double price) {
+		return membershipTypeService.newMembershipType(type, maxNumberOfEntries, expireDateInDays, price);
+	}
+
+	@Override
+	public void deleteMembershipType(MembershipType membershipType) {
+		membershipTypeService.deleteMembershipType(membershipType);
+	}
+
+	@Override
+	public void updateMembershipType(MembershipType membershipType) {
+		membershipTypeService.updateMembershipType(membershipType);
+	}
+
+	@Override
+	public MembershipType getMembershipTypeById(long id)
+			throws FitnessDaoException {
+		return membershipTypeService.getMembershipTypeById(id);
+	}
+
+	@Override
+	public List<MembershipType> getAllMembershipTypes() {
+		return membershipTypeService.getAllMembershipTypes();
 	}
 }

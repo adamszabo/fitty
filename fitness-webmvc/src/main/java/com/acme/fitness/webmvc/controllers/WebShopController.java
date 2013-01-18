@@ -93,7 +93,7 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page,
 			HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().removeAttribute("basket");
+		request.getSession().removeAttribute("productsInBasket");
 		deleteAllCookies(response, request.getCookies());
 		logger.info("Basket is deleted from cookies and session.");
 		return "redirect:/aruhaz/" + page;
@@ -108,13 +108,12 @@ public class WebShopController {
 			return failToCheckOut(page, redirectAttributes);
 		} else {
 			checkOutBasket(redirectAttributes, getBasketFromSession(request));
+			return deleteBasket(page, request, response);
 		}
-
-		return deleteBasket(page, request, response);
 	}
 
 	private Basket getBasketFromSession(HttpServletRequest request) {
-		return (Basket) request.getSession().getAttribute("basket");
+		return (Basket) request.getSession().getAttribute("productsInBasket");
 	}
 
 	private String failToCheckOut(String page,
@@ -173,7 +172,7 @@ public class WebShopController {
 			HttpServletRequest request, ObjectMapper mapper) {
 		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
 		if (map.size() > 0) {
-			request.getSession().setAttribute("basket", loadBasket(map));
+			request.getSession().setAttribute("productsInBasket", loadBasket(map));
 		}
 		return map;
 	}
@@ -214,7 +213,7 @@ public class WebShopController {
 		String json = jsonManager.wrapToJsonString(map);
 
 		CookieManager cookieManager = new CookieManager();
-		cookieManager.writeToCookies(response, "basket", json);
+		cookieManager.writeToCookies(response, "productsInBasket", json);
 	}
 
 	private Map<String, Integer> readBasketToMapFromCookies(
@@ -222,7 +221,7 @@ public class WebShopController {
 		String cookieValue = null;
 
 		CookieManager cookieManager = new CookieManager();
-		cookieValue = cookieManager.readFromCookies(request, "basket");
+		cookieValue = cookieManager.readFromCookies(request, "productsInBasket");
 
 		JsonManager jsonManager = new JsonManager(mapper);
 		Map<String, Integer> map = jsonManager
