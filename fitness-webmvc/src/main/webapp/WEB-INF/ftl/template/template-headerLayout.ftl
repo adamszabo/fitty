@@ -52,7 +52,7 @@
     <header class="jumbotron subhead headerback" id="overview">
             <div class="container">
                     <h1>Zsír-Szabó Fitnesz</h1>
-                    <p class="lead">Welcome</p>
+                    <p class="lead">Üdvözöljük!</p>
             </div>
     </header>
 </#macro>

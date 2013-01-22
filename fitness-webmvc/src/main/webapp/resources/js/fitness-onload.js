@@ -57,6 +57,10 @@ $(document).ready(function() {
 		$('.alert').hide();
 	});
 	
+	$('#newProductModal').on("hide", function(){
+		deleteFormDatas("newProductModal");
+	});
+	
 	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
 	// /admin/jogosultsagok userDelete confirm dialog
@@ -72,8 +76,16 @@ $(document).ready(function() {
 		$form.submit();
 	});
 	
+	//beleptetes
+	$('#searchTypeSelect').selectBoxIt({
+		aggressiveChange: true
+	});
+	
+	$('#searchTypeSelectSelectBoxIt').addClass("btn btn-primary");
+	
 });
 
+//After invalid login drop down login dialog
 function checkLoginErrors(){
 	errorDialog=$('#loginErrorDialog');
 	if(errorDialog.html()!=undefined){

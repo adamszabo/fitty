@@ -1,1 +1,19 @@
 html {overflow-y: scroll;}
+
+.jumbotron{
+	padding: 5px 0 !important;
+}
+
+.drop-down-btn-group{
+	position: relative;
+	display: inline-block;	
+}
+
+.drop-down-btn-group span{
+	width: 120px;
+}
+
+.selectboxit-selected {
+    background: #ADD8E6;
+}
+
