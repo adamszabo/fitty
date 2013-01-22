@@ -6,6 +6,7 @@ import java.util.List;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
+import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
@@ -37,4 +38,10 @@ public interface GeneralProductsService {
 	List<Membership> getMembershipByUser(User user);
 	void increaseClientEntries(Membership membership);
 	Product getProductById(long id) throws FitnessDaoException;
+	
+	MembershipType newMembershipType(String type, int maxNumberOfEntries, int expireDateInDays, double price);
+	void deleteMembershipType(MembershipType membershipType);
+	void updateMembershipType(MembershipType membershipType);
+	MembershipType getMembershipTypeById(long id) throws FitnessDaoException;
+	List<MembershipType> getAllMembershipTypes();
 }

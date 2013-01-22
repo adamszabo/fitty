@@ -79,7 +79,7 @@
 </#macro>
 
 <#macro basketDialog>
-	<#if basket?exists>
+	<#if productsInBasket?exists>
 	<div id="basketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -100,7 +100,7 @@
 			<tbody>
 				<#assign iterate = 0>
 				<#assign sum = 0>
-				<#list basket["orderItems"] as item>
+				<#list productsInBasket["orderItems"] as item>
 					<#assign iterate = iterate +1>
 					<#assign sum = sum + item["quantity"] * item["product"]["price"]>
 					<tr>

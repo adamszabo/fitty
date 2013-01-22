@@ -1,21 +1,14 @@
 package com.acme.fitness.webmvc.controllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
@@ -39,6 +31,8 @@ import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.users.GeneralUsersService;
+import com.acme.fitness.webmvc.web.CookieManager;
+import com.acme.fitness.webmvc.web.JsonManager;
 
 @Controller
 @RequestMapping("/aruhaz")
@@ -57,31 +51,25 @@ public class WebShopController {
 	private GeneralUsersService gus;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String aruhaz(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request) {
-		return setPage(model, "1", response, request);
+	public String aruhaz() {
+		return "redirect:/aruhaz/1";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String aruhazWithSlash(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request) {
-		return setPage(model, "1", response, request);
+	public String aruhazWithSlash() {
+		return "redirect:/aruhaz/1";
 
 	}
 
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page,
 			HttpServletResponse response, HttpServletRequest request) {
-		if (isBasketNotExist(request)) {
-			addBasketToSessionFromCookie(request);
-		}
 
-		int pageNumber = parsePageNumber(page);
-		int productSize = gps.getAllProduct().size();
-		pageNumber = validatePageNumber(pageNumber, productSize);
-		List<Product> productsOnPage = getProductsSubListOnPage(pageNumber,
-				productSize);
-		model.addAttribute("products", productsOnPage);
+		addBasketToSessionIfExists(request, new ObjectMapper());
+
+		int pageNumber = validatePageNumber(parsePageNumber(page), gps
+				.getAllProduct().size());
+		model.addAttribute("products", getProductsOnPage(pageNumber));
 		model.addAttribute("pageNumber", pageNumber);
 		return "aruhaz";
 	}
@@ -89,74 +77,126 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
 	public String addProductToCart(@ModelAttribute("productId") long id,
 			@ModelAttribute("quantity") int quantity,
-			@PathVariable String page, Model model,
-			HttpServletResponse response, HttpServletRequest request) {
+			@PathVariable String page, HttpServletResponse response,
+			HttpServletRequest request) {
 		ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Integer> map = readFromCookies(request, mapper);
+		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
 
-		if (isBasketNotExist(request)) {
-			addNewBasketToSession(request, map);
-		}
-		addProductToBasketAtSession(id, quantity, request);
+		addOrderItemToMap(id, quantity, map);
 
-		writeToCookies(id, quantity, response, request, mapper, map);
+		writeMapToCookies(response, mapper, map);
 
-		return setPage(model, page, response, request);
+		return "redirect:/aruhaz/" + page;
 	}
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
-	public String deleteBasket(@PathVariable String page, Model model,
+	public String deleteBasket(@PathVariable String page,
 			HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().removeAttribute("basket");
+		request.getSession().removeAttribute("productsInBasket");
 		deleteAllCookies(response, request.getCookies());
 		logger.info("Basket is deleted from cookies and session.");
 		return "redirect:/aruhaz/" + page;
 	}
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
-	public String confirmOrder(@PathVariable String page, Model model,
-			HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public String confirmOrder(@PathVariable String page,
+			HttpServletRequest request, HttpServletResponse response,
+			RedirectAttributes redirectAttributes) {
+
+		if (getUserName().equals("anonymousUser")) {
+			return failToCheckOut(page, redirectAttributes);
+		} else {
+			checkOutBasket(redirectAttributes, getBasketFromSession(request));
+			return deleteBasket(page, request, response);
+		}
+	}
+
+	private Basket getBasketFromSession(HttpServletRequest request) {
+		return (Basket) request.getSession().getAttribute("productsInBasket");
+	}
+
+	private String failToCheckOut(String page,
+			RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message",
+				"Termék rendeléséhez be kell jelentkezni!");
+		return "redirect:/aruhaz/" + page;
+	}
+
+	private void checkOutBasket(RedirectAttributes redirectAttributes,
+			Basket basket) {
+		setBasketToUser(basket);
+		try {
+			gos.checkOutBasket(basket);
+			logger.info("Basket with id: " + basket.getId() + " has confirmed!");
+		} catch (StoreQuantityException e) {
+			addMissingProductsMessages(redirectAttributes, e.getProduct());
+		}
+	}
+
+	private void addMissingProductsMessages(
+			RedirectAttributes redirectAttributes, List<Product> list) {
+		redirectAttributes.addFlashAttribute("missingProduct", list);
+		redirectAttributes
+				.addFlashAttribute(
+						"message",
+						"Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
+	}
+
+	private void setBasketToUser(Basket basket) {
+		try {
+			User user = gus.getUserByUsername(getUserName());
+			basket.setUser(user);
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String getUserName() {
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
-		String name = auth.getName();
-		if (name.equals("anonymousUser")) {
-			redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
-			return "redirect:/aruhaz/" + page; 
+		return auth.getName();
+	}
+
+	private void addOrderItemToMap(long id, int quantity,
+			Map<String, Integer> map) {
+		if (!map.containsKey(Long.toString(id))) {
+			map.put(Long.toString(id), quantity);
 		} else {
-			System.out.println(name);
-			Basket basket = (Basket) request.getSession()
-					.getAttribute("basket");
-			User user = null;
-			try {
-				user = gus.getUserByUsername(name);
-			} catch (FitnessDaoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			basket.setUser(user);
-			try {
-				gos.checkOutBasket(basket);
-			} catch (StoreQuantityException e) {
-				request.getSession().setAttribute("missingProduct", e.getProduct());
-				redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
-				request.setAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
-			}
+			Integer value = map.get(Long.toString(id));
+			value = new Integer(value + quantity);
 		}
-
-		return deleteBasket(page, model, request, response);
 	}
 
-	private void addBasketToSessionFromCookie(HttpServletRequest request) {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Integer> map = readFromCookies(request, mapper);
+	private Map<String, Integer> addBasketToSessionIfExists(
+			HttpServletRequest request, ObjectMapper mapper) {
+		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
 		if (map.size() > 0) {
-			addNewBasketToSession(request, map);
+			request.getSession().setAttribute("productsInBasket", loadBasket(map));
 		}
+		return map;
 	}
 
-	private boolean isBasketNotExist(HttpServletRequest request) {
-		return request.getSession().getAttribute("basket") == null;
+	private Basket loadBasket(Map<String, Integer> map) {
+		Basket basket = gos.newBasket(new User());
+		for (String s : map.keySet()) {
+			addProductToBasketByProductId(basket, Long.parseLong(s), map.get(s));
+		}
+		return basket;
+	}
+
+	private void addProductToBasketByProductId(Basket basket, long id,
+			int quantity) {
+		Product product = null;
+		try {
+			product = gps.getProductById(id);
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+		if (product != null) {
+			OrderItem oi = gos.newOrderItem(product, quantity);
+			gos.addOrderItemToBasket(basket, oi);
+		}
 	}
 
 	private void deleteAllCookies(HttpServletResponse response, Cookie[] cookies) {
@@ -166,104 +206,37 @@ public class WebShopController {
 		}
 	}
 
-	private void addProductToBasketAtSession(long id, int quantity,
-			HttpServletRequest request) {
-		Basket basket = (Basket) request.getSession().getAttribute("basket");
-		addProductToBasketByProductId(id, quantity, basket);
-		request.getSession().setAttribute("basket", basket);
-		logger.info("Product : " + id + " with quantity : " + quantity
-				+ " added to " + RequestContextHolder.currentRequestAttributes().getSessionId() + " session's id");
-	}
-
-	private void addNewBasketToSession(HttpServletRequest request,
-			Map<String, Integer> map) {
-		Basket basket = gos.newBasket(new User());
-		for (String s : map.keySet()) {
-			addProductToBasketByProductId(Long.parseLong(s), map.get(s), basket);
-		}
-		request.getSession().setAttribute("basket", basket);
-	}
-
-	private void writeToCookies(long id, int quantity,
-			HttpServletResponse response, HttpServletRequest request,
+	private void writeMapToCookies(HttpServletResponse response,
 			ObjectMapper mapper, Map<String, Integer> map) {
-		if (!map.containsKey(Long.toString(id))) {
-			map.put(Long.toString(id), quantity);
-		}
-		String json = null;
-		try {
-			json = mapper.writeValueAsString(map);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		Cookie cookie = new Cookie("basket", json);
-		cookie.setMaxAge(99999);
-		response.addCookie(cookie);
+		JsonManager jsonManager = new JsonManager(mapper);
+		String json = jsonManager.wrapToJsonString(map);
+
+		CookieManager cookieManager = new CookieManager();
+		cookieManager.writeToCookies(response, "productsInBasket", json);
 	}
 
-	private List<Product> getProductsSubListOnPage(int pageNumber,
-			int productSize) {
-		List<Product> productsOnPage = new ArrayList<Product>();
-		if (productSize > 0)
-			productsOnPage = gps.getAllProduct().subList((pageNumber - 1) * 9,
-					Math.min(pageNumber * 9, productSize));
-		return productsOnPage;
-	}
-
-	private Map<String, Integer> readFromCookies(HttpServletRequest request,
-			ObjectMapper mapper) {
+	private Map<String, Integer> readBasketToMapFromCookies(
+			HttpServletRequest request, ObjectMapper mapper) {
 		String cookieValue = null;
 
-		if (request.getCookies() != null) {
-			for (Cookie c : request.getCookies()) {
-				if (c.getName().equals("basket")) {
-					cookieValue = c.getValue();
-				}
-			}
-		}
+		CookieManager cookieManager = new CookieManager();
+		cookieValue = cookieManager.readFromCookies(request, "productsInBasket");
 
-		Map<String, Integer> map = new HashMap<String, Integer>();
+		JsonManager jsonManager = new JsonManager(mapper);
+		Map<String, Integer> map = jsonManager
+				.unwrapFromJsonString(cookieValue);
 
-		if (cookieValue != null) {
-			try {
-				map = mapper.readValue(cookieValue,
-						new TypeReference<Map<String, Object>>() {
-						});
-			} catch (JsonParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (JsonMappingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
 		return map;
 	}
 
-	private void addProductToBasketByProductId(long id, int quantity,
-			Basket basket) {
-		Product product = null;
-		try {
-			product = gps.getProductById(id);
-		} catch (FitnessDaoException e) {
-
-		}
-		if(basket.getOrderItems().contains(product)) {
-			System.out.println("Hát haaaahóóóóóó");
-		}
-		OrderItem oi = gos.newOrderItem(product, quantity);
-		gos.addOrderItemToBasket(basket, oi);
+	private List<Product> getProductsOnPage(int pageNumber) {
+		int size = gps.getAllProduct().size();
+		List<Product> productsOnPage = new ArrayList<Product>();
+		if (size > 0)
+			productsOnPage = gps.getAllProduct().subList((pageNumber - 1) * 9,
+					Math.min(pageNumber * 9, size));
+		return productsOnPage;
 	}
 
 	private int validatePageNumber(int pageNumber, int productSize) {

@@ -28,7 +28,7 @@ public class HibernateMembershipDao extends AbstractHibernateGenericDao<Membersh
 		if(result!=null)
 			return result;
 		else
-			throw new FitnessDaoException("User doesn't found with id:"+id);
+			throw new FitnessDaoException("Membership doesn't found with id:"+id);
 	}
 
 	@SuppressWarnings("unchecked")
