@@ -119,8 +119,6 @@ $(document).ready(function() {
 		$('#newMembershipModal #isIntervally').val('true');
 	});
 	
-});
-
 	//beleptetes
 	$('#searchType').selectBoxIt({
 		aggressiveChange: true
@@ -139,6 +137,8 @@ $(document).ready(function() {
 			$('#'+this.id+' i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
 		}
 	});
+	
+});
 	
 //After invalid login drop down login dialog
 function checkLoginErrors(){
