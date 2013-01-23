@@ -29,19 +29,20 @@ public interface GeneralProductsService {
 	List<Training> getTrainingsByClient(User client);
 	List<Training> getTrainingsByBasket(Basket basket);
 	
-	Membership newMemberShip(String type, int maxEntries, Date expireDate, double price);
+	Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price);
 	void deleteMembership(Membership membership);
 	void updateMembership(Membership membership);
-	boolean isValid(Membership membership);
+	boolean isValid(Membership membership, Date date);
 	Membership getMembershipById(long id) throws FitnessDaoException;
 	List<Membership> getMembershipByBasket(Basket basket);
 	List<Membership> getMembershipByUser(User user);
 	void increaseClientEntries(Membership membership);
 	Product getProductById(long id) throws FitnessDaoException;
 	
-	MembershipType newMembershipType(String type, int maxNumberOfEntries, int expireDateInDays, double price);
+	MembershipType newMembershipType(String type, boolean isIntervally, int maxNumberOfEntries, int expireDateInDays, double price);
 	void deleteMembershipType(MembershipType membershipType);
 	void updateMembershipType(MembershipType membershipType);
 	MembershipType getMembershipTypeById(long id) throws FitnessDaoException;
 	List<MembershipType> getAllMembershipTypes();
+	void saveMembershipType(MembershipType membershipType);
 }

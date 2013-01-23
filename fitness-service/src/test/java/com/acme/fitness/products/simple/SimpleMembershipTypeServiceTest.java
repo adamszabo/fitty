@@ -36,10 +36,11 @@ public class SimpleMembershipTypeServiceTest {
 		MembershipType expected = new MembershipType();
 		expected.setExpireDateInDays(1);
 		expected.setMaxNumberOfEntries(1);
+		expected.setIntervally(true);
 		expected.setPrice(1.0);
-		expected.setType("type");
+		expected.setDetail("type");
 		//WHEN
-		MembershipType result = underTest.newMembershipType("type", 1, 1, 1.0);
+		MembershipType result = underTest.newMembershipType("type", true, 1, 1, 1.0);
 		//THEN
 		Assert.assertEquals(expected, result);
 	}

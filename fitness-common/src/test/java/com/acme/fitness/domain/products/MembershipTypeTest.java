@@ -28,9 +28,9 @@ public class MembershipTypeTest {
 	@Test
 	public void testGetterAndSetterBehaviorOfType() {
 		// WHEN
-		underTest.setType("type");
+		underTest.setDetail("type");
 		// THEN
-		Assert.assertEquals("type", underTest.getType());
+		Assert.assertEquals("type", underTest.getDetail());
 	}
 
 	@Test
@@ -56,6 +56,14 @@ public class MembershipTypeTest {
 		// THEN
 		Assert.assertEquals(1.0, underTest.getPrice());
 	}
+	
+	@Test
+	public void testGetterAndSetterBehavoirOfIntervally() {
+		//WHEN
+		underTest.setIntervally(true);
+		//THEN
+		Assert.assertEquals(true, underTest.isIntervally());
+	}
 
 	@Test
 	public void testEqualsWithEqualsVeryfier() {
@@ -70,10 +78,11 @@ public class MembershipTypeTest {
 		MembershipType expected = new MembershipType();
 		expected.setExpireDateInDays(1);
 		expected.setMaxNumberOfEntries(1);
+		expected.setIntervally(true);
 		expected.setPrice(1.0);
-		expected.setType("type");
+		expected.setDetail("type");
 		// WHEN
-		underTest = new MembershipType("type", 1, 1, 1.0);
+		underTest = new MembershipType("type", true, 1, 1, 1.0);
 		// THEN
 		Assert.assertEquals(expected, underTest);
 	}

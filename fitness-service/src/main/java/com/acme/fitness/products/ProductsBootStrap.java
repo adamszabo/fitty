@@ -80,24 +80,24 @@ public class ProductsBootStrap {
 		basketDao.save(b2);
 		basketDao.save(b3);
 		
-		mService.saveNewMemberShip(b1, "occasionally", 0, new Date(), 18900.0);
-		Membership m1=mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		Membership m2=mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
-		mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+//		mService.saveNewMemberShip(b1, "occasionally", 0, new Date(), 18900.0);
+//		Membership m1=mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+//		mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+//		Membership m2=mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
+//		mService.saveNewMemberShip(b2, "occasionally", 0, new Date(), 18900.0);
 		List<Membership> result=mService.getMembershipByBasket(b2);
 		System.out.println("Membership by basket number: "+result.size()+" values: "+result.toString());
-		mService.deleteMembership(m2);
+//		mService.deleteMembership(m2);
 		result=mService.getMembershipByBasket(b2);
 		System.out.println("Membership by basket number: "+result.size()+" values: "+result.toString());
-		m1.setPrice(21000.0);
-		mService.updateMembership(m1);
-		mService.increaseClientEntries(m1);
-		try {
-			System.out.println("Membership by id: "+ mService.getMembershipById(m1.getId()));
-		} catch (FitnessDaoException e) {
-			e.printStackTrace();
-		}
+//		m1.setPrice(21000.0);
+//		mService.updateMembership(m1);
+//		mService.increaseClientEntries(m1);
+//		try {
+//			System.out.println("Membership by id: "+ mService.getMembershipById(m1.getId()));
+//		} catch (FitnessDaoException e) {
+//			e.printStackTrace();
+//		}
 		System.out.println("Membership by User, number:"+mService.getMembershipByUser(newUser).size()+" values:"+mService.getMembershipByUser(newUser));
 		System.out.println("Membership by User, number:"+mService.getMembershipByUser(newUser2).size()+" values:"+mService.getMembershipByUser(newUser2));
 		
@@ -116,23 +116,23 @@ public class ProductsBootStrap {
 		System.out.println("GeneralProductServiceTest.getProductsByName: "+gps.getProductsByName(p2.getName()));
 		System.out.println("GeneralProductServiceTest.getProductsByPriceInterval: "+gps.getProductsByPriceInterval(11L, 200000000L));
 		
-		Membership mem1=gps.newMemberShip("GeneralProductServiceTest", 0, new Date(), 18900.0);
-		Membership mem2=gps.newMemberShip("GeneralProductServiceTest", 10, new Date(), 18900.0);
-		mService.saveMemberShip(b1, mem1);
-		mService.saveMemberShip(b1, mem2);
-		gps.deleteMembership(mem1);
-		mem2.setMaxNumberOfEntries(1200000);
-		gps.updateMembership(mem2);
+//		Membership mem1=gps.newMemberShip("GeneralProductServiceTest", 0, new Date(), 18900.0);
+//		Membership mem2=gps.newMemberShip("GeneralProductServiceTest", 10, new Date(), 18900.0);
+//		mService.saveMemberShip(b1, mem1);
+//		mService.saveMemberShip(b1, mem2);
+//		gps.deleteMembership(mem1);
+//		mem2.setMaxNumberOfEntries(1200000);
+//		gps.updateMembership(mem2);
 		System.out.println("GeneralProductServiceTest.getMembershipsByBasket: "+gps.getMembershipByBasket(b1));
 		System.out.println("GeneralProductServiceTest.getMembershipsByUser: "+gps.getMembershipByUser(b1.getUser()));
-		try {
-			gps.increaseClientEntries(mem2);
-			gps.increaseClientEntries(mem2);
-			System.out.println("GeneralProductServiceTest.getMembershipsById: "+gps.getMembershipById(mem2.getId()));
-			System.out.println("GeneralProductServiceTest.getMembershipsById: "+gps.getMembershipById(mem1.getId()));
-		} catch (FitnessDaoException e) {
-			e.fillInStackTrace().printStackTrace();
-		}
+//		try {
+//			gps.increaseClientEntries(mem2);
+//			gps.increaseClientEntries(mem2);
+//			System.out.println("GeneralProductServiceTest.getMembershipsById: "+gps.getMembershipById(mem2.getId()));
+//			System.out.println("GeneralProductServiceTest.getMembershipsById: "+gps.getMembershipById(mem1.getId()));
+//		} catch (FitnessDaoException e) {
+//			e.fillInStackTrace().printStackTrace();
+//		}
 		
 		Training tr1=gps.newTraining(trainer, client, date);
 		Training tr2=gps.newTraining(trainer, client, new Date());

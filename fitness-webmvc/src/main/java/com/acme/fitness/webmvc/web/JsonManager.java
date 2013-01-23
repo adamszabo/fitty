@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-public class JsonManager {
+public class JsonManager<T> {
 
 	public ObjectMapper mapper;
 
@@ -19,7 +19,7 @@ public class JsonManager {
 		this.mapper = mapper;
 	}
 
-	public String wrapToJsonString(Map<String, Integer> map) {
+	public String wrapToJsonString(Map<String, T> map) {
 		String json = null;
 		try {
 			json = mapper.writeValueAsString(map);
@@ -36,8 +36,8 @@ public class JsonManager {
 		return json;
 	}
 
-	public Map<String, Integer> unwrapFromJsonString(String json) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
+	public Map<String, T> unwrapFromJsonString(String json) {
+		Map<String, T> map = new HashMap<String, T>();
 		if (json != null) {
 			try {
 				map = mapper.readValue(json,

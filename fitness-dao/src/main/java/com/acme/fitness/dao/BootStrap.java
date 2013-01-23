@@ -124,19 +124,19 @@ public class BootStrap {
 		orderDao.update(o1);
 //		orderDao.delete(o1);
 		
-		Membership ms=new Membership("alkalmi", 0, 12, new Date(), 10000, o1);
-		Membership ms2=new Membership("alkalmi", 0, 10, new Date(), 10000, o1);
-		membershipDao.save(ms);
-		membershipDao.save(ms2);
-		
+//		Membership ms=new Membership("alkalmi", 0, 12, new Date(), 10000, o1);
+//		Membership ms2=new Membership("alkalmi", 0, 10, new Date(), 10000, o1);
+//		membershipDao.save(ms);
+//		membershipDao.save(ms2);
+//		
 		Training t1=new Training(u2, u, new Date(), false, 150, "lorem ipsum", o1);
 		Training t2=new Training(u2, u, new Date(), false, 170, "xyllll", o1);
 		trainingDao.save(t1);
 		trainingDao.save(t2);
 		
-		membershipDao.delete(ms);
+//		membershipDao.delete(ms);
 		logger.info("All MemberShip: "+membershipDao.getAllMemberships().toString());
-		logger.info("MemberShip by id: "+membershipDao.getMembershipById(ms2.getId()).toString());
+//		logger.info("MemberShip by id: "+membershipDao.getMembershipById(ms2.getId()).toString());
 		logger.info("MemberShips by Order: "+membershipDao.getMembershipsByOrder(o1).toString());
 		
 		try {

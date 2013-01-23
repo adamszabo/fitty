@@ -32,7 +32,7 @@ public class SimpleMembershipServiceTest {
 
 	@Mock
 	private User userMock;
-
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -42,15 +42,16 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testNewMembershipShouldReturnTheRightObject() {
 		// GIVEN
-		String exceptedType = "type";
+		boolean expectedIntervally = true;
+		String expectedType = "type";
 		int expectedMaxEntries = 10;
-		Date expectedExpireDate = new Date();
+		Date expectedDate = new Date();
 		double expectedPrice = 1230.0;
-		Membership expected = new Membership(exceptedType, 0,
-				expectedMaxEntries, expectedExpireDate, expectedPrice, null);
+		Membership expected = new Membership(expectedIntervally, expectedType, 0,
+				expectedMaxEntries, expectedDate, expectedDate, expectedPrice, null);
 		// WHEN
-		Membership result = underTest.newMemberShip(exceptedType,
-				expectedMaxEntries, expectedExpireDate, expectedPrice);
+		Membership result = underTest.newMemberShip(expectedIntervally, expectedType,
+				expectedMaxEntries, expectedDate, expectedDate, expectedPrice);
 		// THEN
 		Assert.assertEquals(expected, result);
 	}
@@ -74,11 +75,12 @@ public class SimpleMembershipServiceTest {
 	@Test
 	public void testSaveNewMembershipShouldReturnProperly() {
 		// GIVEN
-		Membership expected = new Membership("TESTSTRING", 0, 0, new Date(),
+		Date date = new Date();
+		Membership expected = new Membership(true, "TESTSTRING", 0, 0, date, date,
 				0.0, basketMock);
 		// WHEN
-		Membership result = underTest.saveNewMemberShip(basketMock,
-				"TESTSTRING", 0, new Date(), 0.0);
+		Membership result = underTest.saveNewMemberShip(true, basketMock,
+				"TESTSTRING", 0, date, date, 0.0);
 		// THEN
 		BDDMockito.verify(membershipDaoMock).save(expected);
 		Assert.assertEquals(expected, result);
@@ -167,5 +169,31 @@ public class SimpleMembershipServiceTest {
 		BDDMockito.verify(membershipMock).setNumberOfEntries(Mockito.anyInt());
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		BDDMockito.verify(membershipDaoMock).update(membershipMock);
+	}
+	
+	@Test
+	public void testIsValidShouldReturnTrueWhenTheDateIsBeforeTheExpireDate() {
+		//GIVEN
+		Date date = new Date();
+		BDDMockito.given(membershipMock.isIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 1000*60*60));
+		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000*60*60));
+		//WHEN
+		boolean result = underTest.isValid(membershipMock, date);
+		//THEN
+		Assert.assertEquals(true, result);
+	}
+	
+	@Test
+	public void testIsValidShouldReturnTrueWhenTheActualEntriesLessThenMaxEntries() {
+		//GIVEN
+		Date date = new Date();
+		BDDMockito.given(membershipMock.isIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(5);
+		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(10);
+		//WHEN
+		boolean result = underTest.isValid(membershipMock, date);
+		//THEN
+		Assert.assertEquals(true, result);
 	}
 }

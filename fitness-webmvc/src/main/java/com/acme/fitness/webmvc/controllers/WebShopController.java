@@ -209,7 +209,7 @@ public class WebShopController {
 	private void writeMapToCookies(HttpServletResponse response,
 			ObjectMapper mapper, Map<String, Integer> map) {
 
-		JsonManager jsonManager = new JsonManager(mapper);
+		JsonManager<Integer> jsonManager = new JsonManager<Integer>(mapper);
 		String json = jsonManager.wrapToJsonString(map);
 
 		CookieManager cookieManager = new CookieManager();
@@ -223,7 +223,7 @@ public class WebShopController {
 		CookieManager cookieManager = new CookieManager();
 		cookieValue = cookieManager.readFromCookies(request, "productsInBasket");
 
-		JsonManager jsonManager = new JsonManager(mapper);
+		JsonManager<Integer> jsonManager = new JsonManager<Integer>(mapper);
 		Map<String, Integer> map = jsonManager
 				.unwrapFromJsonString(cookieValue);
 

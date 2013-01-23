@@ -69,7 +69,7 @@ public class MembershipTest {
 		EqualsVerifier.forClass(Membership.class)
 				.suppress(Warning.STRICT_INHERITANCE).suppress(Warning.NULL_FIELDS).verify();
 	}
-	
+
 	@Test
 	public void testMaxNumberOfEntiresGetterAndSetterBehaviour() {
 		underTest.setMaxNumberOfEntries(2);
@@ -77,20 +77,27 @@ public class MembershipTest {
 	}
 	
 	@Test
+	public void testGetterAndSettBehaviourOfIntervally() {
+		underTest.setIntervally(true);
+		Assert.assertEquals(true, underTest.isIntervally());
+	}
+
+	@Test
 	public void testMembershipConstructorWithArguments() {
 		//GIVEN
 		Date date = new Date();
 		Membership expected = new Membership();
+		expected.setIntervally(true);
 		expected.setType("type");
 		expected.setNumberOfEntries(1);
 		expected.setMaxNumberOfEntries(1);
+		expected.setStartDate(date);
 		expected.setExpireDate(date);
 		expected.setPrice(1.0);
 		expected.setBasket(new Basket());
 		//WHEN
-		underTest = new Membership("type", 1, 1, date, 1.0, new Basket());
+		underTest = new Membership(true, "type", 1, 1, date, date, 1.0, new Basket());
 		//THEN
 		Assert.assertEquals(expected, underTest);
 	}
-
 }

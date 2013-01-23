@@ -226,11 +226,11 @@ public class SimpleGeneralProductsServiceTest {
 	public void testNewMembershipShouldReturnProperly(){
 		// GIVEN
 		Date date=new Date();
-		BDDMockito.given(membershipService.newMemberShip(TEST_STRING, 0, date, 0.0)).willReturn(membership);
+		BDDMockito.given(membershipService.newMemberShip(true, TEST_STRING, 0, date, date, 10.0)).willReturn(membership);
 		// WHEN
-		Membership result=underTest.newMemberShip(TEST_STRING, 0, date, 0.0);
+		Membership result=underTest.newMemberShip(true, TEST_STRING, 0, date, date, 10.0);
 		// THEN
-		BDDMockito.verify(membershipService).newMemberShip(TEST_STRING, 0, date, 0.0);
+		BDDMockito.verify(membershipService).newMemberShip(true, TEST_STRING, 0, date, date, 10.0);
 		Assert.assertEquals(membership, result);
 	}
 	
@@ -256,9 +256,9 @@ public class SimpleGeneralProductsServiceTest {
 	public void testIsValidMembershipShouldReturnProperly(){
 		// GIVEN
 		// WHEN
-		underTest.isValid(membership);
+		underTest.isValid(membership, new Date());
 		// THEN
-		BDDMockito.verify(membershipService).isValid(membership);
+		BDDMockito.verify(membershipService).isValid(membership, new Date());
 	}
 	
 	@Test
@@ -319,12 +319,20 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testNewMembershipTypeShouldReturnProperly() {
 		// GIVEN
-		BDDMockito.given(membershipTypeService.newMembershipType(TEST_STRING, 1, 1, 1.0)).willReturn(membershipType);
+		BDDMockito.given(membershipTypeService.newMembershipType(TEST_STRING, true, 1, 1, 1.0)).willReturn(membershipType);
 		// WHEN
-		MembershipType result = underTest.newMembershipType(TEST_STRING, 1, 1, 1.0);
+		MembershipType result = underTest.newMembershipType(TEST_STRING, true, 1, 1, 1.0);
 		// THEN
-		BDDMockito.verify(membershipTypeService).newMembershipType(TEST_STRING, 1, 1, 1.0);
+		BDDMockito.verify(membershipTypeService).newMembershipType(TEST_STRING, true, 1, 1, 1.0);
 		Assert.assertEquals(membershipType, result);
+	}
+	
+	@Test
+	public void testSaveMembershipTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.saveMembershipType(membershipType);
+		//THEN
+		BDDMockito.verify(membershipTypeService).saveMembershipType(membershipType);
 	}
 	
 	@Test

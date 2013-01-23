@@ -3,12 +3,14 @@ package com.acme.fitness.products.simple;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.acme.fitness.dao.products.MembershipTypeDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.products.MembershipTypeService;
 
+@Service
 public class SimpleMembershipTypeService implements MembershipTypeService {
 
 	private MembershipTypeDao membershipTypeDao;
@@ -19,9 +21,9 @@ public class SimpleMembershipTypeService implements MembershipTypeService {
 	}
 
 	@Override
-	public MembershipType newMembershipType(String type,
+	public MembershipType newMembershipType(String type, boolean isIntervally,
 			int maxNumberOfEntries, int expireDateInDays, double price) {
-		return new MembershipType(type, maxNumberOfEntries, expireDateInDays,
+		return new MembershipType(type, isIntervally, maxNumberOfEntries, expireDateInDays,
 				price);
 	}
 

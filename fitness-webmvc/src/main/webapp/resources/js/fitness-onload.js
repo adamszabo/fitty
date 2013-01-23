@@ -72,7 +72,19 @@ $(document).ready(function() {
 		$form.submit();
 	});
 	
+	
+	$('.open-updateMembershipModal').on("click", function () {
+	    var membershipId = $(this).data('id');
+	    var membershipDetail = $(this).data('detail');
+	    console.log(membershipDetail);
+	    $("#id").val( membershipId);
+	    $("#detail").val( membershipDetail );
+	    $('#updateMembershipModal').modal('show');
+	});
+	
 });
+
+
 
 function checkLoginErrors(){
 	errorDialog=$('#loginErrorDialog');

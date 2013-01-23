@@ -110,10 +110,10 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	public List<Training> getTrainingsByBasket(Basket basket) {
 		return trainingService.getTrainingsByBasket(basket);
 	}
-
+	
 	@Override
-	public Membership newMemberShip(String type, int maxEntries, Date expireDate, double price) {
-		return membershipService.newMemberShip(type, maxEntries, expireDate, price);
+	public Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price) {
+		return membershipService.newMemberShip(isIntervally, type, maxEntries, startDate, expireDate, price);
 	}
 
 	@Override
@@ -127,8 +127,8 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 
 	@Override
-	public boolean isValid(Membership membership) {
-		return membershipService.isValid(membership);
+	public boolean isValid(Membership membership, Date date) {
+		return membershipService.isValid(membership, date);
 	}
 
 	@Override
@@ -152,9 +152,14 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 
 	@Override
-	public MembershipType newMembershipType(String type,
+	public MembershipType newMembershipType(String type, boolean isIntervally, 
 			int maxNumberOfEntries, int expireDateInDays, double price) {
-		return membershipTypeService.newMembershipType(type, maxNumberOfEntries, expireDateInDays, price);
+		return membershipTypeService.newMembershipType(type, isIntervally, maxNumberOfEntries, expireDateInDays, price);
+	}
+	
+	@Override
+	public void saveMembershipType(MembershipType membershipType) {
+		membershipTypeService.saveMembershipType(membershipType);
 	}
 
 	@Override
