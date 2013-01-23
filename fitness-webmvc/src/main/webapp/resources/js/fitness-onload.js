@@ -57,6 +57,10 @@ $(document).ready(function() {
 		$('.alert').hide();
 	});
 	
+	$('#newProductModal').on("hide", function(){
+		deleteFormDatas("newProductModal");
+	});
+	
 	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
 	// /admin/jogosultsagok userDelete confirm dialog
@@ -72,7 +76,6 @@ $(document).ready(function() {
 		$form.submit();
 	});
 	
-	
 	$('.open-updateMembershipModal').on("click", function () {
 	    var membershipId = $(this).data('id');
 	    var membershipDetail = $(this).data('detail');
@@ -84,8 +87,14 @@ $(document).ready(function() {
 	
 });
 
-
-
+	//beleptetes
+	$('#searchTypeSelect').selectBoxIt({
+		aggressiveChange: true
+	});
+	
+	$('#searchTypeSelectSelectBoxIt').addClass("btn btn-primary");
+	
+//After invalid login drop down login dialog
 function checkLoginErrors(){
 	errorDialog=$('#loginErrorDialog');
 	if(errorDialog.html()!=undefined){

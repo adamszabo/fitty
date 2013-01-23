@@ -22,4 +22,7 @@
 	<script src="<@spring.url relativeUrl="/resources/js/slimScroll.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/bootstrap-datepicker.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/bootstrap-fileupload.js"/>"></script>
+	
+	<script src="<@spring.url relativeUrl="/resources/js/jquery.selectBoxIt.js"/>"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 </#macro>
