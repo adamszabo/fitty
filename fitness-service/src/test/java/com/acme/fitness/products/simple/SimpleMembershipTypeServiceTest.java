@@ -36,7 +36,7 @@ public class SimpleMembershipTypeServiceTest {
 		MembershipType expected = new MembershipType();
 		expected.setExpireDateInDays(1);
 		expected.setMaxNumberOfEntries(1);
-		expected.setIntervally(true);
+		expected.setIsIntervally(true);
 		expected.setPrice(1.0);
 		expected.setDetail("type");
 		//WHEN
