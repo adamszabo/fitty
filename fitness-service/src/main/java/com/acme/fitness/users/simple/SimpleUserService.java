@@ -92,4 +92,9 @@ public class SimpleUserService implements UserService {
 		return userDao.getAllTrainers();
 	}
 
+	@Override
+	public List<User> getUsersByStringParamter(String paramName, String value) {
+		return userDao.getUsersByStringParameter(paramName, value);
+	}
+
 }

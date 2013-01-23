@@ -20,4 +20,6 @@ public interface UserDao extends GenericDao<User> {
 	
 	public List<User> getAllTrainers();
 	
+	public List<User> getUsersByStringParameter(String propertyName, String value);
+	
 }

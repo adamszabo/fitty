@@ -17,3 +17,7 @@ html {overflow-y: scroll;}
     background: #ADD8E6;
 }
 
+body li a{
+	cursor: pointer;
+}
+

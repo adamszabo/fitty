@@ -21,4 +21,5 @@ public interface GeneralUsersService {
 	void addLastLoginInfo(User user, String lastIp, Date lastLoginDate);
 	List<Role> getRolesbyUser(User user);
 	List<User> getAllTrainers();
+	List<User> getUsersByStringParamter(String paramName, String value);
 }

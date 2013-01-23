@@ -122,11 +122,23 @@ $(document).ready(function() {
 });
 
 	//beleptetes
-	$('#searchTypeSelect').selectBoxIt({
+	$('#searchType').selectBoxIt({
 		aggressiveChange: true
 	});
 	
-	$('#searchTypeSelectSelectBoxIt').addClass("btn btn-primary");
+	$('#searchTypeSelectBoxIt').addClass("btn btn-primary");
+	
+	$('.details-button').on("click", function(e){
+		$detailsTr=$('#'+this.id+'-details-tr');
+		if($detailsTr.css('display')=='none'){
+			$detailsTr.fadeIn('fast');
+			$('#'+this.id+' i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+		}
+		else{
+			$detailsTr.fadeOut('fast');
+			$('#'+this.id+' i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+		}
+	});
 	
 //After invalid login drop down login dialog
 function checkLoginErrors(){

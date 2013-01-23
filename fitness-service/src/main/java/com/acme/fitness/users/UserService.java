@@ -20,5 +20,5 @@ public interface UserService {
 	void setEnabled(User user, boolean toEnabled);
 	void setNumberOfEntries(User user, int numberOfEntries);
 	List<User> getAllTrainers();
-	//User getActualUser(String userName);
+	List<User> getUsersByStringParamter(String paramName, String value);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -68,5 +69,11 @@ public class HibernateUserDao extends AbstractHibernateGenericDao<User> implemen
 				Property.forName("id").in(detCrit));
 		
 		return crit.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getUsersByStringParameter(String propertyName, String value){
+		return getSession().createCriteria(User.class).add(Restrictions.like(propertyName, value, MatchMode.ANYWHERE)).list();
 	}
 }
