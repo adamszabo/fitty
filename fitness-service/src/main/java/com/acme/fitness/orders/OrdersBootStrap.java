@@ -11,12 +11,10 @@ import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
-import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
 import com.acme.fitness.users.GeneralUsersService;
@@ -33,7 +31,7 @@ public class OrdersBootStrap {
 		OrderItemService os = ctx.getBean(OrderItemService.class);
 		ProductService ps = ctx.getBean(ProductService.class);
 //		BasketService bs = ctx.getBean(BasketService.class);
-		MembershipService ms = ctx.getBean(MembershipService.class);
+//		MembershipService ms = ctx.getBean(MembershipService.class);
 		TrainingService ts = ctx.getBean(TrainingService.class);
 
 		GeneralProductsService gps = ctx.getBean(GeneralProductsService.class);
@@ -93,10 +91,10 @@ public class OrdersBootStrap {
 		 * Tests for BasketService
 		 */
 		// Basket basket1 = bs.newBasket(u1);
-		Membership membership1 = ms.newMemberShip("ocassionaly", 10, null,
-				18000);
-		@SuppressWarnings("unused")
-		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
+//		Membership membership1 = ms.newMemberShip("ocassionaly", 10, null,
+//				18000);
+//		@SuppressWarnings("unused")
+//		Membership membership2 = ms.newMemberShip("type", 12, null, 13000);
 
 		// bs.addMembershipToBasket(basket1, membership1);
 		// bs.addMembershipToBasket(basket1, membership2);
@@ -108,7 +106,7 @@ public class OrdersBootStrap {
 		 */
 
 		Basket basket = gos.newBasket(u1);
-		gos.addMembershipToBasket(basket, membership1);
+//		gos.addMembershipToBasket(basket, membership1);
 		Training t1 = ts.newTraining(u1, u2, new Date());
 		gos.addTrainingToBasket(basket, t1);
 

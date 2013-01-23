@@ -21,9 +21,9 @@ public class SimpleMembershipTypeService implements MembershipTypeService {
 	}
 
 	@Override
-	public MembershipType newMembershipType(String type,
+	public MembershipType newMembershipType(String type, boolean isIntervally,
 			int maxNumberOfEntries, int expireDateInDays, double price) {
-		return new MembershipType(type, maxNumberOfEntries, expireDateInDays,
+		return new MembershipType(type, isIntervally, maxNumberOfEntries, expireDateInDays,
 				price);
 	}
 

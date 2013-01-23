@@ -23,27 +23,34 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Store;
+import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
 
 @Controller
-@RequestMapping(value="/raktar")
+@RequestMapping(value = "/raktar")
 public class StoreController {
-	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(StoreController.class);
+
 	private GeneralProductsService gps;
 	private GeneralOrdersService gos;
-	
+
 	@Autowired
-	public StoreController(GeneralProductsService gps, GeneralOrdersService gos){
-		this.gps=gps;
-		this.gos=gos;
+	public StoreController(GeneralProductsService gps, GeneralOrdersService gos) {
+		this.gps = gps;
+		this.gos = gos;
 	}
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String store(Locale locale, Model model,
+
+	@RequestMapping(value = "")
+	public String defaultPage() {
+		return "redirect:/raktar/termek";
+	}
+
+	@RequestMapping(value = "termek", method = RequestMethod.GET)
+	public String products(Locale locale, Model model,
 			HttpServletResponse response, HttpServletRequest request) {
 		if (gos.getAllStores().size() != gps.getAllProduct().size()) {
 			for (Product p : gps.getAllProduct()) {
@@ -55,8 +62,8 @@ public class StoreController {
 		return "raktar";
 	}
 
-	@RequestMapping(value = "/ujmennyiseg", method = RequestMethod.POST)
-	public String plusQuantity(Locale locale, Model model,
+	@RequestMapping(value = "termek/ujmennyiseg", method = RequestMethod.POST)
+	public String productPlusQuantity(Locale locale, Model model,
 			HttpServletResponse response, HttpServletRequest request,
 			@ModelAttribute("productId") long id,
 			@ModelAttribute("quantity") int quantity) {
@@ -68,18 +75,22 @@ public class StoreController {
 		return "redirect:/raktar";
 	}
 
-	@RequestMapping(value = "/ujtermek", method = RequestMethod.POST)
-	public String newProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request,	@ModelAttribute("product") Product product, @RequestParam("file") MultipartFile file) {
-		ProductImage image=createPictureFromMultipartFile(file);
-		
-		
-		Product newProduct = gps.addProduct(product.getName(), product.getDetails(), product.getPrice(),product.getManufacturer(), new Date(),image);
+	@RequestMapping(value = "termek/ujtermek", method = RequestMethod.POST)
+	public String newProduct(Locale locale, Model model,
+			HttpServletResponse response, HttpServletRequest request,
+			@ModelAttribute("product") Product product,
+			@RequestParam("file") MultipartFile file) {
+		ProductImage image = createPictureFromMultipartFile(file);
+
+		Product newProduct = gps.addProduct(product.getName(),
+				product.getDetails(), product.getPrice(),
+				product.getManufacturer(), new Date(), image);
 		logger.info("new product added: " + newProduct);
-		
+
 		return "redirect:/raktar";
 	}
 
-	@RequestMapping(value = "/termektorles/{productId}", method = RequestMethod.GET)
+	@RequestMapping(value = "termek/torles/{productId}", method = RequestMethod.GET)
 	public String deleteProduct(Locale locale, Model model,
 			HttpServletResponse response, HttpServletRequest request,
 			@PathVariable("productId") long productId) {
@@ -90,31 +101,59 @@ public class StoreController {
 		}
 		return "redirect:/raktar";
 	}
-	
-	private ProductImage createPictureFromMultipartFile(MultipartFile file) {
-		ProductImage pi=null;
-		
-		if (!file.isEmpty()) {
-            try {
-				byte[] bytes = file.getBytes();
-				String originalFileName=file.getOriginalFilename();
-				String mime=getMimeFromFileName(originalFileName);
-				logger.info("picutres uploaded: "+originalFileName+" mime: "+mime);
-				pi=new ProductImage(mime, bytes);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} 
-		
-		return pi;
+
+	@RequestMapping(value = "berlet")
+	public String membership(Model model,
+			HttpServletResponse response, HttpServletRequest request) {
+		model.addAttribute("membershipsInStore", gps.getAllMembershipTypes());
+		return "raktar";
 	}
 	
-	private String getMimeFromFileName(String originalFileName){
-		String[] helper=originalFileName.split("\\.");
-		String mime="";
-		if(helper.length>0){
-			mime=helper[1].toLowerCase();
+	@RequestMapping(value = "berlet/ujberlet", method = RequestMethod.POST)
+	public String newMembership(Locale locale, Model model,
+			HttpServletResponse response, HttpServletRequest request,
+			@ModelAttribute("membership") MembershipType membershipType) {
+		gps.saveMembershipType(membershipType);
+		logger.info("new membership type added: " + membershipType);
+		return "redirect:/raktar/berlet";
+	}
+	
+	@RequestMapping(value = "berlet/torles/{membershipId}", method = RequestMethod.GET)
+	public String deleteMembership(@PathVariable("membershipId") long membershipId) {
+		try {
+			gps.deleteMembershipType(gps.getMembershipTypeById(membershipId));
+			logger.info("membership deleted with id: " + membershipId);
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/raktar/berlet";
+	}
+	
+
+	private ProductImage createPictureFromMultipartFile(MultipartFile file) {
+		ProductImage pi = null;
+
+		if (!file.isEmpty()) {
+			try {
+				byte[] bytes = file.getBytes();
+				String originalFileName = file.getOriginalFilename();
+				String mime = getMimeFromFileName(originalFileName);
+				logger.info("picutres uploaded: " + originalFileName
+						+ " mime: " + mime);
+				pi = new ProductImage(mime, bytes);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return pi;
+	}
+
+	private String getMimeFromFileName(String originalFileName) {
+		String[] helper = originalFileName.split("\\.");
+		String mime = "";
+		if (helper.length > 0) {
+			mime = helper[1].toLowerCase();
 		}
 		return mime;
 	}

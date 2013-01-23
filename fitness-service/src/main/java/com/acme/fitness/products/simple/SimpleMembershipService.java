@@ -15,30 +15,30 @@ import com.acme.fitness.products.MembershipService;
 
 @Service
 public class SimpleMembershipService implements MembershipService {
-	
+
 	private MembershipDao membershipDao;
-	
+
 	@Autowired
-	public SimpleMembershipService(MembershipDao membershipDao){
-		this.membershipDao=membershipDao;
+	public SimpleMembershipService(MembershipDao membershipDao) {
+		this.membershipDao = membershipDao;
 	}
-	
+
 	@Override
-	public Membership newMemberShip(String type, int maxEntries, Date expireDate, double price) {
-		Membership membership=new Membership(type, 0, maxEntries, expireDate, price, null);
+	public Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price) {
+		Membership membership=new Membership(isIntervally, type, 0, maxEntries, startDate, expireDate, price, null);
 		return membership;
 	}
-	
+
 	@Override
 	public Membership saveMemberShip(Basket basket, Membership membership) {
 		membership.setBasket(basket);
 		membershipDao.save(membership);
 		return membership;
 	}
-	
+
 	@Override
-	public Membership saveNewMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price) {
-		Membership membership=new Membership(type, 0, maxEntries, expireDate, price, basket);
+	public Membership saveNewMemberShip(boolean isIntervally, Basket basket, String type, int maxEntries, Date startDate, Date expireDate, double price) {
+		Membership membership=new Membership(isIntervally, type, 0, maxEntries, startDate, expireDate, price, basket);
 		membershipDao.save(membership);
 		return membership;
 	}
@@ -54,11 +54,30 @@ public class SimpleMembershipService implements MembershipService {
 	}
 
 	@Override
-	public boolean isValid(Membership membership) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isValid(Membership membership, Date date) {
+		boolean isValid = false;
+		if (membership.isIntervally()) {
+			if (isTodayBetweenStartAndEndDates(membership, date)) {
+				isValid = true;
+			}
+		} else {
+			if (isActualEntriesLessThanMaxEntires(membership)) {
+				isValid = true;
+			}
+		}
+		return isValid;
 	}
 
+	private boolean isActualEntriesLessThanMaxEntires(Membership membership) {
+		return membership.getNumberOfEntries() < membership.getMaxNumberOfEntries();
+	}
+	
+	private boolean isTodayBetweenStartAndEndDates(Membership membership,
+			Date today) {
+		return membership.getExpireDate().after(today)
+				&& membership.getStartDate().before(today);
+	}
+	
 	@Override
 	public Membership getMembershipById(long id) throws FitnessDaoException {
 		return membershipDao.getMembershipById(id);
@@ -76,7 +95,8 @@ public class SimpleMembershipService implements MembershipService {
 
 	@Override
 	public void increaseClientEntries(Membership membership) {
-		membership.setNumberOfEntries(membership.getNumberOfEntries()+1);
+		membership.setNumberOfEntries(membership.getNumberOfEntries() + 1);
 		membershipDao.update(membership);
 	}
+
 }

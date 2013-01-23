@@ -1,8 +1,5 @@
 package com.acme.fitness.domain.orders;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -47,13 +44,5 @@ public class StoreTest {
 	@Test
 	public void testEqualsWithEqualsVeryfier(){
 		EqualsVerifier.forClass(Store.class).suppress(Warning.STRICT_INHERITANCE).verify();
-	}
-	
-	@Test
-	public void testee() {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("1", 1);
-		map.put("1", 2);
-		System.out.println(map);
 	}
 }

@@ -249,3 +249,94 @@
 	  </div>
 	</div>
 </#macro>
+
+<#macro newMembershipDialog>
+<div id="newMembershipModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Új bérlet</h3>
+  </div>
+  <div class="modal-body">
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/berlet/ujberlet"/>" method="post" accept-charset="UTF-8">
+			<div class="control-group">
+				<label class="control-label" for="detail">Bérlet leírása</label>
+				<div class="controls">
+					<input type="text" id="detail" name="detail" placeholder="Bérlet típusa">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="maxNumberOfEntries">Alkalmak száma</label>
+				<div class="controls">
+					<input type="number" id="maxNumberOfEntries" name="maxNumberOfEntries" placeholder="Alkalmak száma" min="0" value="0">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="expireDateInDays">Érvényesség ideje</label>
+				<div class="controls">
+					<input type="number" id="expireDateInDays" name="expireDateInDays" placeholder="Érvényesség ideje napokban" min="0" value="0">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="price">Ár</label>
+				<div class="controls">
+					<input type="number" id="price" name="price" placeholder="Bérlet ára">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Bezár</button>
+						<button class="btn btn-success" type ="submit">Hozzáadás</button>
+					</div>
+				</div>
+			</div>
+		</form>
+  </div>
+</div>
+</#macro>
+
+<#macro updateMembershipDialog>
+<div id="updateMembershipModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Új bérlet</h3>
+  </div>
+  <div class="modal-body modal-body-memberhipUpdate">
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/berlet/valtoztatas"/>" method="post" accept-charset="UTF-8">
+			<input type="hidden" id="id" name="id"/>
+			<div class="control-group">
+				<label class="control-label" for="detail">Bérlet leírása</label>
+				<div class="controls">
+					<input type="text" id="detail" name="detail"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="maxNumberOfEntries">Alkalmak száma</label>
+				<div class="controls">
+					<input type="number" id="maxNumberOfEntries" name="maxNumberOfEntries"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="expireDateInDays">Érvényesség ideje</label>
+				<div class="controls">
+					<input type="number" id="expireDateInDays" name="expireDateInDays"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="price">Ár</label>
+				<div class="controls">
+					<input type="number" id="price" name="price"/>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Bezár</button>
+						<button class="btn btn-success" type ="submit">Változtatás</button>
+					</div>
+				</div>
+			</div>
+		</form>
+  </div>
+</div>
+</#macro>

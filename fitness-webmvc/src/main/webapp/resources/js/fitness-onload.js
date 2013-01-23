@@ -76,6 +76,17 @@ $(document).ready(function() {
 		$form.submit();
 	});
 	
+	$('.open-updateMembershipModal').on("click", function () {
+	    var membershipId = $(this).data('id');
+	    var membershipDetail = $(this).data('detail');
+	    console.log(membershipDetail);
+	    $("#id").val( membershipId);
+	    $("#detail").val( membershipDetail );
+	    $('#updateMembershipModal').modal('show');
+	});
+	
+});
+
 	//beleptetes
 	$('#searchType').selectBoxIt({
 		aggressiveChange: true
@@ -95,8 +106,6 @@ $(document).ready(function() {
 		}
 	});
 	
-});
-
 //After invalid login drop down login dialog
 function checkLoginErrors(){
 	errorDialog=$('#loginErrorDialog');

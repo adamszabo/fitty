@@ -1,5 +1,9 @@
 package com.acme.fitness.webmvc.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
+import com.acme.fitness.domain.products.Membership;
+import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
@@ -24,11 +31,10 @@ import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.web.CookieManager;
 import com.acme.fitness.webmvc.web.JsonManager;
 
-
 @Controller
 @RequestMapping("/berletek")
 public class MembershipController {
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(WebShopController.class);
 
@@ -40,65 +46,92 @@ public class MembershipController {
 
 	@Autowired
 	private GeneralUsersService gus;
-	
+
 	@RequestMapping("")
-	public String defaultPage(HttpServletResponse response, HttpServletRequest request) {
+	public String defaultPage(HttpServletResponse response,
+			HttpServletRequest request, Model model) {
 		addBasketToSessionIfExists(request, new ObjectMapper());
+		model.addAttribute("memberships", gps.getAllMembershipTypes());
 		return "berletek";
 	}
-	
+
 	@RequestMapping("/ujberlet")
-	public String newMembership(@RequestParam("datepicker") String datepicker, @RequestParam("membershipType") String type, HttpServletResponse response, HttpServletRequest request) {
+	public String newMembership(
+			@RequestParam("membershipId") long membershipId,
+			HttpServletResponse response, HttpServletRequest request) {
+		
 		ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
-		
+		Map<String, String> map = readBasketToMapFromCookies(request, mapper);
+
+		if (isMembershipTypeInterval(membershipId)) {
+			map.put(Long.toString(membershipId), request.getParameter("datepicker"));
+		} else {
+			map.put(Long.toString(membershipId), null);
+		}
+
+		writeMapToCookies(response, mapper, map);
+
 		return "redirect:/berletek";
 	}
 	
-	private void addMembershipToMap(long id, int quantity, Map<String, Integer> map) {
-		if (!map.containsKey(Long.toString(id))) {
-			map.put(Long.toString(id), quantity);
-		} else {
-			Integer value = map.get(Long.toString(id));
-			value = new Integer(value + quantity);
+	private void addBasketToSessionIfExists(HttpServletRequest request,
+			ObjectMapper mapper) {
+		Basket basket = gos.newBasket(new User());
+		Map<String, Integer> products = readProductsBasketToMapFromCookies(
+				request, mapper);
+		if (products.size() > 0) {
+			loadBasketWithProducts(products, basket);
+		}
+		Map<String, String> membership = readBasketToMapFromCookies(request,
+				mapper);
+		if (membership.size() > 0) {
+			loadBasketWithMembership(membership, basket);
+			System.out.println(basket.getMemberships());
 		}
 	}
-	
-	
-	private Map<String, Integer> readBasketToMapFromCookies(
-			HttpServletRequest request, ObjectMapper mapper) {
-		String cookieValue = null;
 
-		CookieManager cookieManager = new CookieManager();
-		cookieValue = cookieManager.readFromCookies(request, "membershipInBasket");
-
-		JsonManager jsonManager = new JsonManager(mapper);
-		Map<String, Integer> map = jsonManager
-				.unwrapFromJsonString(cookieValue);
-
-		return map;
+	private void loadBasketWithMembership(Map<String, String> memberships,
+			Basket basket) {
+		Membership membership = parseMembership(memberships);
+		basket.addMembership(membership);
+		membership.setBasket(basket);
 	}
-	
-	private Basket loadBasket(Map<String, Integer> map) {
-		Basket basket = gos.newBasket(new User());
+
+	private Membership parseMembership(Map<String, String> memberships) {
+		Long membershipId = null;
+		Membership membership = null;
+		MembershipType membershipType = null;
+
+		for (String s : memberships.keySet()) {
+			membershipId = Long.parseLong(s);
+		}
+		try {
+			membershipType = gps.getMembershipTypeById(membershipId);
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+
+//		if(isMembershipTypeInterval(membershipId)) {
+//			membership = gps.newMemberShip(membershipType,
+//					parseStringIntoDate(memberships.get(membershipId.toString())));
+//		 } else {
+//			 membership = gps.newMemberShip(membershipType, null);
+//		 }
+		
+		
+		return membership;
+	}
+
+
+	private void loadBasketWithProducts(Map<String, Integer> map, Basket basket) {
 		for (String s : map.keySet()) {
 			addProductToBasketByProductId(basket, Long.parseLong(s), map.get(s));
 		}
-		return basket;
 	}
-	
-	private Map<String, Integer> addBasketToSessionIfExists(
-			HttpServletRequest request, ObjectMapper mapper) {
-		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
-		if (map.size() > 0) {
-			request.getSession().setAttribute("basket", loadBasket(map));
-		}
-		return map;
-	}
-	
+
 	private void addProductToBasketByProductId(Basket basket, long id,
-			int quantity) {
+			Integer quantity) {
 		Product product = null;
 		try {
 			product = gps.getProductById(id);
@@ -109,5 +142,72 @@ public class MembershipController {
 			OrderItem oi = gos.newOrderItem(product, quantity);
 			gos.addOrderItemToBasket(basket, oi);
 		}
+
 	}
+
+	private void writeMapToCookies(HttpServletResponse response,
+			ObjectMapper mapper, Map<String, String> map) {
+
+		JsonManager<String> jsonManager = new JsonManager<String>(mapper);
+		String json = jsonManager.wrapToJsonString(map);
+
+		CookieManager cookieManager = new CookieManager();
+		cookieManager.writeToCookies(response, "memberhipsInBasket", json);
+	}
+
+	private Date parseStringIntoDate(String string) {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = (Date) formatter.parse(string);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+
+	private boolean isMembershipTypeInterval(long membershipId) {
+		MembershipType type = null;
+		boolean isInterval = false;
+		try {
+			type = gps.getMembershipTypeById(membershipId);
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+
+		if (type.getMaxNumberOfEntries() == 0) {
+			isInterval = true;
+		}
+		return isInterval;
+	}
+
+	private Map<String, String> readBasketToMapFromCookies(
+			HttpServletRequest request, ObjectMapper mapper) {
+		String cookieValue = null;
+
+		CookieManager cookieManager = new CookieManager();
+		cookieValue = cookieManager.readFromCookies(request,
+				"memberhipsInBasket");
+
+		JsonManager<String> jsonManager = new JsonManager<String>(mapper);
+		Map<String, String> map = jsonManager.unwrapFromJsonString(cookieValue);
+
+		return map;
+	}
+
+	private Map<String, Integer> readProductsBasketToMapFromCookies(
+			HttpServletRequest request, ObjectMapper mapper) {
+		String cookieValue = null;
+
+		CookieManager cookieManager = new CookieManager();
+		cookieValue = cookieManager
+				.readFromCookies(request, "productsInBasket");
+
+		JsonManager<Integer> jsonManager = new JsonManager<Integer>(mapper);
+		Map<String, Integer> map = jsonManager
+				.unwrapFromJsonString(cookieValue);
+
+		return map;
+	}
+
 }

@@ -34,6 +34,7 @@
 				<value>com.acme.fitness.domain.products.Training</value>
 				<value>com.acme.fitness.domain.products.Membership</value>
 				<value>com.acme.fitness.domain.products.ProductImage</value>
+				<value>com.acme.fitness.domain.products.MembershipType</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

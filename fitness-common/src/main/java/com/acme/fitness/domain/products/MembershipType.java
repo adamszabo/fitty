@@ -14,13 +14,16 @@ public class MembershipType {
 	private long id;
 
 	@Column
-	private String type;
+	private String detail;
+	
+	@Column 
+	private boolean isIntervally;
 	
 	@Column
 	private int maxNumberOfEntries;
 	
 	@Column
-	private int expireDateInDays;
+	private long expireDateInDays;
 
 	@Column
 	private double price;
@@ -28,9 +31,10 @@ public class MembershipType {
 	public MembershipType() {
 	}
 
-	public MembershipType(String type, int maxNumberOfEntries,
-			int expireDateInDays, double price) {
-		this.type = type;
+	public MembershipType(String detail, boolean isIntervally,
+			int maxNumberOfEntries, long expireDateInDays, double price) {
+		this.detail = detail;
+		this.isIntervally = isIntervally;
 		this.maxNumberOfEntries = maxNumberOfEntries;
 		this.expireDateInDays = expireDateInDays;
 		this.price = price;
@@ -40,31 +44,41 @@ public class MembershipType {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + expireDateInDays;
+		result = prime * result + ((detail == null) ? 0 : detail.hashCode());
+		result = prime * result + (isIntervally ? 1231 : 1237);
+		result = prime * result
+				+ (int) (expireDateInDays ^ (expireDateInDays >>> 32));
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + maxNumberOfEntries;
 		long temp;
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		boolean isEquals = false;
-		if(this == obj) {
+		if (this == obj) {
 			isEquals = true;
 		} else if(obj instanceof MembershipType) {
 			MembershipType other = (MembershipType) obj;
 			isEquals = id == other.id 
-					&& expireDateInDays == other.expireDateInDays
-					&& maxNumberOfEntries == other.maxNumberOfEntries
-					&& type == other.type
-					&& Double.doubleToLongBits(price) == Double
-							.doubleToLongBits(other.price);
+					&& (this.isIntervally == other.isIntervally)
+					&& (this.detail == null ? other.detail == null : this.detail.equals(other.detail))
+					&& (expireDateInDays == other.expireDateInDays)
+					&& (maxNumberOfEntries == other.maxNumberOfEntries)
+					&& (Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price));
 		}
 		return isEquals;
+	}
+
+	@Override
+	public String toString() {
+		return "MembershipType [id=" + id + ", detail=" + detail + ", isIntervally=" + isIntervally
+				+ ", maxNumberOfEntries=" + maxNumberOfEntries
+				+ ", expireDateInDays=" + expireDateInDays + ", price=" + price
+				+ "]";
 	}
 
 	public long getId() {
@@ -75,12 +89,20 @@ public class MembershipType {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getDetail() {
+		return detail;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public boolean isIntervally() {
+		return isIntervally;
+	}
+
+	public void setIntervally(boolean isIntervally) {
+		this.isIntervally = isIntervally;
 	}
 
 	public int getMaxNumberOfEntries() {
@@ -91,11 +113,11 @@ public class MembershipType {
 		this.maxNumberOfEntries = maxNumberOfEntries;
 	}
 
-	public int getExpireDateInDays() {
+	public long getExpireDateInDays() {
 		return expireDateInDays;
 	}
 
-	public void setExpireDateInDays(int expireDateInDays) {
+	public void setExpireDateInDays(long expireDateInDays) {
 		this.expireDateInDays = expireDateInDays;
 	}
 

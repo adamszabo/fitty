@@ -10,9 +10,9 @@ import com.acme.fitness.domain.users.User;
 
 public interface MembershipService {
 	
-	Membership saveNewMemberShip(Basket basket, String type, int maxEntries, Date expireDate, double price);
+	Membership saveNewMemberShip(boolean isIntervally, Basket basket, String type, int maxEntries, Date startDate, Date expireDate, double price);
 
-	Membership newMemberShip(String type, int maxEntries, Date expireDate, double price);
+	Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price);
 	
 	Membership saveMemberShip(Basket basket, Membership membership);
 
@@ -20,7 +20,7 @@ public interface MembershipService {
 
 	void updateMembership(Membership membership);
 
-	boolean isValid(Membership membership);
+	boolean isValid(Membership membership, Date date);
 
 	Membership getMembershipById(long id) throws FitnessDaoException;
 

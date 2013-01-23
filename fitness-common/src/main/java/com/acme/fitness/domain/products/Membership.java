@@ -15,11 +15,14 @@ import com.acme.fitness.domain.orders.Basket;
 
 @Entity
 public class Membership {
-//
+	
 	@Id
 	@Column
 	@GeneratedValue
 	private long id;
+	
+	@Column
+	private boolean isIntervally;
 
 	@Column
 	private String type;
@@ -30,6 +33,8 @@ public class Membership {
 	@Column
 	private int maxNumberOfEntries;
 
+	@Column Date startDate;
+	
 	@Column
 	private Date expireDate;
 
@@ -44,23 +49,26 @@ public class Membership {
 		super();
 	}
 
-	public Membership(String type, int numberOfEntries, int maxNumberOfEntries,
-			Date expireDate, double price, Basket order) {
-		super();
+	public Membership(boolean isIntervally, String type,
+			int numberOfEntries, int maxNumberOfEntries, Date startDate,
+			Date expireDate, double price, Basket basket) {
+		this.isIntervally = isIntervally;
 		this.type = type;
 		this.numberOfEntries = numberOfEntries;
 		this.maxNumberOfEntries = maxNumberOfEntries;
+		this.startDate = startDate;
 		this.expireDate = expireDate;
 		this.price = price;
-		this.basket = order;
+		this.basket = basket;
 	}
 
 	@Override
 	public String toString() {
-		return "Membership [id=" + id + ", type=" + type + ", numberOfEntries="
-				+ numberOfEntries + ", maxNumberOfEntries="
-				+ maxNumberOfEntries + ", expireDate=" + expireDate
-				+ ", price=" + price + ", basketId=" + basket.getId() + "]";
+		return "Membership [id=" + id + ", isIntervally=" + isIntervally
+				+ ", type=" + type + ", numberOfEntries=" + numberOfEntries
+				+ ", maxNumberOfEntries=" + maxNumberOfEntries + ", startDate="
+				+ startDate + ", expireDate=" + expireDate + ", price=" + price
+				+ ", basketId=" + basket.getId() + "]";
 	}
 
 	@Override
@@ -68,6 +76,9 @@ public class Membership {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((basket == null) ? 0 : basket.hashCode());
+		result = prime * result + (isIntervally ? 1231 : 1237);
+		result = prime * result
+				+ ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result
 				+ ((expireDate == null) ? 0 : expireDate.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
@@ -82,38 +93,22 @@ public class Membership {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Membership))
-			return false;
-		Membership other = (Membership) obj;
-		if (basket == null) {
-			if (other.basket != null)
-				return false;
-		} else if (!basket.equals(other.basket))
-			return false;
-		if (expireDate == null) {
-			if (other.expireDate != null)
-				return false;
-		} else if (!expireDate.equals(other.expireDate))
-			return false;
-		if (id != other.id)
-			return false;
-		if (maxNumberOfEntries != other.maxNumberOfEntries)
-			return false;
-		if (numberOfEntries != other.numberOfEntries)
-			return false;
-		if (Double.doubleToLongBits(price) != Double
-				.doubleToLongBits(other.price))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
-		return true;
+		boolean isEquals = false;
+		if (this == obj) {
+			isEquals = true;
+		} else if(obj instanceof Membership) {
+			Membership other = (Membership) obj;
+			isEquals = id == other.id 
+					&& (this.isIntervally == other.isIntervally)
+					&& (this.type == null ? other.type == null : this.type.equals(other.type))
+					&& (this.basket == null ? other.basket == null : this.basket.equals(other.basket))
+					&& (this.expireDate == null ? other.expireDate == null : this.expireDate.equals(other.expireDate))
+					&& (this.startDate == null ? other.startDate == null : this.startDate.equals(other.startDate))
+					&& (this.maxNumberOfEntries == other.maxNumberOfEntries)
+					&& (this.numberOfEntries == other.numberOfEntries)
+					&& (Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price));
+		}
+		return isEquals;
 	}
 
 	public long getId() {
@@ -122,6 +117,14 @@ public class Membership {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public boolean isIntervally() {
+		return isIntervally;
+	}
+
+	public void setIntervally(boolean isIntervally) {
+		this.isIntervally = isIntervally;
 	}
 
 	public String getType() {
@@ -148,6 +151,14 @@ public class Membership {
 		this.maxNumberOfEntries = maxNumberOfEntries;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
 	public Date getExpireDate() {
 		return expireDate;
 	}
@@ -171,5 +182,4 @@ public class Membership {
 	public void setBasket(Basket order) {
 		this.basket = order;
 	}
-
 }

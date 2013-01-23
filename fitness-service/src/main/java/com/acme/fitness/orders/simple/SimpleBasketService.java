@@ -105,6 +105,7 @@ public class SimpleBasketService implements BasketService {
 		saveMemberships(basket);
 		saveTrainings(basket);
 		saveProducts(basket);
+		logger.info("Basket checked out with id: " + basket.getId());
 	}
 
 	@Override
