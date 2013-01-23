@@ -165,7 +165,9 @@ public class BootStrap {
 		logger.info("Trainer trainings: "+trainingDao.getTrainingsByTrainer(u2));
 		
 		List<Membership> memberships=membershipDao.getMembershipsByUser(u);
+		List<Membership> memberships2=membershipDao.getMembershipsByUser(u2);
 		logger.info("User memberShips quantity:"+memberships.size()+" products:"+memberships);
+		logger.info("User memberShips quantity:"+memberships2.size()+" products:"+memberships2);
 		try {
 			logger.info("getUserById: "+userDao.getUserById(u.getId()));
 			logger.info("getUserByUsername: "+userDao.getUserByUsername(u.getUsername()));

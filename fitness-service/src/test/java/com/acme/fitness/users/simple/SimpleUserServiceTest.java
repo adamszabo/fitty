@@ -186,4 +186,16 @@ public class SimpleUserServiceTest {
 		BDDMockito.verify(userDao).getAllUsers();
 		Assert.assertEquals(expected, result);
 	}
+	
+	@Test
+	public void testGetUsersByStringParamterShouldReturnProperly(){
+		//GIVEN
+		List<User> expected=new ArrayList<User>();
+		BDDMockito.given(userDao.getUsersByStringParameter(Mockito.anyString(), Mockito.anyString())).willReturn(expected);
+		//WHEN
+		List<User> result=underTest.getUsersByStringParamter(Mockito.anyString(), Mockito.anyString());
+		//THEN
+		BDDMockito.verify(userDao).getUsersByStringParameter(Mockito.anyString(), Mockito.anyString());
+		Assert.assertEquals(expected, result);
+	}
 }

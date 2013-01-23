@@ -3,12 +3,14 @@ package com.acme.fitness.dao.products.hibernate;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.acme.fitness.dao.hibernate.AbstractHibernateGenericDao;
 import com.acme.fitness.dao.products.MembershipTypeDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.MembershipType;
 
+@Repository
 public class HibernateMembershipTypeDao extends AbstractHibernateGenericDao<MembershipType> implements MembershipTypeDao{
 
 	@SuppressWarnings("unchecked")

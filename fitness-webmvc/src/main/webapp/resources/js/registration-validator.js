@@ -18,9 +18,9 @@ var RegistrationValidator = function() {
 	}
 	
 	function checkUsernameAndEmail(username,emailUser){
-//		console.log('ajax post with username: '+username+' and email: '+emailUser);
+//		console.log(location.hostname+':'+location.port+'/'+location.pathname.split("/")[1]+'/'+ "checkUser");
 		 $.ajax({
-			 url: location.href + "checkUser",
+			 url: $('#checkUserUrl').val(),
 	         type: 'POST',
 	         data: ({
 	             username: username,

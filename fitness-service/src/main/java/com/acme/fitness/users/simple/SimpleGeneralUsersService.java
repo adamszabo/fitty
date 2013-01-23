@@ -98,5 +98,10 @@ public class SimpleGeneralUsersService implements GeneralUsersService {
 	public List<User> getAllTrainers() {
 		return userService.getAllTrainers();
 	}
+
+	@Override
+	public List<User> getUsersByStringParamter(String paramName, String value) {
+		return userService.getUsersByStringParamter(paramName, value);
+	}
 	
 }

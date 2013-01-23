@@ -38,8 +38,7 @@ import com.acme.fitness.webmvc.web.JsonManager;
 @RequestMapping("/aruhaz")
 public class WebShopController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(WebShopController.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebShopController.class);
 
 	@Autowired
 	private GeneralProductsService gps;
@@ -62,22 +61,18 @@ public class WebShopController {
 	}
 
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
-	public String setPage(Model model, @PathVariable String page,
-			HttpServletResponse response, HttpServletRequest request) {
+	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
 
 		addBasketToSessionIfExists(request, new ObjectMapper());
 
-		int pageNumber = validatePageNumber(parsePageNumber(page), gps
-				.getAllProduct().size());
+		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
 		model.addAttribute("products", getProductsOnPage(pageNumber));
 		model.addAttribute("pageNumber", pageNumber);
 		return "aruhaz";
 	}
 
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
-	public String addProductToCart(@ModelAttribute("productId") long id,
-			@ModelAttribute("quantity") int quantity,
-			@PathVariable String page, HttpServletResponse response,
+	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
 			HttpServletRequest request) {
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -91,8 +86,7 @@ public class WebShopController {
 	}
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
-	public String deleteBasket(@PathVariable String page,
-			HttpServletRequest request, HttpServletResponse response) {
+	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().removeAttribute("productsInBasket");
 		deleteAllCookies(response, request.getCookies());
 		logger.info("Basket is deleted from cookies and session.");
@@ -100,9 +94,7 @@ public class WebShopController {
 	}
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
-	public String confirmOrder(@PathVariable String page,
-			HttpServletRequest request, HttpServletResponse response,
-			RedirectAttributes redirectAttributes) {
+	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
 		if (getUserName().equals("anonymousUser")) {
 			return failToCheckOut(page, redirectAttributes);
@@ -116,15 +108,12 @@ public class WebShopController {
 		return (Basket) request.getSession().getAttribute("productsInBasket");
 	}
 
-	private String failToCheckOut(String page,
-			RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("message",
-				"Termék rendeléséhez be kell jelentkezni!");
+	private String failToCheckOut(String page, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
 		return "redirect:/aruhaz/" + page;
 	}
 
-	private void checkOutBasket(RedirectAttributes redirectAttributes,
-			Basket basket) {
+	private void checkOutBasket(RedirectAttributes redirectAttributes, Basket basket) {
 		setBasketToUser(basket);
 		try {
 			gos.checkOutBasket(basket);
@@ -134,13 +123,9 @@ public class WebShopController {
 		}
 	}
 
-	private void addMissingProductsMessages(
-			RedirectAttributes redirectAttributes, List<Product> list) {
+	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {
 		redirectAttributes.addFlashAttribute("missingProduct", list);
-		redirectAttributes
-				.addFlashAttribute(
-						"message",
-						"Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
+		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
 	}
 
 	private void setBasketToUser(Basket basket) {
@@ -153,13 +138,11 @@ public class WebShopController {
 	}
 
 	private String getUserName() {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth.getName();
 	}
 
-	private void addOrderItemToMap(long id, int quantity,
-			Map<String, Integer> map) {
+	private void addOrderItemToMap(long id, int quantity, Map<String, Integer> map) {
 		if (!map.containsKey(Long.toString(id))) {
 			map.put(Long.toString(id), quantity);
 		} else {
@@ -168,8 +151,7 @@ public class WebShopController {
 		}
 	}
 
-	private Map<String, Integer> addBasketToSessionIfExists(
-			HttpServletRequest request, ObjectMapper mapper) {
+	private Map<String, Integer> addBasketToSessionIfExists(HttpServletRequest request, ObjectMapper mapper) {
 		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
 		if (map.size() > 0) {
 			request.getSession().setAttribute("productsInBasket", loadBasket(map));
@@ -185,8 +167,7 @@ public class WebShopController {
 		return basket;
 	}
 
-	private void addProductToBasketByProductId(Basket basket, long id,
-			int quantity) {
+	private void addProductToBasketByProductId(Basket basket, long id, int quantity) {
 		Product product = null;
 		try {
 			product = gps.getProductById(id);
@@ -206,8 +187,7 @@ public class WebShopController {
 		}
 	}
 
-	private void writeMapToCookies(HttpServletResponse response,
-			ObjectMapper mapper, Map<String, Integer> map) {
+	private void writeMapToCookies(HttpServletResponse response, ObjectMapper mapper, Map<String, Integer> map) {
 
 		JsonManager jsonManager = new JsonManager(mapper);
 		String json = jsonManager.wrapToJsonString(map);
@@ -216,16 +196,14 @@ public class WebShopController {
 		cookieManager.writeToCookies(response, "productsInBasket", json);
 	}
 
-	private Map<String, Integer> readBasketToMapFromCookies(
-			HttpServletRequest request, ObjectMapper mapper) {
+	private Map<String, Integer> readBasketToMapFromCookies(HttpServletRequest request, ObjectMapper mapper) {
 		String cookieValue = null;
 
 		CookieManager cookieManager = new CookieManager();
 		cookieValue = cookieManager.readFromCookies(request, "productsInBasket");
 
 		JsonManager jsonManager = new JsonManager(mapper);
-		Map<String, Integer> map = jsonManager
-				.unwrapFromJsonString(cookieValue);
+		Map<String, Integer> map = jsonManager.unwrapFromJsonString(cookieValue);
 
 		return map;
 	}
@@ -234,8 +212,7 @@ public class WebShopController {
 		int size = gps.getAllProduct().size();
 		List<Product> productsOnPage = new ArrayList<Product>();
 		if (size > 0)
-			productsOnPage = gps.getAllProduct().subList((pageNumber - 1) * 9,
-					Math.min(pageNumber * 9, size));
+			productsOnPage = gps.getAllProduct().subList((pageNumber - 1) * 9, Math.min(pageNumber * 9, size));
 		return productsOnPage;
 	}
 

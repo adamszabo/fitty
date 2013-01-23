@@ -22,6 +22,7 @@
 		</div>
 		<div class="modal-body" style="height:100%;">
 			<form id="registrationForm" class="form-horizontal" action="<@spring.url relativeUrl="/registration"/>" method="POST">
+				<input id="checkUserUrl" type="hidden" value="<@spring.url relativeUrl="/checkUser"/>" />
 				<div class="control-group">
 			    	<label class="control-label" for="fullName">Teljes név</label>
 				    <div class="controls">
