@@ -140,7 +140,7 @@
     <h3 id="myModalLabel">Új termék</h3>
   </div>
   <div class="modal-body">
-		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/ujtermek"/>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/termek/ujtermek"/>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 			<div class="control-group">
 				<label class="control-label" for="name">Termék név</label>
 				<div class="controls">

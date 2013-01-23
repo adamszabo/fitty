@@ -13,12 +13,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Membership;
@@ -50,7 +53,7 @@ public class MembershipController {
 	@RequestMapping("")
 	public String defaultPage(HttpServletResponse response,
 			HttpServletRequest request, Model model) {
-//		addBasketToSessionIfExists(request, new ObjectMapper());
+		addBasketToSessionIfExists(request, new ObjectMapper());
 		model.addAttribute("membershipTypes", gps.getAllMembershipTypes());
 		return "berletek";
 	}
@@ -62,7 +65,7 @@ public class MembershipController {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, String> map = readBasketToMapFromCookies(request, mapper);
+		Map<String, String> map = readMembershipsBasketToMapFromCookies(request, mapper);
 
 		if (isMembershipTypeInterval(membershipId)) {
 			map.put(Long.toString(membershipId), request.getParameter("datepicker"));
@@ -75,6 +78,27 @@ public class MembershipController {
 		return "redirect:/berletek";
 	}
 	
+	@RequestMapping("/megrendel")
+	public String checkOut(HttpServletResponse response, HttpServletRequest request) throws FitnessDaoException {
+		
+		Basket basket = (Basket)request.getSession().getAttribute("basket");
+		if (!getUserName().equals("anonymousUser")) {
+			basket.setUser(gus.getUserByUsername(getUserName()));
+			try {
+				gos.checkOutBasket(basket);
+			} catch (StoreQuantityException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return "redirect:/berletek";
+	}
+	
+	private String getUserName() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getName();
+	}
+	
 	private void addBasketToSessionIfExists(HttpServletRequest request,
 			ObjectMapper mapper) {
 		Basket basket = gos.newBasket(new User());
@@ -83,12 +107,14 @@ public class MembershipController {
 		if (products.size() > 0) {
 			loadBasketWithProducts(products, basket);
 		}
-		Map<String, String> membership = readBasketToMapFromCookies(request,
+		Map<String, String> memberships = readMembershipsBasketToMapFromCookies(request,
 				mapper);
-		if (membership.size() > 0) {
-			loadBasketWithMembership(membership, basket);
+		if (memberships.size() > 0) {
+			loadBasketWithMembership(memberships, basket);
 			System.out.println(basket.getMemberships());
 		}
+		request.getSession().setAttribute("basket", basket);
+		
 	}
 
 	private void loadBasketWithMembership(Map<String, String> memberships,
@@ -102,7 +128,7 @@ public class MembershipController {
 		Long membershipId = null;
 		Membership membership = null;
 		MembershipType membershipType = null;
-
+		
 		for (String s : memberships.keySet()) {
 			membershipId = Long.parseLong(s);
 		}
@@ -111,15 +137,11 @@ public class MembershipController {
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
 		}
-
-//		if(isMembershipTypeInterval(membershipId)) {
-//			membership = gps.newMemberShip(membershipType,
-//					parseStringIntoDate(memberships.get(membershipId.toString())));
-//		 } else {
-//			 membership = gps.newMemberShip(membershipType, null);
-//		 }
-		
-		
+		if(membershipType.getIsIntervally()) {
+			Date startDate = parseStringIntoDate(memberships.get(membershipId.toString()));
+			membership = gps.newMemberShip(membershipType.getIsIntervally(), membershipType.getDetail(), membershipType.getMaxNumberOfEntries(), startDate, new Date(startDate.getTime() + (long)membershipType.getExpireDateInDays()*1000*60*60*24), membershipType.getPrice());
+		}
+		membership = gps.newMemberShip(membershipType.getIsIntervally(), membershipType.getDetail(), membershipType.getMaxNumberOfEntries(), null, null, membershipType.getPrice());
 		return membership;
 	}
 
@@ -181,7 +203,7 @@ public class MembershipController {
 		return isInterval;
 	}
 
-	private Map<String, String> readBasketToMapFromCookies(
+	private Map<String, String> readMembershipsBasketToMapFromCookies(
 			HttpServletRequest request, ObjectMapper mapper) {
 		String cookieValue = null;
 

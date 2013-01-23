@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html lang="hu">
 
+
 <@head.templateHead title="${title}"/>
 
 <body>
