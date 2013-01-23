@@ -76,13 +76,47 @@ $(document).ready(function() {
 		$form.submit();
 	});
 	
+	$('.open-newMembershipModal').on("click", function() {
+		$('#occassinally-membershipType').click();
+	});
+	
 	$('.open-updateMembershipModal').on("click", function () {
-	    var membershipId = $(this).data('id');
-	    var membershipDetail = $(this).data('detail');
-	    console.log(membershipDetail);
-	    $("#id").val( membershipId);
-	    $("#detail").val( membershipDetail );
+		id = $(this).data('id');
+		$("#updateMembershipModal #id").val(id);
+	    $("#updateMembershipModal #detail").val($('#membership-' + id + ' .detail').html());
+	    $("#updateMembershipModal #maxNumberOfEntries").val($('#membership-' + id + ' .entries').html());
+	    $("#updateMembershipModal #expireDateInDays").val($('#membership-' + id + ' .expire').html());
+	    $("#updateMembershipModal #price").val($('#membership-' + id + ' .price').html().replace("&nbsp;", ""));
 	    $('#updateMembershipModal').modal('show');
+	    if($('#membership-' + id + ' .intervally').html()=="igen") {
+	    	$('#updateMembershipModal #intervally-membershipType').click();
+	    } else {
+	    	$('#updateMembershipModal #occassinally-membershipType').click();
+	    }
+	});
+	
+	$('#updateMembershipModal #occassinally-membershipType').on("click", function () {
+		$('#updateMembershipModal #maxNumberOfEntries').attr("disabled", false);
+		$('#updateMembershipModal #expireDateInDays').attr("disabled", true);
+		$('#updateMembershipModal #isIntervally').val('false');
+	});
+	
+	$('#updateMembershipModal #intervally-membershipType').on("click", function () {
+		$('#updateMembershipModal #expireDateInDays').attr("disabled", false);
+		$('#updateMembershipModal #maxNumberOfEntries').attr("disabled", true);
+		$('#updateMembershipModal #isIntervally').val('true');
+	});
+	
+	$('#newMembershipModal #occassinally-membershipType').on("click", function () {
+		$('#newMembershipModal #maxNumberOfEntries').attr("disabled", false);
+		$('#newMembershipModal #expireDateInDays').attr("disabled", true);
+		$('#newMembershipModal #isIntervally').val('false');
+	});
+	
+	$('#newMembershipModal #intervally-membershipType').on("click", function () {
+		$('#newMembershipModal #expireDateInDays').attr("disabled", false);
+		$('#newMembershipModal #maxNumberOfEntries').attr("disabled", true);
+		$('#newMembershipModal #isIntervally').val('true');
 	});
 	
 });

@@ -258,27 +258,37 @@
   <div class="modal-body">
 		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/berlet/ujberlet"/>" method="post" accept-charset="UTF-8">
 			<div class="control-group">
+				<label class="control-label" for="isIntervally">Típus</label>
+				<div class="controls">
+					<div class="btn-group" data-toggle="buttons-radio">
+						<input type="hidden" id="isIntervally" name="isIntervally" value="false"/>
+	  					<button type="button" id="occassinally-membershipType" class="btn btn-primary">Alkalmi bérlet</button>
+	  					<button type="button" id="intervally-membershipType" class="btn btn-primary">Időintervallum bérlet</button>
+	  				</div>
+				</div>
+			</div>
+			<div class="control-group">
 				<label class="control-label" for="detail">Bérlet leírása</label>
 				<div class="controls">
-					<input type="text" id="detail" name="detail" placeholder="Bérlet típusa">
+					<input type="text" id="detail" name="detail" placeholder="Bérlet típusa"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="maxNumberOfEntries">Alkalmak száma</label>
 				<div class="controls">
-					<input type="number" id="maxNumberOfEntries" name="maxNumberOfEntries" placeholder="Alkalmak száma" min="0" value="0">
+					<input type="number" id="maxNumberOfEntries" name="maxNumberOfEntries" placeholder="Alkalmak száma" min="0" value="0"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="expireDateInDays">Érvényesség ideje</label>
 				<div class="controls">
-					<input type="number" id="expireDateInDays" name="expireDateInDays" placeholder="Érvényesség ideje napokban" min="0" value="0">
+					<input type="number" id="expireDateInDays" name="expireDateInDays" placeholder="Érvényesség ideje napokban" min="0" value="0"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="price">Ár</label>
 				<div class="controls">
-					<input type="number" id="price" name="price" placeholder="Bérlet ára">
+					<input type="number" id="price" name="price" placeholder="Bérlet ára"/>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -301,8 +311,20 @@
     <h3 id="myModalLabel">Új bérlet</h3>
   </div>
   <div class="modal-body modal-body-memberhipUpdate">
-		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/berlet/valtoztatas"/>" method="post" accept-charset="UTF-8">
-			<input type="hidden" id="id" name="id"/>
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/berlet/valtoztat"/>" method="post" accept-charset="UTF-8">
+			<div class="control-group">
+				<input type="hidden" id="id" name="id"/>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="isIntervallye">Típus</label>
+				<div class="controls">
+					<div class="btn-group" data-toggle="buttons-radio">
+						<input type="hidden" id="isIntervally" name="isIntervally"/>
+	  					<button type="button" id="occassinally-membershipType" class="btn btn-primary">Alkalmi bérlet</button>
+	  					<button type="button" id="intervally-membershipType" class="btn btn-primary">Időintervallum bérlet</button>
+	  				</div>
+				</div>
+			</div>
 			<div class="control-group">
 				<label class="control-label" for="detail">Bérlet leírása</label>
 				<div class="controls">

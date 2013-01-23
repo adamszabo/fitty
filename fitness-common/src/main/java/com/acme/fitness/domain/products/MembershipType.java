@@ -97,11 +97,11 @@ public class MembershipType {
 		this.detail = detail;
 	}
 
-	public boolean isIntervally() {
+	public boolean getIsIntervally() {
 		return isIntervally;
 	}
 
-	public void setIntervally(boolean isIntervally) {
+	public void setIsIntervally(boolean isIntervally) {
 		this.isIntervally = isIntervally;
 	}
 

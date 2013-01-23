@@ -32,7 +32,7 @@
 	</tr>
 </thead>
 <tbody>
-	<#list memberships as membership>
+	<#list membershipTypes as membership>
 		<form action="<@spring.url relativeUrl="/berletek/ujberlet"/>" method="post">
 			<tr>
 				<td>${membership.detail}</td>

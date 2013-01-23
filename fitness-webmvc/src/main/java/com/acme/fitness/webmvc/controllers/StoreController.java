@@ -118,6 +118,16 @@ public class StoreController {
 		return "redirect:/raktar/berlet";
 	}
 	
+	@RequestMapping(value = "berlet/valtoztat", method = RequestMethod.POST)
+	public String updateMembership(Locale locale, Model model,
+			HttpServletResponse response, HttpServletRequest request, 
+			@ModelAttribute("membership") MembershipType membershipType) {
+		gps.updateMembershipType(membershipType);
+		logger.info("membership updated: " + membershipType);
+		return "redirect:/raktar/berlet";
+	}
+	
+	
 	@RequestMapping(value = "berlet/torles/{membershipId}", method = RequestMethod.GET)
 	public String deleteMembership(@PathVariable("membershipId") long membershipId) {
 		try {

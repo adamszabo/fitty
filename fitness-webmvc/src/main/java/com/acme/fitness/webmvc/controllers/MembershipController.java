@@ -50,8 +50,8 @@ public class MembershipController {
 	@RequestMapping("")
 	public String defaultPage(HttpServletResponse response,
 			HttpServletRequest request, Model model) {
-		addBasketToSessionIfExists(request, new ObjectMapper());
-		model.addAttribute("memberships", gps.getAllMembershipTypes());
+//		addBasketToSessionIfExists(request, new ObjectMapper());
+		model.addAttribute("membershipTypes", gps.getAllMembershipTypes());
 		return "berletek";
 	}
 
