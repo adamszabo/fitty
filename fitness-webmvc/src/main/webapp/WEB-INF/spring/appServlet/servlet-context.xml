@@ -20,6 +20,11 @@
 	<!-- freemarker config -->
     <beans:bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
       <beans:property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+      <beans:property name="freemarkerSettings">
+      	<beans:props>
+      		<beans:prop key="default_encoding">UTF-8</beans:prop>
+      	</beans:props>
+      </beans:property>
     </beans:bean>
     
 	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
