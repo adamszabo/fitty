@@ -3,7 +3,8 @@
 	<!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
     <script src="<@spring.url relativeUrl="/resources/js/bootstrap-transition.js"/>"></script>
     <script src="<@spring.url relativeUrl="/resources/js/bootstrap-alert.js"/>"></script>
     <script src="<@spring.url relativeUrl="/resources/js/bootstrap-modal.js"/>"></script>
@@ -21,7 +22,6 @@
 	<script src="<@spring.url relativeUrl="/resources/js/slimScroll.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/bootstrap-datepicker.js"/>"></script>
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/jquery.selectBoxIt.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/bootstrap-fileupload.js"/>"></script>
 </#macro>
