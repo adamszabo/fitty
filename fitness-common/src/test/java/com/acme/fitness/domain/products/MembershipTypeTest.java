@@ -60,9 +60,9 @@ public class MembershipTypeTest {
 	@Test
 	public void testGetterAndSetterBehavoirOfIntervally() {
 		//WHEN
-		underTest.setIntervally(true);
+		underTest.setIsIntervally(true);
 		//THEN
-		Assert.assertEquals(true, underTest.isIntervally());
+		Assert.assertEquals(true, underTest.getIsIntervally());
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class MembershipTypeTest {
 		MembershipType expected = new MembershipType();
 		expected.setExpireDateInDays(1);
 		expected.setMaxNumberOfEntries(1);
-		expected.setIntervally(true);
+		expected.setIsIntervally(true);
 		expected.setPrice(1.0);
 		expected.setDetail("type");
 		// WHEN

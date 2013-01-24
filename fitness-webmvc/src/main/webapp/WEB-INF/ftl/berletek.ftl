@@ -12,7 +12,7 @@
 		  </a>
 		  <ul class="dropdown-menu">
 			<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
-			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek"/>">Megrendelés</a></li>
+			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek/megrendel"/>">Megrendelés</a></li>
 			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek"/>">Kosár törlése</a></li>
 		  </ul>
 	</li>
@@ -32,7 +32,7 @@
 	</tr>
 </thead>
 <tbody>
-	<#list memberships as membership>
+	<#list membershipTypes as membership>
 		<form action="<@spring.url relativeUrl="/berletek/ujberlet"/>" method="post">
 			<tr>
 				<td>${membership.detail}</td>

@@ -62,14 +62,15 @@
 </#if>
 
 <#if membershipsInStore?exists>
-	<button class="btn btn-primary" type="button" data-toggle="modal" href="#newMembershipModal">Új bérlet hozzáadása</button>
+	<button class="open-newMembershipModal btn btn-primary" type="button" data-toggle="modal" href="#newMembershipModal">Új bérlet hozzáadása</button>
 	
 	<@tags.newMembershipDialog/>
 	<@tags.updateMembershipDialog/>
-	<table class="table table-hover">
+	<table id="membershipTable"class="table table-hover">
 		<thead>
 			<tr>
 				<th>Azonosító</th>
+				<th>Időintervallumos?</th>
 				<th>Leírás</th>
 				<th>Alkalmak száma</th>
 				<th>Érvényesség ideje</th>
@@ -80,16 +81,18 @@
 		</thead>
 		<tbody>
 			<#list membershipsInStore as membership>
+				<tr id="membership-${membership.id}">
 					<td>${membership.id}</td>
-					<td>${membership.detail}</td>
-					<td>${membership.maxNumberOfEntries}</td>
-					<td class="span3">${membership.expireDateInDays}</td>
-					<td>${membership.price}</td>
+					<td class="intervally">${membership.isIntervally?string("igen", "nem")}</td>
+					<td class="detail">${membership.detail}</td>
+					<td class="entries">${membership.maxNumberOfEntries}</td>
+					<td class="expire span3">${membership.expireDateInDays}</td>
+					<td class="price">${membership.price}</td>
 					<td>
 						<a href="<@spring.url relativeUrl="/raktar/berlet/torles/${membership.id}"/>" class="btn btn-danger"><i class="icon-white icon-remove"></i></a>
 					</td>
 					<td>
-						<a class="open-updateMembershipModal btn btn-primary" data-id="${membership.id}" data-detail="${membership.detail}"><i class="icon-white icon-wrench"></i></a>
+						<a class="open-updateMembershipModal btn btn-primary" data-id="${membership.id}"><i class="icon-white icon-wrench"></i></a>
 					</td>
 				</tr>
 			</#list>
