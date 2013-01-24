@@ -2,6 +2,7 @@
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
+	<div class="search-bar">
 	<form class="form-search" action="<@spring.url relativeUrl="/beleptetes/kereses"/>" method="post">
 		<div class="drop-down-btn-group">
 			<select id="searchType" name="searchType">
@@ -12,8 +13,9 @@
       	</div>
       	
 		<input type="text" class="input-medium search-query" name="searchInput" id="searchInput" />
-		<button type="submit" class="btn">Keresés</button>
+		<button type="submit" class="btn btn-inverse"><i class="icon-white icon-search"></i> Keresés</button>
 	</form>
+	</div>
 	<table class="table table-hover">
 			<thead>
 				<tr>

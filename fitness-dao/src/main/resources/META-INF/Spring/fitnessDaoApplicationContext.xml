@@ -11,13 +11,15 @@
 <!-- 	<context:component-scan base-package="com.acme.fitness.dao"></context:component-scan> -->
 
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<context:property-placeholder location="classpath:fitness-studio-database.properties"/>
 
 	<bean id="dataSource" destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/fitness" />
-		<property name="username" value="postgres" />
-		<property name="password" value="root" />
+		<property name="driverClassName" value="${fitness.driverClassName}" />
+		<property name="url" value="${fitness.url}" />
+		<property name="username" value="${fitness.username}" />
+		<property name="password" value="${fitness.password}" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -39,7 +41,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.dialect">${fitness.hibernate.dialect}</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.transaction.auto_close_session">true</prop>
