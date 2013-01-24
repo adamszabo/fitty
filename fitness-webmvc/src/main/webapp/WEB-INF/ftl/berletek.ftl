@@ -13,7 +13,7 @@
 		  <ul class="dropdown-menu">
 			<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
 			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek/megrendel"/>">Megrendelés</a></li>
-			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek"/>">Kosár törlése</a></li>
+			<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek/torol"/>">Kosár törlése</a></li>
 		  </ul>
 	</li>
   </#if>
