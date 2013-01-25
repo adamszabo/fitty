@@ -19,6 +19,8 @@ import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.users.User;
 
 public class SimpleMembershipServiceTest {
+	private static final int MAX_NUMBER_OF_ENTRIES = 10;
+
 	private SimpleMembershipService underTest;
 
 	@Mock
@@ -172,7 +174,7 @@ public class SimpleMembershipServiceTest {
 	}
 	
 	@Test
-	public void testIsValidShouldReturnTrueWhenTheDateIsBeforeTheExpireDate() {
+	public void testIsValidShouldReturnTrueWhenMembershipIsIntevallyAndTheDateIsBetweenStartAndEndDates() {
 		//GIVEN
 		Date date = new Date();
 		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
@@ -181,19 +183,72 @@ public class SimpleMembershipServiceTest {
 		//WHEN
 		boolean result = underTest.isValid(membershipMock, date);
 		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getStartDate();
+		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(true, result);
 	}
 	
 	@Test
-	public void testIsValidShouldReturnTrueWhenTheActualEntriesLessThenMaxEntries() {
+	public void testIsValidShouldReturnFalseWhenMembershipIsIntevallyAndTheDateIsBeforeTheValidIntervally() {
 		//GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
-		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(5);
-		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(10);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() + 10000*60*60));
+		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000*60*60));
 		//WHEN
 		boolean result = underTest.isValid(membershipMock, date);
 		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getStartDate();
+		BDDMockito.verify(membershipMock).getExpireDate();
+		Assert.assertEquals(false, result);
+	}
+	
+	@Test
+	public void testIsValidShouldReturnFalseWhenMembershipIsIntevallyAndTheDateIsAfterTheValidIntervally() {
+		//GIVEN
+		Date date = new Date();
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 10000*60*60));
+		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() - 1000*60*60));
+		//WHEN
+		boolean result = underTest.isValid(membershipMock, date);
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getExpireDate();
+		Assert.assertEquals(false, result);
+	}
+	
+	@Test
+	public void testIsValidShouldReturnTrueWhenMembershipIsNOTIntevallyAndTheNumberOfEntriesLessThanMaxNumberOfEntries() {
+		//GIVEN
+		Date date = new Date();
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES-1);
+		//WHEN
+		boolean result = underTest.isValid(membershipMock, date);
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
+		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		Assert.assertEquals(true, result);
+	}
+	
+	@Test
+	public void testIsValidShouldReturnFalseWhenMembershipIsNOTIntevallyAndTheNumberOfEntriesGreaterThanMaxNumberOfEntries() {
+		//GIVEN
+		Date date = new Date();
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES+1);
+		//WHEN
+		boolean result = underTest.isValid(membershipMock, date);
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
+		BDDMockito.verify(membershipMock).getNumberOfEntries();
+		Assert.assertEquals(false, result);
 	}
 }

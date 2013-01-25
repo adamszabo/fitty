@@ -255,10 +255,11 @@ public class SimpleGeneralProductsServiceTest {
 	@Test
 	public void testIsValidMembershipShouldReturnProperly(){
 		// GIVEN
+		Date date=new Date();
 		// WHEN
-		underTest.isValid(membership, new Date());
+		underTest.isValid(membership, date);
 		// THEN
-		BDDMockito.verify(membershipService).isValid(membership, new Date());
+		BDDMockito.verify(membershipService).isValid(membership, date);
 	}
 	
 	@Test
