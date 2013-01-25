@@ -2,9 +2,7 @@ package com.acme.fitness.webmvc.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,14 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
-import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.users.GeneralUsersService;
-import com.acme.fitness.webmvc.web.CookieManager;
-import com.acme.fitness.webmvc.web.JsonManager;
+import com.acme.fitness.webmvc.web.ProductsManager;
 
 @Controller
 @RequestMapping("/aruhaz")
@@ -48,6 +44,9 @@ public class WebShopController {
 
 	@Autowired
 	private GeneralUsersService gus;
+	
+	@Autowired
+	private ProductsManager productsManager;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String aruhaz() {
@@ -63,45 +62,41 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
 
-		addBasketToSessionIfExists(request, new ObjectMapper());
-
-		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
-		model.addAttribute("products", getProductsOnPage(pageNumber));
-		model.addAttribute("pageNumber", pageNumber);
+		productsManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
+
 
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
 			HttpServletRequest request) {
-		ObjectMapper mapper = new ObjectMapper();
-
-		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
-
-		addOrderItemToMap(id, quantity, map);
-
-		writeMapToCookies(response, mapper, map);
-
+		productsManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
 		return "redirect:/aruhaz/" + page;
 	}
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
-	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().removeAttribute("productsInBasket");
-		deleteAllCookies(response, request.getCookies());
-		logger.info("Basket is deleted from cookies and session.");
-		return "redirect:/aruhaz/" + page;
+	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
+		productsManager.deleteBasket(request, response);
+		setPageNumberAndProducts(model, page);
+		return "aruhaz";
 	}
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
-	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 
 		if (getUserName().equals("anonymousUser")) {
 			return failToCheckOut(page, redirectAttributes);
 		} else {
 			checkOutBasket(redirectAttributes, getBasketFromSession(request));
-			return deleteBasket(page, request, response);
+			return deleteBasket(page, request, response, model);
 		}
+	}
+
+	private void setPageNumberAndProducts(Model model, String page) {
+		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
+		model.addAttribute("products", getProductsOnPage(pageNumber));
+		model.addAttribute("pageNumber", pageNumber);
 	}
 
 	private Basket getBasketFromSession(HttpServletRequest request) {
@@ -140,72 +135,6 @@ public class WebShopController {
 	private String getUserName() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth.getName();
-	}
-
-	private void addOrderItemToMap(long id, int quantity, Map<String, Integer> map) {
-		if (!map.containsKey(Long.toString(id))) {
-			map.put(Long.toString(id), quantity);
-		} else {
-			Integer value = map.get(Long.toString(id));
-			value = new Integer(value + quantity);
-		}
-	}
-
-	private Map<String, Integer> addBasketToSessionIfExists(HttpServletRequest request, ObjectMapper mapper) {
-		Map<String, Integer> map = readBasketToMapFromCookies(request, mapper);
-		if (map.size() > 0) {
-			request.getSession().setAttribute("productsInBasket", loadBasket(map));
-		}
-		return map;
-	}
-
-	private Basket loadBasket(Map<String, Integer> map) {
-		Basket basket = gos.newBasket(new User());
-		for (String s : map.keySet()) {
-			addProductToBasketByProductId(basket, Long.parseLong(s), map.get(s));
-		}
-		return basket;
-	}
-
-	private void addProductToBasketByProductId(Basket basket, long id, int quantity) {
-		Product product = null;
-		try {
-			product = gps.getProductById(id);
-		} catch (FitnessDaoException e) {
-			e.printStackTrace();
-		}
-		if (product != null) {
-			OrderItem oi = gos.newOrderItem(product, quantity);
-			gos.addOrderItemToBasket(basket, oi);
-		}
-	}
-
-	private void deleteAllCookies(HttpServletResponse response, Cookie[] cookies) {
-		for (Cookie c : cookies) {
-			c.setMaxAge(0);
-			response.addCookie(c);
-		}
-	}
-
-	private void writeMapToCookies(HttpServletResponse response, ObjectMapper mapper, Map<String, Integer> map) {
-
-		JsonManager<Integer> jsonManager = new JsonManager<Integer>(mapper);
-		String json = jsonManager.wrapToJsonString(map);
-
-		CookieManager cookieManager = new CookieManager();
-		cookieManager.writeToCookies(response, "productsInBasket", json);
-	}
-
-	private Map<String, Integer> readBasketToMapFromCookies(HttpServletRequest request, ObjectMapper mapper) {
-		String cookieValue = null;
-
-		CookieManager cookieManager = new CookieManager();
-		cookieValue = cookieManager.readFromCookies(request, "productsInBasket");
-
-		JsonManager<Integer> jsonManager = new JsonManager<Integer>(mapper);
-		Map<String, Integer> map = jsonManager.unwrapFromJsonString(cookieValue);
-
-		return map;
 	}
 
 	private List<Product> getProductsOnPage(int pageNumber) {

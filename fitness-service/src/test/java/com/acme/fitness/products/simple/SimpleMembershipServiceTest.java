@@ -175,7 +175,7 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnTrueWhenTheDateIsBeforeTheExpireDate() {
 		//GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
 		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 1000*60*60));
 		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000*60*60));
 		//WHEN
@@ -188,7 +188,7 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnTrueWhenTheActualEntriesLessThenMaxEntries() {
 		//GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(5);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(10);
 		//WHEN

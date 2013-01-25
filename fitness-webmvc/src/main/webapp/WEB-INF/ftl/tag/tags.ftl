@@ -80,57 +80,88 @@
 </#macro>
 
 <#macro basketDialog>
-	<#if productsInBasket?exists>
+	<#if basket?exists>
 	<div id="basketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 	    <h3 id="myModalLabel">Kosár tartalma</h3>
 	  </div>
 	  <div class="modal-body">
-	  	<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Név</th>
-					<th>Gyártó</th>
-					<th>Egység Ár</th>
-					<th>Mennyiség</th>
-					<th>Össz ár</th>
-				</tr>
-			</thead>
-			<tbody>
-				<#assign iterate = 0>
-				<#assign sum = 0>
-				<#list productsInBasket["orderItems"] as item>
-					<#assign iterate = iterate +1>
-					<#assign sum = sum + item["quantity"] * item["product"]["price"]>
-					<tr>
-						<td>${iterate}</td>
-						<td>${item.product.name}</td>
-						<td>${item.product.manufacturer}</td>
-						<td>${item.product.price}</td>
-						<td>${item.quantity}</td>
-						<td>${item.quantity * item.product.price}</td>
-						<td></td>
-					</tr>
-				</#list>
+	  <#assign sum = 0>
+		  <#if basket["orderItems"]?has_content>
+		  Termékek:
+		  	<table class="table table-hover">
+					<thead>
 						<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>${sum}</td>
-					</tr>
-			</tbody>
-		</table>
+							<th>#</th>
+							<th>Név</th>
+							<th>Gyártó</th>
+							<th>Egység Ár</th>
+							<th>Mennyiség</th>
+							<th>Össz ár</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#assign iterate = 0>
+						<#list basket["orderItems"] as item>
+							<#assign iterate = iterate +1>
+							<#assign sum = sum + item["quantity"] * item["product"]["price"]>
+							<tr>
+								<td>${iterate}</td>
+								<td>${item.product.name}</td>
+								<td>${item.product.manufacturer}</td>
+								<td>${item.product.price}</td>
+								<td>${item.quantity}</td>
+								<td>${item.quantity * item.product.price}</td>
+							</tr>
+						</#list>
+					</tbody>
+				</table>
+			</#if>
+			
+			<#if basket["memberships"]?has_content>
+			Bérletek:
+		  	<table class="table table-hover">
+		  		<#list basket["memberships"] as membership>
+					<thead>
+						<tr>
+							<th>Típus</th>
+							<#if membership.isIntervally?string = "true">
+								<th>Kezdés dátuma</th>
+								<th>Lejárat dátuma</th>
+							<#else>
+								<th>Alkalmak száma</th>
+							</#if>
+							<th>Ár</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#assign sum = sum + membership["price"]>
+						<tr>
+							<td>${membership.type}</td>
+							<#if membership.isIntervally?string = "true">
+								<td>${membership.startDate?date}</td>
+								<td>${membership.expireDate?date}</td>
+							<#else>
+								<td>${membership.maxNumberOfEntries}
+							</#if>
+							<td>${membership.price}</td>
+						</tr>
+					</tbody>
+				</#list>
+			</table>
+			</#if>
 	  </div>
 	  <div class="modal-footer">
 	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
-	    <a href="<@spring.url relativeUrl="/aruhaz/${pageNumber}/confirmBasket"/>" class="btn btn-primary">Megrendelés</a>
+	    <a href="<@spring.url relativeUrl="/aruhaz/confirmBasket"/>" class="btn btn-primary">Megrendelés</a>
 	  </div>
 	</div>
 	</#if>
+</#macro>
+
+<#macro camu>
+
 </#macro>
 
 <#macro newProductDialog>

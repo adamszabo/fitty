@@ -56,7 +56,7 @@ public class SimpleMembershipService implements MembershipService {
 	@Override
 	public boolean isValid(Membership membership, Date date) {
 		boolean isValid = false;
-		if (membership.isIntervally()) {
+		if (membership.getIsIntervally()) {
 			if (isTodayBetweenStartAndEndDates(membership, date)) {
 				isValid = true;
 			}

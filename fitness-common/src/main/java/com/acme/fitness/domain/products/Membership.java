@@ -33,7 +33,8 @@ public class Membership {
 	@Column
 	private int maxNumberOfEntries;
 
-	@Column Date startDate;
+	@Column 
+	private Date startDate;
 	
 	@Column
 	private Date expireDate;
@@ -119,11 +120,11 @@ public class Membership {
 		this.id = id;
 	}
 
-	public boolean isIntervally() {
+	public boolean getIsIntervally() {
 		return isIntervally;
 	}
 
-	public void setIntervally(boolean isIntervally) {
+	public void setIsIntervally(boolean isIntervally) {
 		this.isIntervally = isIntervally;
 	}
 

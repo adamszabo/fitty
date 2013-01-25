@@ -9,6 +9,7 @@ public class CookieManager {
 	public void writeToCookies(HttpServletResponse response, String key, String value) {
 		Cookie cookie = new Cookie(key, value);
 		cookie.setMaxAge(60*60*24*7);
+		cookie.setPath("/");
 		response.addCookie(cookie);
 	}
 	
