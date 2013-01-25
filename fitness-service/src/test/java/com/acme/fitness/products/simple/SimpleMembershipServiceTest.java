@@ -163,13 +163,13 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnTrueWhenMembershipIsIntevallyAndTheDateIsBetweenStartAndEndDates() {
 		// GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(true);
-		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 1000 * 60 * 60));
-		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000 * 60 * 60));
-		// WHEN
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 1000*60*60));
+		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000*60*60));
+		//WHEN
 		boolean result = underTest.isValid(membershipMock, date);
-		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getStartDate();
 		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(true, result);
@@ -179,13 +179,13 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnFalseWhenMembershipIsIntevallyAndTheDateIsBeforeTheValidIntervally() {
 		// GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(true);
-		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() + 10000 * 60 * 60));
-		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000 * 60 * 60));
-		// WHEN
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() + 10000*60*60));
+		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() + 1000*60*60));
+		//WHEN
 		boolean result = underTest.isValid(membershipMock, date);
-		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getStartDate();
 		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(false, result);
@@ -195,13 +195,13 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnFalseWhenMembershipIsIntevallyAndTheDateIsAfterTheValidIntervally() {
 		// GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(true);
-		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 10000 * 60 * 60));
-		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() - 1000 * 60 * 60));
-		// WHEN
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
+		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 10000*60*60));
+		BDDMockito.given(membershipMock.getExpireDate()).willReturn(new Date(date.getTime() - 1000*60*60));
+		//WHEN
 		boolean result = underTest.isValid(membershipMock, date);
-		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(false, result);
 	}
@@ -210,13 +210,13 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnTrueWhenMembershipIsNOTIntevallyAndTheNumberOfEntriesLessThanMaxNumberOfEntries() {
 		// GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
 		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES - 1);
 		// WHEN
 		boolean result = underTest.isValid(membershipMock, date);
-		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		Assert.assertEquals(true, result);
@@ -226,13 +226,13 @@ public class SimpleMembershipServiceTest {
 	public void testIsValidShouldReturnFalseWhenMembershipIsNOTIntevallyAndTheNumberOfEntriesGreaterThanMaxNumberOfEntries() {
 		// GIVEN
 		Date date = new Date();
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
 		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES + 1);
 		// WHEN
 		boolean result = underTest.isValid(membershipMock, date);
-		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		//THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		Assert.assertEquals(false, result);
@@ -245,13 +245,13 @@ public class SimpleMembershipServiceTest {
 		List<Membership> memberships=new ArrayList<Membership>();
 		memberships.add(membershipMock);
 		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock)).willReturn(memberships);
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
 		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES - 1);
 		// WHEN
 		List<Membership> result = underTest.getValidMembershipsByUser(userMock, date);
 		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		BDDMockito.verify(membershipDaoMock).getMembershipsByUser(userMock);
@@ -265,13 +265,13 @@ public class SimpleMembershipServiceTest {
 		List<Membership> memberships=new ArrayList<Membership>();
 		memberships.add(membershipMock);
 		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock)).willReturn(memberships);
-		BDDMockito.given(membershipMock.isIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
 		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES + 1);
 		// WHEN
 		List<Membership> result = underTest.getValidMembershipsByUser(userMock, date);
 		// THEN
-		BDDMockito.verify(membershipMock).isIntervally();
+		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		BDDMockito.verify(membershipDaoMock).getMembershipsByUser(userMock);

@@ -58,7 +58,7 @@ public class SimpleMembershipService implements MembershipService {
 	public boolean isValid(Membership membership, Date date) {
 		boolean result = false;
 
-		if (membership.isIntervally()) {
+		if (membership.getIsIntervally()) {
 			result = isTodayBetweenStartAndEndDates(membership, date);
 		} else {
 			result = isActualEntriesLessThanMaxEntires(membership);

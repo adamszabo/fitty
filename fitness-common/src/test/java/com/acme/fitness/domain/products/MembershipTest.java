@@ -78,8 +78,8 @@ public class MembershipTest {
 	
 	@Test
 	public void testGetterAndSettBehaviourOfIntervally() {
-		underTest.setIntervally(true);
-		Assert.assertEquals(true, underTest.isIntervally());
+		underTest.setIsIntervally(true);
+		Assert.assertEquals(true, underTest.getIsIntervally());
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class MembershipTest {
 		//GIVEN
 		Date date = new Date();
 		Membership expected = new Membership();
-		expected.setIntervally(true);
+		expected.setIsIntervally(true);
 		expected.setType("type");
 		expected.setNumberOfEntries(1);
 		expected.setMaxNumberOfEntries(1);
