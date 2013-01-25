@@ -85,12 +85,19 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 
-		if (getUserName().equals("anonymousUser")) {
-			return failToCheckOut(page, redirectAttributes);
-		} else {
-			checkOutBasket(redirectAttributes, getBasketFromSession(request));
-			return deleteBasket(page, request, response, model);
+		try {
+			productsManager.checkOutBasket(response, request);
+		} catch (StoreQuantityException e) {
+			e.printStackTrace();
 		}
+//		if (getUserName().equals("anonymousUser")) {
+//			return failToCheckOut(page, redirectAttributes);
+//		} else {
+//			checkOutBasket(redirectAttributes, getBasketFromSession(request));
+//			return deleteBasket(page, request, response, model);
+//		}
+		setPageNumberAndProducts(model, page);
+		return "aruhaz";
 	}
 
 	private void setPageNumberAndProducts(Model model, String page) {
