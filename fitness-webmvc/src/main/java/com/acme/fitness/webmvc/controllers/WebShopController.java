@@ -10,8 +10,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,14 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
-import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Product;
-import com.acme.fitness.domain.users.User;
-import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.web.ProductsManager;
 
 @Controller
@@ -39,12 +33,6 @@ public class WebShopController {
 	@Autowired
 	private GeneralProductsService gps;
 
-	@Autowired
-	private GeneralOrdersService gos;
-
-	@Autowired
-	private GeneralUsersService gus;
-	
 	@Autowired
 	private ProductsManager productsManager;
 
@@ -88,14 +76,10 @@ public class WebShopController {
 		try {
 			productsManager.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {
-			e.printStackTrace();
-		}
-//		if (getUserName().equals("anonymousUser")) {
-//			return failToCheckOut(page, redirectAttributes);
-//		} else {
-//			checkOutBasket(redirectAttributes, getBasketFromSession(request));
-//			return deleteBasket(page, request, response, model);
-//		}
+			addMissingProductsMessages(redirectAttributes, e.getProduct());
+		} catch (BasketCheckOutException e) {
+			return failToCheckOut(page, redirectAttributes);
+		} 
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
@@ -106,42 +90,15 @@ public class WebShopController {
 		model.addAttribute("pageNumber", pageNumber);
 	}
 
-	private Basket getBasketFromSession(HttpServletRequest request) {
-		return (Basket) request.getSession().getAttribute("productsInBasket");
-	}
 
 	private String failToCheckOut(String page, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
 		return "redirect:/aruhaz/" + page;
 	}
 
-	private void checkOutBasket(RedirectAttributes redirectAttributes, Basket basket) {
-		setBasketToUser(basket);
-		try {
-			gos.checkOutBasket(basket);
-			logger.info("Basket with id: " + basket.getId() + " has confirmed!");
-		} catch (StoreQuantityException e) {
-			addMissingProductsMessages(redirectAttributes, e.getProduct());
-		}
-	}
-
 	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {
 		redirectAttributes.addFlashAttribute("missingProduct", list);
 		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
-	}
-
-	private void setBasketToUser(Basket basket) {
-		try {
-			User user = gus.getUserByUsername(getUserName());
-			basket.setUser(user);
-		} catch (FitnessDaoException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private String getUserName() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return auth.getName();
 	}
 
 	private List<Product> getProductsOnPage(int pageNumber) {

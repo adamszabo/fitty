@@ -3,6 +3,8 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Bérletek">
 	
+<@tags.errorMessage />
+	
 <ul class="nav nav-pills">
 	<@tags.basketDialog />
 	<#if basket?exists>

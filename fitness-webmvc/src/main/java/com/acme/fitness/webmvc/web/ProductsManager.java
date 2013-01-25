@@ -15,10 +15,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
@@ -89,7 +93,7 @@ public class ProductsManager {
 		}
 	}
 
-	public void checkOutBasket(HttpServletResponse response, HttpServletRequest request) throws StoreQuantityException {
+	public void checkOutBasket(HttpServletResponse response, HttpServletRequest request) throws StoreQuantityException, BasketCheckOutException {
 		Basket basket = (Basket) request.getSession().getAttribute("basket");
 		if (!getLoggedInUserName().equals("anonymousUser")) {
 			try {
@@ -100,6 +104,8 @@ public class ProductsManager {
 			}
 			gos.checkOutBasket(basket);
 			deleteBasket(request, response);
+		} else {
+			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni");
 		}
 	}
 

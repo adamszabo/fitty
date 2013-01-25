@@ -72,6 +72,16 @@
 	</div>
 </#macro>
 
+<#macro errorMessage>
+	<#if message?exists>
+		<div class="alert alert-block">
+	  	<button type="button" class="close" data-dismiss="alert">x</button>
+	  		<h4>Hiba!</h4>
+			${message}
+		</div>
+	</#if>
+</#macro>
+
 <#macro errorAlert id message>
 	<div id="${id}" class="alert alert-error" style="display:none;">
 	  <!--button type="button" class="close" data-dismiss="alert">&times;</button-->
