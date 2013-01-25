@@ -25,7 +25,7 @@ public class SimpleMembershipService implements MembershipService {
 
 	@Override
 	public Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price) {
-		Membership membership=new Membership(isIntervally, type, 0, maxEntries, startDate, expireDate, price, null);
+		Membership membership = new Membership(isIntervally, type, 0, maxEntries, startDate, expireDate, price, null);
 		return membership;
 	}
 
@@ -38,7 +38,7 @@ public class SimpleMembershipService implements MembershipService {
 
 	@Override
 	public Membership saveNewMemberShip(boolean isIntervally, Basket basket, String type, int maxEntries, Date startDate, Date expireDate, double price) {
-		Membership membership=new Membership(isIntervally, type, 0, maxEntries, startDate, expireDate, price, basket);
+		Membership membership = new Membership(isIntervally, type, 0, maxEntries, startDate, expireDate, price, basket);
 		membershipDao.save(membership);
 		return membership;
 	}
@@ -55,29 +55,25 @@ public class SimpleMembershipService implements MembershipService {
 
 	@Override
 	public boolean isValid(Membership membership, Date date) {
-		boolean isValid = false;
+		boolean result = false;
+
 		if (membership.isIntervally()) {
-			if (isTodayBetweenStartAndEndDates(membership, date)) {
-				isValid = true;
-			}
+			result = isTodayBetweenStartAndEndDates(membership, date);
 		} else {
-			if (isActualEntriesLessThanMaxEntires(membership)) {
-				isValid = true;
-			}
+			result = isActualEntriesLessThanMaxEntires(membership);
 		}
-		return isValid;
+
+		return result;
 	}
 
 	private boolean isActualEntriesLessThanMaxEntires(Membership membership) {
 		return membership.getNumberOfEntries() < membership.getMaxNumberOfEntries();
 	}
-	
-	private boolean isTodayBetweenStartAndEndDates(Membership membership,
-			Date today) {
-		return membership.getExpireDate().after(today)
-				&& membership.getStartDate().before(today);
+
+	private boolean isTodayBetweenStartAndEndDates(Membership membership, Date today) {
+		return membership.getExpireDate().after(today) && membership.getStartDate().before(today);
 	}
-	
+
 	@Override
 	public Membership getMembershipById(long id) throws FitnessDaoException {
 		return membershipDao.getMembershipById(id);
