@@ -182,4 +182,9 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	public List<MembershipType> getAllMembershipTypes() {
 		return membershipTypeService.getAllMembershipTypes();
 	}
+
+	@Override
+	public List<Membership> getValidMembershipsByUser(User user, Date date) {
+		return membershipService.getValidMembershipsByUser(user, date);
+	}
 }

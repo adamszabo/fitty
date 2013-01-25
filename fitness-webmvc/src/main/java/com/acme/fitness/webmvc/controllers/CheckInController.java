@@ -1,6 +1,7 @@
 package com.acme.fitness.webmvc.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +68,8 @@ public class CheckInController {
 	
 	UserWithMemberships createUserWithMemberships(User user){
 		UserWithMemberships uwm=new UserWithMemberships();
-		List<Membership> memberships=gps.getMembershipByUser(user);
+		
+		List<Membership> memberships=gps.getValidMembershipsByUser(user, new Date());
 		uwm.setUser(user);
 		uwm.setMemberships(memberships);
 		

@@ -385,4 +385,17 @@ public class SimpleGeneralProductsServiceTest {
 		Assert.assertEquals(expected, result);
 		BDDMockito.verify(membershipTypeService).getAllMembershipTypes();
 	}
+	
+	@Test
+	public void testValidMembershipsByUserShouldReturnProperly() {
+		//GIVEN
+		Date date=new Date();
+		List<Membership> expected = new ArrayList<Membership>();
+		BDDMockito.given(membershipService.getValidMembershipsByUser(user, date)).willReturn(expected);
+		//WHEN
+		List<Membership> result = underTest.getValidMembershipsByUser(user, date);
+		//THEN
+		Assert.assertEquals(expected, result);
+		BDDMockito.verify(membershipService).getValidMembershipsByUser(user, date);
+	}
 }
