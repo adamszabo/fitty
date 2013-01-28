@@ -34,7 +34,7 @@
 							</td>
 							<td>
 								<label class="checkbox inline">
-								  <input type="checkbox" id="receptionist" name="Receptionist" <#if userwithroles.roleNames?seq_contains("Receptionist")?string("yes", "no")=="yes">checked</#if>>
+								  <input type="checkbox" id="receptionist" name="Recepcionist" <#if userwithroles.roleNames?seq_contains("Recepcionist")?string("yes", "no")=="yes">checked</#if>>
 								</label>
 							</td>
 							<td>

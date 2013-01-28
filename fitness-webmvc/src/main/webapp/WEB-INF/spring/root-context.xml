@@ -41,6 +41,7 @@
 		
 		<sec:intercept-url pattern="/admin/**" access="hasRole('SystemAdmin')"/>
 		<sec:intercept-url pattern="/raktar/**" access="hasRole('ProductAdmin')"/>
+		<sec:intercept-url pattern="/beleptetes/**" access="hasRole('Recepcionist')"/>
 	</sec:http>
 
 	<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">

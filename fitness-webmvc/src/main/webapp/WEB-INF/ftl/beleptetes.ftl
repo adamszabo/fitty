@@ -2,6 +2,12 @@
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
+	<#if checkedInUserName?? >
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<span>${checkedInUserName}</span> sikeresen beléptetve!
+		</div>
+	</#if>
 	<div class="search-bar">
 	<form class="form-search" action="<@spring.url relativeUrl="/beleptetes/kereses"/>" method="post">
 		<div class="drop-down-btn-group">
@@ -31,7 +37,6 @@
 						</tr>
 					</#if>
 					<#list searchResult as item>
-						<form id="${item.user.username}-CheckInForm" class="" action="<@spring.url relativeUrl="/"/>" method="post">
 							<tr id="${item.user.username}-tr">
 								<td>${item.user.id}</td>
 								<td>${item.user.fullName}</td>
@@ -43,9 +48,8 @@
 								</td>
 							</tr>
 							<tr id="${item.user.username}-details-tr" style="display:none">
-								<@memberShipsTableWithCheckIn item.memberships />
+								<@memberShipsTableWithCheckIn item.memberships item.user.fullName/>
 							</tr>
-						</form>
 					</#list>
 				<#else>
 					<tr>
@@ -57,7 +61,7 @@
 </@template.masterTemplate>
 
 
-<#macro memberShipsTableWithCheckIn memberships>
+<#macro memberShipsTableWithCheckIn memberships fullName>
 	<#if (memberships?size>0) >
 		<td>
 			<h5>Bérletek:</h5>
@@ -77,11 +81,13 @@
 					<#list memberships as membership>
 						<tr>
 							<form class="form-search" action="<@spring.url relativeUrl="/beleptetes/leptet"/>" method="post">
+								<input type="hidden" value="${fullName}" name="userFullNameHiddenField"/>
+								<input type="hidden" value="${membership.id}" name="membershipIdHiddenField"/>
 								<td>${membership.id}</td>
 								<td>${membership.type}</td>
 								<td>${membership.numberOfEntries}</td>
 								<td>${membership.price}</td>
-								<td><button class="btn btn-success" type="button">Beléptet</button></td>
+								<td><button class="btn btn-success" type="submit">Beléptet</button></td>
 							</form>
 						</tr>
 					</#list>
