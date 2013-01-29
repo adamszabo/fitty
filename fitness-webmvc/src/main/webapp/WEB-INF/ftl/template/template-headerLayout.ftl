@@ -28,6 +28,21 @@
 										<@security.authorize access="isAnonymous()">
 											<li><a id="registrationButton">Regisztráció</a></li>
 										</@security.authorize>
+										<#if basket?exists>
+											<li>
+												<div class="dropdown" style="vertical-align: middle;">
+													  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+													    <i class="icon-shopping-cart"></i> Kosár
+													    <span class="caret"></span>
+													  </a>
+													  <ul class="dropdown-menu">
+														<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
+														<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/confirmBasket"/>">Megrendelés</a></li>
+														<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/deleteBasket"/>">Kosár törlése</a></li>
+													  </ul>
+												</div>
+												</li>
+										 </#if>
                                     </ul>
                                     <div style="float:right;">
                                     	<@security.authorize access="isAnonymous()">

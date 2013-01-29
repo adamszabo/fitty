@@ -7,46 +7,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
-import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Product;
-import com.acme.fitness.domain.users.User;
-import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.users.GeneralUsersService;
-import com.acme.fitness.webmvc.web.ProductsManager;
+import com.acme.fitness.webmvc.cookie.BasketManager;
 
 @Controller
 @RequestMapping("/aruhaz")
 public class WebShopController {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebShopController.class);
-
 	@Autowired
 	private GeneralProductsService gps;
 
 	@Autowired
-	private GeneralOrdersService gos;
-
-	@Autowired
-	private GeneralUsersService gus;
-	
-	@Autowired
-	private ProductsManager productsManager;
+	private BasketManager basketManager;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String aruhaz() {
@@ -61,44 +46,55 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
-
-		productsManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
-
 
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
 			HttpServletRequest request) {
-		productsManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
+		basketManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
 		return "redirect:/aruhaz/" + page;
 	}
 
+	@RequestMapping(value = "/deleteBasket", method = RequestMethod.GET)
+	public String deleteBasketDefault(HttpServletRequest request, HttpServletResponse response, Model model) {
+		return deleteBasket("1", request, response, model);
+	}
+	
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
-		productsManager.deleteBasket(request, response);
+		basketManager.deleteBasket(request, response);
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
 
+	@RequestMapping(value = "/confirmBasket", method = RequestMethod.GET)
+	public String confirmOrderDefault(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
+		return confirmOrder("1", request, response, redirectAttributes, model);
+	}
+	
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 
 		try {
-			productsManager.checkOutBasket(response, request);
+			basketManager.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {
-			e.printStackTrace();
-		}
-//		if (getUserName().equals("anonymousUser")) {
-//			return failToCheckOut(page, redirectAttributes);
-//		} else {
-//			checkOutBasket(redirectAttributes, getBasketFromSession(request));
-//			return deleteBasket(page, request, response, model);
-//		}
+			addMissingProductsMessages(redirectAttributes, e.getProduct());
+		} catch (BasketCheckOutException e) {
+			return failToCheckOut(page, redirectAttributes);
+		} 
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
+	
+	@RequestMapping(value = "/torles/{productId}")
+	public String removeProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeProductFromBasket(productId, request, response);
+		return "redirect:/aruhaz/";
+	}
+	
 
 	private void setPageNumberAndProducts(Model model, String page) {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
@@ -106,42 +102,15 @@ public class WebShopController {
 		model.addAttribute("pageNumber", pageNumber);
 	}
 
-	private Basket getBasketFromSession(HttpServletRequest request) {
-		return (Basket) request.getSession().getAttribute("productsInBasket");
-	}
 
 	private String failToCheckOut(String page, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
 		return "redirect:/aruhaz/" + page;
 	}
 
-	private void checkOutBasket(RedirectAttributes redirectAttributes, Basket basket) {
-		setBasketToUser(basket);
-		try {
-			gos.checkOutBasket(basket);
-			logger.info("Basket with id: " + basket.getId() + " has confirmed!");
-		} catch (StoreQuantityException e) {
-			addMissingProductsMessages(redirectAttributes, e.getProduct());
-		}
-	}
-
 	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {
 		redirectAttributes.addFlashAttribute("missingProduct", list);
 		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
-	}
-
-	private void setBasketToUser(Basket basket) {
-		try {
-			User user = gus.getUserByUsername(getUserName());
-			basket.setUser(user);
-		} catch (FitnessDaoException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private String getUserName() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return auth.getName();
 	}
 
 	private List<Product> getProductsOnPage(int pageNumber) {

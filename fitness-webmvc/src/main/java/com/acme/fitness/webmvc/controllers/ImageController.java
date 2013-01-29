@@ -33,7 +33,6 @@ public class ImageController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getProductImageFromDatabase(@PathVariable long imageId) throws FitnessDaoException{
 		ProductImage productImage=gProductService.getProductImageById(imageId);
-		System.out.println("image loaded with id: "+imageId);
 		
 		HttpHeaders header=setHeaderContentType(productImage);
 		

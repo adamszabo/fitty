@@ -1,4 +1,4 @@
-package com.acme.fitness.webmvc.web;
+package com.acme.fitness.webmvc.cookie;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
