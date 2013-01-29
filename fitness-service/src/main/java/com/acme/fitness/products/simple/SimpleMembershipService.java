@@ -1,5 +1,6 @@
 package com.acme.fitness.products.simple;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -93,6 +94,20 @@ public class SimpleMembershipService implements MembershipService {
 	public void increaseClientEntries(Membership membership) {
 		membership.setNumberOfEntries(membership.getNumberOfEntries() + 1);
 		membershipDao.update(membership);
+	}
+
+	@Override
+	public List<Membership> getValidMembershipsByUser(User user, Date date) {
+		List<Membership> memberships=membershipDao.getMembershipsByUser(user);
+		List<Membership> validMemberships=new ArrayList<Membership>();
+		
+		for(Membership membership : memberships){
+			if(isValid(membership, date)){
+				validMemberships.add(membership);
+			}
+		}
+		
+		return validMemberships;
 	}
 
 }

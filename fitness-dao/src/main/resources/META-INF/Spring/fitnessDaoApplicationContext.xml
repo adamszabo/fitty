@@ -16,7 +16,7 @@
 
 	<bean id="dataSource" destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="${fitness.driverClassName}" />
+		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="${fitness.url}" />
 		<property name="username" value="${fitness.username}" />
 		<property name="password" value="${fitness.password}" />
@@ -41,7 +41,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">${fitness.hibernate.dialect}</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.transaction.auto_close_session">true</prop>
@@ -57,18 +57,18 @@
 	</bean>
 
 	<!-- For testing the module -->
-	<aop:config>
-		<aop:pointcut expression="execution(public * com.acme.fitness.dao..*.*(..))"
-			id="fitnessDaoOperation" />
-		<aop:advisor advice-ref="requiredTxAdvice" pointcut-ref="fitnessDaoOperation" />
-	</aop:config>
+<!-- 	<aop:config> -->
+<!-- 		<aop:pointcut expression="execution(public * com.acme.fitness.dao..*.*(..))" -->
+<!-- 			id="fitnessDaoOperation" /> -->
+<!-- 		<aop:advisor advice-ref="requiredTxAdvice" pointcut-ref="fitnessDaoOperation" /> -->
+<!-- 	</aop:config> -->
 
-	<tx:advice id="requiredTxAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="*" rollback-for="java.lang.Exception"
-				propagation="REQUIRED" />
-		</tx:attributes>
-	</tx:advice>
+<!-- 	<tx:advice id="requiredTxAdvice" transaction-manager="transactionManager"> -->
+<!-- 		<tx:attributes> -->
+<!-- 			<tx:method name="*" rollback-for="java.lang.Exception" -->
+<!-- 				propagation="REQUIRED" /> -->
+<!-- 		</tx:attributes> -->
+<!-- 	</tx:advice> -->
 	<!-- <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"> -->
 	<!-- <property name="transactionManager" ref="transactionManager" /> -->
 	<!-- </bean> -->

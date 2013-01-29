@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.users.Role;
+import com.acme.fitness.domain.users.Roles;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.dto.UserWithRoles;
@@ -75,11 +76,11 @@ public class AdminController {
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
 		}
-		loadRole("Client", user, request);
-		loadRole("Trainer", user, request);
-		loadRole("Receptionist", user, request);
-		loadRole("SystemAdmin", user, request);
-		loadRole("ProductAdmin", user, request);
+		loadRole(Roles.Client.toString(), user, request);
+		loadRole(Roles.Trainer.toString(), user, request);
+		loadRole(Roles.Recepcionist.toString(), user, request);
+		loadRole(Roles.SystemAdmin.toString(), user, request);
+		loadRole(Roles.ProductAdmin.toString(), user, request);
 		return roles(model, request);
 	}
 

@@ -30,4 +30,6 @@ public interface MembershipService {
 
 	void increaseClientEntries(Membership membership);
 
+	List<Membership> getValidMembershipsByUser(User user, Date date);
+
 }

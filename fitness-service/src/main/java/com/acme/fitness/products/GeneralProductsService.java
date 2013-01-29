@@ -36,6 +36,7 @@ public interface GeneralProductsService {
 	Membership getMembershipById(long id) throws FitnessDaoException;
 	List<Membership> getMembershipByBasket(Basket basket);
 	List<Membership> getMembershipByUser(User user);
+	List<Membership> getValidMembershipsByUser(User user, Date date);
 	void increaseClientEntries(Membership membership);
 	Product getProductById(long id) throws FitnessDaoException;
 	
@@ -45,4 +46,7 @@ public interface GeneralProductsService {
 	MembershipType getMembershipTypeById(long id) throws FitnessDaoException;
 	List<MembershipType> getAllMembershipTypes();
 	void saveMembershipType(MembershipType membershipType);
+	
+	List<ProductImage> getAllProductImage();
+	ProductImage getProductImageById(long id) throws FitnessDaoException;
 }

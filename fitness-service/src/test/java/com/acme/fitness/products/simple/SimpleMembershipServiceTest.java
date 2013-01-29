@@ -34,7 +34,7 @@ public class SimpleMembershipServiceTest {
 
 	@Mock
 	private User userMock;
-	
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -49,11 +49,9 @@ public class SimpleMembershipServiceTest {
 		int expectedMaxEntries = 10;
 		Date expectedDate = new Date();
 		double expectedPrice = 1230.0;
-		Membership expected = new Membership(expectedIntervally, expectedType, 0,
-				expectedMaxEntries, expectedDate, expectedDate, expectedPrice, null);
+		Membership expected = new Membership(expectedIntervally, expectedType, 0, expectedMaxEntries, expectedDate, expectedDate, expectedPrice, null);
 		// WHEN
-		Membership result = underTest.newMemberShip(expectedIntervally, expectedType,
-				expectedMaxEntries, expectedDate, expectedDate, expectedPrice);
+		Membership result = underTest.newMemberShip(expectedIntervally, expectedType, expectedMaxEntries, expectedDate, expectedDate, expectedPrice);
 		// THEN
 		Assert.assertEquals(expected, result);
 	}
@@ -73,16 +71,14 @@ public class SimpleMembershipServiceTest {
 		// THEN
 		BDDMockito.verify(membershipDaoMock).save(expectedMembership);
 	}
-	
+
 	@Test
 	public void testSaveNewMembershipShouldReturnProperly() {
 		// GIVEN
 		Date date = new Date();
-		Membership expected = new Membership(true, "TESTSTRING", 0, 0, date, date,
-				0.0, basketMock);
+		Membership expected = new Membership(true, "TESTSTRING", 0, 0, date, date, 0.0, basketMock);
 		// WHEN
-		Membership result = underTest.saveNewMemberShip(true, basketMock,
-				"TESTSTRING", 0, date, date, 0.0);
+		Membership result = underTest.saveNewMemberShip(true, basketMock, "TESTSTRING", 0, date, date, 0.0);
 		// THEN
 		BDDMockito.verify(membershipDaoMock).save(expected);
 		Assert.assertEquals(expected, result);
@@ -107,32 +103,24 @@ public class SimpleMembershipServiceTest {
 	}
 
 	@Test
-	public void testGetMembershipByIdWhenHasResultShouldReturnProperly()
-			throws FitnessDaoException {
+	public void testGetMembershipByIdWhenHasResultShouldReturnProperly() throws FitnessDaoException {
 		// GIVEN
-		BDDMockito
-				.given(membershipDaoMock.getMembershipById(Mockito.anyLong()))
-				.willReturn(membershipMock);
+		BDDMockito.given(membershipDaoMock.getMembershipById(Mockito.anyLong())).willReturn(membershipMock);
 		// WHEN
 		Membership result = underTest.getMembershipById(Mockito.anyLong());
 		// THEN
-		BDDMockito.verify(membershipDaoMock).getMembershipById(
-				Mockito.anyLong());
+		BDDMockito.verify(membershipDaoMock).getMembershipById(Mockito.anyLong());
 		Assert.assertEquals(membershipMock, result);
 	}
 
 	@Test(expected = FitnessDaoException.class)
-	public void testGetMembershipByIdWhenHasResultShouldThrowFitnessDaoException()
-			throws FitnessDaoException {
+	public void testGetMembershipByIdWhenHasResultShouldThrowFitnessDaoException() throws FitnessDaoException {
 		// GIVEN
-		BDDMockito
-				.given(membershipDaoMock.getMembershipById(Mockito.anyLong()))
-				.willThrow(new FitnessDaoException());
+		BDDMockito.given(membershipDaoMock.getMembershipById(Mockito.anyLong())).willThrow(new FitnessDaoException());
 		// WHEN
 		Membership result = underTest.getMembershipById(Mockito.anyLong());
 		// THEN
-		BDDMockito.verify(membershipDaoMock).getMembershipById(
-				Mockito.anyLong());
+		BDDMockito.verify(membershipDaoMock).getMembershipById(Mockito.anyLong());
 		Assert.assertEquals(membershipMock, result);
 	}
 
@@ -140,8 +128,7 @@ public class SimpleMembershipServiceTest {
 	public void testGetMembershipByBasketShouldReturnProperly() {
 		// GIVEN
 		List<Membership> expected = new ArrayList<Membership>();
-		BDDMockito.given(membershipDaoMock.getMembershipsByOrder(basketMock))
-				.willReturn(expected);
+		BDDMockito.given(membershipDaoMock.getMembershipsByOrder(basketMock)).willReturn(expected);
 		// WHEN
 		List<Membership> result = underTest.getMembershipByBasket(basketMock);
 		// THEN
@@ -153,8 +140,7 @@ public class SimpleMembershipServiceTest {
 	public void testGetMembershipByUserShouldReturnProperly() {
 		// GIVEN
 		List<Membership> expected = new ArrayList<Membership>();
-		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock))
-				.willReturn(expected);
+		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock)).willReturn(expected);
 		// WHEN
 		List<Membership> result = underTest.getMembershipByUser(userMock);
 		// THEN
@@ -172,10 +158,10 @@ public class SimpleMembershipServiceTest {
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		BDDMockito.verify(membershipDaoMock).update(membershipMock);
 	}
-	
+
 	@Test
 	public void testIsValidShouldReturnTrueWhenMembershipIsIntevallyAndTheDateIsBetweenStartAndEndDates() {
-		//GIVEN
+		// GIVEN
 		Date date = new Date();
 		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
 		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 1000*60*60));
@@ -188,10 +174,10 @@ public class SimpleMembershipServiceTest {
 		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(true, result);
 	}
-	
+
 	@Test
 	public void testIsValidShouldReturnFalseWhenMembershipIsIntevallyAndTheDateIsBeforeTheValidIntervally() {
-		//GIVEN
+		// GIVEN
 		Date date = new Date();
 		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
 		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() + 10000*60*60));
@@ -204,10 +190,10 @@ public class SimpleMembershipServiceTest {
 		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(false, result);
 	}
-	
+
 	@Test
 	public void testIsValidShouldReturnFalseWhenMembershipIsIntevallyAndTheDateIsAfterTheValidIntervally() {
-		//GIVEN
+		// GIVEN
 		Date date = new Date();
 		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(true);
 		BDDMockito.given(membershipMock.getStartDate()).willReturn(new Date(date.getTime() - 10000*60*60));
@@ -219,15 +205,15 @@ public class SimpleMembershipServiceTest {
 		BDDMockito.verify(membershipMock).getExpireDate();
 		Assert.assertEquals(false, result);
 	}
-	
+
 	@Test
 	public void testIsValidShouldReturnTrueWhenMembershipIsNOTIntevallyAndTheNumberOfEntriesLessThanMaxNumberOfEntries() {
-		//GIVEN
+		// GIVEN
 		Date date = new Date();
 		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
-		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES-1);
-		//WHEN
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES - 1);
+		// WHEN
 		boolean result = underTest.isValid(membershipMock, date);
 		//THEN
 		BDDMockito.verify(membershipMock).getIsIntervally();
@@ -235,20 +221,60 @@ public class SimpleMembershipServiceTest {
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		Assert.assertEquals(true, result);
 	}
-	
+
 	@Test
 	public void testIsValidShouldReturnFalseWhenMembershipIsNOTIntevallyAndTheNumberOfEntriesGreaterThanMaxNumberOfEntries() {
-		//GIVEN
+		// GIVEN
 		Date date = new Date();
 		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
 		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
-		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES+1);
-		//WHEN
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES + 1);
+		// WHEN
 		boolean result = underTest.isValid(membershipMock, date);
 		//THEN
 		BDDMockito.verify(membershipMock).getIsIntervally();
 		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
 		BDDMockito.verify(membershipMock).getNumberOfEntries();
 		Assert.assertEquals(false, result);
+	}
+
+	@Test
+	public void testGetValidMembershipsByUserShouldReturnProperlyWhenHasValidMemberships() {
+		// GIVEN
+		Date date = new Date();
+		List<Membership> memberships=new ArrayList<Membership>();
+		memberships.add(membershipMock);
+		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock)).willReturn(memberships);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES - 1);
+		// WHEN
+		List<Membership> result = underTest.getValidMembershipsByUser(userMock, date);
+		// THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
+		BDDMockito.verify(membershipMock).getNumberOfEntries();
+		BDDMockito.verify(membershipDaoMock).getMembershipsByUser(userMock);
+		Assert.assertEquals(memberships, result);
+	}
+	
+	@Test
+	public void testGetValidMembershipsByUserShouldReturnProperlyWhenHasNotValidMemberships() {
+		// GIVEN
+		Date date = new Date();
+		List<Membership> memberships=new ArrayList<Membership>();
+		memberships.add(membershipMock);
+		BDDMockito.given(membershipDaoMock.getMembershipsByUser(userMock)).willReturn(memberships);
+		BDDMockito.given(membershipMock.getIsIntervally()).willReturn(false);
+		BDDMockito.given(membershipMock.getMaxNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES);
+		BDDMockito.given(membershipMock.getNumberOfEntries()).willReturn(MAX_NUMBER_OF_ENTRIES + 1);
+		// WHEN
+		List<Membership> result = underTest.getValidMembershipsByUser(userMock, date);
+		// THEN
+		BDDMockito.verify(membershipMock).getIsIntervally();
+		BDDMockito.verify(membershipMock).getMaxNumberOfEntries();
+		BDDMockito.verify(membershipMock).getNumberOfEntries();
+		BDDMockito.verify(membershipDaoMock).getMembershipsByUser(userMock);
+		Assert.assertNotSame(memberships, result);
 	}
 }
