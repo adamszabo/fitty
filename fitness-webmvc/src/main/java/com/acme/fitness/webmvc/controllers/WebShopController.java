@@ -46,12 +46,10 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
-
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
-
 
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
@@ -60,6 +58,11 @@ public class WebShopController {
 		return "redirect:/aruhaz/" + page;
 	}
 
+	@RequestMapping(value = "/deleteBasket", method = RequestMethod.GET)
+	public String deleteBasketDefault(HttpServletRequest request, HttpServletResponse response, Model model) {
+		return deleteBasket("1", request, response, model);
+	}
+	
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
 		basketManager.deleteBasket(request, response);
@@ -67,6 +70,11 @@ public class WebShopController {
 		return "aruhaz";
 	}
 
+	@RequestMapping(value = "/confirmBasket", method = RequestMethod.GET)
+	public String confirmOrderDefault(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
+		return confirmOrder("1", request, response, redirectAttributes, model);
+	}
+	
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 
