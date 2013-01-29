@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.acme.fitness.dao.products.ProductImageDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.ProductImage;
+import com.acme.fitness.products.GeneralProductsService;
 
 @Controller
 @RequestMapping("/imageController")
@@ -22,17 +22,17 @@ public class ImageController {
 	private static final String MIME_JPG = "jpg";
 	private static final String MIME_GIF = "gif";
 	
-	private ProductImageDao productImageDao; 
+	private GeneralProductsService gProductService; 
 	
 	@Autowired
-	public ImageController(ProductImageDao productImageDao){
-		this.productImageDao=productImageDao;
+	public ImageController(GeneralProductsService gProductService){
+		this.gProductService=gProductService;
 	}
 	
 	@RequestMapping(value="/{imageId}")
 	@ResponseBody
 	public ResponseEntity<byte[]> getProductImageFromDatabase(@PathVariable long imageId) throws FitnessDaoException{
-		ProductImage productImage=productImageDao.getProductImageById(imageId);
+		ProductImage productImage=gProductService.getProductImageById(imageId);
 		System.out.println("image loaded with id: "+imageId);
 		
 		HttpHeaders header=setHeaderContentType(productImage);

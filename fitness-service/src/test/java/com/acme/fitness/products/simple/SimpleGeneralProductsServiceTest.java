@@ -22,6 +22,7 @@ import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.MembershipTypeService;
+import com.acme.fitness.products.ProductImageService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
 
@@ -63,10 +64,13 @@ public class SimpleGeneralProductsServiceTest {
 	@Mock
 	private MembershipTypeService membershipTypeService;
 	
+	@Mock
+	private ProductImageService imageService;
+	
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService);
+		underTest=new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService, imageService);
 	}
 	
 	@Test
@@ -382,8 +386,8 @@ public class SimpleGeneralProductsServiceTest {
 		//WHEN
 		List<MembershipType> result = underTest.getAllMembershipTypes();
 		//THEN
-		Assert.assertEquals(expected, result);
 		BDDMockito.verify(membershipTypeService).getAllMembershipTypes();
+		Assert.assertEquals(expected, result);
 	}
 	
 	@Test
@@ -395,7 +399,43 @@ public class SimpleGeneralProductsServiceTest {
 		//WHEN
 		List<Membership> result = underTest.getValidMembershipsByUser(user, date);
 		//THEN
-		Assert.assertEquals(expected, result);
 		BDDMockito.verify(membershipService).getValidMembershipsByUser(user, date);
+		Assert.assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testGetAllProductImageShouldReturnProperly() {
+		//GIVEN
+		List<ProductImage> expected = new ArrayList<ProductImage>();
+		BDDMockito.given(imageService.getAllProductImages()).willReturn(expected);
+		//WHEN
+		List<ProductImage> result = underTest.getAllProductImage();
+		//THEN
+		BDDMockito.verify(imageService).getAllProductImages();
+		Assert.assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testGetProductImageByIdShouldReturnProperly() throws FitnessDaoException {
+		//GIVEN
+		ProductImage expected=new ProductImage();
+		BDDMockito.given(imageService.getProductImageById(1L)).willReturn(expected);
+		//WHEN
+		ProductImage result = underTest.getProductImageById(1L);
+		//THEN
+		BDDMockito.verify(imageService).getProductImageById(1L);
+		Assert.assertEquals(expected, result);
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testGetProductImageByIdShouldThrowExceptionWhenTheImageDoesNotExists() throws FitnessDaoException {
+		//GIVEN
+		ProductImage expected=new ProductImage();
+		BDDMockito.given(imageService.getProductImageById(1L)).willThrow(new FitnessDaoException());
+		//WHEN
+		ProductImage result = underTest.getProductImageById(1L);
+		//THEN
+		BDDMockito.verify(imageService).getProductImageById(1L);
+		Assert.assertEquals(expected, result);
 	}
 }

@@ -46,4 +46,7 @@ public interface GeneralProductsService {
 	MembershipType getMembershipTypeById(long id) throws FitnessDaoException;
 	List<MembershipType> getAllMembershipTypes();
 	void saveMembershipType(MembershipType membershipType);
+	
+	List<ProductImage> getAllProductImage();
+	ProductImage getProductImageById(long id) throws FitnessDaoException;
 }

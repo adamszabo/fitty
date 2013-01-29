@@ -24,12 +24,9 @@ public class TrainingController {
 	@Autowired
 	private GeneralOrdersService gos;
 	
-	@Autowired
-	private UserDao userDao;
-	
 	@RequestMapping(value = "")
 	public String training(HttpServletRequest request) {
-		request.setAttribute("trainers", userDao.getAllTrainers());
+		request.setAttribute("trainers", gus.getAllTrainers());
 		return "edzesek";
 	}
 }

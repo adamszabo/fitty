@@ -5,22 +5,21 @@
 <#macro masterTemplate title="Zsír-Szabó Fitness">
 
 <!DOCTYPE html>
-<html lang="hu">
+	<html lang="hu">
 
-
-<@head.templateHead title="${title}"/>
-
-<body>
- 
- 	<@header.headerLayout/>
-
-	<div class="container">
-		<#nested/>			
-	</div>
-
-    <@loadScripts.loadScripts />
-
-  </body>
-</html>
-
+		<@head.templateHead title="${title}"/>
+		
+		<body>
+		 
+		 	<@header.headerLayout/>
+		
+			<div class="container">
+				<#nested/>			
+			</div>
+		
+		    <@loadScripts.loadScripts />
+		
+		</body>
+		 
+	</html>
 </#macro>

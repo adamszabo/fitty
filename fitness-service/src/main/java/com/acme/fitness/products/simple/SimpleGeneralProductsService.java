@@ -17,6 +17,7 @@ import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.MembershipTypeService;
+import com.acme.fitness.products.ProductImageService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
 
@@ -27,13 +28,16 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	private MembershipService membershipService;
 	private TrainingService trainingService;
 	private MembershipTypeService membershipTypeService;
+	private ProductImageService imageService;
 	
 	@Autowired
-	public SimpleGeneralProductsService(ProductService productService, MembershipService membershipService, TrainingService trainingService, MembershipTypeService membershipTypeService){
+	public SimpleGeneralProductsService(ProductService productService, MembershipService membershipService, TrainingService trainingService, 
+			MembershipTypeService membershipTypeService, ProductImageService imageService){
 		this.productService=productService;
 		this.membershipService=membershipService;
 		this.trainingService=trainingService;
 		this.membershipTypeService=membershipTypeService;
+		this.imageService=imageService;
 	}
 
 	@Override
@@ -186,5 +190,15 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	@Override
 	public List<Membership> getValidMembershipsByUser(User user, Date date) {
 		return membershipService.getValidMembershipsByUser(user, date);
+	}
+
+	@Override
+	public List<ProductImage> getAllProductImage() {
+		return imageService.getAllProductImages();
+	}
+
+	@Override
+	public ProductImage getProductImageById(long id) throws FitnessDaoException {
+		return imageService.getProductImageById(id);
 	}
 }

@@ -12,10 +12,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.dao.products.ProductDao;
-import com.acme.fitness.dao.products.ProductImageDao;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
+import com.acme.fitness.products.ProductImageService;
 
 public class SimpleProductServiceTest {
 	
@@ -25,7 +25,7 @@ public class SimpleProductServiceTest {
 	private ProductDao productDao;
 	
 	@Mock
-	private ProductImageDao productImageDao;
+	private ProductImageService productImageService;
 	
 	@Mock
 	private ProductImage productImage;
@@ -33,7 +33,7 @@ public class SimpleProductServiceTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		underTest = new SimpleProductService(productDao, productImageDao);
+		underTest = new SimpleProductService(productDao, productImageService);
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class SimpleProductServiceTest {
 		//WHEN
 		underTest.addProduct(expectedName, expectedDetails, expectedPrice, expectedManufacturer, expectedDate, productImage);
 		//THEN
-		BDDMockito.verify(productImageDao).save(productImage);
+		BDDMockito.verify(productImageService).saveProductImage(productImage);
 		BDDMockito.verify(productDao).save(expectedProduct);
 	}
 	

@@ -11,4 +11,17 @@
 <!-- 	<context:component-scan base-package="com.acme.fitness"></context:component-scan> -->
 
 	<import resource="classpath:META-INF/Spring/fitnessDaoApplicationContext.xml" />
+	
+	<aop:config>
+		<aop:pointcut expression="execution(public * com.acme.fitness..General*.*(..))"
+			id="fitnessServiceOperation" />
+		<aop:advisor advice-ref="requiredTxAdvice" pointcut-ref="fitnessServiceOperation" />
+	</aop:config>
+
+	<tx:advice id="requiredTxAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="java.lang.Exception"
+				propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
 </beans>
