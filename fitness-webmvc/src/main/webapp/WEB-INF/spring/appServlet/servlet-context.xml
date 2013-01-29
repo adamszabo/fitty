@@ -18,7 +18,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- freemarker config -->
-    <beans:bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <beans:bean id="freemarkerConfig" class="com.acme.fitness.webmvc.freemarker.htmlescape.FreeMarkerConfigurerWithHtmlEscape">
       <beans:property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
       <beans:property name="freemarkerSettings">
       	<beans:props>
