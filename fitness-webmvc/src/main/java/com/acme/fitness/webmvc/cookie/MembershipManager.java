@@ -48,6 +48,24 @@ public class MembershipManager extends ItemManager {
 		addMembershipToMapById(membershipId, request, memeberships);
 		addMapToCookie(response, request, mapper, memeberships);
 	}
+	
+	public void removeMembership(long id, HttpServletResponse response, HttpServletRequest request) {
+		String userName = new UserManager().getLoggedInUserName();
+		if(userName.equals("anonymousUser")) {
+			
+		} else {
+			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
+			Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();
+			if (users.containsKey(userName)) {
+				basket = users.get(userName);
+				basket.remove("membershipsInBasket");
+			}
+			if(basket.size() == 0) {
+				users.remove(userName);
+			}
+			writeMapToCookie(response, new ObjectMapper(), "userNames", users);
+		}
+	}
 
 	private void addMapToCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, Map<String, String> memeberships) {
 		String userName = new UserManager().getLoggedInUserName();

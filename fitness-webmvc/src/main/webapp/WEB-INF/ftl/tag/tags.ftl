@@ -123,6 +123,9 @@
 								<td>${item.product.price}</td>
 								<td>${item.quantity}</td>
 								<td>${item.quantity * item.product.price}</td>
+								<td>
+									<a href="<@spring.url relativeUrl="/aruhaz/torles/${item.product.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+								</td>
 							</tr>
 						</#list>
 					</tbody>
@@ -156,6 +159,9 @@
 								<td>${membership.maxNumberOfEntries}
 							</#if>
 							<td>${membership.price}</td>
+							<td>
+								<a href="<@spring.url relativeUrl="/berletek/torles/${membership.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+							</td>
 						</tr>
 					</tbody>
 				</#list>

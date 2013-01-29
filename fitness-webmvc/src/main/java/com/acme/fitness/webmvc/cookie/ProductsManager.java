@@ -46,6 +46,37 @@ public class ProductsManager extends ItemManager{
 		}
 	}
 
+	public void removeProduct(long id, HttpServletRequest request, HttpServletResponse response) {
+		String userName = new UserManager().getLoggedInUserName();
+		if(userName.equals("anonymousUser")) {
+			
+		} else {
+			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
+			Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();
+			Map<String, String> products = new HashMap<String, String>();
+			if (users.containsKey(userName)) {
+				basket = users.get(userName);
+				if (basket.containsKey("productsInBasket")) {
+					products = basket.get("productsInBasket");
+					if(products.containsKey(Long.toString(id))) {
+						products.remove(Long.toString(id));
+					}
+				}
+			}
+			if(products.size() == 0) {
+				basket.remove("productsInBasket");
+			} else {
+				basket.put("productsInBasket", products);
+			}
+			if(basket.size() == 0) {
+				users.remove(userName);
+			} else {
+				users.put(userName, basket);
+			}
+			writeMapToCookie(response, new ObjectMapper(), "userNames", users);
+		}
+	}
+	
 	private void addProductToUserCookie(long id, int quantity, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, String userName) {
 		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, mapper);
 		Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();

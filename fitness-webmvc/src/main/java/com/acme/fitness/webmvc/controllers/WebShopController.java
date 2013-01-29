@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.BasketCheckOutException;
@@ -79,6 +80,13 @@ public class WebShopController {
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
+	
+	@RequestMapping(value = "/torles/{productId}")
+	public String removeProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeProductFromBasket(productId, request, response);
+		return "redirect:/aruhaz/";
+	}
+	
 
 	private void setPageNumberAndProducts(Model model, String page) {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());

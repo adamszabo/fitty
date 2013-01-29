@@ -72,7 +72,14 @@ public class BasketManager {
 			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni");
 		}
 	}
+	
+	public void removeProductFromBasket(long id, HttpServletRequest request, HttpServletResponse response) {
+		pm.removeProduct(id, request, response);
+	}
 
+	public void removeMembershipFromBasket(long id, HttpServletRequest request, HttpServletResponse response) {
+		mm.removeMembership(id, response, request);
+	}
 
 	public void deleteBasket(HttpServletRequest request, HttpServletResponse response) {
 		if (noUserLoggedIn()) {
