@@ -4,9 +4,9 @@
 <@template.masterTemplate title="Bérletek">
 	
 <@tags.errorMessage />
+<@tags.basketDialog "/berletek/megrendel"/>
 	
 <ul class="nav nav-pills">
-	<@tags.basketDialog />
 	<#if basket?exists>
 		<li class="dropdown">
 			  <a class="dropdown-toggle" data-toggle="dropdown" href="#">

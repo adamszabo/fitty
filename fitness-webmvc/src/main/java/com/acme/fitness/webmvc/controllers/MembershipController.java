@@ -15,7 +15,7 @@ import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.webmvc.web.ProductsManager;
+import com.acme.fitness.webmvc.cookie.BasketManager;
 
 @Controller
 @RequestMapping("/berletek")
@@ -23,27 +23,27 @@ public class MembershipController {
 
 	@Autowired
 	private GeneralProductsService gps;
-
+	
 	@Autowired
-	private ProductsManager productsManager;
+	BasketManager bm;
 
 	@RequestMapping("")
 	public String defaultPage(HttpServletResponse response, HttpServletRequest request, Model model) {
-		productsManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		bm.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		addMembershipTypesToModel(model);
 		return "berletek";
 	}
 
 	@RequestMapping("/ujberlet")
 	public String newMembership(@RequestParam("membershipId") long membershipId, HttpServletResponse response, HttpServletRequest request) {
-		productsManager.addNewMembership(membershipId, response, request, new ObjectMapper());
+		bm.addNewMembership(membershipId, response, request, new ObjectMapper());
 		return "redirect:/berletek";
 	}
 
 	@RequestMapping("/megrendel")
 	public String checkOut(HttpServletResponse response, HttpServletRequest request, RedirectAttributes redirectAttributes) throws FitnessDaoException {
 		try {
-			productsManager.checkOutBasket(response, request);
+			bm.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {
 			e.printStackTrace();
 		} catch (BasketCheckOutException e) {
@@ -54,7 +54,7 @@ public class MembershipController {
 
 	@RequestMapping("/kosartorles")
 	public String deleteBasket(HttpServletRequest request, HttpServletResponse response, Model model) {
-		productsManager.deleteBasket(request, response);
+		bm.deleteBasket(request, response);
 		addMembershipTypesToModel(model);
 		return "berletek";
 	}

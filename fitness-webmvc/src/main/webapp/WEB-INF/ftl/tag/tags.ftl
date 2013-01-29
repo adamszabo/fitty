@@ -85,11 +85,11 @@
 <#macro errorAlert id message>
 	<div id="${id}" class="alert alert-error" style="display:none;">
 	  <!--button type="button" class="close" data-dismiss="alert">&times;</button-->
-	  <strong>Hiba! </strong><span>${message}</span>
+	  <strong>Hiba!</strong><span>${message}</span>
 	</div>
 </#macro>
 
-<#macro basketDialog>
+<#macro basketDialog confirmPath>
 	<#if basket?exists>
 	<div id="basketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
@@ -164,7 +164,7 @@
 	  </div>
 	  <div class="modal-footer">
 	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
-	    <a href="<@spring.url relativeUrl="/aruhaz/confirmBasket"/>" class="btn btn-primary">Megrendelés</a>
+	    <a href="<@spring.url relativeUrl="${confirmPath}"/>" class="btn btn-primary">Megrendelés</a>
 	  </div>
 	</div>
 	</#if>

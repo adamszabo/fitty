@@ -5,6 +5,8 @@
 
 <@tags.errorMessage />
 
+<@tags.basketDialog "/aruhaz/${pageNumber}/confirmBasket"/>
+
 <ul class="nav nav-pills">
 	<#if basket?exists>
 	<li class="dropdown">
@@ -60,8 +62,6 @@
 </ul>
 	
 <@tags.missingElements />
-
-<@tags.basketDialog />
 
 <ul class="pager">
   <li id="previousPage"><a href="<@spring.url relativeUrl="/aruhaz/${pageNumber-1}"/>">&larr; Előző</a></li>

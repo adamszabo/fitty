@@ -1,4 +1,4 @@
-package com.acme.fitness.webmvc.web;
+package com.acme.fitness.webmvc.cookie;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class JsonManager<T> {
 		this.mapper = mapper;
 	}
 
-	public String wrapToJsonString(Map<String, T> map) {
+	public String wrapJsonToString(Map<String, T> map) {
 		String json = null;
 		try {
 			json = mapper.writeValueAsString(map);
@@ -41,7 +41,7 @@ public class JsonManager<T> {
 		if (json != null) {
 			try {
 				map = mapper.readValue(json,
-						new TypeReference<Map<String, Object>>() {
+						new TypeReference<Map<String, T>>() {
 						});
 			} catch (JsonParseException e) {
 				// TODO Auto-generated catch block

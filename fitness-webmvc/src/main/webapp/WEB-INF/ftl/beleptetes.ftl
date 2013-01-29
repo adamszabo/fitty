@@ -2,6 +2,9 @@
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
+
+<@tags.errorMessage />
+
 	<div class="search-bar">
 	<form class="form-search" action="<@spring.url relativeUrl="/beleptetes/kereses"/>" method="post">
 		<div class="drop-down-btn-group">

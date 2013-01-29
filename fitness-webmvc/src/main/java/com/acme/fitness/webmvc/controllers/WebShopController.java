@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,19 +20,17 @@ import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.webmvc.web.ProductsManager;
+import com.acme.fitness.webmvc.cookie.BasketManager;
 
 @Controller
 @RequestMapping("/aruhaz")
 public class WebShopController {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebShopController.class);
-
 	@Autowired
 	private GeneralProductsService gps;
 
 	@Autowired
-	private ProductsManager productsManager;
+	private BasketManager basketManager;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String aruhaz() {
@@ -50,7 +46,7 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
 
-		productsManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
@@ -59,13 +55,13 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
 			HttpServletRequest request) {
-		productsManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
+		basketManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
 		return "redirect:/aruhaz/" + page;
 	}
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
-		productsManager.deleteBasket(request, response);
+		basketManager.deleteBasket(request, response);
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
@@ -74,7 +70,7 @@ public class WebShopController {
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 
 		try {
-			productsManager.checkOutBasket(response, request);
+			basketManager.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {
 			addMissingProductsMessages(redirectAttributes, e.getProduct());
 		} catch (BasketCheckOutException e) {
