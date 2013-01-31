@@ -7,19 +7,6 @@
 <@tags.basketDialog "/berletek/megrendel"/>
 	
 <ul class="nav nav-pills">
-	<#if basket?exists>
-		<li class="dropdown">
-			  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-			    Kosár
-			    <span class="caret"></span>
-			  </a>
-			  <ul class="dropdown-menu">
-				<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
-				<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek/megrendel"/>">Megrendelés</a></li>
-				<li><a data-toggle="modal" href="<@spring.url relativeUrl="/berletek/kosartorles"/>">Kosár törlése</a></li>
-			  </ul>
-		</li>
-  </#if>
   <#if missingProduct?exists>
 	<li>
 	  	<a href="#missesModal" data-toggle="modal">Hiányzó termékek</a>
