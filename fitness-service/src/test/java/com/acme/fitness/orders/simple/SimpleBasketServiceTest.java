@@ -341,4 +341,18 @@ public class SimpleBasketServiceTest {
 		BDDMockito.verify(basketDao).save(basketMock);
 	}
 	
+	@Test
+	public void testGetBasketsByUserAndDeliveredStatus(){
+		//GIVEN
+		User user=new User();
+		List<Basket> expected=new ArrayList<Basket>();
+		BDDMockito.given(basketDao.getBasketsByUserAndDeliveredStatus(user, true)).willReturn(expected);
+		//WHEN
+		List<Basket> result=underTest.getBasketsByUserAndDeliveredStatus(user, true);
+		//THEN
+		BDDMockito.verify(basketDao).getBasketsByUserAndDeliveredStatus(user, true);
+		Assert.assertEquals(expected, result);
+		
+	}
+	
 }

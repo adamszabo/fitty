@@ -127,14 +127,17 @@ $(document).ready(function() {
 	$('#searchTypeSelectBoxIt').addClass("btn btn-primary");
 	
 	$('.details-button').on("click", function(e){
-		$detailsTr=$('#'+this.id+'-details-tr');
-		if($detailsTr.css('display')=='none'){
-			$detailsTr.fadeIn('fast');
+		$membershipsTr=$('#'+this.id+'-memberships-tr');
+		$basketsTr=$('#'+this.id+'-baskets-tr');
+		if($membershipsTr.css('display')=='none'){
+			$membershipsTr.fadeIn('fast');
+			$basketsTr.fadeIn('fast');
 			$('#'+this.id+' i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
 			$('#'+this.id+'-tr').addClass('info');
 		}
 		else{
-			$detailsTr.fadeOut('fast');
+			$membershipsTr.fadeOut('fast');
+			$basketsTr.fadeOut('fast');
 			$('#'+this.id+' i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
 			$('#'+this.id+'-tr').removeClass('info');
 		}

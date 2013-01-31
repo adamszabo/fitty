@@ -1,27 +1,46 @@
-html {overflow-y: scroll;}
+html {
+	overflow-y: scroll;
+}
 
-.jumbotron{
+.jumbotron {
 	padding: 5px 0 !important;
+	background: #620d0A;
+	background: -moz-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
+	background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #a51217), color-stop(100%, #2f0800) );
+	background: -webkit-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
+	background: -o-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
+	background: -ms-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
+	background: linear-gradient(45deg, #a51217 0%, #2f0800 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(  startColorstr='#a51217', endColorstr='#2f0800', GradientType=1 );
 }
 
-.drop-down-btn-group{
+.drop-down-btn-group {
 	position: relative;
-	display: inline-block;	
+	display: inline-block;
 }
 
-.drop-down-btn-group span{
+.drop-down-btn-group span {
 	width: 120px;
 }
 
 .selectboxit-selected {
-    background: #ADD8E6;
+	background: #ADD8E6;
 }
 
-body li a{
+body li a {
 	cursor: pointer;
 }
 
-.search-bar{
+.search-bar {
 	margin-top: 5px;
 }
 
+.basketModalRow {
+	cursor: pointer;
+	padding: 2px 0px 2px 2px;
+	border-top: 1px solid #dddddd;
+}
+
+.basketModalRow:HOVER {
+	background-color: #f5f5f5;
+}

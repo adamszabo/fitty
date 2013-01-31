@@ -428,4 +428,17 @@ public class SimpleGeneralOrdersServiceTest {
 		BDDMockito.verify(storeServiceMock).getAllStores();
 		Assert.assertEquals(new ArrayList<Store>(), result);
 	}
+	
+	@Test
+	public void testGetBasketsByUserAndDeliveredStatusShouldReturnProperly() {
+		//GIVEN
+		List<Basket> expected=new ArrayList<Basket>();
+		User user=new User();
+		BDDMockito.given(basketServiceMock.getBasketsByUserAndDeliveredStatus(user, true)).willReturn(expected);
+		//WHEN
+		List<Basket> result = underTest.getBasketsByUserAndDeliveredStatus(user, true);
+		//THEN
+		BDDMockito.verify(basketServiceMock).getBasketsByUserAndDeliveredStatus(user, true);
+		Assert.assertEquals(expected, result);
+	}
 }

@@ -36,5 +36,11 @@ public class HibernateBasketDao extends AbstractHibernateGenericDao<Basket> impl
 	public List<Basket> getBasketsByUser(User user) {
 		return getSession().createCriteria(Basket.class).add(Restrictions.eq("user", user)).list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered) {
+		return getSession().createCriteria(Basket.class).add(Restrictions.eq("user", user)).add(Restrictions.eq("delivered", isDelviered)).list();
+	}
 
 }

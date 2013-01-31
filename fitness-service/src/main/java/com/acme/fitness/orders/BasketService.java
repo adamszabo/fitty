@@ -24,4 +24,5 @@ public interface BasketService {
 	void deliver(Basket basket);
 	List<Basket> getBasketsByUser(User user);
 	Basket getBasketById(long id) throws FitnessDaoException;
+	List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered);
 }

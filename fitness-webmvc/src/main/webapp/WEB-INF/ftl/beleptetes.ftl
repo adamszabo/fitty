@@ -22,7 +22,8 @@
 		<button type="submit" class="btn btn-inverse"><i class="icon-white icon-search"></i> Keresés</button>
 	</form>
 	</div>
-	<table class="table table-hover">
+	
+	<table class="table">
 			<thead>
 				<tr>
 					<th>Azonosító</th><th>Név</th><th>Felhasználó név</th>
@@ -47,8 +48,11 @@
 									<button id="${item.user.username}" class="btn btn-primary details-button" type="button"><i class="icon-white icon-chevron-down"></i></button>
 								</td>
 							</tr>
-							<tr id="${item.user.username}-details-tr" style="display:none">
+							<tr id="${item.user.username}-memberships-tr" style="display:none">
 								<@memberShipsTableWithCheckIn item.memberships item.user.fullName/>
+							</tr>
+							<tr id="${item.user.username}-baskets-tr" style="display:none">
+								<@basketsTableWithCheckOut item.baskets />
 							</tr>
 					</#list>
 				<#else>
@@ -63,18 +67,18 @@
 
 <#macro memberShipsTableWithCheckIn memberships fullName>
 	<#if (memberships?size>0) >
-		<td>
-			<h5>Bérletek:</h5>
-		</td>
-		<td colspan="5">
-			<table class="table table-hover">
+		<td colspan="6">
+			<table class="table table-hover table-bordered">
 				<thead>
+					<tr>
+						<th colspan="6">Bérletek</th>
+					</tr>
 					<tr>
 						<th>Azonosító</th>
 						<th>Típus</th>
 						<th>Belépések száma</th>
 						<th>Ára</th>
-						<th></th>
+						<th>Művelet</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -99,4 +103,104 @@
 			<h5>Nincs bérlet a személyhez.</h5>
 		</td>
 	</#if>
+</#macro>
+
+<#macro basketsTableWithCheckOut baskets>
+	<#if (baskets?size>0) >
+		<td colspan="6">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th colspan="6">Rendelések</th>
+					</tr>
+					<tr>
+						<th>Azonosító</th>
+						<th>Termékek száma</th>
+						<th>Bérletek száma</th>
+						<th>Edzések száma</th>
+						<th>Időpont:</th>
+						<th>Művelet</th>
+					</tr>
+				</thead>
+				<tbody>
+					<#list baskets as basket>
+						<tr>
+							<form action="<@spring.url relativeUrl="/"/>" method="post">
+								<input type="hidden" value="${basket.id}" name="basketIdHiddenField"/>
+								<td>${basket.id}</td>
+								<td>${basket.orderItems?size}</td>
+								<td>${basket.memberships?size}</td>
+								<td>${basket.trainings?size}</td>
+								<td>${basket.creationDate?date}</td>
+								<td>
+									<a href="#${basket.id}-modal" class="btn btn-success" data-toggle="modal">Teljesítés</a>
+									<button class="btn btn-danger" type="button">Storno</button>
+								</td>
+							</form>
+						</tr>
+						<@basketModal basket />
+					</#list>
+				</tbody>
+			</table>
+		</td>
+	<#else>
+		<td colspan="6">
+			<h5>Nem tartozik teljesítetlen megrendelés a személyhez.</h5>
+		</td>
+	</#if>
+</#macro>
+
+<#macro basketModal basket>
+<div id="${basket.id}-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<form action="<@spring.url relativeUrl="/"/>" method="post">
+		<div class="modal-header">
+			<h3 id="myModalLabel">Rendelés részletei</h3>
+		</div>
+		<div class="modal-body">
+			<h5>Termékek</h5>
+			<#assign sum = 0>
+			<#list basket.orderItems as orderItem>
+				<div class="basketModalRow">
+					${orderItem.product.name} (ID:${orderItem.id})
+					<div style="float:right;">
+						${orderItem.quantity} x	${orderItem.product.price} <b>HUF</b>
+					</div>
+				</div>
+				<#assign sum = sum + ( orderItem.quantity *  orderItem.product.price) >
+			</#list>
+			<h5>Bérletek</h5>
+			<#list basket.memberships as membership>
+				<div class="basketModalRow">
+					${membership.type} (ID:${membership.id})
+					<div style="float:right;">
+						${membership.price} <b>HUF</b>
+					</div>
+				</div>
+				<#assign sum = sum + membership.price>
+			</#list>
+			<h5>Edzések</h5>
+			<#list basket.trainings as training>
+				<div class="basketModalRow">
+					${training.id}
+					${training.trainer.fullName}
+					${training.price}
+				</div>
+			</#list>
+			<div class="basketModalRow">
+				<b>Összesen:</b>
+				<div style="float:right;">
+					${sum} <b>HUF</b>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Mégse</button>
+					<button class="btn btn-success" type ="submit">Teljesít</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
 </#macro>

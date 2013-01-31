@@ -153,4 +153,9 @@ public class SimpleGeneralOrdersService implements GeneralOrdersService {
 	public List<Store> getAllStores() {
 		return storeService.getAllStores();
 	}
+
+	@Override
+	public List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered) {
+		return basketService.getBasketsByUserAndDeliveredStatus(user, isDelviered);
+	}
 }

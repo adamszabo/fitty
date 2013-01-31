@@ -1,6 +1,7 @@
 package com.acme.fitness.orders.simple;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -101,6 +102,7 @@ public class SimpleBasketService implements BasketService {
 
 	@Override
 	public void checkOutBasket(Basket basket) throws StoreQuantityException {
+		basket.setCreationDate(new Date());
 		basketDao.save(basket);
 		saveMemberships(basket);
 		saveTrainings(basket);
@@ -122,6 +124,11 @@ public class SimpleBasketService implements BasketService {
 	@Override
 	public Basket getBasketById(long id) throws FitnessDaoException {
 		return basketDao.getBasketById(id);
+	}
+
+	@Override
+	public List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered) {
+		return basketDao.getBasketsByUserAndDeliveredStatus(user, isDelviered);
 	}
 
 	private void saveProducts(Basket basket) throws StoreQuantityException {
@@ -159,4 +166,5 @@ public class SimpleBasketService implements BasketService {
 			membershipService.saveMemberShip(basket, m);
 		}
 	}
+
 }

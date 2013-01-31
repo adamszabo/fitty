@@ -26,6 +26,7 @@ public interface GeneralOrdersService {
 	void deliver(Basket basket);
 	List<Basket> getBasketsByUser(User user);
 	Basket getBasketById(long id) throws FitnessDaoException;
+	List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered);
 	
 	OrderItem newOrderItem(Product product, int quantity);
 	void deleteOrderItem(OrderItem orderItem);

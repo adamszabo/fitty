@@ -1,6 +1,7 @@
 package com.acme.fitness.domain.orders;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -47,6 +48,9 @@ public class Basket {
 
 	@Transient
 	private List<Training> trainings;
+	
+	@Column
+	private Date creationDate;
 	
 	public Basket() {
 		this(false, null);
@@ -157,4 +161,13 @@ public class Basket {
 	public void setTrainings(List<Training> trainings) {
 		this.trainings = trainings;
 	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	
 }
