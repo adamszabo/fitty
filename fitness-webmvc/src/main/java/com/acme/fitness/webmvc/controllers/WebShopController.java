@@ -21,7 +21,7 @@ import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.products.GeneralProductsService;
-import com.acme.fitness.webmvc.cookie.BasketManager;
+import com.acme.fitness.webmvc.basket.BasketManager;
 
 @Controller
 @RequestMapping("/aruhaz")

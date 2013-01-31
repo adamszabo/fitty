@@ -1,6 +1,5 @@
-package com.acme.fitness.webmvc.cookie;
+package com.acme.fitness.webmvc.basket;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,16 +15,17 @@ import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
+import com.acme.fitness.webmvc.user.UserManager;
 
 @Service
-public class ProductsManager extends ItemManager{
+public class ProductsManager extends ItemManager {
 
 	@Autowired
 	private GeneralProductsService gps;
 
 	@Autowired
 	private GeneralOrdersService gos;
-	
+
 	@Override
 	public void loadBasketWithItem(Map<String, String> item, Basket basket) {
 		for (String s : item.keySet()) {
@@ -34,9 +34,9 @@ public class ProductsManager extends ItemManager{
 			} catch (FitnessDaoException e) {
 				item.remove(s);
 			}
-		}		
+		}
 	}
-	
+
 	public void addNewOrderItem(long id, int quantity, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		String userName = new UserManager().getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
@@ -48,45 +48,42 @@ public class ProductsManager extends ItemManager{
 
 	public void removeProduct(long id, HttpServletRequest request, HttpServletResponse response) {
 		String userName = new UserManager().getLoggedInUserName();
-		if(userName.equals("anonymousUser")) {
-			
+		if (userName.equals("anonymousUser")) {
+			removeProductFromTheAnonymousMap(id, request, response);
 		} else {
-			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
-			Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();
-			Map<String, String> products = new HashMap<String, String>();
-			if (users.containsKey(userName)) {
-				basket = users.get(userName);
-				if (basket.containsKey("productsInBasket")) {
-					products = basket.get("productsInBasket");
-					if(products.containsKey(Long.toString(id))) {
-						products.remove(Long.toString(id));
-					}
-				}
-			}
-			if(products.size() == 0) {
-				basket.remove("productsInBasket");
-			} else {
-				basket.put("productsInBasket", products);
-			}
-			if(basket.size() == 0) {
-				users.remove(userName);
-			} else {
-				users.put(userName, basket);
-			}
-			writeMapToCookie(response, new ObjectMapper(), "userNames", users);
+			removeProductFromTheUserSpecificMap(id, request, response, userName);
 		}
 	}
-	
+
+	private void removeProductFromTheUserSpecificMap(long id, HttpServletRequest request, HttpServletResponse response, String userName) {
+		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
+		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+		removeProductById(id, products);
+		removeMapIfEmptyOtherwiseUpdate(products, basket, "productsInBasket");
+		removeMapIfEmptyOtherwiseUpdate(basket, users, userName);
+		writeMapToCookie(response, new ObjectMapper(), "userNames", users);
+	}
+
+	private void removeProductFromTheAnonymousMap(long id, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> items = readFromCookies(request, new ObjectMapper(), "productsInBasket");
+		removeProductById(id, items);
+		writeMapToCookie(response, new ObjectMapper(), "productsInBasket", items);
+	}
+
+	private <T> void removeMapIfEmptyOtherwiseUpdate(Map<String, T> embededMap, Map<String, Map<String, T>> map, String string) {
+		if (embededMap.size() == 0) {
+			map.remove(string);
+		} else {
+			map.put(string, embededMap);
+		}
+	}
+
 	private void addProductToUserCookie(long id, int quantity, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, String userName) {
 		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, mapper);
-		Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();
-		Map<String, String> products = new HashMap<String, String>();
-		if (users.containsKey(userName)) {
-			basket = users.get(userName);
-			if (basket.containsKey("productsInBasket")) {
-				products = basket.get("productsInBasket");
-			}
-		}
+		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+
 		addOrderItem(id, quantity, products);
 		basket.put("productsInBasket", products);
 		users.put(userName, basket);
@@ -98,7 +95,7 @@ public class ProductsManager extends ItemManager{
 		addOrderItem(id, quantity, map);
 		writeMapToCookie(response, mapper, "productsInBasket", map);
 	}
-	
+
 	private void addOrderItem(long id, int quantity, Map<String, String> map) {
 		if (!map.containsKey(Long.toString(id))) {
 			map.put(Long.toString(id), Integer.toString(quantity));
@@ -108,7 +105,7 @@ public class ProductsManager extends ItemManager{
 			map.put(Long.toString(id), value.toString());
 		}
 	}
-	
+
 	private void addProductToBasketByProductId(Basket basket, long id, Integer quantity) throws FitnessDaoException {
 		Product product = null;
 		try {
@@ -116,8 +113,13 @@ public class ProductsManager extends ItemManager{
 			OrderItem oi = gos.newOrderItem(product, quantity);
 			gos.addOrderItemToBasket(basket, oi);
 		} catch (FitnessDaoException e) {
-			getLogger().info("Product cannot added to Basket with id: " + id);
 			throw new FitnessDaoException();
+		}
+	}
+	
+	private void removeProductById(long id, Map<String, String> products) {
+		if (products.containsKey(Long.toString(id))) {
+			products.remove(Long.toString(id));
 		}
 	}
 }

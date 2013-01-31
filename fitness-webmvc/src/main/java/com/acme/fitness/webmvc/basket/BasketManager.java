@@ -1,4 +1,4 @@
-package com.acme.fitness.webmvc.cookie;
+package com.acme.fitness.webmvc.basket;
 
 import java.util.Map;
 
@@ -20,6 +20,8 @@ import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.controllers.WebShopController;
+import com.acme.fitness.webmvc.cookie.CookieManager;
+import com.acme.fitness.webmvc.user.UserManager;
 
 @Service
 public class BasketManager {
@@ -37,17 +39,24 @@ public class BasketManager {
 
 	@Autowired
 	private MembershipManager mm;
+	
+	private CookieManager cookieManager;
+	
+	public BasketManager() {
+		cookieManager = new CookieManager();
+	}
 
 	public void addBasketToSessionIfExists(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
 		Basket basket = gos.newBasket(new User());
 		boolean isMembershipExists = mm.isItemExists(request, mapper, basket, "membershipsInBasket");
 		boolean isProductExists = pm.isItemExists(request, mapper, basket, "productsInBasket");
 		if (isMembershipExists || isProductExists) {
-			request.getSession().setAttribute("basket", basket);
+			addBasketToSession(request, basket);
 		} else {
 			deleteBasket(request, response);
 		}
 	}
+
 
 	public void addNewMembership(long membershipId, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		mm.addNewMembership(membershipId, response, request, mapper);
@@ -90,6 +99,10 @@ public class BasketManager {
 		request.getSession().removeAttribute("basket");
 	}
 
+	private void addBasketToSession(HttpServletRequest request, Basket basket) {
+		request.getSession().setAttribute("basket", basket);
+	}
+
 	private boolean noUserLoggedIn() {
 		return loggedInUserName().equals("anonymousUser");
 	}
@@ -100,11 +113,11 @@ public class BasketManager {
 	}
 
 	private void deleteUserBasket(HttpServletRequest request, HttpServletResponse response, String userName) {
-		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
+		Map<String, Map<String, Map<String, String>>> users = new UserManager().loadUserNamesCookieValue(request, new ObjectMapper(), cookieManager);
 		if (users.containsKey(userName)) {
 			users.remove(userName);
 		}
-		writeMapToCookie(response, new ObjectMapper(), "userNames", users);
+		cookieManager.writeMapToCookie(response, new ObjectMapper(), "userNames", users);
 		request.getSession().removeAttribute("basket");
 	}
 
@@ -116,39 +129,7 @@ public class BasketManager {
 		request.getSession().removeAttribute(cookieName);
 		Cookie[] cookies = request.getCookies();
 		if ((cookies != null) && cookies.length > 0) {
-			for (Cookie c : request.getCookies()) {
-				if (c.getName().equals(cookieName)) {
-					c.setPath("/");
-					c.setMaxAge(0);
-					response.addCookie(c);
-				}
-			}
+			cookieManager.removeTheCookieByName(request, response, cookieName);
 		}
 	}
-
-	private Map<String, Map<String, Map<String, String>>> loadUserNamesCookieValue(HttpServletRequest request, ObjectMapper mapper) {
-		Map<String, Map<String, Map<String, String>>> userNames = readFromCookies(request, mapper, "userNames");
-		return userNames;
-	}
-
-	private <T> Map<String, T> readFromCookies(HttpServletRequest request, ObjectMapper mapper, String cookieName) {
-		String cookieValue = null;
-
-		CookieManager cookieManager = new CookieManager();
-		cookieValue = cookieManager.readFromCookies(request, cookieName);
-
-		JsonManager<T> jsonManager = new JsonManager<T>(mapper);
-		Map<String, T> map = jsonManager.unwrapFromJsonString(cookieValue);
-
-		return map;
-	}
-
-	private <T> void writeMapToCookie(HttpServletResponse response, ObjectMapper mapper, String cookieName, Map<String, T> map) {
-		JsonManager<T> jsonManager = new JsonManager<T>(mapper);
-		String json = jsonManager.wrapJsonToString(map);
-
-		CookieManager cookieManager = new CookieManager();
-		cookieManager.writeToCookies(response, cookieName, json);
-	}
-
 }
