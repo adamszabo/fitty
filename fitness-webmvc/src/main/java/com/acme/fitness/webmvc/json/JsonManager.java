@@ -1,4 +1,4 @@
-package com.acme.fitness.webmvc.cookie;
+package com.acme.fitness.webmvc.json;
 
 import java.io.IOException;
 import java.util.HashMap;

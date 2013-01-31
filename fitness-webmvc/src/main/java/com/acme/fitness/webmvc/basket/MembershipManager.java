@@ -1,4 +1,4 @@
-package com.acme.fitness.webmvc.cookie;
+package com.acme.fitness.webmvc.basket;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,6 +20,8 @@ import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Membership;
 import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.products.GeneralProductsService;
+import com.acme.fitness.webmvc.cookie.CookieManager;
+import com.acme.fitness.webmvc.user.UserManager;
 
 @Service
 public class MembershipManager extends ItemManager {
@@ -29,17 +31,13 @@ public class MembershipManager extends ItemManager {
 
 	@Override
 	public void loadBasketWithItem(Map<String, String> item, Basket basket) {
-		Membership membership = null;
 		try {
-			membership = parseMembership(item);
-		} catch (FitnessDaoException e) {
-			e.printStackTrace();
-		}
-		if (membership != null) {
+			Membership membership = parseMembership(item);
 			basket.addMembership(membership);
 			membership.setBasket(basket);
-		} else {
+		} catch (FitnessDaoException e) {
 			item = new HashMap<String, String>();
+			e.printStackTrace();
 		}
 	}
 
@@ -52,10 +50,10 @@ public class MembershipManager extends ItemManager {
 	public void removeMembership(long id, HttpServletResponse response, HttpServletRequest request) {
 		String userName = new UserManager().getLoggedInUserName();
 		if(userName.equals("anonymousUser")) {
-			
+			new CookieManager().removeTheCookieByName(request, response, "membershipsInBasket");
 		} else {
 			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
-			Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();
+			Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
 			if (users.containsKey(userName)) {
 				basket = users.get(userName);
 				basket.remove("membershipsInBasket");
@@ -128,8 +126,11 @@ public class MembershipManager extends ItemManager {
 	private Membership parseMembership(Map<String, String> memberships) throws FitnessDaoException {
 		Long membershipTypeId = getMembershipId(memberships);
 		MembershipType membershipType = gps.getMembershipTypeById(membershipTypeId);
-		Membership membership = gps.newMemberShip(membershipType.getIsIntervally(), membershipType.getDetail(), 0, null, null, membershipType.getPrice());
+		return setMembershipDependentOnMembershipType(memberships, membershipType);
+	}
 
+	private Membership setMembershipDependentOnMembershipType(Map<String, String> memberships, MembershipType membershipType) {
+		Membership membership = gps.newMemberShip(membershipType.getIsIntervally(), membershipType.getDetail(), 0, null, null, membershipType.getPrice());
 		if (membershipType.getIsIntervally()) {
 			setMembershipWithIntervallySpecificDatas(getStartDate(memberships, membershipType), membership, membershipType);
 		} else {
