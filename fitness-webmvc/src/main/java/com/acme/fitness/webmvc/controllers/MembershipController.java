@@ -31,6 +31,7 @@ public class MembershipController {
 	@RequestMapping("")
 	public String defaultPage(HttpServletResponse response, HttpServletRequest request, Model model) {
 		bm.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		bm.isAnonymousBasketIfUserLoggedIn(request, response, new ObjectMapper());
 		addMembershipTypesToModel(model);
 		return "berletek";
 	}
@@ -64,6 +65,25 @@ public class MembershipController {
 	public String deleteMembership(@PathVariable long membershipId, HttpServletRequest request, HttpServletResponse response) {
 		bm.removeMembershipFromBasket(membershipId, request, response);
 		return "redirect:/berletek";
+	}
+	
+	@RequestMapping(value = "/torles/anonymous/{productId}")
+	public String removeAnonymousProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
+		bm.removeAnonymousMembership(request, response);
+		return "redirect:/aruhaz/";
+	}
+	
+	@RequestMapping("/anonymKosar/hozzaad")
+	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
+		String redirectTo = "";
+		bm.addAnonymousMembershipsBasketLoggedInUser(response, request, new ObjectMapper());
+		if(bm.isAnonymousBasketContainsProducts(request, response, new ObjectMapper())) {
+			redirectTo = "redirect:/aruhaz/anonymKosar/hozzaad";
+		} else {
+			request.getSession().removeAttribute("anonymousBasket");
+			redirectTo = "redirect:/berletek";
+		}
+		return redirectTo;
 	}
 
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {

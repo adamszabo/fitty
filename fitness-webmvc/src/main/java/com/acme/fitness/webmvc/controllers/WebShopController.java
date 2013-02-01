@@ -3,6 +3,7 @@ package com.acme.fitness.webmvc.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.plugins.bmp.BMPImageWriteParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.basket.BasketManager;
@@ -46,6 +49,7 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		basketManager.isAnonymousBasketIfUserLoggedIn(request, response, new ObjectMapper());
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
@@ -94,7 +98,33 @@ public class WebShopController {
 		return "redirect:/aruhaz/";
 	}
 	
-
+	@RequestMapping(value = "/torles/anonymous/{productId}")
+	public String removeAnonymousProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeAnonymousProduct(productId, request, response);
+		return "redirect:/aruhaz/";
+	}
+	
+	@RequestMapping(value = "/anonymKosar/torles")
+	public String deleteAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
+		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		basketManager.deleteAnonymousBasket(request, response);
+		request.getSession().removeAttribute("anonymousBasket");
+		return "redirect:/aruhaz";
+	}
+	
+	@RequestMapping(value = "/anonymKosar/hozzaad")
+	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
+		String redirectTo = "";
+		basketManager.addAnonymousProductsBasketLoggedInUser(response, request, new ObjectMapper());
+		if(basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
+			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
+		} else {
+			request.getSession().removeAttribute("anonymousBasket");
+			redirectTo = "redirect:/aruhaz";
+		}
+		return redirectTo;
+	}
+	
 	private void setPageNumberAndProducts(Model model, String page) {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
 		model.addAttribute("products", getProductsOnPage(pageNumber));

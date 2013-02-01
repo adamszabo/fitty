@@ -97,8 +97,19 @@
 	    <h3 id="myModalLabel">Kosár tartalma</h3>
 	  </div>
 	  <div class="modal-body">
-	  <#assign sum = 0>
-		  <#if basket["orderItems"]?has_content>
+		<@basketElementsInTable basket "basket"/>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
+	    <a href="<@spring.url relativeUrl="${confirmPath}"/>" class="btn btn-primary">Megrendelés</a>
+	  </div>
+	</div>
+	</#if>
+</#macro>
+
+<#macro basketElementsInTable basketName nameInString>
+				  <#assign sum = 0>
+		  <#if basketName["orderItems"]?has_content>
 		  Termékek:
 		  	<table class="table table-hover">
 					<thead>
@@ -113,7 +124,7 @@
 					</thead>
 					<tbody>
 						<#assign iterate = 0>
-						<#list basket["orderItems"] as item>
+						<#list basketName["orderItems"] as item>
 							<#assign iterate = iterate +1>
 							<#assign sum = sum + item["quantity"] * item["product"]["price"]>
 							<tr>
@@ -123,8 +134,11 @@
 								<td>${item.product.price}</td>
 								<td>${item.quantity}</td>
 								<td>${item.quantity * item.product.price}</td>
-								<td>
+								<td><#if nameInString = "anonymousBasket">
+									<a href="<@spring.url relativeUrl="/aruhaz/torles/anonymous/${item.product.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									<#else>
 									<a href="<@spring.url relativeUrl="/aruhaz/torles/${item.product.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									</#if>
 								</td>
 							</tr>
 						</#list>
@@ -132,10 +146,10 @@
 				</table>
 			</#if>
 			
-			<#if basket["memberships"]?has_content>
+			<#if basketName["memberships"]?has_content>
 			Bérletek:
 		  	<table class="table table-hover">
-		  		<#list basket["memberships"] as membership>
+		  		<#list basketName["memberships"] as membership>
 					<thead>
 						<tr>
 							<th>Típus</th>
@@ -159,25 +173,17 @@
 								<td>${membership.maxNumberOfEntries}
 							</#if>
 							<td>${membership.price}</td>
-							<td>
-								<a href="<@spring.url relativeUrl="/berletek/torles/${membership.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+							<td><#if nameInString = "anonymousBasket">
+									<a href="<@spring.url relativeUrl="/berletek/torles/anonymous/${membership.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									<#else>
+									<a href="<@spring.url relativeUrl="/berletek/torles/${membership.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									</#if>
 							</td>
 						</tr>
 					</tbody>
 				</#list>
 			</table>
 			</#if>
-	  </div>
-	  <div class="modal-footer">
-	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
-	    <a href="<@spring.url relativeUrl="${confirmPath}"/>" class="btn btn-primary">Megrendelés</a>
-	  </div>
-	</div>
-	</#if>
-</#macro>
-
-<#macro camu>
-
 </#macro>
 
 <#macro newProductDialog>
@@ -408,4 +414,30 @@
 		</form>
   </div>
 </div>
+</#macro>
+
+<#macro basketMergingDialog>
+	<#if anonymousBasket?exists>
+	<div id="basketMergingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Szeretné az aktuális kosár tartalmát hozzáadni a kosarához?</h3>
+	  </div>
+	  <div class="modal-body">
+		<h3>Aktuális kosár</h3>
+		<@basketElementsInTable anonymousBasket "anonymousBasket"/>
+	  
+		<h3>Jelenlegi kosarának tartalma:</h3>
+		<#if basket?exists>
+		<@basketElementsInTable basket "basket"/>
+		<#else>
+			<h5>A jelenlegi kosara üres!</h5>
+	  	</#if>
+	  </div>
+	  <div class="modal-footer">
+	    <a class="btn btn-danger" href="<@spring.url relativeUrl="/aruhaz/anonymKosar/torles"/>">Akutális kosár törlése</a>
+	    <a class="btn btn-primary" href="<@spring.url relativeUrl="/aruhaz/anonymKosar/hozzaad"/>">Hozzáadás</a>
+	  </div>
+	</div>
+	</#if>
 </#macro>

@@ -23,6 +23,9 @@ $(document).ready(function() {
 	
 	checkLoginErrors();
 	
+	$('#basketMergingModal').modal('show');
+	
+	
 	$('.detailSlimScroll').slimScroll({
 	    height: '75px',
 	    width: '90%',

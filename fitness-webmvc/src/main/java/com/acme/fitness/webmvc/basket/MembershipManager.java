@@ -47,6 +47,11 @@ public class MembershipManager extends ItemManager {
 		addMapToCookie(response, request, mapper, memeberships);
 	}
 	
+	public void addNewMembershipFromAnonymousBasket(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
+		Map<String, String> memberships = readFromCookies(request, mapper, "membershipsInBasket");
+		addMapToCookie(response, request, mapper, memberships);
+	}
+	
 	public void removeMembership(long id, HttpServletResponse response, HttpServletRequest request) {
 		String userName = new UserManager().getLoggedInUserName();
 		if(userName.equals("anonymousUser")) {

@@ -39,11 +39,19 @@ public class BasketManager {
 
 	@Autowired
 	private MembershipManager mm;
-	
+
 	private CookieManager cookieManager;
-	
+
 	public BasketManager() {
 		cookieManager = new CookieManager();
+	}
+
+	public boolean isAnonymousBasketContainsMemberships(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
+		return cookieManager.readFromCookies(request, "membershipsInBasket") == null ? false : true;
+	}
+
+	public boolean isAnonymousBasketContainsProducts(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
+		return cookieManager.readFromCookies(request, "productsInBasket") == null ? false : true;
 	}
 
 	public void addBasketToSessionIfExists(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
@@ -57,13 +65,22 @@ public class BasketManager {
 		}
 	}
 
-
 	public void addNewMembership(long membershipId, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		mm.addNewMembership(membershipId, response, request, mapper);
 	}
 
 	public void addNewOrderItem(long id, int quantity, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		pm.addNewOrderItem(id, quantity, response, request, mapper);
+	}
+
+	public void addAnonymousProductsBasketLoggedInUser(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
+		pm.addOrderItemListToLoggedInUser(response, request, mapper);
+		cookieManager.removeTheCookieByName(request, response, "productsInBasket");
+	}
+
+	public void addAnonymousMembershipsBasketLoggedInUser(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
+		mm.addNewMembershipFromAnonymousBasket(response, request, mapper);
+		cookieManager.removeTheCookieByName(request, response, "membershipsInBasket");
 	}
 
 	public void checkOutBasket(HttpServletResponse response, HttpServletRequest request) throws StoreQuantityException, BasketCheckOutException {
@@ -81,7 +98,7 @@ public class BasketManager {
 			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni");
 		}
 	}
-	
+
 	public void removeProductFromBasket(long id, HttpServletRequest request, HttpServletResponse response) {
 		pm.removeProduct(id, request, response);
 	}
@@ -99,17 +116,28 @@ public class BasketManager {
 		request.getSession().removeAttribute("basket");
 	}
 
+	public void deleteAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
+		removeFromCookiesAndSession(request, response, "membershipsInBasket");
+		removeFromCookiesAndSession(request, response, "productsInBasket");
+	}
+
+	public void isAnonymousBasketIfUserLoggedIn(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
+		if (isUserLoggedInAndAnonymousBasketContainsElement(request)) {
+			Basket anonymousBasket = gos.newBasket(new User());
+			mm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "membershipsInBasket");
+			pm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "productsInBasket");
+			request.getSession().setAttribute("anonymousBasket", anonymousBasket);
+		} else {
+			request.getSession().removeAttribute("anonymousBasket");
+		}
+	}
+
 	private void addBasketToSession(HttpServletRequest request, Basket basket) {
 		request.getSession().setAttribute("basket", basket);
 	}
 
 	private boolean noUserLoggedIn() {
 		return loggedInUserName().equals("anonymousUser");
-	}
-
-	private void deleteAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
-		removeFromCookiesAndSession(request, response, "membershipsInBasket");
-		removeFromCookiesAndSession(request, response, "productsInBasket");
 	}
 
 	private void deleteUserBasket(HttpServletRequest request, HttpServletResponse response, String userName) {
@@ -132,4 +160,23 @@ public class BasketManager {
 			cookieManager.removeTheCookieByName(request, response, cookieName);
 		}
 	}
+
+	private boolean isUserLoggedInAndAnonymousBasketContainsElement(HttpServletRequest request) {
+		return !noUserLoggedIn() && (cookieManager.readFromCookies(request, "productsInBasket") != null || cookieManager.readFromCookies(request, "membershipsInBasket") != null);
+	}
+
+	public void removeAnonymousProduct(long productId, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> products = cookieManager.loadValueToMap(request, new ObjectMapper(), "productsInBasket");
+		products.remove(Long.toString(productId));
+		if (products.size() > 0) {
+			cookieManager.writeMapToCookie(response, new ObjectMapper(), "productsInBasket", products);
+		} else {
+			cookieManager.removeTheCookieByName(request, response, "productsInBasket");
+		}
+	}
+	
+	public void removeAnonymousMembership(HttpServletRequest request, HttpServletResponse response) {
+		cookieManager.removeTheCookieByName(request, response, "membershipsInBasket");
+	}
+
 }

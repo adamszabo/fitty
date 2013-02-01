@@ -37,7 +37,7 @@ public abstract class ItemManager {
 	protected <T> void writeMapToCookie(HttpServletResponse response, ObjectMapper mapper, String cookieName, Map<String, T> map) {
 		cookieManager.writeMapToCookie(response, mapper, cookieName, map);
 	}
-
+	
 	protected Map<String, Map<String, Map<String, String>>> loadUserNamesCookieValue(HttpServletRequest request, ObjectMapper mapper) {
 		return userManager.loadUserNamesCookieValue(request, mapper, cookieManager);
 	}
@@ -50,7 +50,7 @@ public abstract class ItemManager {
 		return basket.containsKey(itemType) ? basket.get(itemType) : new HashMap<String, String>();
 	}
 
-	private boolean loadBasketToAnonymousUser(HttpServletRequest request, ObjectMapper mapper, Basket basket, String itemType) {
+	protected boolean loadBasketToAnonymousUser(HttpServletRequest request, ObjectMapper mapper, Basket basket, String itemType) {
 		Map<String, String> items = cookieManager.loadValueToMap(request, mapper, itemType);
 		return loadBasketAndReturnTrueIfItemNotEmpty(basket,items);
 	}

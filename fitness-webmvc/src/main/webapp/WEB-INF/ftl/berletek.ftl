@@ -5,6 +5,7 @@
 	
 <@tags.errorMessage />
 <@tags.basketDialog "/berletek/megrendel"/>
+<@tags.basketMergingDialog />
 	
 <ul class="nav nav-pills">
   <#if missingProduct?exists>
