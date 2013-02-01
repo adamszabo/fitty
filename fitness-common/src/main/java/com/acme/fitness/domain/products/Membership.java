@@ -41,7 +41,7 @@ public class Membership {
 
 	@Column
 	private double price;
-
+	
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
