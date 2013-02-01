@@ -67,6 +67,7 @@ public class CheckInController {
 			Membership membership = gps.getMembershipById(membershipId);
 			gps.increaseClientEntries(membership);
 			redirectAttributes.addFlashAttribute("checkedInUserName", fullname);
+			logger.info("User check in the sutdio with name: "+fullname);
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
 		}
