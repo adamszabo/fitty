@@ -26,8 +26,6 @@ var RegistrationValidator = function() {
 	             username: username,
 	             email: emailUser
 	         }),
-	         beforeSend: function () {
-	         },
 	         success: function (data){
 	        	 ajaxCheckSuccess(data);
 	         } 

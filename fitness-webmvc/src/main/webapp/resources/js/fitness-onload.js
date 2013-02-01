@@ -143,6 +143,16 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('.basket-order-form').on('submit', function(e){
+		BasketManager.deliverBasket(this.id.split('-')[0], this.action);
+		return false;
+	});
+	
+	$('.basket-orders-form').on('submit', function(e){
+		BasketManager.stornoBasket(this.id.split('-')[0], this.action);
+		return false;
+	});
+	
 });
 	
 //After invalid login drop down login dialog

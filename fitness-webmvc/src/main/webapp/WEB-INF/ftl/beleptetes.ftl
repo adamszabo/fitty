@@ -8,6 +8,7 @@
 			<span>${checkedInUserName}</span> sikeresen beléptetve!
 		</div>
 	</#if>
+	
 	<div class="search-bar">
 	<form class="form-search" action="<@spring.url relativeUrl="/beleptetes/kereses"/>" method="post">
 		<div class="drop-down-btn-group">
@@ -124,8 +125,8 @@
 				</thead>
 				<tbody>
 					<#list baskets as basket>
-						<tr>
-							<form action="<@spring.url relativeUrl="/"/>" method="post">
+						<tr id="${basket.id}-orders-tr">
+							<form id="${basket.id}-orders-form" class="basket-orders-form" action="<@spring.url relativeUrl="/"/>" method="post">
 								<input type="hidden" value="${basket.id}" name="basketIdHiddenField"/>
 								<td>${basket.id}</td>
 								<td>${basket.orderItems?size}</td>
@@ -134,7 +135,7 @@
 								<td>${basket.creationDate?date}</td>
 								<td>
 									<a href="#${basket.id}-modal" class="btn btn-success" data-toggle="modal">Teljesítés</a>
-									<button class="btn btn-danger" type="button">Storno</button>
+									<button class="btn btn-danger" type="submit">Storno</button>
 								</td>
 							</form>
 						</tr>
@@ -152,7 +153,7 @@
 
 <#macro basketModal basket>
 <div id="${basket.id}-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<form action="<@spring.url relativeUrl="/"/>" method="post">
+	<form id="${basket.id}-modal-form" class="basket-order-form" action="<@spring.url relativeUrl="/"/>" method="post">
 		<div class="modal-header">
 			<h3 id="myModalLabel">Rendelés részletei</h3>
 		</div>
