@@ -1,5 +1,7 @@
 package com.acme.fitness.webmvc.basket;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.user.UserManager;
@@ -46,6 +49,13 @@ public class ProductsManager extends ItemManager {
 		}
 	}
 
+	public void addOrderItemListToLoggedInUser(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
+		String userName = new UserManager().getLoggedInUserName();
+		if (!userName.equals("anonymousUser")) {
+			addOrderItemListToUserCookie(response, request, mapper, userName);
+		}
+	}
+
 	public void removeProduct(long id, HttpServletRequest request, HttpServletResponse response) {
 		String userName = new UserManager().getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
@@ -53,6 +63,21 @@ public class ProductsManager extends ItemManager {
 		} else {
 			removeProductFromTheUserSpecificMap(id, request, response, userName);
 		}
+	}
+
+	private Map<String, Map<String, Map<String, String>>> addOrderItemListToUserCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, String userName) {
+		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, mapper);
+		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+
+		Map<String, String> anonymousProducts = readFromCookies(request, mapper, "productsInBasket");
+		for (String s : anonymousProducts.keySet()) {
+			addOrderItem(Long.parseLong(s), Integer.parseInt(anonymousProducts.get(s)), products);
+		}
+		basket.put("productsInBasket", products);
+		users.put(userName, basket);
+		writeMapToCookie(response, mapper, "userNames", users);
+		return users;
 	}
 
 	private void removeProductFromTheUserSpecificMap(long id, HttpServletRequest request, HttpServletResponse response, String userName) {
@@ -116,7 +141,7 @@ public class ProductsManager extends ItemManager {
 			throw new FitnessDaoException();
 		}
 	}
-	
+
 	private void removeProductById(long id, Map<String, String> products) {
 		if (products.containsKey(Long.toString(id))) {
 			products.remove(Long.toString(id));
