@@ -46,6 +46,11 @@
             </div>
     </div>
     <@tags.registrationDialog />
+    
+    <form action="<@spring.url relativeUrl="/aruhaz/deleteBasket"/>">
+		<@tags.confirmDialog "basket-delete" "Biztos, hogy törli a kosarat?" "Törlés" "Kosár törlése"/>
+	</form>
+	
    <div id="loginForm" class="navbar-inverse" style="background-color:black;position:fixed; z-index:7;width: 100%; display: none;">
 	    <div class="navbar-inner">
 	    	<div class="container">
@@ -71,8 +76,7 @@
 				  </a>
 				  <ul class="dropdown-menu">
 					<li><a href="#basketModal" data-toggle="modal">Kosár tartalma</a></li>
-					<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/confirmBasket"/>">Megrendelés</a></li>
-					<li><a data-toggle="modal" href="<@spring.url relativeUrl="/aruhaz/deleteBasket"/>">Kosár törlése</a></li>
+					<li><a data-toggle="modal" href="#basket-deleteConfirmDialog">Kosár törlése</a></li>
 				  </ul>
 			</div>
 	 </#if>

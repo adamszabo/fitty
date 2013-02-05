@@ -79,6 +79,7 @@ $(document).ready(function() {
 		$form.submit();
 	});
 	
+	// /raktar 
 	$('.open-newMembershipModal').on("click", function() {
 		$('#occassinally-membershipType').click();
 	});
@@ -152,6 +153,7 @@ $(document).ready(function() {
 	});
 	
 	$('.basket-orders-form').on('submit', function(e){
+		$('.modal').modal('hide');
 		BasketManager.stornoBasket(this.id.split('-')[0], this.action);
 		return false;
 	});

@@ -135,8 +135,9 @@
 								<td>${basket.creationDate?date}</td>
 								<td>
 									<a href="#${basket.id}-modal" class="btn btn-success" data-toggle="modal">Teljesítés</a>
-									<button class="btn btn-danger" type="submit">Storno</button>
+									<a href="#${basket.id}-basketStornoConfirmDialog" class="btn btn-danger" data-toggle="modal" >Storno</a>
 								</td>
+							<@tags.confirmDialog "${basket.id}-basketStorno" "Biztos, hogy törli a (ID : ${basket.id}) rendelést?" "Storno" />
 							</form>
 						</tr>
 						<@basketModal basket />

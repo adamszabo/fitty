@@ -2,6 +2,10 @@ html {
 	overflow-y: scroll;
 }
 
+form{
+	margin-bottom:0px !important;
+}
+
 .jumbotron {
 	padding: 5px 0 !important;
 	background: #620d0A;
