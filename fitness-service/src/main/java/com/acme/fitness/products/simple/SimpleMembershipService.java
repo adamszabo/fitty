@@ -16,7 +16,9 @@ import com.acme.fitness.products.MembershipService;
 
 @Service
 public class SimpleMembershipService implements MembershipService {
-
+	private static final long ONE_SEC_IN_MILLIS = 1000;
+	private final static long CONST_23_HOURS_IN_MILLIS=1000*60*60*23;
+	
 	private MembershipDao membershipDao;
 
 	@Autowired
@@ -58,21 +60,36 @@ public class SimpleMembershipService implements MembershipService {
 	public boolean isValid(Membership membership, Date date) {
 		boolean result = false;
 
-		if (membership.getIsIntervally()) {
-			result = isTodayBetweenStartAndEndDates(membership, date);
-		} else {
-			result = isActualEntriesLessThanMaxEntires(membership);
+		if (isDelivered(membership)) {
+			result = validateByType(membership, date);
 		}
 
 		return result;
 	}
 
+	private boolean validateByType(Membership membership, Date date) {
+		boolean result = false;
+		if (membership.getIsIntervally()) {
+			result = isTodayBetweenStartAndEndDates(membership, date);
+		} else {
+			result = isActualEntriesLessThanMaxEntires(membership);
+		}
+		return result;
+	}
+
+	private boolean isDelivered(Membership membership) {
+		return membership.getBasket().isDelivered();
+	}
+
 	private boolean isActualEntriesLessThanMaxEntires(Membership membership) {
 		return membership.getNumberOfEntries() < membership.getMaxNumberOfEntries();
 	}
-
-	private boolean isTodayBetweenStartAndEndDates(Membership membership, Date today) {
-		return membership.getExpireDate().after(today) && membership.getStartDate().before(today);
+	
+	//valid date between startDate before 1 sec and expireDate's 23:00 
+	boolean isTodayBetweenStartAndEndDates(Membership membership, Date today) {
+		Date startDate = new Date(membership.getStartDate().getTime() - ONE_SEC_IN_MILLIS);
+		Date expireDate = new Date(membership.getExpireDate().getTime() + CONST_23_HOURS_IN_MILLIS);
+		return expireDate.after(today) && startDate.before(today);
 	}
 
 	@Override
@@ -98,15 +115,15 @@ public class SimpleMembershipService implements MembershipService {
 
 	@Override
 	public List<Membership> getValidMembershipsByUser(User user, Date date) {
-		List<Membership> memberships=membershipDao.getMembershipsByUser(user);
-		List<Membership> validMemberships=new ArrayList<Membership>();
-		
-		for(Membership membership : memberships){
-			if(isValid(membership, date)){
+		List<Membership> memberships = membershipDao.getMembershipsByUser(user);
+		List<Membership> validMemberships = new ArrayList<Membership>();
+
+		for (Membership membership : memberships) {
+			if (isValid(membership, date)) {
 				validMemberships.add(membership);
 			}
 		}
-		
+
 		return validMemberships;
 	}
 
