@@ -34,13 +34,13 @@ public class TrainingController {
 
 	@RequestMapping(value = "")
 	public String training(HttpServletRequest request) {
-		request.getSession().setAttribute("trainers", gus.getAllTrainers());
+		request.setAttribute("trainers", gus.getAllTrainers());
 		return "edzesek";
 	}
 	
 	@RequestMapping(value = "/edzo/naptar")
 	public String getTrainerTrainings(HttpServletRequest request) {
-		request.getSession().setAttribute("trainers", gus.getAllTrainers());
+		request.setAttribute("trainers", gus.getAllTrainers());
 		request.getSession().setAttribute("activeTrainer", request.getParameter("new-active-trainer-input"));
 		return "edzesek";
 	}

@@ -33,20 +33,26 @@ $(document).ready(function() {
 	});
 	
 	$('#this-week').click(function() {
-		actualPageMonday.setTime(today.getTime());
+		actualPageMonday.setTime(actualDatesMonday(today).getTime());
 		setDates();
 	});
 	
+	function actualDatesMonday(date) {
+		return new Date(date.getTime() - (date.getDay()-1)*oneDay);
+	}
 	
 	function setDates() {
-		$('.' + weekday[d.getDay()]).css('background-color', "white");
-		thisMonday = new Date(actualPageMonday.getTime());
-		thisSunday = new Date(thisMonday.getTime() + oneDay*6);
-		actualMonday = new Date(new Date().getTime()-(new Date().getDay()-1));
-		$('#this-week-monday').html(monthNames[thisMonday.getMonth()] + " " + thisMonday.getDate());
-		$('#this-week-sunday').html(monthNames[thisSunday.getMonth()]+ " " + thisSunday.getDate());
-		if(thisMonday.getMonth() == actualMonday.getMonth() && thisMonday.getDate() == actualMonday.getDate()) {
-			$('.' + weekday[d.getDay()]).css('background-color', "#fcf8e3");
+		for(var i = 0; i < 7; i++) {
+			$('.' + weekday[i]).css('background-color', "white");
+		}
+		actualPageMonday = new Date(actualPageMonday.getTime());
+		actualPageSunday = new Date(actualPageMonday.getTime() + oneDay*6);
+		thisMonday = actualDatesMonday(today);
+		console.log(actualPageMonday +  '          ' + thisMonday);
+		$('#this-week-monday').html(monthNames[actualPageMonday.getMonth()] + " " + actualPageMonday.getDate());
+		$('#this-week-sunday').html(monthNames[actualPageSunday.getMonth()]+ " " + actualPageSunday.getDate());
+		if(actualPageMonday.getMonth() == thisMonday.getMonth() && actualPageMonday.getDate() == thisMonday.getDate()) {
+			$('.' + weekday[today.getDay()]).css('background-color', "#fcf8e3");
 		}
 	}
 	
