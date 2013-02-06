@@ -1,11 +1,11 @@
 $(document).ready(function() {
 	createFitnessCalendarTable();
 	
-	d=new Date();
-	
 	var oneDay = 1000*60*60*24;
+	
+	d=new Date(new Date().getTime() + oneDay*4);
 	var actualPageMonday = new Date(d.getTime()-(d.getDay()-1)*oneDay);
-	var today = new Date();
+	var today = new Date(new Date().getTime() + oneDay*4);
 	
 	var weekday=new Array(7);
 	weekday[0]="Sunday";

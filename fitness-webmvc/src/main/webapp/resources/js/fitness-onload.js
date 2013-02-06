@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	//activate appropriate link	
 	$('#navDiv ul li a').removeClass('active');
-	$('#navDiv ul li a[href="'+location.pathname+'"]').parent().addClass('active');
-	console.log(location.pathname);
+	
+	setActiveMenuOnNavBar();
 	
 	//show and hide dialog to login
 	var isLoginFormHided=true;
@@ -168,6 +168,15 @@ $(document).ready(function() {
 	});
 	
 });
+
+function setActiveMenuOnNavBar(){
+	var locationPath=location.href;
+	var hashSplittedPath=location.pathname.split('/');
+	if(hashSplittedPath.length>2){
+		locationPath='/'+hashSplittedPath[1]+'/'+hashSplittedPath[2];
+	}
+	$('#navDiv ul li a[href="'+locationPath+'"]').parent().addClass('active');
+}
 	
 //After invalid login drop down login dialog
 function checkLoginErrors(){
