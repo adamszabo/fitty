@@ -34,13 +34,14 @@ public class TrainingController {
 
 	@RequestMapping(value = "")
 	public String training(HttpServletRequest request) {
-		return "redirect:edzesek/edzo/" + gus.getAllTrainers().get(0).getUsername();
+		request.getSession().setAttribute("trainers", gus.getAllTrainers());
+		return "edzesek";
 	}
 	
-	@RequestMapping(value = "/edzo/{username}")
-	public String getTrainerTrainings(@PathVariable String username, HttpServletRequest request) {
+	@RequestMapping(value = "/edzo/naptar")
+	public String getTrainerTrainings(HttpServletRequest request) {
 		request.getSession().setAttribute("trainers", gus.getAllTrainers());
-		request.getSession().setAttribute("activeTrainer", username);
+		request.getSession().setAttribute("activeTrainer", request.getParameter("new-active-trainer-input"));
 		return "edzesek";
 	}
 	
