@@ -2,6 +2,7 @@ $(document).ready(function() {
 	//activate appropriate link	
 	$('#navDiv ul li a').removeClass('active');
 	$('#navDiv ul li a[href="'+location.pathname+'"]').parent().addClass('active');
+	console.log(location.pathname);
 	
 	//show and hide dialog to login
 	var isLoginFormHided=true;

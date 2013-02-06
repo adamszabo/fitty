@@ -1,6 +1,4 @@
 $(document).ready(function() {
-//	new Date().getTime()+1000*60*60*24*10
-
 	createFitnessCalendarTable();
 	
 	d=new Date();
@@ -42,17 +40,19 @@ $(document).ready(function() {
 	}
 	
 	function setDates() {
-		for(var i = 0; i < 7; i++) {
-			$('.' + weekday[i]).css('background-color', "white");
-		}
-		actualPageMonday = new Date(actualPageMonday.getTime());
+		setAllColumnToWhite();
 		actualPageSunday = new Date(actualPageMonday.getTime() + oneDay*6);
 		thisMonday = actualDatesMonday(today);
-		console.log(actualPageMonday +  '          ' + thisMonday);
 		$('#this-week-monday').html(monthNames[actualPageMonday.getMonth()] + " " + actualPageMonday.getDate());
 		$('#this-week-sunday').html(monthNames[actualPageSunday.getMonth()]+ " " + actualPageSunday.getDate());
 		if(actualPageMonday.getMonth() == thisMonday.getMonth() && actualPageMonday.getDate() == thisMonday.getDate()) {
 			$('.' + weekday[today.getDay()]).css('background-color', "#fcf8e3");
+		}
+	}
+	
+	function setAllColumnToWhite() {
+		for(var i = 0; i < 7; i++) {
+			$('.' + weekday[i]).css('background-color', "white");
 		}
 	}
 	
@@ -87,8 +87,8 @@ $(document).ready(function() {
 function createFitnessCalendarTable() {
 	
 	tableWithChanger = '<div id="week-changer" style="text-align:center; color:#0088cc">'
-				+ '<i id="prev-week" class="icon-arrow-left"></i><span id="this-week-monday"></span>' 
-				+ '<i id="this-week"class="icon-refresh"></i><span id="this-week-sunday"></span>'
+				+ '<i id="prev-week" class="icon-arrow-left"></i>  <span id="this-week-monday"></span>  ' 
+				+ '<i id="this-week"class="icon-refresh"></i>  <span id="this-week-sunday"></span>  '
 				+ '<i id="next-week" class="icon-arrow-right"></i></div>';
 	
 	datesInJSON = $.parseJSON('{"header" : ["Időpont", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]}');
