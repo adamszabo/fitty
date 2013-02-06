@@ -1,6 +1,7 @@
 package com.acme.fitness.webmvc.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class OrdersDeliverController {
 		try {
 			Basket basket = generalOrdersService.getBasketById(basketId);
 			generalOrdersService.deliver(basket);
-			result=generalProductsService.getMembershipByBasket(basket);
+			result=getValidMemberShipsByBasket(basket);
 			logger.info("Deliver basket with id: "+basketId);
 		} catch (FitnessDaoException e) {
 			logger.info("Deliver basket faild because basket does not exist with id: "+basketId);
@@ -64,5 +65,18 @@ public class OrdersDeliverController {
 		}
 		
 		return result;
+	}
+	
+	private List<Membership> getValidMemberShipsByBasket(Basket basket){
+		List<Membership> validMemberships=new ArrayList<Membership>();
+		Date date=new Date();
+		
+		for(Membership membership : generalProductsService.getMembershipByBasket(basket)){
+			if(generalProductsService.isValid(membership, date)){
+				validMemberships.add(membership);
+			}
+		}
+		
+		return validMemberships;
 	}
 }

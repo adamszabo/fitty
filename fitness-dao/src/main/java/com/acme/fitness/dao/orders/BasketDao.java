@@ -16,4 +16,5 @@ public interface BasketDao extends GenericDao<Basket> {
 	public List<Basket> getBasketsByUser(User user);
 	
 	public List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered);
+	
 }

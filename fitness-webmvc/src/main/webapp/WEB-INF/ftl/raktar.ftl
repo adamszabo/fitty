@@ -52,9 +52,12 @@
 						  	</div>
 						</form>
 					</td>
-					<td>
-						<a href="<@spring.url relativeUrl="/raktar/termek/torles/${product.product.id}"/>" class="btn btn-danger"><i class="icon-white icon-remove"></i></a>
-					</td>
+					<form action="<@spring.url relativeUrl="/raktar/termek/torles/${product.product.id}"/>">
+						<td>
+							<a href="#${product.product.id}-deleteMembershipConfirmDialog" data-toggle="modal" class="btn btn-danger deleteMembershipButton"><i class="icon-white icon-remove"></i></a>
+							<@tags.confirmDialog "${product.product.id}-deleteMembership" "Biztos, hogy törli a (Azonosító : ${product.product.id}) terméket?" "Törlés" />
+						</td>
+					</form>
 				</tr>
 			</#list>
 		</tbody>
@@ -88,9 +91,12 @@
 					<td class="entries">${membership.maxNumberOfEntries}</td>
 					<td class="expire span3">${membership.expireDateInDays}</td>
 					<td class="price">${membership.price}</td>
-					<td>
-						<a href="<@spring.url relativeUrl="/raktar/berlet/torles/${membership.id}"/>" class="btn btn-danger"><i class="icon-white icon-remove"></i></a>
-					</td>
+					<form action="<@spring.url relativeUrl="/raktar/berlet/torles/${membership.id}"/>">
+						<td>
+							<a href="#${membership.id}-deleteMembershipConfirmDialog" data-toggle="modal" class="btn btn-danger deleteMembershipButton"><i class="icon-white icon-remove"></i></a>
+							<@tags.confirmDialog "${membership.id}-deleteMembership" "Biztos, hogy törli a (Azonosító : ${membership.id}) bérletet?" "Törlés" />
+						</td>
+					</form>
 					<td>
 						<a class="open-updateMembershipModal btn btn-primary" data-id="${membership.id}"><i class="icon-white icon-wrench"></i></a>
 					</td>

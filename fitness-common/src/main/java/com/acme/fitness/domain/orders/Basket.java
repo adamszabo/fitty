@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OnDelete;
@@ -38,14 +39,17 @@ public class Basket {
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "basket", cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<OrderItem> orderItems;
-
+	
+	@JsonIgnore
 	@Transient
 	private List<Membership> memberships;
-
+	
+	@JsonIgnore
 	@Transient
 	private List<Training> trainings;
 	
