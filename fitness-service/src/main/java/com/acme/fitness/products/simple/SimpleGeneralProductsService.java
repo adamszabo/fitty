@@ -116,6 +116,11 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 	
 	@Override
+	public boolean isDateReserved(User trainer, Date date) {
+		return trainingService.isDateReserved(trainer, date);
+	}
+	
+	@Override
 	public Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price) {
 		return membershipService.newMemberShip(isIntervally, type, maxEntries, startDate, expireDate, price);
 	}

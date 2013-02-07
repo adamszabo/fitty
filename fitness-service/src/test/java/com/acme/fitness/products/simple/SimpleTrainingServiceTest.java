@@ -149,4 +149,51 @@ public class SimpleTrainingServiceTest {
 		Assert.assertEquals(expectedTrainings, result);
 		BDDMockito.verify(trainingDao).getTrainingsByOrder(basket);
 	}
+	
+	@Test
+	public void testIsDateReservedShouldReturnFalseWhenTheTrainingListIsEmpty() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(new ArrayList<Training>());
+		//WHEN
+		boolean actual = underTest.isDateReserved(trainer, date);
+		//THEN
+		Assert.assertEquals(false, actual);
+		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
+	}
+	
+	@Test
+	public void testIsDateReservedShouldReturnFalseWhenTheDateIsNotOnTheTrainingList() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		List<Training> trainings = new ArrayList<Training>();
+		Training training = new Training();
+		training.setTrainingStartDate(new Date(date.getTime() + 1000));
+		trainings.add(training);
+		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(trainings);
+		//WHEN
+		boolean actual = underTest.isDateReserved(trainer, date);
+		//THEN
+		Assert.assertEquals(false, actual);
+		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
+	}
+	
+	@Test
+	public void testIsDateReservedShouldReturnTrueWhenTheDateIsOnTheTrainingList() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		List<Training> trainings = new ArrayList<Training>();
+		Training training = new Training();
+		training.setTrainingStartDate(new Date(date.getTime()));
+		trainings.add(training);
+		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(trainings);
+		//WHEN
+		boolean actual = underTest.isDateReserved(trainer, date);
+		//THEN
+		Assert.assertEquals(true, actual);
+		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
+	}
 }

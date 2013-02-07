@@ -28,6 +28,7 @@ public interface GeneralProductsService {
 	List<Training> getTrainingsByTrainer(User trainer);
 	List<Training> getTrainingsByClient(User client);
 	List<Training> getTrainingsByBasket(Basket basket);
+	boolean isDateReserved(User trainer, Date date);
 	
 	Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price);
 	void deleteMembership(Membership membership);

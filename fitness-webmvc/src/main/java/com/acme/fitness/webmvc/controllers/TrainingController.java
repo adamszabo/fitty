@@ -1,18 +1,21 @@
 package com.acme.fitness.webmvc.controllers;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
+import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
@@ -47,21 +50,39 @@ public class TrainingController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/ujedzes", method=RequestMethod.POST)
-	public String newTraining(@RequestParam("date") long dateInMs) {
+	public String newTraining(@RequestParam("date") long dateInMs, HttpServletRequest request) throws StoreQuantityException {
 //		try {
-//			User trainer = gus.getUserByUsername((String)request.getSession().getAttribute("activeTrainer"));
+//			
 //			User client = gus.getUserByUsername(new UserManager().getLoggedInUserName());
 //		} catch (FitnessDaoException e) {
 //		}
-		String userFullName = "";
-		try {
-			User client = gus.getUserByUsername(new UserManager().getLoggedInUserName());
-			userFullName = client.getFullName();
-		} catch (FitnessDaoException e) {
-			userFullName = "anonymousgdfsgd";
+		String trainerUserName = (String) request.getSession().getAttribute("activeTrainer");
+		User trainer = null;
+		User client = null;
+		if(trainerUserName != null) {
+			try {
+				trainer = gus.getUserByUsername(trainerUserName);
+				List<Training> trainings = gps.getTrainingsByTrainer(trainer);
+				client = gus.getUserByUsername(new UserManager().getLoggedInUserName());
+				boolean isTrainingOnDate = false;
+				for(Training t : trainings) {
+					if(t.getTrainingStartDate().getTime() == new Date(dateInMs).getTime()) {
+						System.out.println("There is training on the given date!!!");
+						isTrainingOnDate = true;
+					}
+				}
+				if(!isTrainingOnDate) {
+					Training training = gps.newTraining(trainer, client, new Date(dateInMs));
+					Basket basket =  gos.newBasket(client);
+					gos.addTrainingToBasket(basket, training);
+					gos.checkOutBasket(basket);
+					System.out.println("New training has made!!!!!!");
+				}
+			} catch (FitnessDaoException e) {
+				e.printStackTrace();
+			}
 		}
-		System.out.println(new Date(dateInMs));
-		return userFullName;
+		return client.getFullName() == null ? "" : client.getFullName();
 	}
 	
 }
