@@ -48,3 +48,20 @@ body li a {
 .basketModalRow:HOVER {
 	background-color: #f5f5f5;
 }
+
+.weekchanger-btn-group{
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+#week-changer span{
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+#trainers-selector, .fitness-calendar{
+}
+#trainers-selector{
+	height: auto !important;
+	display: inherit !important;
+}

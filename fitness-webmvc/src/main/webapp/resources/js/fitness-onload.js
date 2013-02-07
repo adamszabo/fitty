@@ -158,14 +158,6 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$('#new-active-trainer-form .new-trainer-name').on('click', function(e) {
-//		$('#new-active-trainer-input').val()
-		console.log($(this).text());
-		console.log($(this).data('username'));
-		$('#new-active-trainer-input').val($(this).data('username'));
-		$('#new-active-trainer-form').submit();
-	});
-	
 });
 	
 //After invalid login drop down login dialog
