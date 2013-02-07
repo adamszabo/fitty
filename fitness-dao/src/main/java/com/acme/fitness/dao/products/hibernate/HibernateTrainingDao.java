@@ -17,6 +17,8 @@ import com.acme.fitness.domain.users.User;
 public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training>
 		implements TrainingDao {
 
+	private static long ONE_DAY = 1000*60*60*24;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Training> getAllTraining() {
@@ -60,6 +62,19 @@ public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training>
 	public List<Training> getTrainingsAfterDate(Date date) {
 		return getSession().createCriteria(Training.class)
 				.add(Restrictions.gt("trainingStartDate", date)).list();
+	}
+	
+	@Override
+	public boolean isDateReserved(User trainer, Date date) {
+		Training training = (Training)getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).add(Restrictions.eq("trainingStartDate", date)).uniqueResult();
+		return training == null ? false : true;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday) {
+		Date sunday = new Date(monday.getTime() + 7*ONE_DAY-1);
+		return getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).add(Restrictions.ge("trainingStartDate", monday)).add(Restrictions.le("trainingStartDate", sunday)).list();
 	}
 
 }

@@ -240,6 +240,20 @@ public class SimpleGeneralProductsServiceTest {
 	}
 	
 	@Test
+	public void testGetTrainingsOnWeekByTrainerShouldReturnProperly() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		List<Training> trainings = new ArrayList<Training>();
+		BDDMockito.given(trainingService.getTrainingsOnWeekByTrainer(trainer, date)).willReturn(trainings);
+		//WHEN
+		List<Training> actual = underTest.getTrainingsOnWeekByTrainer(trainer, date);
+		//THEN
+		Assert.assertEquals(trainings, actual);
+		BDDMockito.verify(trainingService).getTrainingsOnWeekByTrainer(trainer, date);
+	}
+	
+	@Test
 	public void testNewMembershipShouldReturnProperly(){
 		// GIVEN
 		Date date=new Date();

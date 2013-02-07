@@ -78,21 +78,11 @@ public class SimpleTrainingService implements TrainingService {
 
 	@Override
 	public boolean isDateReserved(User trainer, Date date) {
-		List<Training> trainings = trainingDao.getTrainingsByTrainer(trainer);
-		return isTrainingListContainsDate(date, trainings);
+		return trainingDao.isDateReserved(trainer, date);
 	}
-
-	private boolean isTrainingListContainsDate(Date date, List<Training> trainings) {
-		boolean isDateReserved = false;
-		for(Training training : trainings) {
-			if(isDateEqualsTrainingDate(date, training)) {
-				isDateReserved = true;
-			}
-		}
-		return isDateReserved;
-	}
-
-	private boolean isDateEqualsTrainingDate(Date date, Training training) {
-		return training.getTrainingStartDate().getTime() == date.getTime();
+	
+	@Override
+	public List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday) {
+		return trainingDao.getTrainingsOnWeekByTrainer(trainer, monday);
 	}
 }

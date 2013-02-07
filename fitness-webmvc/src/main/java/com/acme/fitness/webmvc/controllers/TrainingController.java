@@ -65,6 +65,11 @@ public class TrainingController {
 				List<Training> trainings = gps.getTrainingsByTrainer(trainer);
 				client = gus.getUserByUsername(new UserManager().getLoggedInUserName());
 				boolean isTrainingOnDate = false;
+				gps.isDateReserved(trainer, new Date(dateInMs));
+				for(Training t : gps.getTrainingsOnWeekByTrainer(trainer, new Date(dateInMs))) {
+					System.out.println(t.getTrainingStartDate());
+				}
+				
 				for(Training t : trainings) {
 					if(t.getTrainingStartDate().getTime() == new Date(dateInMs).getTime()) {
 						System.out.println("There is training on the given date!!!");

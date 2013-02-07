@@ -121,6 +121,11 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 	
 	@Override
+	public List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday) {
+		return trainingService.getTrainingsOnWeekByTrainer(trainer, monday);
+	}
+	
+	@Override
 	public Membership newMemberShip(boolean isIntervally, String type, int maxEntries, Date startDate, Date expireDate, double price) {
 		return membershipService.newMemberShip(isIntervally, type, maxEntries, startDate, expireDate, price);
 	}

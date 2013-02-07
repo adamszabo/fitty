@@ -151,49 +151,29 @@ public class SimpleTrainingServiceTest {
 	}
 	
 	@Test
-	public void testIsDateReservedShouldReturnFalseWhenTheTrainingListIsEmpty() {
+	public void testIsDateReservedShouldReturnProperly() {
 		//GIVEN
 		User trainer = new User();
 		Date date = new Date();
-		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(new ArrayList<Training>());
-		//WHEN
-		boolean actual = underTest.isDateReserved(trainer, date);
-		//THEN
-		Assert.assertEquals(false, actual);
-		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
-	}
-	
-	@Test
-	public void testIsDateReservedShouldReturnFalseWhenTheDateIsNotOnTheTrainingList() {
-		//GIVEN
-		User trainer = new User();
-		Date date = new Date();
-		List<Training> trainings = new ArrayList<Training>();
-		Training training = new Training();
-		training.setTrainingStartDate(new Date(date.getTime() + 1000));
-		trainings.add(training);
-		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(trainings);
-		//WHEN
-		boolean actual = underTest.isDateReserved(trainer, date);
-		//THEN
-		Assert.assertEquals(false, actual);
-		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
-	}
-	
-	@Test
-	public void testIsDateReservedShouldReturnTrueWhenTheDateIsOnTheTrainingList() {
-		//GIVEN
-		User trainer = new User();
-		Date date = new Date();
-		List<Training> trainings = new ArrayList<Training>();
-		Training training = new Training();
-		training.setTrainingStartDate(new Date(date.getTime()));
-		trainings.add(training);
-		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(trainings);
+		BDDMockito.given(trainingDao.isDateReserved(trainer, date)).willReturn(true);
 		//WHEN
 		boolean actual = underTest.isDateReserved(trainer, date);
 		//THEN
 		Assert.assertEquals(true, actual);
-		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
+		BDDMockito.verify(trainingDao).isDateReserved(trainer, date);
+	}
+	
+	@Test
+	public void testGetTrainingsOnWeekByTrainerShouldReturnProperly() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		List<Training> trainings = new ArrayList<Training>();
+		BDDMockito.given(trainingDao.getTrainingsOnWeekByTrainer(trainer, date)).willReturn(trainings);
+		//WHEN
+		List<Training> actual = underTest.getTrainingsOnWeekByTrainer(trainer, date);
+		//THEN
+		Assert.assertEquals(trainings, actual);
+		BDDMockito.verify(trainingDao).getTrainingsOnWeekByTrainer(trainer, date);
 	}
 }

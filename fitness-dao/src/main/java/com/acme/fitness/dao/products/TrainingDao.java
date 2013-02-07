@@ -22,4 +22,8 @@ public interface TrainingDao extends GenericDao<Training>{
 	public List<Training> getTrainingsByOrder(Basket order);
 	
 	public List<Training> getTrainingsAfterDate(Date date);
+
+	boolean isDateReserved(User trainer, Date date);
+
+	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
 }

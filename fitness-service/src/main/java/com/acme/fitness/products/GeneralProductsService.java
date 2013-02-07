@@ -50,4 +50,5 @@ public interface GeneralProductsService {
 	
 	List<ProductImage> getAllProductImage();
 	ProductImage getProductImageById(long id) throws FitnessDaoException;
+	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
 }
