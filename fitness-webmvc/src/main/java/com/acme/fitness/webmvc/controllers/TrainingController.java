@@ -1,6 +1,5 @@
 package com.acme.fitness.webmvc.controllers;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;

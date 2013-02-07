@@ -149,4 +149,31 @@ public class SimpleTrainingServiceTest {
 		Assert.assertEquals(expectedTrainings, result);
 		BDDMockito.verify(trainingDao).getTrainingsByOrder(basket);
 	}
+	
+	@Test
+	public void testIsDateReservedShouldReturnProperly() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		BDDMockito.given(trainingDao.isDateReserved(trainer, date)).willReturn(true);
+		//WHEN
+		boolean actual = underTest.isDateReserved(trainer, date);
+		//THEN
+		Assert.assertEquals(true, actual);
+		BDDMockito.verify(trainingDao).isDateReserved(trainer, date);
+	}
+	
+	@Test
+	public void testGetTrainingsOnWeekByTrainerShouldReturnProperly() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		List<Training> trainings = new ArrayList<Training>();
+		BDDMockito.given(trainingDao.getTrainingsOnWeekByTrainer(trainer, date)).willReturn(trainings);
+		//WHEN
+		List<Training> actual = underTest.getTrainingsOnWeekByTrainer(trainer, date);
+		//THEN
+		Assert.assertEquals(trainings, actual);
+		BDDMockito.verify(trainingDao).getTrainingsOnWeekByTrainer(trainer, date);
+	}
 }

@@ -227,6 +227,33 @@ public class SimpleGeneralProductsServiceTest {
 	}
 	
 	@Test
+	public void testIsDateReservedShouldReturnProperly() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		BDDMockito.given(trainingService.isDateReserved(trainer, date)).willReturn(true);
+		//WHEN
+		boolean actual = underTest.isDateReserved(trainer, date);
+		//THEN
+		Assert.assertEquals(true, actual);
+		BDDMockito.verify(trainingService).isDateReserved(trainer, date);
+	}
+	
+	@Test
+	public void testGetTrainingsOnWeekByTrainerShouldReturnProperly() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		List<Training> trainings = new ArrayList<Training>();
+		BDDMockito.given(trainingService.getTrainingsOnWeekByTrainer(trainer, date)).willReturn(trainings);
+		//WHEN
+		List<Training> actual = underTest.getTrainingsOnWeekByTrainer(trainer, date);
+		//THEN
+		Assert.assertEquals(trainings, actual);
+		BDDMockito.verify(trainingService).getTrainingsOnWeekByTrainer(trainer, date);
+	}
+	
+	@Test
 	public void testNewMembershipShouldReturnProperly(){
 		// GIVEN
 		Date date=new Date();

@@ -31,13 +31,8 @@ public class AdminController {
 		super();
 	}
 
-	@RequestMapping(value = "")
-	public String defaultPage() {
-		return "jogosultsagok";
-	}
-	
 
-	@RequestMapping(value = "/jogosultsagok")
+	@RequestMapping(value = "")
 	public String roles(Model model, HttpServletRequest request) {
 		List<UserWithRoles> usersWithRoles=new ArrayList<UserWithRoles>();
 		for (User u : gus.getAllUsers()) {
@@ -62,10 +57,10 @@ public class AdminController {
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
 		}
-		logger.info("DELETED USER: "+user.toString());
+		logger.info("Blocked user: "+user.toString());
 		user.setEnabled(!user.isEnabled());
 		gus.updateUser(user);
-		return "redirect:/admin/jogosultsagok";
+		return "redirect:/admin";
 	}
 
 	@RequestMapping(value = "/jogosultsagok/valtoztat")

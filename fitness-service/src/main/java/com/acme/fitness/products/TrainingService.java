@@ -26,4 +26,8 @@ public interface TrainingService {
 	List<Training> getTrainingsByClient(User client);
 	
 	List<Training> getTrainingsByBasket(Basket basket);
+
+	boolean isDateReserved(User trainer, Date date);
+
+	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
 }

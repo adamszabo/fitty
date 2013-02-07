@@ -75,4 +75,14 @@ public class SimpleTrainingService implements TrainingService {
 	public List<Training> getTrainingsByBasket(Basket basket) {
 		return trainingDao.getTrainingsByOrder(basket);
 	}
+
+	@Override
+	public boolean isDateReserved(User trainer, Date date) {
+		return trainingDao.isDateReserved(trainer, date);
+	}
+	
+	@Override
+	public List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday) {
+		return trainingDao.getTrainingsOnWeekByTrainer(trainer, monday);
+	}
 }
