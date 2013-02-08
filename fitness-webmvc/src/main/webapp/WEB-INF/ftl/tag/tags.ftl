@@ -184,6 +184,26 @@
 				</#list>
 			</table>
 			</#if>
+			
+			<#if basketName["trainings"]?has_content>
+			Edzések:
+		  	<table class="table table-hover">
+		  		<#list basketName["trainings"] as training>
+					<thead>
+						<tr>
+							<th>Edző</th>
+							<th>Időpont</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>${training.trainer.fullName}</td>
+							<td>${training.trainingStartDate?date}</td>
+						</tr>
+					</tbody>
+				</#list>
+			</table>
+			</#if>
 </#macro>
 
 <#macro newProductDialog>

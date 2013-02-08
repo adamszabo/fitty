@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
@@ -73,6 +76,23 @@ public class TrainingController {
 		logger.info("Training add to basket with trainer:" + username + " , date: " + trainingDate);
 		
 		return "redirect:/edzesek";
+	}
+	
+	@RequestMapping(value = "/rendel")
+	public String confirmBasket(HttpServletResponse response, HttpServletRequest request, RedirectAttributes redirectAttributes){
+		try {
+			basketManager.checkOutBasket(response, request);
+		} catch (StoreQuantityException e) {
+			e.printStackTrace();
+		} catch (BasketCheckOutException e) {
+			return failToCheckOut(redirectAttributes);
+		}
+		return "redirect:/edzesek";
+	}
+	
+	private String failToCheckOut(RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
+		return "redirect:/berletek";
 	}
 
 }

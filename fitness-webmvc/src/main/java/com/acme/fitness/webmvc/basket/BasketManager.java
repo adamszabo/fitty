@@ -68,7 +68,7 @@ public class BasketManager {
 		Basket basket = gos.newBasket(new User());
 		boolean isMembershipExists = mm.isItemExists(request, mapper, basket, "membershipsInBasket");
 		boolean isProductExists = pm.isItemExists(request, mapper, basket, "productsInBasket");
-		boolean isTrainingExists = pm.isItemExists(request, mapper, basket, "trainingsInBasket");
+		boolean isTrainingExists = tm.isItemExists(request, mapper, basket, "trainingsInBasket");
 		if (isMembershipExists || isProductExists || isTrainingExists) {
 			addBasketToSession(request, basket);
 		} else {
