@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
-import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.basket.BasketManager;
-import com.acme.fitness.webmvc.user.UserManager;
 
 @Controller
 @RequestMapping("/edzesek")
@@ -43,8 +41,10 @@ public class TrainingController {
 	}
 
 	@RequestMapping(value = "")
-	public String training(HttpServletRequest request) {
+	public String training(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("trainers", generalUsersService.getAllTrainers());
+		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
+		basketManager.isAnonymousBasketIfUserLoggedIn(request, response, new ObjectMapper());
 		return "edzesek";
 	}
 
@@ -68,13 +68,10 @@ public class TrainingController {
 	@RequestMapping(value = "/ujedzes", method = RequestMethod.POST)
 	public String newTraining(@RequestParam("trainer-username") String username, @RequestParam("training-date") Date trainingDate, HttpServletResponse response,
 			HttpServletRequest request) {
-		try {
-			User trainer = generalUsersService.getUserByUsername(username);
-			basketManager.addNewTraining(username, trainingDate, response, request, new ObjectMapper());
-			logger.info("Training add to basket with trainer:" + username + " , date: " + trainingDate);
-		} catch (FitnessDaoException e) {
-			e.printStackTrace();
-		}
+		
+		basketManager.addNewTraining(username, String.valueOf(trainingDate.getTime()), response, request, new ObjectMapper());
+		logger.info("Training add to basket with trainer:" + username + " , date: " + trainingDate);
+		
 		return "redirect:/edzesek";
 	}
 
