@@ -1,9 +1,13 @@
 package com.acme.fitness.webmvc.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,48 +16,62 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
+import com.acme.fitness.domain.exceptions.StoreQuantityException;
+import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
+import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.users.GeneralUsersService;
-import com.acme.fitness.webmvc.user.UserManager;
+import com.acme.fitness.webmvc.basket.BasketManager;
 
 @Controller
 @RequestMapping("/edzesek")
 public class TrainingController {
+	private static Logger logger=LoggerFactory.getLogger(TrainingController.class);
 	
 	private GeneralUsersService generalUsersService;
+	private GeneralProductsService generalProductsService;
+	private BasketManager basketManager;
 
 	@Autowired
-	public TrainingController(GeneralUsersService generalUsersService){
+	public TrainingController(GeneralUsersService generalUsersService, GeneralProductsService generalProductsService, BasketManager basketManager){
 		this.generalUsersService=generalUsersService;
+		this.generalProductsService=generalProductsService;
+		this.basketManager=basketManager;
 	}
 	
 	@RequestMapping(value = "")
 	public String training(HttpServletRequest request) {
 		request.setAttribute("trainers", generalUsersService.getAllTrainers());
-//		request.setAttribute("trainers", new ArrayList<User>());
 		return "edzesek";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/edzo/naptar", method=RequestMethod.POST)
-	public String getTrainerTrainings(@RequestParam("username") String username, @RequestParam("actualPageMonday") Date weeksMonday) {
-		System.out.println("Username: "+username+" monday: "+weeksMonday);
-		return "edzesek";
+	public List<Training> getTrainerTrainings(@RequestParam("username") String username, @RequestParam("actualPageMonday") Date weeksMonday){
+		List<Training> trainings=new ArrayList<Training>();
+
+		if(username!=null && !username.equals("") && weeksMonday!=null){
+			try {
+				User trainer = generalUsersService.getUserByUsername(username);
+				trainings=generalProductsService.getTrainingsOnWeekByTrainer(trainer, weeksMonday);
+				logger.info("Ajax request to get trainer's trainings with Username: "+username+" monday: "+weeksMonday);
+			} catch (FitnessDaoException e) {
+				e.printStackTrace();
+			}
+		}
+		return trainings;
 	}
 	
-	@ResponseBody
 	@RequestMapping(value = "/ujedzes", method=RequestMethod.POST)
-	public String newTraining(@RequestParam("date") long dateInMs) {
-		String userFullName = "";
+	public String newTraining(@RequestParam("trainer-username") String username, @RequestParam("training-date") Date trainingDate) {
 		try {
-			User client = generalUsersService.getUserByUsername(new UserManager().getLoggedInUserName());
-			userFullName = client.getFullName();
+			User user=generalUsersService.getUserByUsername(username);
+//			basketManager.
+			logger.info("Training add to basket with username:"+username+" , date: "+trainingDate);
 		} catch (FitnessDaoException e) {
-			userFullName = "Anonymus";
+			e.printStackTrace();
 		}
-		System.out.println(new Date(dateInMs));
-		System.out.println(new UserManager().getLoggedInUserName());
-		return userFullName;
+		return "redirect:/edzesek";
 	}
 	
 }

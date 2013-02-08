@@ -49,17 +49,17 @@ function clearCalendar(){
 }
 
 function newTraining(date, url, tableElement) {
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: ({
-			date: date
-		}),
-		success: function(data) {
-				tableElement.style.backgroundColor = 'red';
-				tableElement.innerHTML = data;
-		}
-	});
+	selectedLi=$('#trainers-selector .trainer-name-li.active');
+	$('#newTrainingModalTrainer').html(selectedLi.children(":first").html());
+	$('#newTrainingModalDateTD').html(formatDate(date));
+	console.log(date);
+	$('#training-date').val(date);
+	$('#trainer-username').val(selectedLi.data('username'));
+	$('#newTrainingModal').modal('show');
+}
+
+function formatDate(date){
+	return date.getFullYear() +'.'+(date.getMonth()+1) +'.' +date.getDate()+'  '+date.getHours()+':00';
 }
 
 function setDates() {
@@ -121,19 +121,20 @@ function bindingClickEventToCalendarButtons(){
 	});
 	
 	$('#fitness-calendar-table > tbody > tr > td').on('click', function(e){
-		indexOfDay=(weekday.indexOf($(this).attr('class')) - 1);
+		$this=$(this);
+		indexOfDay=(weekday.indexOf($this.attr('class')) - 1);
 		indexOfDayWithModulo=getModulo(indexOfDay, 7);
-		hour = $(this).parent().attr('class');
+		hour = $this.parent().attr('class');
 		hour = hour.replace("hours-", "");
 		trainingDate = new Date(new Date(actualPageMonday.getTime()+ oneDay*indexOfDayWithModulo).setHours(hour, 0, 0, 0));
 		
-		newTraining(trainingDate.getTime(), defaultUrl+'edzesek/ujedzes', this);
+		newTraining(trainingDate, defaultUrl+'edzesek/ujedzes', $this);
 	});
 }
 
 function generateFitnessCalendarTable() {
 	
-	tableWithChanger = '<div id="week-changer" style="text-align:center; color:#0088cc"> <div class="btn-group weekchanger-btn-group">'
+	var tableWithChanger = '<div id="week-changer" style="text-align:center; color:#0088cc"> <div class="btn-group weekchanger-btn-group">'
 				+ '<button id="prev-week" class="btn"><i class="icon-arrow-left"></i><span id="this-week-monday"></span></button>' 
 				+ '<button id="this-week" class="btn"><i class="icon-refresh"></i></button>'
 				+ '<button id="next-week" class="btn"><span id="this-week-sunday"></span><i class="icon-arrow-right"></i></button>'
@@ -142,15 +143,15 @@ function generateFitnessCalendarTable() {
 	datesInJSON = $.parseJSON('{"header" : ["Időpont", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]}');
 	datesInEnglishJSON = $.parseJSON('{"body" : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}');
 	
-	table = '<table id="fitness-calendar-table" class="table table-bordered" style="table-layout: fixed">';
-	thead = '<thead><tr>';
+	var table = '<table id="fitness-calendar-table" class="table table-bordered" style="table-layout: fixed">';
+	var thead = '<thead><tr>';
 	for(var i = 0; i < datesInJSON.header.length; i++) {
 		span = i == 0 ? "span1" : "span2";
 		thead += '<th class='+span+'>' + datesInJSON.header[i] + '</th>';
 	}
 	thead +='</th></thead>';
 
-	tbody = '<tbody>';
+	var tbody = '<tbody>';
 	for(var i = 8; i < 22; i++) {
 		tbody += '<tr class="hours-'+i+'"><th>'+i+':00</th>';
 		for(var j = 0; j < datesInEnglishJSON.body.length; j++) {
@@ -161,6 +162,7 @@ function generateFitnessCalendarTable() {
 	tbody += '</tbody>';
 	
 	table += thead + tbody + '</table>'; 
+	table += generateNewTrainingModal(); 
 	
 	tableWithChanger += table;
 	
@@ -170,4 +172,28 @@ function generateFitnessCalendarTable() {
 	$('#fitness-calendar-table > thead > tr > th').css('overflow','hidden');
 	$('#fitness-calendar-table > tbody > tr > td').css('overflow','hidden');
 	
+}
+
+function generateNewTrainingModal(){
+	var modal='<div id="newTrainingModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+				+ '<div class="modal-header">'
+					+ '<h3 id="myModalLabel">Kosárba helyezi az edzést?</h3>'
+				+ '</div>'
+				+ '<form class="form-horizontal" action="'+defaultUrl+'edzesek/ujedzes" method="post">'
+				+ '<input type="hidden" id="trainer-username" name="trainer-username" value="" />'
+				+ '<input type="hidden" id="training-date" name="training-date" value="" />'
+					+ '<div class="modal-body">'
+						+ '<table class="table"><thead><th>Időpont</th><th>Edző</th></thead><tbody><tr>'
+						+ '<td id="newTrainingModalDateTD">2012-12-11 12:12</td>'
+						+ '<td id="newTrainingModalTrainer"></td>'
+						+ '</tr></tbody></table>'
+					+ '</div>'
+					+ '<div class="modal-footer">'
+						+ '<button class="btn btn-danger" type="submit">Kosárba</button>'
+						+ '<button id="newTrainingModalHideButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Mégse</button>'
+					+'</div>'
+				+ '</form>'
+			+'</div>';
+	
+	return modal;
 }

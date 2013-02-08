@@ -6,16 +6,22 @@
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div id="trainers-selector" class="span2">
-			<ul class="nav nav-list">
-				<li class="nav-header"><h4>Edzők</h4></li>
-				<#if trainers?exists>
-					<#list trainers as trainer>
-						<li class="trainer-name-li" data-username="${trainer.username}"><a>${trainer.fullName}</a></li>
-					</#list>
+			<#if trainers?exists>
+				<#if (trainers?size > 0) >
+					<div id="trainers-selector" class="span2">
+						<ul class="nav nav-list">
+							<li class="nav-header"><h4>Edzők</h4></li>
+								<#list trainers as trainer>
+									<li class="trainer-name-li" data-username="${trainer.username}"><a>${trainer.fullName}</a></li>
+								</#list>
+						</ul>
+					</div>
+				<#else>
+					<div class="alert alert-warning">
+						<span>Nincs edző a rendszerben.</span>
+					</div>
 				</#if>
-			</ul>
-		</div>
+			</#if>
 		
 		<div class="fitness-calendar span10"></div>
 	</div>

@@ -181,13 +181,7 @@
 				<#assign sum = sum + membership.price>
 			</#list>
 			<h5>Edzések</h5>
-			<#list basket.trainings as training>
-				<div class="basketModalRow">
-					${training.id}
-					${training.trainer.fullName}
-					${training.price}
-				</div>
-			</#list>
+			
 			<div class="basketModalRow">
 				<b>Összesen:</b>
 				<div style="float:right;">
