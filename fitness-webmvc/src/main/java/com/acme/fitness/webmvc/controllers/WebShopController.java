@@ -65,7 +65,7 @@ public class WebShopController {
 	public String deleteBasketDefault(HttpServletRequest request, HttpServletResponse response, Model model) {
 		return deleteBasket("1", request, response, model);
 	}
-	
+
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
 		basketManager.deleteBasket(request, response);
@@ -77,7 +77,7 @@ public class WebShopController {
 	public String confirmOrderDefault(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 		return confirmOrder("1", request, response, redirectAttributes, model);
 	}
-	
+
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
 
@@ -87,23 +87,23 @@ public class WebShopController {
 			addMissingProductsMessages(redirectAttributes, e.getProduct());
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(page, redirectAttributes);
-		} 
+		}
 		setPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
-	
+
 	@RequestMapping(value = "/torles/{productId}")
 	public String removeProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeProductFromBasket(productId, request, response);
 		return "redirect:/aruhaz/";
 	}
-	
+
 	@RequestMapping(value = "/torles/anonymous/{productId}")
 	public String removeAnonymousProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeAnonymousProduct(productId, request, response);
 		return "redirect:/aruhaz/";
 	}
-	
+
 	@RequestMapping(value = "/anonymKosar/torles")
 	public String deleteAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
@@ -111,26 +111,27 @@ public class WebShopController {
 		request.getSession().removeAttribute("anonymousBasket");
 		return "redirect:/aruhaz";
 	}
-	
+
 	@RequestMapping(value = "/anonymKosar/hozzaad")
 	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		String redirectTo = "";
 		basketManager.addAnonymousProductsBasketLoggedInUser(response, request, new ObjectMapper());
-		if(basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
+		if (basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
 			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
+		} else if (basketManager.isAnonymousBasketContainsTrainings(request, response, new ObjectMapper())) {
+			redirectTo = "redirect:/edzesek/anonymKosar/hozzaad";
 		} else {
 			request.getSession().removeAttribute("anonymousBasket");
 			redirectTo = "redirect:/aruhaz";
 		}
 		return redirectTo;
 	}
-	
+
 	private void setPageNumberAndProducts(Model model, String page) {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
 		model.addAttribute("products", getProductsOnPage(pageNumber));
 		model.addAttribute("pageNumber", pageNumber);
 	}
-
 
 	private String failToCheckOut(String page, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");

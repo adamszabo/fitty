@@ -56,10 +56,10 @@ public class TrainingManager extends ItemManager {
 		Map<String, String> memberships = readFromCookies(request, mapper, "trainingsInBasket");
 		addMapToCookie(response, request, mapper, memberships);
 	}
-	
+
 	public void removeTraining(HttpServletResponse response, HttpServletRequest request) {
 		String userName = userManager.getLoggedInUserName();
-		if(userName.equals("anonymousUser")) {
+		if (userName.equals("anonymousUser")) {
 			new CookieManager().removeTheCookieByName(request, response, "trainingsInBasket");
 		} else {
 			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
@@ -68,13 +68,13 @@ public class TrainingManager extends ItemManager {
 				basket = users.get(userName);
 				basket.remove("trainingsInBasket");
 			}
-			if(basket.size() == 0) {
+			if (basket.size() == 0) {
 				users.remove(userName);
 			}
 			writeMapToCookie(response, new ObjectMapper(), "userNames", users);
 		}
 	}
-	
+
 	private void addMapToCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, Map<String, String> memeberships) {
 		String userName = userManager.getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
@@ -90,7 +90,7 @@ public class TrainingManager extends ItemManager {
 			writeMapToCookie(response, mapper, "userNames", users);
 		}
 	}
-	
+
 	private void addTrainingToUserCookie(String trainerName, String date, HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper, String clientName) {
 		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, mapper);
 		Map<String, Map<String, String>> basket = loadBasketByUserName(users, clientName);
@@ -115,7 +115,10 @@ public class TrainingManager extends ItemManager {
 	private void addTrainingToBasket(Basket basket, String trainerName, String date) throws FitnessDaoException {
 		User trainer = null;
 		User client = null;
-		client = gus.getUserByUsername(userManager.getLoggedInUserName());
+		String userName = userManager.getLoggedInUserName();
+		if (!userName.equals("anonymousUser")) {
+			client = gus.getUserByUsername(userName);
+		}
 		trainer = gus.getUserByUsername(trainerName);
 		Training training = gps.newTraining(trainer, client, new Date(Long.parseLong(date)));
 		basket.addTraining(training);

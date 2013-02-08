@@ -79,7 +79,9 @@ public class MembershipController {
 		bm.addAnonymousMembershipsBasketLoggedInUser(response, request, new ObjectMapper());
 		if(bm.isAnonymousBasketContainsProducts(request, response, new ObjectMapper())) {
 			redirectTo = "redirect:/aruhaz/anonymKosar/hozzaad";
-		} else {
+		} else if(bm.isAnonymousBasketContainsTrainings(request, response, new ObjectMapper())) {
+			redirectTo = "redirect:/edzesek/anonymKosar/hozzaad";
+		}else {
 			request.getSession().removeAttribute("anonymousBasket");
 			redirectTo = "redirect:/berletek";
 		}

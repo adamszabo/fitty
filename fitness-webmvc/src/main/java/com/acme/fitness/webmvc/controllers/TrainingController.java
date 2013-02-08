@@ -71,7 +71,6 @@ public class TrainingController {
 	@RequestMapping(value = "/ujedzes", method = RequestMethod.POST)
 	public String newTraining(@RequestParam("trainer-username") String username, @RequestParam("training-date") Date trainingDate, HttpServletResponse response,
 			HttpServletRequest request) {
-		
 		basketManager.addNewTraining(username, String.valueOf(trainingDate.getTime()), response, request, new ObjectMapper());
 		logger.info("Training add to basket with trainer:" + username + " , date: " + trainingDate);
 		
@@ -88,6 +87,21 @@ public class TrainingController {
 			return failToCheckOut(redirectAttributes);
 		}
 		return "redirect:/edzesek";
+	}
+	
+	@RequestMapping("/anonymKosar/hozzaad")
+	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
+		String redirectTo = "";
+		basketManager.addAnonymousTrainingsBasketLoggedInUser(response, request, new ObjectMapper());
+		if(basketManager.isAnonymousBasketContainsProducts(request, response, new ObjectMapper())) {
+			redirectTo = "redirect:/aruhaz/anonymKosar/hozzaad";
+		} else if(basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
+			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
+		} else {
+			request.getSession().removeAttribute("anonymousBasket");
+			redirectTo = "redirect:/edzesek";
+		}
+		return redirectTo;
 	}
 	
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {
