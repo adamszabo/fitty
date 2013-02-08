@@ -1,7 +1,5 @@
 package com.acme.fitness.webmvc.basket;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +13,6 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Product;
-import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.user.UserManager;
@@ -28,6 +25,9 @@ public class ProductsManager extends ItemManager {
 
 	@Autowired
 	private GeneralOrdersService gos;
+	
+	@Autowired
+	private UserManager um;
 
 	@Override
 	public void loadBasketWithItem(Map<String, String> item, Basket basket) {
@@ -41,7 +41,7 @@ public class ProductsManager extends ItemManager {
 	}
 
 	public void addNewOrderItem(long id, int quantity, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
-		String userName = new UserManager().getLoggedInUserName();
+		String userName = um.getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
 			addProductToAnonymousCookie(id, quantity, response, request, mapper);
 		} else {
@@ -50,14 +50,14 @@ public class ProductsManager extends ItemManager {
 	}
 
 	public void addOrderItemListToLoggedInUser(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
-		String userName = new UserManager().getLoggedInUserName();
+		String userName = um.getLoggedInUserName();
 		if (!userName.equals("anonymousUser")) {
 			addOrderItemListToUserCookie(response, request, mapper, userName);
 		}
 	}
 
 	public void removeProduct(long id, HttpServletRequest request, HttpServletResponse response) {
-		String userName = new UserManager().getLoggedInUserName();
+		String userName = um.getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
 			removeProductFromTheAnonymousMap(id, request, response);
 		} else {

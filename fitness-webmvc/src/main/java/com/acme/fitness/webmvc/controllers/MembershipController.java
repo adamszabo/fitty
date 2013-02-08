@@ -26,7 +26,7 @@ public class MembershipController {
 	private GeneralProductsService gps;
 	
 	@Autowired
-	BasketManager bm;
+	private BasketManager bm;
 
 	@RequestMapping("")
 	public String defaultPage(HttpServletResponse response, HttpServletRequest request, Model model) {
@@ -63,7 +63,7 @@ public class MembershipController {
 	
 	@RequestMapping("/torles/{membershipId}")
 	public String deleteMembership(@PathVariable long membershipId, HttpServletRequest request, HttpServletResponse response) {
-		bm.removeMembershipFromBasket(membershipId, request, response);
+		bm.removeMembershipFromBasket(request, response);
 		return "redirect:/berletek";
 	}
 	

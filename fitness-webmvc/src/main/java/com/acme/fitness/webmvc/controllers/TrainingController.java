@@ -71,6 +71,8 @@ public class TrainingController {
 				}
 				
 				for(Training t : trainings) {
+					System.out.println(t);
+					System.out.println(new Date(dateInMs));
 					if(t.getTrainingStartDate().getTime() == new Date(dateInMs).getTime()) {
 						System.out.println("There is training on the given date!!!");
 						isTrainingOnDate = true;

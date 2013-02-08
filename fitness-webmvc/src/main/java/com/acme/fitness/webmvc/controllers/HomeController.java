@@ -78,7 +78,7 @@ public class HomeController {
 	public String registration(Locale locale, Model model, @Valid User user) {
 		boolean existUsername = existUserName(user.getUsername());
 		boolean existEmail = existEmail(user.getEmail());
-
+		
 		if (!existUsername && !existEmail) {
 			User registeredUser = gus.addUser(user.getFullName(), user.getUsername(), spe.encode(user.getPassword()), user.getEmail(), user.getMobile(), new Date());
 			gus.addUserRole(Roles.Client.toString(), registeredUser);

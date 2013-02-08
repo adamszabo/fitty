@@ -28,6 +28,9 @@ public class MembershipManager extends ItemManager {
 
 	@Autowired
 	private GeneralProductsService gps;
+	
+	@Autowired
+	private UserManager userManager;
 
 	@Override
 	public void loadBasketWithItem(Map<String, String> item, Basket basket) {
@@ -52,8 +55,8 @@ public class MembershipManager extends ItemManager {
 		addMapToCookie(response, request, mapper, memberships);
 	}
 	
-	public void removeMembership(long id, HttpServletResponse response, HttpServletRequest request) {
-		String userName = new UserManager().getLoggedInUserName();
+	public void removeMembership(HttpServletResponse response, HttpServletRequest request) {
+		String userName = userManager.getLoggedInUserName();
 		if(userName.equals("anonymousUser")) {
 			new CookieManager().removeTheCookieByName(request, response, "membershipsInBasket");
 		} else {
@@ -71,7 +74,7 @@ public class MembershipManager extends ItemManager {
 	}
 
 	private void addMapToCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, Map<String, String> memeberships) {
-		String userName = new UserManager().getLoggedInUserName();
+		String userName = userManager.getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
 			writeMapToCookie(response, mapper, "membershipsInBasket", memeberships);
 		} else {

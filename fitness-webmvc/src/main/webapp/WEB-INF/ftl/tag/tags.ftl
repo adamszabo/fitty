@@ -191,31 +191,33 @@
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Új termék</h3>
+    <@errorAlert "new-product-inputs" "Töltsön ki minden mezőt!" />
   </div>
   <div class="modal-body">
 		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/termek/ujtermek"/>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 			<div class="control-group">
 				<label class="control-label" for="name">Termék név</label>
 				<div class="controls">
-					<input type="text" id="name" name="name" placeholder="Termék neve">
+					<input type="text" id="name" class="input-check" name="name" placeholder="Termék neve">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="details">Leírás</label>
 				<div class="controls">
-					<input type="text" id="details" name="details" placeholder="Termékhez kapcsolódó leírás">
+					<input type="text" id="details" class="input-check" name="details" placeholder="Termékhez kapcsolódó leírás">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="manufacturer">Gyártó</label>
 				<div class="controls">
-					<input type="text" id="manufacturer" name="manufacturer" placeholder="Termék gyártója">
+					<input type="text" id="manufacturer" class="input-check" name="manufacturer" placeholder="Termék gyártója">
 				</div>
 			</div>
+			<@errorAlert "new-product-price" "Az ár legyen legalább 1!" />
 			<div class="control-group">
 				<label class="control-label" for="price">Ár</label>
 				<div class="controls">
-					<input type="number" id="price" name="price" placeholder="Termék ára">
+					<input type="number" id="price" class="input-check" name="price" min="1" value="1" placeholder="Termék ára">
 				</div>
 			</div>
 			<div class="control-group">
@@ -225,7 +227,7 @@
 				<div class="control-group">
 					<div class="controls">
 						<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Bezár</button>
-						<button class="btn btn-success" type ="submit">Hozzáadás</button>
+						<button id="new-product-button" class="btn btn-success" type="button">Hozzáadás</button>
 					</div>
 				</div>
 			</div>
