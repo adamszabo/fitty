@@ -49,6 +49,11 @@ body li a {
 	background-color: #f5f5f5;
 }
 
+#new-product-inputs {
+	margin-bottom : 0px;
+	margin-top : 10px;
+}
+
 .weekchanger-btn-group{
 	margin-top: 10px;
 	margin-bottom: 5px;
@@ -61,6 +66,7 @@ body li a {
 
 #trainers-selector, .fitness-calendar{
 }
+
 #trainers-selector{
 	height: auto !important;
 	display: inherit !important;

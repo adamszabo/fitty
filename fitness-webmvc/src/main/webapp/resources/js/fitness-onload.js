@@ -124,6 +124,33 @@ $(document).ready(function() {
 		$('#newMembershipModal #isIntervally').val('true');
 	});
 	
+	$('#new-product-button').on('click', function(e) {
+		$inputs=$('#newProductModal .input-check');
+		filled=true;
+		isPriceValid = true;
+		$inputs.each(function(index,value){
+			input=$(value);
+			if(input.val()=="")
+				filled=false;
+		});
+		if(filled) {
+			$('#new-product-inputs').hide();
+		} else {
+			$('#new-product-inputs').show();
+		}
+		
+		if($('#newProductModal #price').val() < 1) {
+			$('#new-product-price').show();
+			isPriceValid = false;
+		} else {
+			$('#new-product-price').hide();
+			isPriceValid = true;
+		}
+		if(filled && isPriceValid) {
+			$('#newProductModal form').submit();
+		}
+	});
+	
 	//beleptetes
 	$('#searchType').selectBoxIt({
 		aggressiveChange: true

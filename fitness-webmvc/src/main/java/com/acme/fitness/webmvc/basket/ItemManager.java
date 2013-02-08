@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.webmvc.cookie.CookieManager;
@@ -16,11 +17,11 @@ public abstract class ItemManager {
 
 	private CookieManager cookieManager;
 
+	@Autowired
 	private UserManager userManager;
 
 	public ItemManager() {
 		this.cookieManager = new CookieManager();
-		this.userManager = new UserManager();
 	}
 
 	public boolean isItemExists(HttpServletRequest request, ObjectMapper mapper, Basket basket, String itemType) {
