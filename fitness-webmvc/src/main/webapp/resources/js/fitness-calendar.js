@@ -1,0 +1,173 @@
+$(document).ready(function() {
+	
+	oneDay = 1000*60*60*24;
+	today = new Date();
+	actualPageMonday = getActualPageMonday();
+	weekday=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	monthNames = [ "Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December" ];
+	defaultUrl=$('#defaultUrl').val();
+	
+	if($('#trainers-selector .trainer-name-li:first').length>0){
+		
+		generateFitnessCalendarTable();
+		setDates();
+		bindingClickEventToCalendarButtons();
+		bindingClickEventToTrainersSelector();
+		
+		$('#trainers-selector .trainer-name-li:first').click();
+	}
+	
+});
+
+function bindingClickEventToTrainersSelector(){
+	$('#trainers-selector .trainer-name-li').on('click', function(e){
+		$this=$(this);
+		$('#trainers-selector .trainer-name-li').removeClass('active');
+		$this.addClass('active');
+		setTrainersTrainingsOnCalendar($this.data('username'));
+	});
+}
+
+function setTrainersTrainingsOnCalendar(username){
+	$.ajax({
+		url: defaultUrl+'edzesek/edzo/naptar',
+		type: 'POST',
+		data: ({
+			username: username,
+			actualPageMonday: actualPageMonday
+		}),
+		success: function(data) {
+				console.log(data);
+				clearCalendar();
+		}
+	});
+}
+
+function clearCalendar(){
+	$('#fitness-calendar-table > tbody > tr > td').html('').css('background-color', 'white');
+	markActualDayInCalendar();
+}
+
+function newTraining(date, url, tableElement) {
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: ({
+			date: date
+		}),
+		success: function(data) {
+				tableElement.style.backgroundColor = 'red';
+				tableElement.innerHTML = data;
+		}
+	});
+}
+
+function setDates() {
+	for(var i = 0; i < 7; i++) {
+		$('.' + weekday[i]).css('background-color', "white");
+	}
+	actualPageSunday = new Date(actualPageMonday.getTime() + oneDay*6);
+	thisMonday = actualDatesMonday(today);
+//	console.log(actualPageMonday +  '          ' + thisMonday);
+	$('#this-week-monday').html(monthNames[actualPageMonday.getMonth()] + " " + actualPageMonday.getDate());
+	$('#this-week-sunday').html(monthNames[actualPageSunday.getMonth()]+ " " + actualPageSunday.getDate());
+	
+}
+
+function markActualDayInCalendar(){
+	if(actualPageMonday.getMonth() == thisMonday.getMonth() && actualPageMonday.getDate() == thisMonday.getDate()) {
+		$('.' + weekday[today.getDay()]).css('background-color', "#fcf8e3");
+	}
+}
+
+function actualDatesMonday(date) {
+	actualDay=getModulo(date.getDay()-1, 7);
+	return new Date(date.getTime() - (actualDay)*oneDay);
+}
+
+function getActualPageMonday(){
+	var actualDay=getModulo(today.getDay()-1, 7);
+	var monday=new Date(today.getTime()-(actualDay*oneDay));
+	return new Date(monday.setHours(0, 0, 0, 0));
+}
+
+function getModulo(number, mod){
+	return ((number%mod)+mod)%mod;
+}
+
+function bindingClickEventToCalendarButtons(){
+	$('#prev-week').click(function() {
+		actualPageMonday.setTime(actualPageMonday.getTime() - oneDay*7);
+		setDates();
+		
+		username=$('#trainers-selector .active').data('username');
+		setTrainersTrainingsOnCalendar(username, actualPageMonday);
+	});
+	
+	$('#next-week').click(function() {
+		actualPageMonday.setTime(actualPageMonday.getTime() + oneDay*7);
+		setDates();
+		
+		username=$('#trainers-selector .active').data('username');
+		setTrainersTrainingsOnCalendar(username, actualPageMonday);
+	});
+	
+	$('#this-week').click(function() {
+		actualPageMonday.setTime(actualDatesMonday(today).getTime());
+		setDates();
+		
+		username=$('#trainers-selector .active').data('username');
+		setTrainersTrainingsOnCalendar(username, actualPageMonday);
+	});
+	
+	$('#fitness-calendar-table > tbody > tr > td').on('click', function(e){
+		indexOfDay=(weekday.indexOf($(this).attr('class')) - 1);
+		indexOfDayWithModulo=getModulo(indexOfDay, 7);
+		hour = $(this).parent().attr('class');
+		hour = hour.replace("hours-", "");
+		trainingDate = new Date(new Date(actualPageMonday.getTime()+ oneDay*indexOfDayWithModulo).setHours(hour, 0, 0, 0));
+		
+		newTraining(trainingDate.getTime(), defaultUrl+'edzesek/ujedzes', this);
+	});
+}
+
+function generateFitnessCalendarTable() {
+	
+	tableWithChanger = '<div id="week-changer" style="text-align:center; color:#0088cc"> <div class="btn-group weekchanger-btn-group">'
+				+ '<button id="prev-week" class="btn"><i class="icon-arrow-left"></i><span id="this-week-monday"></span></button>' 
+				+ '<button id="this-week" class="btn"><i class="icon-refresh"></i></button>'
+				+ '<button id="next-week" class="btn"><span id="this-week-sunday"></span><i class="icon-arrow-right"></i></button>'
+				+'</div></div>';
+	
+	datesInJSON = $.parseJSON('{"header" : ["Időpont", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]}');
+	datesInEnglishJSON = $.parseJSON('{"body" : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}');
+	
+	table = '<table id="fitness-calendar-table" class="table table-bordered" style="table-layout: fixed">';
+	thead = '<thead><tr>';
+	for(var i = 0; i < datesInJSON.header.length; i++) {
+		span = i == 0 ? "span1" : "span2";
+		thead += '<th class='+span+'>' + datesInJSON.header[i] + '</th>';
+	}
+	thead +='</th></thead>';
+
+	tbody = '<tbody>';
+	for(var i = 8; i < 22; i++) {
+		tbody += '<tr class="hours-'+i+'"><th>'+i+':00</th>';
+		for(var j = 0; j < datesInEnglishJSON.body.length; j++) {
+			tbody += '<td class="'+datesInEnglishJSON.body[j]+'"></td>';
+		}
+		tbody += '</tr>';
+	}
+	tbody += '</tbody>';
+	
+	table += thead + tbody + '</table>'; 
+	
+	tableWithChanger += table;
+	
+	$('.fitness-calendar').append(tableWithChanger);
+	
+	$('#fitness-calendar-table > thead > tr > th').first().css('width','80px').css('overflow','hidden');
+	$('#fitness-calendar-table > thead > tr > th').css('overflow','hidden');
+	$('#fitness-calendar-table > tbody > tr > td').css('overflow','hidden');
+	
+}
