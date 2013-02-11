@@ -198,7 +198,7 @@
 					<tbody>
 						<tr>
 							<td>${training.trainer.fullName}</td>
-							<td>${training.trainingStartDate?date}</td>
+							<td>${training.trainingStartDate?string("yyyy.MM.dd HH:mm")}</td>
 						</tr>
 					</tbody>
 				</#list>

@@ -37,10 +37,38 @@ function setTrainersTrainingsOnCalendar(username){
 			actualPageMonday: actualPageMonday
 		}),
 		success: function(data) {
-				console.log(data);
 				clearCalendar();
+				renderTrainingsOnCalendar(data, username);
 		}
 	});
+}
+
+function renderTrainingsOnCalendar(data, username){
+	if(data.orderedTrainings.length>0){
+		for(var i=0;i<data.orderedTrainings.length;++i){
+			var trainingDate=new Date(data.orderedTrainings[i].trainingStartDate);
+			var trainingDayName=weekday[trainingDate.getDay()];
+			var trainingStartHour=trainingDate.getHours();
+			console.log(trainingDayName+' '+trainingStartHour);
+			$('.hours-'+trainingStartHour+' .'+trainingDayName).css('background-color','#620d0A');
+		}
+	}
+	
+	if(data.trainingsInBasket.length>0){
+		for(var i=0;i<data.trainingsInBasket.length;++i){
+			var trainingDate=new Date(data.trainingsInBasket[i].trainingStartDate);
+			if(isDateOnActualWeek(trainingDate) && data.trainingsInBasket[i].trainer.username==username){
+				var trainingDayName=weekday[trainingDate.getDay()];
+				var trainingStartHour=trainingDate.getHours();
+				console.log(trainingDayName+' '+trainingStartHour);
+				$('.hours-'+trainingStartHour+' .'+trainingDayName).css('background-color','gray');
+			}
+		}
+	}
+}
+
+function isDateOnActualWeek(date){
+	return date.getTime()>=actualPageMonday && date.getTime()<=actualPageSunday.getTime();
 }
 
 function clearCalendar(){
@@ -52,7 +80,6 @@ function newTraining(date, url, tableElement) {
 	selectedLi=$('#trainers-selector .trainer-name-li.active');
 	$('#newTrainingModalTrainer').html(selectedLi.children(":first").html());
 	$('#newTrainingModalDateTD').html(formatDate(date));
-	console.log(date);
 	$('#training-date').val(date);
 	$('#trainer-username').val(selectedLi.data('username'));
 	$('#newTrainingModal').modal('show');

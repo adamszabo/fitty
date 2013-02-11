@@ -21,11 +21,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
+import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.basket.BasketManager;
+import com.acme.fitness.webmvc.dto.AllStatedTrainings;
 
 @Controller
 @RequestMapping("/edzesek")
@@ -53,13 +55,14 @@ public class TrainingController {
 
 	@ResponseBody
 	@RequestMapping(value = "/edzo/naptar", method = RequestMethod.POST)
-	public List<Training> getTrainerTrainings(@RequestParam("username") String username, @RequestParam("actualPageMonday") Date weeksMonday) {
-		List<Training> trainings = new ArrayList<Training>();
+	public AllStatedTrainings getTrainerTrainings(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("actualPageMonday") Date weeksMonday) {
+		AllStatedTrainings trainings = new AllStatedTrainings();
 
 		if (username != null && !username.equals("") && weeksMonday != null) {
 			try {
 				User trainer = generalUsersService.getUserByUsername(username);
-				trainings = generalProductsService.getTrainingsOnWeekByTrainer(trainer, weeksMonday);
+				trainings.setOrderedTrainings(generalProductsService.getTrainingsOnWeekByTrainer(trainer, weeksMonday));
+				trainings.setTrainingsInBasket(getTrainingsFromBasket(request));
 				logger.info("Ajax request to get trainer's trainings with Username: " + username + " monday: " + weeksMonday);
 			} catch (FitnessDaoException e) {
 				e.printStackTrace();
@@ -107,6 +110,17 @@ public class TrainingController {
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
 		return "redirect:/berletek";
+	}
+	
+	private List<Training> getTrainingsFromBasket(HttpServletRequest request) {
+		List<Training> result=new ArrayList<Training>();
+		Basket basket=(Basket)request.getSession().getAttribute("basket");
+		
+		if(basket!=null){
+			result=basket.getTrainings();
+		}
+		
+		return result;
 	}
 
 }
