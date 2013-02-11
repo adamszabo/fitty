@@ -122,5 +122,6 @@ public class TrainingManager extends ItemManager {
 		trainer = gus.getUserByUsername(trainerName);
 		Training training = gps.newTraining(trainer, client, new Date(Long.parseLong(date)));
 		basket.addTraining(training);
+		training.setBasket(basket);
 	}
 }
