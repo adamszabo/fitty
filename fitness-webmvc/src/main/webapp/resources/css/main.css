@@ -74,3 +74,15 @@ body li a {
 	height: auto !important;
 	display: inherit !important;
 }
+
+#fitness-calendar-table{
+	border-collapse: collapse;
+}
+
+#fitness-calendar-table thead tr th {
+	overflow: hidden;
+}
+
+#fitness-calendar-table tbody tr td {
+	overflow: hidden;
+}

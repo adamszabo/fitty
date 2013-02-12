@@ -109,7 +109,7 @@ public class TrainingController {
 	
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
-		return "redirect:/berletek";
+		return "redirect:/edzesek";
 	}
 	
 	private List<Training> getTrainingsFromBasket(HttpServletRequest request) {

@@ -4,6 +4,7 @@
 <@template.masterTemplate title="Edzések">
 <input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>
 
+<@tags.errorMessage />
 <@tags.basketDialog "/edzesek/rendel"/>
 <@tags.basketMergingDialog />
 
