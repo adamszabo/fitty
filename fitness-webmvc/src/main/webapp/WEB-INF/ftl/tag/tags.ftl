@@ -84,7 +84,7 @@
 
 <#macro errorAlert id message>
 	<div id="${id}" class="alert alert-error" style="display:none;">
-	  <!--button type="button" class="close" data-dismiss="alert">&times;</button-->
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
 	  <strong>Hiba!</strong><span>${message}</span>
 	</div>
 </#macro>
