@@ -203,6 +203,20 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	//edzesek
+	if($('#trainers-selector .trainer-name-li:first').length>0){
+		FitnessCalendar.init('fitness-calendar',false);
+		
+		$('#trainers-selector .trainer-name-li').on('click', function(e){
+			$this=$(this);
+			$('#trainers-selector .trainer-name-li').removeClass('active');
+			$this.addClass('active');
+			FitnessCalendar.setTrainersTrainingsOnCalendar($this.data('username'));
+		});
+		$('#trainers-selector .trainer-name-li:first').click();
+	}
+	
+	
 });
 
 function setRoleInput(roleName) {
