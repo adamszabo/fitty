@@ -12,10 +12,12 @@
                             </a> <a class="brand" href="#">Fitness</a>
                             <div id="navDiv" class="nav-collapse collapse">
                                     <ul class="nav">
-                                    	<li><a href="<@spring.url relativeUrl="/"/>">Kezdőlap</a></li>
-                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
-										<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
-										<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
+	                                    <li><a href="<@spring.url relativeUrl="/"/>">Kezdőlap</a></li>
+                                    	<@security.authorize access="hasAnyRole('Client', 'ROLE_ANONYMOUS', 'Trainer')">
+	                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
+											<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
+											<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
+										</@security.authorize>
 										<@security.authorize access="hasRole('Recepcionist')">
 											<li><a href="<@spring.url relativeUrl="/beleptetes"/>">Beléptetés</a></li>
 										</@security.authorize>
@@ -35,7 +37,7 @@
                                         	<button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button>
 										</@security.authorize>
                                     	<@security.authorize access="isAuthenticated()">
-											<span style="color:white;vertical-align: middle;">Üdvözlet: <@security.authentication property="principal.username"/></span>
+											<span style="color:white;vertical-align: middle;">Üdvözlet: <span id="username-security-span"><@security.authentication property="principal.username"/></span></span>
 											<@basketLayout/>
 											<a class="btn btn-danger" href="<@spring.url relativeUrl="/j_spring_security_logout"/>">Kijelentkezés</a>
 										</@security.authorize>

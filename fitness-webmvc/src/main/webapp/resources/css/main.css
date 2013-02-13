@@ -2,11 +2,16 @@ html {
 	overflow-y: scroll;
 }
 
-body{
+body {
+/* 	background: url("../img/kettlebell.jpg") no-repeat center center fixed; */
+/* 	-webkit-background-size: cover; */
+/* 	-moz-background-size: cover; */
+/* 	-o-background-size: cover; */
+/* 	background-size: cover; */
 }
 
-form{
-	margin-bottom:0px !important;
+form {
+	margin-bottom: 0px;
 }
 
 .jumbotron {
@@ -18,7 +23,7 @@ form{
 	background: -o-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
 	background: -ms-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
 	background: linear-gradient(45deg, #a51217 0%, #2f0800 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(  startColorstr='#a51217', endColorstr='#2f0800', GradientType=1 );
+	filter: progid:DXImageTransform.Microsoft.gradient(    startColorstr='#a51217', endColorstr='#2f0800', GradientType=1 );
 }
 
 .drop-down-btn-group {
@@ -53,36 +58,48 @@ body li a {
 }
 
 #new-product-inputs {
-	margin-bottom : 0px;
-	margin-top : 10px;
+	margin-bottom: 0px;
+	margin-top: 10px;
 }
 
-.weekchanger-btn-group{
+.weekchanger-btn-group {
 	margin-top: 10px;
 	margin-bottom: 5px;
 }
 
-#week-changer span{
+#week-changer span {
 	padding-left: 4px;
 	padding-right: 4px;
 }
 
-#trainers-selector, .fitness-calendar{
+#trainers-selector,.fitness-calendar {
+	
 }
 
-#trainers-selector{
+#trainers-selector {
 	height: auto !important;
 	display: inherit !important;
 }
 
-#fitness-calendar-table{
+#fitness-calendar-table {
 	border-collapse: collapse;
 }
 
+}
 #fitness-calendar-table thead tr th {
 	overflow: hidden;
 }
 
 #fitness-calendar-table tbody tr td {
 	overflow: hidden;
+	text-align: center;
+	cursor: pointer;
+}
+
+#fitness-calendar-table tbody tr td:HOVER{
+	background-color: #f5f5f5 !important;
+}
+
+.reserved-entry{
+	background: #AD5958 !important;
 }
