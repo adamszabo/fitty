@@ -41,10 +41,10 @@ public class BasketManager {
 
 	@Autowired
 	private MembershipManager mm;
-	
+
 	@Autowired
 	private TrainingManager tm;
-	
+
 	@Autowired
 	private UserManager um;
 
@@ -61,7 +61,7 @@ public class BasketManager {
 	public boolean isAnonymousBasketContainsProducts(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
 		return cookieManager.readFromCookies(request, "productsInBasket") == null ? false : true;
 	}
-	
+
 	public boolean isAnonymousBasketContainsTrainings(HttpServletRequest request, HttpServletResponse response, ObjectMapper mapper) {
 		return cookieManager.readFromCookies(request, "trainingsInBasket") == null ? false : true;
 	}
@@ -85,11 +85,11 @@ public class BasketManager {
 	public void addNewOrderItem(long id, int quantity, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		pm.addNewOrderItem(id, quantity, response, request, mapper);
 	}
-	
+
 	public void addNewTraining(String trainerName, String date, HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		tm.addNewTraining(trainerName, date, response, request, mapper);
 	}
-	
+
 	public void addAnonymousProductsBasketLoggedInUser(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper) {
 		pm.addOrderItemListToLoggedInUser(response, request, mapper);
 		cookieManager.removeTheCookieByName(request, response, "productsInBasket");
@@ -104,7 +104,7 @@ public class BasketManager {
 		tm.addNewTrainingFromAnonymousBasket(response, request, mapper);
 		cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
 	}
-	
+
 	public void checkOutBasket(HttpServletResponse response, HttpServletRequest request) throws StoreQuantityException, BasketCheckOutException {
 		Basket basket = (Basket) request.getSession().getAttribute("basket");
 		if (!noUserLoggedIn()) {
@@ -115,9 +115,9 @@ public class BasketManager {
 				logger.info("Basket with id: " + basket.getId() + " has confirmed!");
 			} catch (FitnessDaoException e) {
 				e.printStackTrace();
-			} catch (StoreQuantityException e ) {
+			} catch (StoreQuantityException e) {
 				String info = "There is no enough quantity from the product above! ";
-				for(Product p : e.getProduct()) {
+				for (Product p : e.getProduct()) {
 					info += " " + p.getName();
 				}
 				logger.info(info);
@@ -134,7 +134,7 @@ public class BasketManager {
 	public void removeMembershipFromBasket(HttpServletRequest request, HttpServletResponse response) {
 		mm.removeMembership(response, request);
 	}
-	
+
 	public void removeTrainingFromBasket(HttpServletRequest request, HttpServletResponse response) {
 		tm.removeTraining(response, request);
 	}
@@ -161,14 +161,17 @@ public class BasketManager {
 			pm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "productsInBasket");
 			tm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "trainingsInBasket");
 			Training trainingToDelete = null;
-			for(Training t : anonymousBasket.getTrainings()) {
-				if(t.getTrainer().getUsername().equals(t.getClient().getUsername())) {
+			for (Training t : anonymousBasket.getTrainings()) {
+				if (t.getTrainer().getUsername().equals(t.getClient().getUsername())) {
+					System.out.println("Delete the cookie and delete from basket!!!");
 					trainingToDelete = t;
 					cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
 				}
 			}
 			anonymousBasket.getTrainings().remove(trainingToDelete);
-			request.getSession().setAttribute("anonymousBasket", anonymousBasket);
+			if (anonymousBasket.getTrainings().size() > 0 || anonymousBasket.getMemberships().size() > 0 || anonymousBasket.getOrderItems().size() > 0) {
+				request.getSession().setAttribute("anonymousBasket", anonymousBasket);
+			}
 		} else {
 			request.getSession().removeAttribute("anonymousBasket");
 		}
@@ -187,7 +190,7 @@ public class BasketManager {
 	public void removeAnonymousMembership(HttpServletRequest request, HttpServletResponse response) {
 		cookieManager.removeTheCookieByName(request, response, "membershipsInBasket");
 	}
-	
+
 	public void removeAnonymousTraining(HttpServletRequest request, HttpServletResponse response) {
 		cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
 	}
@@ -222,7 +225,9 @@ public class BasketManager {
 	}
 
 	private boolean isUserLoggedInAndAnonymousBasketContainsElement(HttpServletRequest request) {
-		return !noUserLoggedIn() && (cookieManager.readFromCookies(request, "productsInBasket") != null || cookieManager.readFromCookies(request, "membershipsInBasket") != null || cookieManager.readFromCookies(request, "trainingsInBasket") != null);
+		return !noUserLoggedIn()
+				&& (cookieManager.readFromCookies(request, "productsInBasket") != null || cookieManager.readFromCookies(request, "membershipsInBasket") != null || cookieManager
+						.readFromCookies(request, "trainingsInBasket") != null);
 	}
 
 }
