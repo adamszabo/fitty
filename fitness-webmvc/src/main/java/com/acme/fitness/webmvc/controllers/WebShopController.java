@@ -80,7 +80,6 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
-
 		try {
 			basketManager.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {

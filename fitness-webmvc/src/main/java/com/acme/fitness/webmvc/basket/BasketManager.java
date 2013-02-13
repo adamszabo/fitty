@@ -16,6 +16,8 @@ import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.users.GeneralUsersService;
@@ -113,6 +115,12 @@ public class BasketManager {
 				logger.info("Basket with id: " + basket.getId() + " has confirmed!");
 			} catch (FitnessDaoException e) {
 				e.printStackTrace();
+			} catch (StoreQuantityException e ) {
+				String info = "There is no enough quantity from the product above! ";
+				for(Product p : e.getProduct()) {
+					info += " " + p.getName();
+				}
+				logger.info(info);
 			}
 		} else {
 			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni");
@@ -152,6 +160,14 @@ public class BasketManager {
 			mm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "membershipsInBasket");
 			pm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "productsInBasket");
 			tm.loadBasketToAnonymousUser(request, mapper, anonymousBasket, "trainingsInBasket");
+			Training trainingToDelete = null;
+			for(Training t : anonymousBasket.getTrainings()) {
+				if(t.getTrainer().getUsername().equals(t.getClient().getUsername())) {
+					trainingToDelete = t;
+					cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
+				}
+			}
+			anonymousBasket.getTrainings().remove(trainingToDelete);
 			request.getSession().setAttribute("anonymousBasket", anonymousBasket);
 		} else {
 			request.getSession().removeAttribute("anonymousBasket");
