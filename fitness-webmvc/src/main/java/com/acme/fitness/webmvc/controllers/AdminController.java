@@ -76,11 +76,11 @@ public class AdminController {
 		loadRole(Roles.Recepcionist.toString(), user, request);
 		loadRole(Roles.SystemAdmin.toString(), user, request);
 		loadRole(Roles.ProductAdmin.toString(), user, request);
-		return roles(model, request);
+		return "redirect:/admin";
 	}
 
 	private void loadRole(String roleName, User user, HttpServletRequest request) {
-		if (request.getParameter(roleName) != null) {
+		if (request.getParameter(roleName).equals("true")) {
 			gus.addUserRole(roleName, user);
 			logger.info("add " + roleName + " role to " + user.getUsername());
 		} else {

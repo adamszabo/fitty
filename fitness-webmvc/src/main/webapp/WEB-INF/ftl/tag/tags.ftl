@@ -463,3 +463,44 @@
 	</div>
 	</#if>
 </#macro>
+
+<#macro roleDetailsModal userwithroles>
+<div id="roleDetailsModal-${userwithroles.user.username}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    	<h3 id="myModalLabel">Jogosultságok</h3>
+  	</div>
+  	<div class="modal-body">
+		<div class="change-role" style="text-align:center">
+			<form id="${userwithroles.user.username}" class="changeRoleForm" action="<@spring.url relativeUrl="/admin/jogosultsagok/valtoztat"/>" method="post">
+				<input type="hidden" name="username" value="${userwithroles.user.username}"/>	
+				<div class="btn-group btn-group-vertical" data-toggle="buttons-checkbox" style="text-align:center;padding:5px">
+					<button class="btn btn-large btn-warning disabled" type="button"><i class="icon-white icon-user"></i> ${userwithroles.user.username}</button>
+				  <input type="hidden" name="Client" class="client-input"/>
+				  <button type="button" class="role-btn client-btn btn <#if userwithroles.roleNames?seq_contains("Client")?string("yes", "no")=="yes">active btn-success<#else>btn-danger</#if>">Kliens</button>
+				  <input type="hidden" name="Trainer" class="trainer-input"/>
+				  <button type="button" class="role-btn trainer-btn btn btn-primary <#if userwithroles.roleNames?seq_contains("Trainer")?string("yes", "no")=="yes">active btn-success<#else>btn-danger</#if>">Edző</button>
+				  <input type="hidden" name="Recepcionist" class="recepcionist-input"/>
+				  <button type="button" class="role-btn recepcionist-btn btn btn-primary <#if userwithroles.roleNames?seq_contains("Recepcionist")?string("yes", "no")=="yes">active btn-success<#else>btn-danger</#if>">Recepciós</button>
+				  <input type="hidden" name="ProductAdmin" class="productAdmin-input"/>
+				  <button type="button" class="role-btn productAdmin-btn btn btn-primary <#if userwithroles.roleNames?seq_contains("ProductAdmin")?string("yes", "no")=="yes">active btn-success<#else>btn-danger</#if>">Termék Admin</button>
+				  <input type="hidden" name="SystemAdmin" class="systemAdmin-input"/>
+				  <button type="button" class="role-btn systemAdmin-btn btn btn-primary <#if userwithroles.roleNames?seq_contains("SystemAdmin")?string("yes", "no")=="yes">active btn-success<#else>btn-danger</#if>">Admin</button>
+				</div>
+			</form>
+		</div>
+		<form id="${userwithroles.user.username}delete" class="deleteUserForm" action="<@spring.url relativeUrl="/admin/jogosultsagok/torol"/>" method="post">
+			<input type="hidden" name="username-torol" value="${userwithroles.user.username}">
+		</form>
+		
+		<div class="modal-footer">
+			<button class="btn btn-warning submit-change-button" type="button"><i class="icon-white icon-pencil"></i> Változtat</button>
+			<#if userwithroles.user.enabled!=false>
+				<button class="btn btn-danger submit-ban-button" type="button"><i class="icon-white icon-remove"></i> Letílt</button>
+			<#else>
+				<button class="btn btn-success submit-ban-button" type="button"><i class="icon-white icon-ok"></i> Engedélyez</button>
+			</#if>
+		</div>
+	</div>	
+</div>
+</#macro>
