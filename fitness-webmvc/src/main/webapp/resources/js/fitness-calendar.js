@@ -8,13 +8,15 @@ var FitnessCalendar = function(){
 	var monthNames = [ "Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December" ];
 	var defaultUrl=$('#defaultUrl').val();
 	
-	function init(calendarDivClassName, isTrainerCalendar){
-		forTrainer=isTrainerCalendar;
+	function init(calendarDivClassName){
 		generateFitnessCalendarTable(calendarDivClassName);
 		setDates();
 		bindingClickEventToCalendarButtons();
 	}
 
+	function setForTrainer(isForTrainer){
+		forTrainer=isForTrainer;
+	}
 	
 	function setTrainersTrainingsOnCalendar(username){
 		$.ajax({
@@ -45,16 +47,17 @@ var FitnessCalendar = function(){
 			for(var i=0;i<data.trainingsInBasket.length;++i){
 				var timeDetails= getTrainingTimeDetails(data.trainingsInBasket[i].trainingStartDate);
 				if(isDateOnActualWeek(timeDetails.trainingDate) && data.trainingsInBasket[i].trainer.username==username){
-					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).css('background-color','gray');
+					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).css('background-color','gray').unbind('click');
 				}
 			}
 		}
 	}
 	
 	function modifyReservedCalendarEntry(calendarEntry, client){
-		calendarEntry.css('background-color','#620d0A');
+		calendarEntry.off('click');
+		calendarEntry.addClass('reserved-entry');
 		if(forTrainer){
-			calendarEntry.html(client.fullName);
+			calendarEntry.html('<b>'+client.fullName+'</b>');
 		}
 	}
 	
@@ -75,7 +78,13 @@ var FitnessCalendar = function(){
 	}
 	
 	function clearCalendar(){
-		$('#fitness-calendar-table > tbody > tr > td').html('').css('background-color', 'white');
+		$('#fitness-calendar-table > tbody > tr > td').html('').removeClass('reserved-entry');
+		
+		$('#fitness-calendar-table > tbody > tr > td').off('click');
+		$('#fitness-calendar-table > tbody > tr > td').on('click', function(){
+			calendarEntryClick($(this));
+		});
+		
 		markActualDayInCalendar();
 	}
 	
@@ -128,7 +137,7 @@ var FitnessCalendar = function(){
 	
 	function setTrainersNameAndCalendarEntries(){
 		username=$('#trainers-selector .active').data('username');
-		setTrainersTrainingsOnCalendar(username, actualPageMonday);
+		setTrainersTrainingsOnCalendar(username);
 	}
 	
 	function calendarEntryClick(element){
@@ -141,25 +150,30 @@ var FitnessCalendar = function(){
 			newTraining(trainingDate, defaultUrl+'edzesek/ujedzes', $this);
 		}
 		else{
-			$('#newTrainingModal .modal-body').html('<h4>Felveszi szabadnapként?</h4>');
-			$('#newTrainingModal').modal('show');
+			trainerManageCalendarEntry();
 		}
 	}
 	
+	function trainerManageCalendarEntry(){
+		$('#newTrainingModal h3').html('Válasszon opciót!');
+		$('#newTrainingModal .modal-body').html('<h4>Felveszi szabadnapként?</h4>');
+		$('#newTrainingModal').modal('show');
+	}
+	
 	function bindingClickEventToCalendarButtons(){
-		$('#prev-week').click(function() {
+		$('#prev-week').on('click', function() {
 			actualPageMonday.setTime(actualPageMonday.getTime() - oneDay*7);
 			setDates();
 			setTrainersNameAndCalendarEntries();
 		});
 		
-		$('#next-week').click(function() {
+		$('#next-week').on('click', function() {
 			actualPageMonday.setTime(actualPageMonday.getTime() + oneDay*7);
 			setDates();
 			setTrainersNameAndCalendarEntries();
 		});
 		
-		$('#this-week').click(function() {
+		$('#this-week').on('click', function() {
 			actualPageMonday.setTime(actualDatesMonday(today).getTime());
 			setDates();
 			setTrainersNameAndCalendarEntries();
@@ -234,6 +248,7 @@ var FitnessCalendar = function(){
 	
 	return {
 		init : init,
-		setTrainersTrainingsOnCalendar : setTrainersTrainingsOnCalendar
+		setTrainersTrainingsOnCalendar : setTrainersTrainingsOnCalendar,
+		setForTrainer : setForTrainer
 	};
 }();
