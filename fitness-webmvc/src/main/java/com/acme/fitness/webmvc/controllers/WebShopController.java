@@ -113,17 +113,8 @@ public class WebShopController {
 
 	@RequestMapping(value = "/anonymKosar/hozzaad")
 	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
-		String redirectTo = "";
-		basketManager.addAnonymousProductsBasketLoggedInUser(response, request, new ObjectMapper());
-		if (basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
-		} else if (basketManager.isAnonymousBasketContainsTrainings(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/edzesek/anonymKosar/hozzaad";
-		} else {
-			request.getSession().removeAttribute("anonymousBasket");
-			redirectTo = "redirect:/aruhaz";
-		}
-		return redirectTo;
+		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
+		return "redirect:/aruhaz";
 	}
 
 	private void loadPageNumberAndProducts(Model model, String page) {

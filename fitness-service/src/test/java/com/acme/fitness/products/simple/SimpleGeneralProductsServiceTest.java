@@ -152,6 +152,17 @@ public class SimpleGeneralProductsServiceTest {
 	}
 	
 	@Test
+	public void testGoOnHolidayShouldInvokeTheRightMethod() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		//WHEN
+		underTest.goOnHoliday(trainer, date);
+		//THEN
+		BDDMockito.verify(trainingService).goOnHoliday(trainer, date);
+	}
+	
+	@Test
 	public void testNewTrainingShouldReturnProperly(){
 		// GIVEN
 		Date date=new Date();

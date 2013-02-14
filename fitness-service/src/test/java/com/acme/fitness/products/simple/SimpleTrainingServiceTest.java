@@ -176,4 +176,16 @@ public class SimpleTrainingServiceTest {
 		Assert.assertEquals(trainings, actual);
 		BDDMockito.verify(trainingDao).getTrainingsOnWeekByTrainer(trainer, date);
 	}
+	
+	@Test
+	public void testGoOnHoildayShouldInvokeTheRightMethod() {
+		//GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		Training expectedTraining = new Training(trainer, trainer, date, false, 0, null, null);
+		//WHEN
+		underTest.goOnHoliday(trainer, date);
+		//THEN
+		BDDMockito.verify(trainingDao).save(expectedTraining);
+	}
 }

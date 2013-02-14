@@ -59,6 +59,8 @@ public class AdminController {
 		}
 		logger.info("Blocked user: "+user.toString());
 		user.setEnabled(!user.isEnabled());
+		String info = user.isEnabled() ? "User enabled: " : "User blocked: ";
+		logger.info(info + user.getUsername());
 		gus.updateUser(user);
 		return "redirect:/admin";
 	}

@@ -81,6 +81,11 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 
 	@Override
+	public void goOnHoliday(User trainer, Date date) {
+		trainingService.goOnHoliday(trainer, date);
+	}
+
+	@Override
 	public Training newTraining(User trainer, User client, Date date) {
 		return trainingService.newTraining(trainer, client, date);
 	}
@@ -211,4 +216,5 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	public ProductImage getProductImageById(long id) throws FitnessDaoException {
 		return imageService.getProductImageById(id);
 	}
+
 }

@@ -95,17 +95,8 @@ public class TrainingController {
 	
 	@RequestMapping("/anonymKosar/hozzaad")
 	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
-		String redirectTo = "";
-		basketManager.addAnonymousTrainingsBasketLoggedInUser(response, request, new ObjectMapper());
-		if(basketManager.isAnonymousBasketContainsProducts(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/aruhaz/anonymKosar/hozzaad";
-		} else if(basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
-		} else {
-			request.getSession().removeAttribute("anonymousBasket");
-			redirectTo = "redirect:/edzesek";
-		}
-		return redirectTo;
+		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
+		return "redirect:/edzesek";
 	}
 	
 	@RequestMapping("/torles/{trainingId}")

@@ -37,7 +37,7 @@
 						</td>							
 						<td>
 							<input type="hidden" name="membershipId" value="${membership.id}" />
-							<button type="submit" class="btn btn-primary">Kosárba</button>
+							<button type="submit" class="membership-submit-button btn btn-primary">Kosárba</button>
 						</td>
 				</tr>
 			</form>						
