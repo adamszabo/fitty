@@ -66,8 +66,7 @@ public class Training {
 		return "Training [id=" + id + ", trainerId=" + trainer.getId()
 				+ ", clientId=" + client.getId() + ", trainingStartDate="
 				+ trainingStartDate + ", burnedCalories=" + burnedCalories
-				+ ", isAnalyzed=" + isAnalyzed + ", basketId=" + basket.getId()
-				+ "]";
+				+ ", isAnalyzed=" + isAnalyzed 	+ "]";
 	}
 
 	@Override

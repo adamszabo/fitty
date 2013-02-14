@@ -47,7 +47,7 @@ var FitnessCalendar = function(){
 			for(var i=0;i<data.trainingsInBasket.length;++i){
 				var timeDetails= getTrainingTimeDetails(data.trainingsInBasket[i].trainingStartDate);
 				if(isDateOnActualWeek(timeDetails.trainingDate) && data.trainingsInBasket[i].trainer.username==username){
-					console.log(data.trainingsInBasket[i].trainer.username+' '+username);
+//					console.log(data.trainingsInBasket[i].trainer.username+' '+username);
 					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).removeClass('free-entry today-entry').addClass('entry-inbasket').unbind('click');
 				}
 			}
@@ -148,16 +148,16 @@ var FitnessCalendar = function(){
 			newTraining(trainingDate, defaultUrl+'edzesek/ujedzes', $this);
 		}
 		else{
-			trainerManageCalendarEntry(trainingDate);
+			manageCalendarEntry(trainingDate);
 		}
 	}
 	
-	function trainerManageCalendarEntry(trainingDate){
+	function manageCalendarEntry(trainingDate){
 		$('#trainerManageModalTimeSpan').html(formatDate(trainingDate));
 		$('#trainerManageModal-hour').click();
 		$('#trainerManageModal').modal('show');
 	}
-
+	
 	function bindingClickToTrainerManageModalSubmit(){
 		$('#trainerManageModalSubmit').on('click', function(){
 			var trainingDate=new Date($('#trainerManageModalTimeSpan').html());
@@ -169,6 +169,7 @@ var FitnessCalendar = function(){
 				}),
 				success: function(data) {
 					console.log(data);
+					setTrainersTrainingsOnCalendar($('#trainers-selector .active').data('username'));
 				}
 			});
 			$('#trainerManageModal').modal('hide');
