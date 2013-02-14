@@ -46,7 +46,7 @@
 					<td>
 						<form class="form-search" action="<@spring.url relativeUrl="/raktar/termek/ujmennyiseg"/>" method="post" style="text-align:left">
 							<div class="input-append span2">
-			  					<input name="quantity" class="span1 search-query" type="number">
+			  					<input name="quantity" class="span1 search-query" min=0 value=0 type="number">
 			  					<input name="productId" type="hidden" value="${product.product.id}">
 			  					<button class="btn" type="submit">Raktárba</button>
 						  	</div>

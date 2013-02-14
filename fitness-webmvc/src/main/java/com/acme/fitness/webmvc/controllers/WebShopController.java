@@ -47,7 +47,7 @@ public class WebShopController {
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		basketManager.isAnonymousBasketIfUserLoggedIn(request, response, new ObjectMapper());
-		setPageNumberAndProducts(model, page);
+		loadPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
 
@@ -66,7 +66,7 @@ public class WebShopController {
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
 		basketManager.deleteBasket(request, response);
-		setPageNumberAndProducts(model, page);
+		loadPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
 
@@ -77,7 +77,6 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
 	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
-
 		try {
 			basketManager.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {
@@ -85,7 +84,7 @@ public class WebShopController {
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(page, redirectAttributes);
 		}
-		setPageNumberAndProducts(model, page);
+		loadPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}
 
@@ -111,20 +110,11 @@ public class WebShopController {
 
 	@RequestMapping(value = "/anonymKosar/hozzaad")
 	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
-		String redirectTo = "";
-		basketManager.addAnonymousProductsBasketLoggedInUser(response, request, new ObjectMapper());
-		if (basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
-		} else if (basketManager.isAnonymousBasketContainsTrainings(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/edzesek/anonymKosar/hozzaad";
-		} else {
-			request.getSession().removeAttribute("anonymousBasket");
-			redirectTo = "redirect:/aruhaz";
-		}
-		return redirectTo;
+		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
+		return "redirect:/aruhaz";
 	}
 
-	private void setPageNumberAndProducts(Model model, String page) {
+	private void loadPageNumberAndProducts(Model model, String page) {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
 		model.addAttribute("products", getProductsOnPage(pageNumber));
 		model.addAttribute("pageNumber", pageNumber);
@@ -149,10 +139,13 @@ public class WebShopController {
 	}
 
 	private int validatePageNumber(int pageNumber, int productSize) {
-		if (pageNumber < 1) {
+		if (pageNumber <= 1) {
 			pageNumber = 1;
 		} else if (pageNumber > (Math.ceil(productSize / 9.0))) {
 			pageNumber = (int) Math.ceil(productSize / 9.0);
+			if (pageNumber <= 1) {
+				pageNumber = 1;
+			}
 		}
 		return pageNumber;
 	}

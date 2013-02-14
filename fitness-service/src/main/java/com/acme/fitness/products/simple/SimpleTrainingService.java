@@ -23,6 +23,11 @@ public class SimpleTrainingService implements TrainingService {
 	}
 	
 	@Override
+	public void goOnHoliday(User trainer, Date date) {
+		trainingDao.save(new Training(trainer, trainer, date, false, 0, null, null));
+	}
+	
+	@Override
 	public Training newTraining(User trainer, User client, Date date) {
 		Training training = new Training(trainer, client, date, false, 0, null, null);
 		return training;

@@ -30,4 +30,6 @@ public interface TrainingService {
 	boolean isDateReserved(User trainer, Date date);
 
 	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
+
+	void goOnHoliday(User trainer, Date date);
 }

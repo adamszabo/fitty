@@ -33,7 +33,14 @@ $(document).ready(function() {
 	});
 	
 	$('.datepicker').datepicker({
-	    format: 'yyyy-mm-dd'
+	    format: 'yyyy-mm-dd',
+	    weekStart : 1
+	});
+	
+	$('.membership-submit-button').on('click', function() {
+		if($($(this).closest('tr').children()[2]).children().length == 1){
+			console.log($($($(this).closest('tr').children()[2]).children('.datepicker')[0]).val());
+		}
 	});
 	
 	$('.trainer-select-radio-button').on('click', function(e) {

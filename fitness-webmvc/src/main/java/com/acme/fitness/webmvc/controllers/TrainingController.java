@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,17 +95,20 @@ public class TrainingController {
 	
 	@RequestMapping("/anonymKosar/hozzaad")
 	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
-		String redirectTo = "";
-		basketManager.addAnonymousTrainingsBasketLoggedInUser(response, request, new ObjectMapper());
-		if(basketManager.isAnonymousBasketContainsProducts(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/aruhaz/anonymKosar/hozzaad";
-		} else if(basketManager.isAnonymousBasketContainsMemberships(request, response, new ObjectMapper())) {
-			redirectTo = "redirect:/berletek/anonymKosar/hozzaad";
-		} else {
-			request.getSession().removeAttribute("anonymousBasket");
-			redirectTo = "redirect:/edzesek";
-		}
-		return redirectTo;
+		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
+		return "redirect:/edzesek";
+	}
+	
+	@RequestMapping("/torles/{trainingId}")
+	public String deleteTraining(@PathVariable long trainingId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeTrainingFromBasket(request, response);
+		return "redirect:/edzesek";
+	}
+
+	@RequestMapping(value = "/torles/anonymous/{trainingId}")
+	public String removeAnonymousTraining(@PathVariable long trainingId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeAnonymousTraining(request, response);
+		return "redirect:/edzesek";
 	}
 	
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {
