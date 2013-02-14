@@ -199,6 +199,13 @@
 						<tr>
 							<td>${training.trainer.fullName}</td>
 							<td>${training.trainingStartDate?string("yyyy.MM.dd HH:mm")}</td>
+							<td>
+								<#if nameInString = "anonymousBasket">
+									<a href="<@spring.url relativeUrl="/edzesek/torles/anonymous/${training.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									<#else>
+									<a href="<@spring.url relativeUrl="/edzesek/torles/${training.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+								</#if>
+							</td>
 						</tr>
 					</tbody>
 				</#list>

@@ -150,8 +150,10 @@ public class SimpleBasketService implements BasketService {
 			OrderItem o) throws FitnessDaoException {
 		if (storeService.takeOutProduct(o.getProduct(), o.getQuantity())) {
 			orderItemService.updateOrderItem(o);
+			logger.info("Product has taken with id: " + o.getProduct().getId() + " name: " + o.getProduct().getName());
 		} else {
 			missingProducts.add(o.getProduct());
+			logger.info("Product misses with id: " + o.getProduct().getId() + " name: " + o.getProduct().getName());
 		}
 	}
 
@@ -166,5 +168,4 @@ public class SimpleBasketService implements BasketService {
 			membershipService.saveMemberShip(basket, m);
 		}
 	}
-
 }

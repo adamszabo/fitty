@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,6 +106,18 @@ public class TrainingController {
 			redirectTo = "redirect:/edzesek";
 		}
 		return redirectTo;
+	}
+	
+	@RequestMapping("/torles/{trainingId}")
+	public String deleteTraining(@PathVariable long trainingId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeTrainingFromBasket(request, response);
+		return "redirect:/edzesek";
+	}
+
+	@RequestMapping(value = "/torles/anonymous/{trainingId}")
+	public String removeAnonymousTraining(@PathVariable long trainingId, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeAnonymousTraining(request, response);
+		return "redirect:/edzesek";
 	}
 	
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {

@@ -36,6 +36,11 @@ $(document).ready(function() {
 	    format: 'yyyy-mm-dd'
 	});
 	
+	$('.datepicker').datepicker({
+        startDate: '-2m',
+        endDate: '+2d'
+        });
+	
 	$('.trainer-select-radio-button').on('click', function(e) {
 		$('.trainer-select-radio-button').removeClass("active");
 		$(e.target).addClass("active");
