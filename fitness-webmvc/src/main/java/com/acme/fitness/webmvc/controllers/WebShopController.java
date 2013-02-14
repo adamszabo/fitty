@@ -3,7 +3,6 @@ package com.acme.fitness.webmvc.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.plugins.bmp.BMPImageWriteParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,8 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
-import com.acme.fitness.domain.orders.Basket;
-import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.basket.BasketManager;

@@ -214,7 +214,6 @@ $(document).ready(function() {
 			
 			var selectedTrainerUsername=$this.data('username');
 			var forTrainer=isLoggedInTrainerCalendarSelected(selectedTrainerUsername);
-			console.log('isLoggedInTrainerCalendarSelected: '+isLoggedInTrainerCalendarSelected(selectedTrainerUsername));
 			
 			FitnessCalendar.setForTrainer(forTrainer);
 			FitnessCalendar.setTrainersTrainingsOnCalendar(selectedTrainerUsername);

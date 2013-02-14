@@ -101,5 +101,17 @@ body li a {
 }
 
 .reserved-entry{
-	background: #AD5958 !important;
+	background-color: #AD5958 !important;
+}
+
+.free-entry{
+	background-color: white !important;
+}
+
+.entry-inbasket{
+	background-color: gray !important;	
+}
+
+.today-entry{
+	background-color: #fcf8e3 !important;
 }
