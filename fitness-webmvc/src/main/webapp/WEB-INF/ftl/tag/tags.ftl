@@ -301,15 +301,26 @@
 					<#assign iterate = iterate +1>
 					<tr>
 						<td>${iterate}</td>
-						<td>${item.name}</td>
-						<td>${item.manufacturer}</td>
-						<td>${item.price}</td>
+						<td>${item.product.name}</td>
+						<td>${item.product.manufacturer}</td>
+						<td>${item.product.price}</td>
+						<td>
+							<#list basket["orderItems"] as orderItem>
+								<#if orderItem.product.id == item.product.id>
+									${orderItem.quantity}
+								</#if>
+							</#list>
+						</td>
+						<td>${item.quantity}</td>
 					</tr>
 				</#list>
 			</tbody>
 		</table>
 	  </div>
 	  <div class="modal-footer">
+	  	<form action="<@spring.url relativeUrl="/raktar/kosar/torol/hianyzotermek"/>">
+	  		<button class="btn" type="submit">
+	  	</form>
 	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
 	  </div>
 	</div>

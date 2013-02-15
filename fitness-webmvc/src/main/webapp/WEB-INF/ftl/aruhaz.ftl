@@ -7,6 +7,7 @@
 <#if products?size != 0>
 	<@tags.basketDialog "/aruhaz/${pageNumber}/confirmBasket"/>
 	<@tags.basketMergingDialog />
+	
 	<ul class="nav nav-pills">
 	  <#if missingProduct?exists>
 		<li>

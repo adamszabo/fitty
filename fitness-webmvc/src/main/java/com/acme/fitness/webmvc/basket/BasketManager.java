@@ -106,6 +106,7 @@ public class BasketManager {
 					info += " " + p.getName();
 				}
 				logger.info(info);
+				throw e;
 			}
 		} else {
 			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni");
