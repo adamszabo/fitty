@@ -1,12 +1,13 @@
 var FitnessCalendar = function(){
-	
 	var forTrainer=false;
 	var oneDay = 1000*60*60*24;
 	var today = new Date();
 	var actualPageMonday = getActualPageMonday();
+	var actualPageSunday = new Date();
 	var weekday=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	var monthNames = [ "Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December" ];
 	var defaultUrl=$('#defaultUrl').val();
+	var trainingDate = new Date();
 	
 	function init(calendarDivClassName){
 		generateFitnessCalendarTable(calendarDivClassName);
@@ -34,6 +35,9 @@ var FitnessCalendar = function(){
 	}
 	
 	function renderTrainingsOnCalendar(data, username){
+		markPastCalendarEntries();
+		bindingClickToCalendarEntriesAfterToday();
+		
 		if(data.orderedTrainings.length>0){
 			for(var i=0;i<data.orderedTrainings.length;++i){
 				var timeDetails= getTrainingTimeDetails(data.orderedTrainings[i].trainingStartDate);
@@ -48,15 +52,56 @@ var FitnessCalendar = function(){
 				var timeDetails= getTrainingTimeDetails(data.trainingsInBasket[i].trainingStartDate);
 				if(isDateOnActualWeek(timeDetails.trainingDate) && data.trainingsInBasket[i].trainer.username==username){
 //					console.log(data.trainingsInBasket[i].trainer.username+' '+username);
-					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).removeClass('free-entry today-entry').addClass('entry-inbasket').unbind('click');
+					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).removeClass('free-entry today-entry')
+						.addClass('entry-inbasket').off('click').html('<i class="icon-white icon-shopping-cart"></i>');
 				}
 			}
 		}
 	}
 	
+	function bindingClickToCalendarEntriesAfterToday(){
+		//entries on the future's weeks
+		if(actualPageMonday.getTime()>today.getTime()){
+			bindingClickToCalendarEntries();
+		}
+		//actual week
+		else if(isDateOnActualWeek(today)){
+			if(today.getDay()>0){
+				for(var i=(today.getDay()+1);i<weekday.length;i++){
+					$('#fitness-calendar-table > tbody > tr > td.'+weekday[i]).on('click', function(){
+						calendarEntryClick($(this));
+					});
+				}
+				$('#fitness-calendar-table > tbody > tr > td.'+weekday[0]).on('click', function(){
+					calendarEntryClick($(this));
+				});
+			}
+		}
+	}
+	
+	function markPastCalendarEntries(){
+		var actualPageSundayLastSec=new Date(actualPageSunday.getTime()+oneDay-10);
+		
+		//entries on the past's weeks
+		if(actualPageSundayLastSec.getTime()<today.getTime()){
+			$('#fitness-calendar-table > tbody > tr > td').addClass('past-entry');
+		}
+		//actual week
+		else if(isDateOnActualWeek(today)){
+				var limit=today.getDay();
+				if(today.getDay()==0){
+					limit=weekday.length;
+				}
+				
+				for(var i=1;i<limit;i++){
+					entry=$('#fitness-calendar-table > tbody > tr > td.'+weekday[i]).addClass('past-entry');
+				}
+		}
+	}
+	
 	function modifyReservedCalendarEntry(calendarEntry, client){
 		calendarEntry.off('click');
-		calendarEntry.removeClass('free-entry today-entry').addClass('reserved-entry');
+		calendarEntry.removeClass('free-entry today-entry').addClass('reserved-entry').html('<i class="icon-white icon-lock"></i>');
 		if(forTrainer){
 			calendarEntry.html('<b>'+client.fullName+'</b>');
 		}
@@ -75,13 +120,12 @@ var FitnessCalendar = function(){
 	}
 	
 	function isDateOnActualWeek(date){
-		return date.getTime()>=actualPageMonday && date.getTime()<actualPageSunday.getTime()+oneDay;
+		return date.getTime()>=actualPageMonday.getTime() && date.getTime()<actualPageSunday.getTime()+oneDay;
 	}
 	
 	function clearCalendar(){
-		$('#fitness-calendar-table > tbody > tr > td').html('').removeClass('reserved-entry entry-inbasket today-entry').addClass('free-entry');
+		$('#fitness-calendar-table > tbody > tr > td').html('').removeClass('reserved-entry entry-inbasket today-entry free-entry past-entry').addClass('free-entry');
 		$('#fitness-calendar-table > tbody > tr > td').off('click');
-		bindingClickToCalendarEntries();
 		markActualDayInCalendar();
 	}
 	
@@ -138,10 +182,10 @@ var FitnessCalendar = function(){
 	}
 	
 	function calendarEntryClick(element){
-		element.removeClass('reserved-entry entry-inbasket today-entry free-entry');
-		indexOfDay=(weekday.indexOf(element.attr('class')) - 1);
-		indexOfDayWithModulo=getModulo(indexOfDay, 7);
-		hour = element.parent().attr('class').replace("hours-", "");
+		var dayClassName=element.attr('class').split(' ')[0];
+		var indexOfDay=(weekday.indexOf(dayClassName) - 1);
+		var indexOfDayWithModulo=getModulo(indexOfDay, 7);
+		var hour = element.parent().attr('class').replace("hours-", "");
 		trainingDate = new Date(new Date(actualPageMonday.getTime()+ oneDay*indexOfDayWithModulo).setHours(hour, 0, 0, 0));
 		
 		if(!forTrainer){
@@ -160,7 +204,6 @@ var FitnessCalendar = function(){
 	
 	function bindingClickToTrainerManageModalSubmit(){
 		$('#trainerManageModalSubmit').on('click', function(){
-			var trainingDate=new Date($('#trainerManageModalTimeSpan').html());
 			$.ajax({
 				url: defaultUrl+'edzo/vakacio',
 				type: 'POST',
@@ -168,7 +211,6 @@ var FitnessCalendar = function(){
 					trainingDate: trainingDate.getTime()
 				}),
 				success: function(data) {
-					console.log(data);
 					setTrainersTrainingsOnCalendar($('#trainers-selector .active').data('username'));
 				}
 			});
