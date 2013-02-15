@@ -16,6 +16,9 @@
 		</li>
 	  </#if>
 	</ul>
+	<div id="membershipNotValid">
+	
+	</div>
 	<table class="table span6">
 	<thead>
 		<tr>

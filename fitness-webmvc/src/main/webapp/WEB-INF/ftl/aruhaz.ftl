@@ -62,7 +62,7 @@
 	</div>
 <#else>
 	<div class="alert alert-warning">
-		<span>Nincs edző a rendszerben.</span>
+		<span>Nincs termék a rendszerben.</span>
 	</div>
 </#if>
 </@template.masterTemplate>
