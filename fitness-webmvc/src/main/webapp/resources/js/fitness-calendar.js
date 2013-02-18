@@ -1,12 +1,13 @@
 var FitnessCalendar = function(){
-	
 	var forTrainer=false;
 	var oneDay = 1000*60*60*24;
 	var today = new Date();
 	var actualPageMonday = getActualPageMonday();
+	var actualPageSunday = new Date();
 	var weekday=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	var monthNames = [ "Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December" ];
 	var defaultUrl=$('#defaultUrl').val();
+	var trainingDate = new Date();
 	
 	function init(calendarDivClassName){
 		generateFitnessCalendarTable(calendarDivClassName);
@@ -34,6 +35,9 @@ var FitnessCalendar = function(){
 	}
 	
 	function renderTrainingsOnCalendar(data, username){
+		markPastCalendarEntries();
+		bindingClickToCalendarEntriesAfterToday();
+		
 		if(data.orderedTrainings.length>0){
 			for(var i=0;i<data.orderedTrainings.length;++i){
 				var timeDetails= getTrainingTimeDetails(data.orderedTrainings[i].trainingStartDate);
@@ -47,15 +51,57 @@ var FitnessCalendar = function(){
 			for(var i=0;i<data.trainingsInBasket.length;++i){
 				var timeDetails= getTrainingTimeDetails(data.trainingsInBasket[i].trainingStartDate);
 				if(isDateOnActualWeek(timeDetails.trainingDate) && data.trainingsInBasket[i].trainer.username==username){
-					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).css('background-color','gray').unbind('click');
+//					console.log(data.trainingsInBasket[i].trainer.username+' '+username);
+					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).removeClass('free-entry today-entry')
+						.addClass('entry-inbasket').off('click').html('<i class="icon-white icon-shopping-cart"></i>');
 				}
 			}
 		}
 	}
 	
+	function bindingClickToCalendarEntriesAfterToday(){
+		//entries on the future's weeks
+		if(actualPageMonday.getTime()>today.getTime()){
+			bindingClickToCalendarEntries();
+		}
+		//actual week
+		else if(isDateOnActualWeek(today)){
+			if(today.getDay()>0){
+				for(var i=(today.getDay()+1);i<weekday.length;i++){
+					$('#fitness-calendar-table > tbody > tr > td.'+weekday[i]).on('click', function(){
+						calendarEntryClick($(this));
+					});
+				}
+				$('#fitness-calendar-table > tbody > tr > td.'+weekday[0]).on('click', function(){
+					calendarEntryClick($(this));
+				});
+			}
+		}
+	}
+	
+	function markPastCalendarEntries(){
+		var actualPageSundayLastSec=new Date(actualPageSunday.getTime()+oneDay-10);
+		
+		//entries on the past's weeks
+		if(actualPageSundayLastSec.getTime()<today.getTime()){
+			$('#fitness-calendar-table > tbody > tr > td').addClass('past-entry');
+		}
+		//actual week
+		else if(isDateOnActualWeek(today)){
+				var limit=today.getDay();
+				if(today.getDay()==0){
+					limit=weekday.length;
+				}
+				
+				for(var i=1;i<limit;i++){
+					entry=$('#fitness-calendar-table > tbody > tr > td.'+weekday[i]).addClass('past-entry');
+				}
+		}
+	}
+	
 	function modifyReservedCalendarEntry(calendarEntry, client){
 		calendarEntry.off('click');
-		calendarEntry.addClass('reserved-entry');
+		calendarEntry.removeClass('free-entry today-entry').addClass('reserved-entry').html('<i class="icon-white icon-lock"></i>');
 		if(forTrainer){
 			calendarEntry.html('<b>'+client.fullName+'</b>');
 		}
@@ -74,17 +120,12 @@ var FitnessCalendar = function(){
 	}
 	
 	function isDateOnActualWeek(date){
-		return date.getTime()>=actualPageMonday && date.getTime()<=actualPageSunday.getTime();
+		return date.getTime()>=actualPageMonday.getTime() && date.getTime()<actualPageSunday.getTime()+oneDay;
 	}
 	
 	function clearCalendar(){
-		$('#fitness-calendar-table > tbody > tr > td').html('').removeClass('reserved-entry');
-		
+		$('#fitness-calendar-table > tbody > tr > td').html('').removeClass('reserved-entry entry-inbasket today-entry free-entry past-entry').addClass('free-entry');
 		$('#fitness-calendar-table > tbody > tr > td').off('click');
-		$('#fitness-calendar-table > tbody > tr > td').on('click', function(){
-			calendarEntryClick($(this));
-		});
-		
 		markActualDayInCalendar();
 	}
 	
@@ -115,7 +156,7 @@ var FitnessCalendar = function(){
 	
 	function markActualDayInCalendar(){
 		if(actualPageMonday.getMonth() == thisMonday.getMonth() && actualPageMonday.getDate() == thisMonday.getDate()) {
-			$('.' + weekday[today.getDay()]).css('background-color', "#fcf8e3");
+			$('.' + weekday[today.getDay()]).addClass('today-entry');
 		}
 	}
 	
@@ -141,23 +182,47 @@ var FitnessCalendar = function(){
 	}
 	
 	function calendarEntryClick(element){
-		indexOfDay=(weekday.indexOf(element.attr('class')) - 1);
-		indexOfDayWithModulo=getModulo(indexOfDay, 7);
-		hour = element.parent().attr('class').replace("hours-", "");
+		var dayClassName=element.attr('class').split(' ')[0];
+		var indexOfDay=(weekday.indexOf(dayClassName) - 1);
+		var indexOfDayWithModulo=getModulo(indexOfDay, 7);
+		var hour = element.parent().attr('class').replace("hours-", "");
 		trainingDate = new Date(new Date(actualPageMonday.getTime()+ oneDay*indexOfDayWithModulo).setHours(hour, 0, 0, 0));
 		
 		if(!forTrainer){
 			newTraining(trainingDate, defaultUrl+'edzesek/ujedzes', $this);
 		}
 		else{
-			trainerManageCalendarEntry();
+			manageCalendarEntry(trainingDate);
 		}
 	}
 	
-	function trainerManageCalendarEntry(){
-		$('#newTrainingModal h3').html('Válasszon opciót!');
-		$('#newTrainingModal .modal-body').html('<h4>Felveszi szabadnapként?</h4>');
-		$('#newTrainingModal').modal('show');
+	function manageCalendarEntry(trainingDate){
+		$('#trainerManageModalTimeSpan').html(formatDate(trainingDate));
+		$('#trainerManageModal-hour').click();
+		$('#trainerManageModal').modal('show');
+	}
+	
+	function bindingClickToTrainerManageModalSubmit(){
+		$('#trainerManageModalSubmit').on('click', function(){
+			$.ajax({
+				url: defaultUrl+'edzo/vakacio',
+				type: 'POST',
+				data: ({
+					trainingDate: trainingDate.getTime()
+				}),
+				success: function(data) {
+					setTrainersTrainingsOnCalendar($('#trainers-selector .active').data('username'));
+				}
+			});
+			$('#trainerManageModal').modal('hide');
+		});
+	}
+	
+	function bindingClickToCalendarEntries(){
+		$('#fitness-calendar-table > tbody > tr > td').on('click', function(e){
+			var element=$(this);
+			calendarEntryClick(element);
+		});
 	}
 	
 	function bindingClickEventToCalendarButtons(){
@@ -179,11 +244,10 @@ var FitnessCalendar = function(){
 			setTrainersNameAndCalendarEntries();
 		});
 		
-		$('#fitness-calendar-table > tbody > tr > td').on('click', function(e){
-			$this=$(this);
-			calendarEntryClick($this);
-		});
+		bindingClickToCalendarEntries();
+		bindingClickToTrainerManageModalSubmit();
 	}
+	
 	
 	function generateFitnessCalendarTable(calendarDivClassName) {
 		
@@ -223,7 +287,7 @@ var FitnessCalendar = function(){
 	}
 	
 	function generateNewTrainingModal(){
-		var modal='<div id="newTrainingModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+		var newTrainingModal='<div id="newTrainingModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
 					+ '<div class="modal-header">'
 						+ '<h3 id="myModalLabel">Kosárba helyezi az edzést?</h3>'
 					+ '</div>'
@@ -243,7 +307,25 @@ var FitnessCalendar = function(){
 					+ '</form>'
 				+'</div>';
 		
-		return modal;
+		var trainerManageModal='<div id="trainerManageModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="trainerManageModalLabel" aria-hidden="true">'
+			+ '<div class="modal-header">'
+				+ '<h3 id="trainerManageModalLabel">Elfoglaltság felvétele</h3>'
+			+ '</div>'
+				+ '<div class="modal-body">'
+				+ '<div style="padding:4px;"><b>Időpont: <span id="trainerManageModalTimeSpan"></span></b></div>'
+				+ '<div class="btn-group" data-toggle="buttons-radio">'
+					+ '<button type="button" id="trainerManageModal-hour" class="btn btn-warning">Adott órára</button>'
+					+ '<button type="button" id="trainerManageModal-allday" class="btn btn-warning">Egész nap</button>'
+				+ '</div>'
+				+ '</div>'
+				+ '<div class="modal-footer">'
+					+ '<button id="trainerManageModalSubmit" class="btn btn-danger" type="button">Felvesz</button>'
+					+ '<button id="trainerManageModalHideButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Mégse</button>'
+				+'</div>'
+			+ '</form>'
+		+'</div>';
+		
+		return newTrainingModal + trainerManageModal;
 	}
 	
 	return {

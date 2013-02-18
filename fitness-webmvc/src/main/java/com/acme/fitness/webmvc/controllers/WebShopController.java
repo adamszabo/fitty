@@ -3,7 +3,6 @@ package com.acme.fitness.webmvc.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.plugins.bmp.BMPImageWriteParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,8 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
-import com.acme.fitness.domain.orders.Basket;
-import com.acme.fitness.domain.orders.OrderItem;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.orders.GeneralOrdersService;
@@ -104,12 +101,6 @@ public class WebShopController {
 		return "redirect:/aruhaz/";
 	}
 	
-	@RequestMapping(value="kosar/torol/hianyzotermek")
-	public String removeMissingProductsFromBasket(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println(request.getAttribute("missingProduct"));
-		return "redirect:/aruhaz/";
-	}
-
 	@RequestMapping(value = "/anonymKosar/torles")
 	public String deleteAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
@@ -121,6 +112,18 @@ public class WebShopController {
 	@RequestMapping(value = "/anonymKosar/hozzaad")
 	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
+		return "redirect:/aruhaz";
+	}
+	
+	@RequestMapping(value = "/hianyzo/max")
+	public String addMissingProductMaxQuantityToBasket(HttpServletRequest request, HttpServletResponse response) {
+		basketManager.updateMissingProductToMaxValue(request, response, new ObjectMapper());
+		return "redirect:/aruhaz";
+	}
+	
+	@RequestMapping(value = "/hianyzo/torol")
+	public String removeMissingProductsFromBasket(HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeProductsFromBasket(request, response, new ObjectMapper());
 		return "redirect:/aruhaz";
 	}
 
@@ -145,7 +148,7 @@ public class WebShopController {
 			}
 		}
 		redirectAttributes.addFlashAttribute("missingProduct", stores);
-		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
+		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség a raktáron. További információk az alábbi linken!");
 	}
 
 	private List<Product> getProductsOnPage(int pageNumber) {

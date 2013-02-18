@@ -83,9 +83,14 @@ body li a {
 
 #fitness-calendar-table {
 	border-collapse: collapse;
+	background-color: #e6e6e6;
 }
 
+#fitness-calendar-table th{
+	background-color: white;
 }
+
+
 #fitness-calendar-table thead tr th {
 	overflow: hidden;
 }
@@ -97,9 +102,26 @@ body li a {
 }
 
 #fitness-calendar-table tbody tr td:HOVER{
-	background-color: #f5f5f5 !important;
+/* 	background-color: #f5f5f5 !important; */
+	opacity: 0.3;
 }
 
 .reserved-entry{
-	background: #AD5958 !important;
+	background-color: #AD5958 !important;
+}
+
+.free-entry{
+	background-color: white !important;
+}
+
+.entry-inbasket{
+	background-color: #51a351 !important;	
+}
+
+.today-entry{
+	background-color: #fcf8e3 !important;
+}
+.past-entry{
+/* 	background-color: gray !important;	 */
+	opacity: 0.5;
 }

@@ -70,6 +70,25 @@ $(document).ready(function() {
 	
 	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
+	$('#missesModal #max-quantity-button').on('click', function() {
+		$form = $(this).closest('form')[0];
+		$form.action += "aruhaz/hianyzo/max";
+		$form.submit();
+	});
+	
+	$('#missesModal #delete-missing-products-button').on('click', function() {
+		$form = $(this).closest('form')[0];
+		$form.action += "aruhaz/hianyzo/torol";
+		$form.submit();
+	});
+	
+	$('#missesModal #delete-basket-button').on('click', function() {
+		$form = $(this).closest('form')[0];
+		$form.action += "aruhaz/1/deleteBasket";
+		$form.submit();
+	});
+	
+	
 	// /admin/jogosultsagok userDelete confirm dialog
 	$('#deleteUserConfirmButton').on("click", function(){
 		$form=document.getElementById(deleteUserFormId);
@@ -217,7 +236,6 @@ $(document).ready(function() {
 			
 			var selectedTrainerUsername=$this.data('username');
 			var forTrainer=isLoggedInTrainerCalendarSelected(selectedTrainerUsername);
-			console.log('isLoggedInTrainerCalendarSelected: '+isLoggedInTrainerCalendarSelected(selectedTrainerUsername));
 			
 			FitnessCalendar.setForTrainer(forTrainer);
 			FitnessCalendar.setTrainersTrainingsOnCalendar(selectedTrainerUsername);

@@ -3,18 +3,17 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
 
-<@tags.errorMessage />
+	<#if message?exists>
+		<div class="alert alert-block">
+	  	<button type="button" class="close" data-dismiss="alert">x</button>
+	  		<h4>Hiba!</h4>
+			${message} <a class="btn btn-primary" href="#missesModal" data-toggle="modal">Hiányzó termékek</a>
+		</div>
+	</#if>
+	
 <#if products?size != 0>
 	<@tags.basketDialog "/aruhaz/${pageNumber}/confirmBasket"/>
 	<@tags.basketMergingDialog />
-	
-	<ul class="nav nav-pills">
-	  <#if missingProduct?exists>
-		<li>
-		  	<a href="#missesModal" data-toggle="modal">Hiányzó termékek</a>
-		</li>
-	  </#if>
-	</ul>
 
 	<div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%">
 	<ul class="thumbnails">

@@ -318,10 +318,12 @@
 		</table>
 	  </div>
 	  <div class="modal-footer">
-	  	<form action="<@spring.url relativeUrl="/raktar/kosar/torol/hianyzotermek"/>">
-	  		<button class="btn" type="submit">
+	  	<form action="<@spring.url relativeUrl="/"/>">
+	  		<button id="max-quantity-button" class="btn btn-success" type="button">Max mennyiség</button>
+	  		<button id="delete-missing-products-button" class="btn btn-warning" type="button">Termékek törlése</button>
+	  		<button id="delete-basket-button" class="btn btn-danger" type="button">Egész kosár törlése</button>
+		    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Bezárás</button>
 	  	</form>
-	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
 	  </div>
 	</div>
 	</#if>
