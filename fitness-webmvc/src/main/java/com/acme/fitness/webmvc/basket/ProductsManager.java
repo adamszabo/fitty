@@ -82,6 +82,14 @@ public class ProductsManager extends ItemManager {
 		writeMapToCookie(response, mapper, "userNames", users);
 		return users;
 	}
+	
+	public void addOrderItemToList(Map<String, Map<String, String>> basket, Map<String, String> anonymousProducts) {
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+		for (String s : anonymousProducts.keySet()) {
+			addOrderItem(Long.parseLong(s), Integer.parseInt(anonymousProducts.get(s)), products);
+		}
+		basket.put("productsInBasket", products);
+	}
 
 	private void removeProductFromTheUserSpecificMap(long id, HttpServletRequest request, HttpServletResponse response, String userName) {
 		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());

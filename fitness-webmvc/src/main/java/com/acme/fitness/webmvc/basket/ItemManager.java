@@ -31,7 +31,7 @@ public abstract class ItemManager {
 
 	public abstract void loadBasketWithItem(Map<String, String> item, Basket basket);
 
-	protected <T> Map<String, T> readFromCookies(HttpServletRequest request, ObjectMapper mapper, String cookieName) {
+	public <T> Map<String, T> readFromCookies(HttpServletRequest request, ObjectMapper mapper, String cookieName) {
 		return cookieManager.loadValueToMap(request, mapper, cookieName);
 	}
 
@@ -39,11 +39,11 @@ public abstract class ItemManager {
 		cookieManager.writeMapToCookie(response, mapper, cookieName, map);
 	}
 	
-	protected Map<String, Map<String, Map<String, String>>> loadUserNamesCookieValue(HttpServletRequest request, ObjectMapper mapper) {
+	public Map<String, Map<String, Map<String, String>>> loadUserNamesCookieValue(HttpServletRequest request, ObjectMapper mapper) {
 		return userManager.loadUserNamesCookieValue(request, mapper, cookieManager);
 	}
 
-	protected Map<String, Map<String, String>> loadBasketByUserName(Map<String, Map<String, Map<String, String>>> users, String userName) {
+	public Map<String, Map<String, String>> loadBasketByUserName(Map<String, Map<String, Map<String, String>>> users, String userName) {
 		return users.containsKey(userName) ? users.get(userName) : new HashMap<String, Map<String, String>>();
 	}
 

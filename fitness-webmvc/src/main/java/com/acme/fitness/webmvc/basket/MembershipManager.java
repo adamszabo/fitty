@@ -72,6 +72,10 @@ public class MembershipManager extends ItemManager {
 			writeMapToCookie(response, new ObjectMapper(), "userNames", users);
 		}
 	}
+	
+	public void addMembershipToList(Map<String, Map<String, String>> basket, Map<String, String> anonymousProducts) {
+		basket.put("membershipsInBasket", anonymousProducts);
+	}
 
 	private void addMapToCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, Map<String, String> memeberships) {
 		String userName = userManager.getLoggedInUserName();
