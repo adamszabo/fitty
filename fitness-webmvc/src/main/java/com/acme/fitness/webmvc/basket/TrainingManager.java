@@ -74,18 +74,24 @@ public class TrainingManager extends ItemManager {
 			writeMapToCookie(response, new ObjectMapper(), "userNames", users);
 		}
 	}
+	
+	public void removeAnonymousTrainingFromCookiesByTrainerName(HttpServletResponse response, HttpServletRequest request, String trainerName) {
+		Map<String, String> trainings = readFromCookies(request, new ObjectMapper(), "trainingsInBasket");
+		trainings.remove(trainerName);
+		writeMapToCookie(response, new ObjectMapper(), "trainingsInBasket", trainings);
+	}
 
-	private void addMapToCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, Map<String, String> memeberships) {
+	private void addMapToCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, Map<String, String> trainings) {
 		String userName = userManager.getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
-			writeMapToCookie(response, mapper, "trainingsInBasket", memeberships);
+			writeMapToCookie(response, mapper, "trainingsInBasket", trainings);
 		} else {
 			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, mapper);
 			Map<String, Map<String, String>> basket = new HashMap<String, Map<String, String>>();
 			if (users.containsKey(userName)) {
 				basket = users.get(userName);
 			}
-			basket.put("trainingsInBasket", memeberships);
+			basket.put("trainingsInBasket", trainings);
 			users.put(userName, basket);
 			writeMapToCookie(response, mapper, "userNames", users);
 		}
@@ -123,5 +129,9 @@ public class TrainingManager extends ItemManager {
 		Training training = gps.newTraining(trainer, client, new Date(Long.parseLong(date)));
 		basket.addTraining(training);
 		training.setBasket(basket);
+	}
+
+	public void addTrainingToList(Map<String, Map<String, String>> basket, Map<String, String> anonymousTrainings) {
+		basket.put("trainingsInBasket", anonymousTrainings);
 	}
 }

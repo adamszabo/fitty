@@ -1,5 +1,6 @@
 package com.acme.fitness.webmvc.basket;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.orders.OrderItem;
+import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
@@ -25,7 +27,7 @@ public class ProductsManager extends ItemManager {
 
 	@Autowired
 	private GeneralOrdersService gos;
-	
+
 	@Autowired
 	private UserManager um;
 
@@ -65,7 +67,8 @@ public class ProductsManager extends ItemManager {
 		}
 	}
 
-	private Map<String, Map<String, Map<String, String>>> addOrderItemListToUserCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper, String userName) {
+	private Map<String, Map<String, Map<String, String>>> addOrderItemListToUserCookie(HttpServletResponse response, HttpServletRequest request, ObjectMapper mapper,
+			String userName) {
 		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, mapper);
 		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
 		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
@@ -78,6 +81,14 @@ public class ProductsManager extends ItemManager {
 		users.put(userName, basket);
 		writeMapToCookie(response, mapper, "userNames", users);
 		return users;
+	}
+	
+	public void addOrderItemToList(Map<String, Map<String, String>> basket, Map<String, String> anonymousProducts) {
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+		for (String s : anonymousProducts.keySet()) {
+			addOrderItem(Long.parseLong(s), Integer.parseInt(anonymousProducts.get(s)), products);
+		}
+		basket.put("productsInBasket", products);
 	}
 
 	private void removeProductFromTheUserSpecificMap(long id, HttpServletRequest request, HttpServletResponse response, String userName) {
@@ -146,5 +157,43 @@ public class ProductsManager extends ItemManager {
 		if (products.containsKey(Long.toString(id))) {
 			products.remove(Long.toString(id));
 		}
+	}
+
+	public void updateProductsToMaxQuantity(String userName, List<Product> missingProduct, HttpServletRequest request, HttpServletResponse response, ObjectMapper objectMapper) {
+		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, objectMapper);
+		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+
+		for (Product p : missingProduct) {
+			Store s = null;
+			try {
+				s = gos.getStoreByProduct(p);
+			} catch (FitnessDaoException e) {
+				e.printStackTrace();
+			}
+			if (s.getQuantity() > 0) {
+				products.put(String.valueOf(p.getId()), String.valueOf(s.getQuantity()));
+			} else {
+				products.remove(String.valueOf(p.getId()));
+			}
+		}
+
+		basket.put("productsInBasket", products);
+		users.put(userName, basket);
+		writeMapToCookie(response, objectMapper, "userNames", users);
+	}
+
+	public void removeProductsFromBasket(String userName, List<Product> missingProduct, HttpServletRequest request, HttpServletResponse response, ObjectMapper objectMapper) {
+		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, objectMapper);
+		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
+		Map<String, String> products = loadProductsByProductType(basket, "productsInBasket");
+
+		for (Product p : missingProduct) {
+			products.remove(String.valueOf(p.getId()));
+		}
+
+		basket.put("productsInBasket", products);
+		users.put(userName, basket);
+		writeMapToCookie(response, objectMapper, "userNames", users);
 	}
 }

@@ -201,9 +201,9 @@
 							<td>${training.trainingStartDate?string("yyyy.MM.dd HH:mm")}</td>
 							<td>
 								<#if nameInString = "anonymousBasket">
-									<a href="<@spring.url relativeUrl="/edzesek/torles/anonymous/${training.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									<a href="<@spring.url relativeUrl="/edzesek/torles/anonymous/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
 									<#else>
-									<a href="<@spring.url relativeUrl="/edzesek/torles/${training.id}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									<a href="<@spring.url relativeUrl="/edzesek/torles/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
 								</#if>
 							</td>
 						</tr>
@@ -301,16 +301,29 @@
 					<#assign iterate = iterate +1>
 					<tr>
 						<td>${iterate}</td>
-						<td>${item.name}</td>
-						<td>${item.manufacturer}</td>
-						<td>${item.price}</td>
+						<td>${item.product.name}</td>
+						<td>${item.product.manufacturer}</td>
+						<td>${item.product.price}</td>
+						<td>
+							<#list basket["orderItems"] as orderItem>
+								<#if orderItem.product.id == item.product.id>
+									${orderItem.quantity}
+								</#if>
+							</#list>
+						</td>
+						<td>${item.quantity}</td>
 					</tr>
 				</#list>
 			</tbody>
 		</table>
 	  </div>
 	  <div class="modal-footer">
-	    <button class="btn" data-dismiss="modal" aria-hidden="true">Bezárás</button>
+	  	<form action="<@spring.url relativeUrl="/"/>">
+	  		<button id="max-quantity-button" class="btn btn-success" type="button">Max mennyiség</button>
+	  		<button id="delete-missing-products-button" class="btn btn-warning" type="button">Termékek törlése</button>
+	  		<button id="delete-basket-button" class="btn btn-danger" type="button">Egész kosár törlése</button>
+		    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Bezárás</button>
+	  	</form>
 	  </div>
 	</div>
 	</#if>

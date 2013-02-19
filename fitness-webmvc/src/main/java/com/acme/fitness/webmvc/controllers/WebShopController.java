@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.BasketCheckOutException;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
+import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.basket.BasketManager;
 
@@ -28,22 +31,19 @@ public class WebShopController {
 
 	@Autowired
 	private GeneralProductsService gps;
+	
+	@Autowired
+	private GeneralOrdersService gos;
 
 	@Autowired
 	private BasketManager basketManager;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String aruhaz() {
+	@RequestMapping(value={"", "/",}, method=RequestMethod.GET)
+	public String defaultPage(Model model, HttpServletResponse response, HttpServletRequest request) {
 		return "redirect:/aruhaz/1";
 	}
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String aruhazWithSlash() {
-		return "redirect:/aruhaz/1";
-
-	}
-
-	@RequestMapping(value = "/{page}", method = RequestMethod.GET)
+	
+	@RequestMapping(value="/{page}", method = RequestMethod.GET)
 	public String setPage(Model model, @PathVariable String page, HttpServletResponse response, HttpServletRequest request) {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		basketManager.isAnonymousBasketIfUserLoggedIn(request, response, new ObjectMapper());
@@ -53,9 +53,9 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}/addToCart", method = RequestMethod.POST)
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
-			HttpServletRequest request) {
+			HttpServletRequest request, Model model) {
 		basketManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
-		return "redirect:/aruhaz/" + page;
+		return "redirect:/aruhaz";
 	}
 
 	@RequestMapping(value = "/deleteBasket", method = RequestMethod.GET)
@@ -82,6 +82,7 @@ public class WebShopController {
 			basketManager.checkOutBasket(response, request);
 		} catch (StoreQuantityException e) {
 			addMissingProductsMessages(redirectAttributes, e.getProduct());
+			return "redirect:/aruhaz/1";
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(page, redirectAttributes);
 		}
@@ -100,7 +101,7 @@ public class WebShopController {
 		basketManager.removeAnonymousProduct(productId, request, response);
 		return "redirect:/aruhaz/";
 	}
-
+	
 	@RequestMapping(value = "/anonymKosar/torles")
 	public String deleteAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
@@ -112,6 +113,18 @@ public class WebShopController {
 	@RequestMapping(value = "/anonymKosar/hozzaad")
 	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
+		return "redirect:/aruhaz";
+	}
+	
+	@RequestMapping(value = "/hianyzo/max")
+	public String addMissingProductMaxQuantityToBasket(HttpServletRequest request, HttpServletResponse response) {
+		basketManager.updateMissingProductToMaxValue(request, response, new ObjectMapper());
+		return "redirect:/aruhaz";
+	}
+	
+	@RequestMapping(value = "/hianyzo/torol")
+	public String removeMissingProductsFromBasket(HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeProductsFromBasket(request, response, new ObjectMapper());
 		return "redirect:/aruhaz";
 	}
 
@@ -127,8 +140,16 @@ public class WebShopController {
 	}
 
 	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {
-		redirectAttributes.addFlashAttribute("missingProduct", list);
-		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség. További információk a hiányzó termékek linken!");
+		List<Store> stores = new ArrayList<Store>();
+		for(Product p : list) {
+			try {
+				stores.add(gos.getStoreByProduct(p));
+			} catch (FitnessDaoException e) {
+				e.printStackTrace();
+			}
+		}
+		redirectAttributes.addFlashAttribute("missingProduct", stores);
+		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség a raktáron. További információk az alábbi linken!");
 	}
 
 	private List<Product> getProductsOnPage(int pageNumber) {
