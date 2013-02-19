@@ -1,5 +1,6 @@
 package com.acme.fitness.products.simple;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -89,5 +90,22 @@ public class SimpleTrainingService implements TrainingService {
 	@Override
 	public List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday) {
 		return trainingDao.getTrainingsOnWeekByTrainer(trainer, monday);
+	}
+
+	@Override
+	public void goOnHolidayToAllDay(User trainer, Date date) {
+		Calendar trainingTime=Calendar.getInstance();
+		trainingTime.setTime(date);
+		
+		for(int i=0;i<24;i++){
+			trainingTime.set(Calendar.HOUR_OF_DAY, i);
+			goOnHolidayIfNotReserved(trainer, trainingTime.getTime());
+		}
+	}
+
+	private void goOnHolidayIfNotReserved(User trainer, Date trainingDate) {
+		if(!trainingDao.isDateReserved(trainer, trainingDate)){
+			goOnHoliday(trainer, trainingDate);
+		}
 	}
 }

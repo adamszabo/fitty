@@ -30,326 +30,326 @@ public class SimpleGeneralProductsServiceTest {
 	private static final String TEST_STRING = "TESTSTRING";
 
 	private SimpleGeneralProductsService underTest;
-	
+
 	@Mock
 	private ProductService productService;
-	
+
 	@Mock
 	private Product product;
-	
+
 	@Mock
 	private User user;
-	
+
 	@Mock
 	private Basket basket;
-	
+
 	@Mock
 	private Membership membership;
-	
+
 	@Mock
 	private Training training;
-	
+
 	@Mock
 	private MembershipType membershipType;
-	
+
 	@Mock
 	private MembershipService membershipService;
-	
+
 	@Mock
 	private TrainingService trainingService;
-	
+
 	@Mock
 	private ProductImage productImage;
-	
+
 	@Mock
 	private MembershipTypeService membershipTypeService;
-	
+
 	@Mock
 	private ProductImageService imageService;
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		underTest=new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService, imageService);
+		underTest = new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService, imageService);
 	}
-	
+
 	@Test
-	public void testAddProductShouldReturnProperly(){
+	public void testAddProductShouldReturnProperly() {
 		// GIVEN
-		Date date=new Date();
+		Date date = new Date();
 		BDDMockito.given(productService.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage)).willReturn(product);
 		// WHEN
-		Product result=underTest.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage);
+		Product result = underTest.addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage);
 		// THEN
 		BDDMockito.verify(productService).addProduct(TEST_STRING, TEST_STRING, 0, TEST_STRING, date, productImage);
 		Assert.assertEquals(product, result);
 	}
-	
+
 	@Test
-	public void testDeleteProductShouldReturnProperly(){
+	public void testDeleteProductShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.deleteProduct(product);
 		// THEN
 		BDDMockito.verify(productService).deleteProduct(product);
 	}
-	
+
 	@Test
-	public void testUpdateProductShouldReturnProperly(){
+	public void testUpdateProductShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.updateProduct(product);
 		// THEN
 		BDDMockito.verify(productService).updateProduct(product);
 	}
-	
+
 	@Test
-	public void testGetAllProductShouldReturnProperly(){
+	public void testGetAllProductShouldReturnProperly() {
 		// GIVEN
-		List<Product> expected=new ArrayList<Product>();
+		List<Product> expected = new ArrayList<Product>();
 		BDDMockito.given(productService.getAllProducts()).willReturn(expected);
 		// WHEN
-		List<Product> result=underTest.getAllProduct();
+		List<Product> result = underTest.getAllProduct();
 		// THEN
 		BDDMockito.verify(productService).getAllProducts();
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testGetProductsByNameShouldReturnProperly(){
+	public void testGetProductsByNameShouldReturnProperly() {
 		// GIVEN
-		List<Product> expected=new ArrayList<Product>();
+		List<Product> expected = new ArrayList<Product>();
 		BDDMockito.given(productService.getProductsByName(Mockito.anyString())).willReturn(expected);
 		// WHEN
-		List<Product> result=underTest.getProductsByName(Mockito.anyString());
+		List<Product> result = underTest.getProductsByName(Mockito.anyString());
 		// THEN
 		BDDMockito.verify(productService).getProductsByName(Mockito.anyString());
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testGetProductsByManufacturerShouldReturnProperly(){
+	public void testGetProductsByManufacturerShouldReturnProperly() {
 		// GIVEN
-		List<Product> expected=new ArrayList<Product>();
+		List<Product> expected = new ArrayList<Product>();
 		BDDMockito.given(productService.getProductsByManufacturer(Mockito.anyString())).willReturn(expected);
 		// WHEN
-		List<Product> result=underTest.getProductsByManufacturer(Mockito.anyString());
+		List<Product> result = underTest.getProductsByManufacturer(Mockito.anyString());
 		// THEN
 		BDDMockito.verify(productService).getProductsByManufacturer(Mockito.anyString());
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testGetProductsByPriceIntervalShouldReturnProperly(){
+	public void testGetProductsByPriceIntervalShouldReturnProperly() {
 		// GIVEN
-		List<Product> expected=new ArrayList<Product>();
+		List<Product> expected = new ArrayList<Product>();
 		BDDMockito.given(productService.getProductsByPriceInterval(Mockito.anyDouble(), Mockito.anyDouble())).willReturn(expected);
 		// WHEN
-		List<Product> result=underTest.getProductsByPriceInterval(Mockito.anyDouble(), Mockito.anyDouble());
+		List<Product> result = underTest.getProductsByPriceInterval(Mockito.anyDouble(), Mockito.anyDouble());
 		// THEN
 		BDDMockito.verify(productService).getProductsByPriceInterval(Mockito.anyDouble(), Mockito.anyDouble());
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testGoOnHolidayShouldInvokeTheRightMethod() {
-		//GIVEN
+		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
-		//WHEN
+		// WHEN
 		underTest.goOnHoliday(trainer, date);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingService).goOnHoliday(trainer, date);
 	}
-	
+
 	@Test
-	public void testNewTrainingShouldReturnProperly(){
+	public void testNewTrainingShouldReturnProperly() {
 		// GIVEN
-		Date date=new Date();
+		Date date = new Date();
 		BDDMockito.given(trainingService.newTraining(user, user, date)).willReturn(training);
 		// WHEN
-		Training result=underTest.newTraining(user, user, date);
+		Training result = underTest.newTraining(user, user, date);
 		// THEN
 		BDDMockito.verify(trainingService).newTraining(user, user, date);
 		Assert.assertEquals(training, result);
 	}
-	
+
 	@Test
-	public void testDeleteTrainingShouldReturnProperly(){
+	public void testDeleteTrainingShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.deleteTraining(training);
 		// THEN
 		BDDMockito.verify(trainingService).deleteTraining(training);
 	}
-	
+
 	@Test
-	public void testUpdateTrainingShouldReturnProperly(){
+	public void testUpdateTrainingShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.updateTraining(training);
 		// THEN
 		BDDMockito.verify(trainingService).updateTraining(training);
 	}
-	
+
 	@Test
-	public void testRecordTrainingResultsShouldReturnProperly(){
+	public void testRecordTrainingResultsShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.recordTrainingResults(training, 0, TEST_STRING);
 		// THEN
 		BDDMockito.verify(trainingService).recordTrainingResults(training, 0, TEST_STRING);
 	}
-	
+
 	@Test
-	public void testGetTrainingsByTrainerShouldReturnProperly(){
+	public void testGetTrainingsByTrainerShouldReturnProperly() {
 		// GIVEN
-		List<Training> expected=new ArrayList<Training>();
+		List<Training> expected = new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsByTrainer(user)).willReturn(expected);
 		// WHEN
-		List<Training> result=underTest.getTrainingsByTrainer(user);
+		List<Training> result = underTest.getTrainingsByTrainer(user);
 		// THEN
 		BDDMockito.verify(trainingService).getTrainingsByTrainer(user);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testGetTrainingsByClientShouldReturnProperly(){
+	public void testGetTrainingsByClientShouldReturnProperly() {
 		// GIVEN
-		List<Training> expected=new ArrayList<Training>();
+		List<Training> expected = new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsByClient(user)).willReturn(expected);
 		// WHEN
-		List<Training> result=underTest.getTrainingsByClient(user);
+		List<Training> result = underTest.getTrainingsByClient(user);
 		// THEN
 		BDDMockito.verify(trainingService).getTrainingsByClient(user);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testGetTrainingsByBasketShouldReturnProperly(){
+	public void testGetTrainingsByBasketShouldReturnProperly() {
 		// GIVEN
-		List<Training> expected=new ArrayList<Training>();
+		List<Training> expected = new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsByBasket(basket)).willReturn(expected);
 		// WHEN
-		List<Training> result=underTest.getTrainingsByBasket(basket);
+		List<Training> result = underTest.getTrainingsByBasket(basket);
 		// THEN
 		BDDMockito.verify(trainingService).getTrainingsByBasket(basket);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testIsDateReservedShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
 		BDDMockito.given(trainingService.isDateReserved(trainer, date)).willReturn(true);
-		//WHEN
+		// WHEN
 		boolean actual = underTest.isDateReserved(trainer, date);
-		//THEN
+		// THEN
 		Assert.assertEquals(true, actual);
 		BDDMockito.verify(trainingService).isDateReserved(trainer, date);
 	}
-	
+
 	@Test
 	public void testGetTrainingsOnWeekByTrainerShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
 		List<Training> trainings = new ArrayList<Training>();
 		BDDMockito.given(trainingService.getTrainingsOnWeekByTrainer(trainer, date)).willReturn(trainings);
-		//WHEN
+		// WHEN
 		List<Training> actual = underTest.getTrainingsOnWeekByTrainer(trainer, date);
-		//THEN
+		// THEN
 		Assert.assertEquals(trainings, actual);
 		BDDMockito.verify(trainingService).getTrainingsOnWeekByTrainer(trainer, date);
 	}
-	
+
 	@Test
-	public void testNewMembershipShouldReturnProperly(){
+	public void testNewMembershipShouldReturnProperly() {
 		// GIVEN
-		Date date=new Date();
+		Date date = new Date();
 		BDDMockito.given(membershipService.newMemberShip(true, TEST_STRING, 0, date, date, 10.0)).willReturn(membership);
 		// WHEN
-		Membership result=underTest.newMemberShip(true, TEST_STRING, 0, date, date, 10.0);
+		Membership result = underTest.newMemberShip(true, TEST_STRING, 0, date, date, 10.0);
 		// THEN
 		BDDMockito.verify(membershipService).newMemberShip(true, TEST_STRING, 0, date, date, 10.0);
 		Assert.assertEquals(membership, result);
 	}
-	
+
 	@Test
-	public void testDeleteMembershipShouldReturnProperly(){
+	public void testDeleteMembershipShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.deleteMembership(membership);
 		// THEN
 		BDDMockito.verify(membershipService).deleteMembership(membership);
 	}
-	
+
 	@Test
-	public void testUpdateMembershipShouldReturnProperly(){
+	public void testUpdateMembershipShouldReturnProperly() {
 		// GIVEN
 		// WHEN
 		underTest.updateMembership(membership);
 		// THEN
 		BDDMockito.verify(membershipService).updateMembership(membership);
 	}
-	
+
 	@Test
-	public void testIsValidMembershipShouldReturnProperly(){
+	public void testIsValidMembershipShouldReturnProperly() {
 		// GIVEN
-		Date date=new Date();
+		Date date = new Date();
 		// WHEN
 		underTest.isValid(membership, date);
 		// THEN
 		BDDMockito.verify(membershipService).isValid(membership, date);
 	}
-	
+
 	@Test
-	public void testGetMembershipByIdWhenHasResultShouldReturnProperly() throws FitnessDaoException{
+	public void testGetMembershipByIdWhenHasResultShouldReturnProperly() throws FitnessDaoException {
 		// GIVEN
 		BDDMockito.given(membershipService.getMembershipById(Mockito.anyLong())).willReturn(membership);
 		// WHEN
-		Membership result=underTest.getMembershipById(Mockito.anyLong());
+		Membership result = underTest.getMembershipById(Mockito.anyLong());
 		// THEN
 		BDDMockito.verify(membershipService).getMembershipById(Mockito.anyLong());
 		Assert.assertEquals(membership, result);
 	}
-	
-	@Test(expected=FitnessDaoException.class)
-	public void testGetMembershipByIdWhenDoesNotHaveResultShouldReturnProperly() throws FitnessDaoException{
+
+	@Test(expected = FitnessDaoException.class)
+	public void testGetMembershipByIdWhenDoesNotHaveResultShouldReturnProperly() throws FitnessDaoException {
 		// GIVEN
 		BDDMockito.given(membershipService.getMembershipById(Mockito.anyLong())).willThrow(new FitnessDaoException());
 		// WHEN
-		Membership result=underTest.getMembershipById(Mockito.anyLong());
+		Membership result = underTest.getMembershipById(Mockito.anyLong());
 		// THEN
 		BDDMockito.verify(membershipService).getMembershipById(Mockito.anyLong());
 		Assert.assertEquals(membership, result);
 	}
-	
+
 	@Test
 	public void testGetMembershipByBasketShouldReturnProperly() {
 		// GIVEN
-		List<Membership> expected=new ArrayList<Membership>();
+		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(membershipService.getMembershipByBasket(basket)).willReturn(expected);
 		// WHEN
-		List<Membership> result=underTest.getMembershipByBasket(basket);
+		List<Membership> result = underTest.getMembershipByBasket(basket);
 		// THEN
 		BDDMockito.verify(membershipService).getMembershipByBasket(basket);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testGetMembershipByUserShouldReturnProperly() {
 		// GIVEN
-		List<Membership> expected=new ArrayList<Membership>();
+		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(membershipService.getMembershipByUser(user)).willReturn(expected);
 		// WHEN
-		List<Membership> result=underTest.getMembershipByUser(user);
+		List<Membership> result = underTest.getMembershipByUser(user);
 		// THEN
 		BDDMockito.verify(membershipService).getMembershipByUser(user);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testMembershipIncreaseClientEntriesShouldReturnProperly() {
 		// GIVEN
@@ -358,7 +358,7 @@ public class SimpleGeneralProductsServiceTest {
 		// THEN
 		BDDMockito.verify(membershipService).increaseClientEntries(membership);
 	}
-	
+
 	@Test
 	public void testNewMembershipTypeShouldReturnProperly() {
 		// GIVEN
@@ -369,111 +369,121 @@ public class SimpleGeneralProductsServiceTest {
 		BDDMockito.verify(membershipTypeService).newMembershipType(TEST_STRING, true, 1, 1, 1.0);
 		Assert.assertEquals(membershipType, result);
 	}
-	
+
 	@Test
 	public void testSaveMembershipTypeShouldInvokeTheRightMethod() {
-		//WHEN
+		// WHEN
 		underTest.saveMembershipType(membershipType);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipTypeService).saveMembershipType(membershipType);
 	}
-	
+
 	@Test
 	public void testDeleteMembershipTypeShouldInvokeTheRightMethod() {
-		//WHEN
+		// WHEN
 		underTest.deleteMembershipType(membershipType);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipTypeService).deleteMembershipType(membershipType);
 	}
-	
+
 	@Test
 	public void testUpdateMembershipTypeShouldInvokeTheRightMethod() {
-		//WHEN
+		// WHEN
 		underTest.updateMembershipType(membershipType);
-		//THEn
+		// THEn
 		BDDMockito.verify(membershipTypeService).updateMembershipType(membershipType);
 	}
-	
+
 	@Test
 	public void testGetMembershipTypeByIdShouldReturnProperlyWhenTheIdExists() throws FitnessDaoException {
-		//GIVEN
+		// GIVEN
 		BDDMockito.given(membershipTypeService.getMembershipTypeById(1L)).willReturn(membershipType);
-		//WHEN
+		// WHEN
 		MembershipType result = underTest.getMembershipTypeById(1L);
-		//THEN
+		// THEN
 		Assert.assertEquals(result, membershipType);
 		BDDMockito.verify(membershipTypeService).getMembershipTypeById(1L);
 	}
-	
-	@Test(expected=FitnessDaoException.class)
+
+	@Test(expected = FitnessDaoException.class)
 	public void testGetMembershipTypeByIdShouldThrowExpcetionWhenTheIdDoesntExist() throws FitnessDaoException {
-		//GIVEN
+		// GIVEN
 		BDDMockito.given(membershipTypeService.getMembershipTypeById(1L)).willThrow(new FitnessDaoException());
-		//WHEN
+		// WHEN
 		underTest.getMembershipTypeById(1L);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipTypeService).getMembershipTypeById(1L);
 	}
-	
+
 	@Test
 	public void testGetAllMembershipTypesShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		List<MembershipType> expected = new ArrayList<MembershipType>();
 		expected.add(membershipType);
 		BDDMockito.given(membershipTypeService.getAllMembershipTypes()).willReturn(expected);
-		//WHEN
+		// WHEN
 		List<MembershipType> result = underTest.getAllMembershipTypes();
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipTypeService).getAllMembershipTypes();
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testValidMembershipsByUserShouldReturnProperly() {
-		//GIVEN
-		Date date=new Date();
+		// GIVEN
+		Date date = new Date();
 		List<Membership> expected = new ArrayList<Membership>();
 		BDDMockito.given(membershipService.getValidMembershipsByUser(user, date)).willReturn(expected);
-		//WHEN
+		// WHEN
 		List<Membership> result = underTest.getValidMembershipsByUser(user, date);
-		//THEN
+		// THEN
 		BDDMockito.verify(membershipService).getValidMembershipsByUser(user, date);
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testGetAllProductImageShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		List<ProductImage> expected = new ArrayList<ProductImage>();
 		BDDMockito.given(imageService.getAllProductImages()).willReturn(expected);
-		//WHEN
+		// WHEN
 		List<ProductImage> result = underTest.getAllProductImage();
-		//THEN
+		// THEN
 		BDDMockito.verify(imageService).getAllProductImages();
 		Assert.assertEquals(expected, result);
 	}
-	
+
 	@Test
 	public void testGetProductImageByIdShouldReturnProperly() throws FitnessDaoException {
-		//GIVEN
-		ProductImage expected=new ProductImage();
+		// GIVEN
+		ProductImage expected = new ProductImage();
 		BDDMockito.given(imageService.getProductImageById(1L)).willReturn(expected);
-		//WHEN
+		// WHEN
 		ProductImage result = underTest.getProductImageById(1L);
-		//THEN
+		// THEN
+		BDDMockito.verify(imageService).getProductImageById(1L);
+		Assert.assertEquals(expected, result);
+	}
+
+	@Test(expected = FitnessDaoException.class)
+	public void testGetProductImageByIdShouldThrowExceptionWhenTheImageDoesNotExists() throws FitnessDaoException {
+		// GIVEN
+		ProductImage expected = new ProductImage();
+		BDDMockito.given(imageService.getProductImageById(1L)).willThrow(new FitnessDaoException());
+		// WHEN
+		ProductImage result = underTest.getProductImageById(1L);
+		// THEN
 		BDDMockito.verify(imageService).getProductImageById(1L);
 		Assert.assertEquals(expected, result);
 	}
 	
-	@Test(expected=FitnessDaoException.class)
-	public void testGetProductImageByIdShouldThrowExceptionWhenTheImageDoesNotExists() throws FitnessDaoException {
-		//GIVEN
-		ProductImage expected=new ProductImage();
-		BDDMockito.given(imageService.getProductImageById(1L)).willThrow(new FitnessDaoException());
-		//WHEN
-		ProductImage result = underTest.getProductImageById(1L);
-		//THEN
-		BDDMockito.verify(imageService).getProductImageById(1L);
-		Assert.assertEquals(expected, result);
+	@Test
+	public void testGoOnHolidayToAllDayShouldReturnProperly() {
+		// GIVEN
+		Date date=new Date();
+		// WHEN
+		underTest.goOnHolidayToAllDay(user, date);
+		// THEN
+		BDDMockito.verify(trainingService, BDDMockito.times(1)).goOnHolidayToAllDay(user, date);
 	}
 }

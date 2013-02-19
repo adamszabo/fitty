@@ -222,8 +222,7 @@ $(document).ready(function() {
 			var selectedTrainerUsername=$this.data('username');
 			var forTrainer=isLoggedInTrainerCalendarSelected(selectedTrainerUsername);
 			
-			FitnessCalendar.setForTrainer(forTrainer);
-			FitnessCalendar.setTrainersTrainingsOnCalendar(selectedTrainerUsername);
+			FitnessCalendar.setTrainersNameAndCalendarEntries(selectedTrainerUsername, forTrainer);
 		});
 		$('#trainers-selector .trainer-name-li:first').click();
 	}

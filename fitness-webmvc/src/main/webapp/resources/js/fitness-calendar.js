@@ -8,18 +8,21 @@ var FitnessCalendar = function(){
 	var monthNames = [ "Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December" ];
 	var defaultUrl=$('#defaultUrl').val();
 	var trainingDate = new Date();
+	var username="";
 	
 	function init(calendarDivClassName){
 		generateFitnessCalendarTable(calendarDivClassName);
 		setDates();
 		bindingClickEventToCalendarButtons();
 	}
-
-	function setForTrainer(isForTrainer){
-		forTrainer=isForTrainer;
-	}
 	
-	function setTrainersTrainingsOnCalendar(username){
+	function setTrainersNameAndCalendarEntries(userName, isForTrainer){
+		username=userName;
+		forTrainer=isForTrainer;
+		setTrainersTrainingsOnCalendar();
+	}
+
+	function setTrainersTrainingsOnCalendar(){
 		$.ajax({
 			url: defaultUrl+'edzesek/edzo/naptar',
 			type: 'POST',
@@ -29,15 +32,14 @@ var FitnessCalendar = function(){
 			}),
 			success: function(data) {
 					clearCalendar();
+					markPastCalendarEntries();
+					bindingClickToCalendarEntriesAfterToday();
 					renderTrainingsOnCalendar(data, username);
 			}
 		});
 	}
 	
 	function renderTrainingsOnCalendar(data, username){
-		markPastCalendarEntries();
-		bindingClickToCalendarEntriesAfterToday();
-		
 		if(data.orderedTrainings.length>0){
 			for(var i=0;i<data.orderedTrainings.length;++i){
 				var timeDetails= getTrainingTimeDetails(data.orderedTrainings[i].trainingStartDate);
@@ -102,8 +104,11 @@ var FitnessCalendar = function(){
 	function modifyReservedCalendarEntry(calendarEntry, client){
 		calendarEntry.off('click');
 		calendarEntry.removeClass('free-entry today-entry').addClass('reserved-entry').html('<i class="icon-white icon-lock"></i>');
-		if(forTrainer){
+		if(forTrainer && client.username!=username){
 			calendarEntry.html('<b>'+client.fullName+'</b>');
+		}
+		else if(forTrainer && client.username==username){
+			calendarEntry.html('Szabadság');
 		}
 	}
 	
@@ -134,7 +139,7 @@ var FitnessCalendar = function(){
 		$('#newTrainingModalTrainer').html(selectedLi.children(":first").html());
 		$('#newTrainingModalDateTD').html(formatDate(date));
 		$('#training-date').val(date);
-		$('#trainer-username').val(selectedLi.data('username'));
+		$('#trainer-username').val(username);
 		$('#newTrainingModal').modal('show');
 	}
 	
@@ -176,11 +181,6 @@ var FitnessCalendar = function(){
 		return ((number%mod)+mod)%mod;
 	}
 	
-	function setTrainersNameAndCalendarEntries(){
-		username=$('#trainers-selector .active').data('username');
-		setTrainersTrainingsOnCalendar(username);
-	}
-	
 	function calendarEntryClick(element){
 		var dayClassName=element.attr('class').split(' ')[0];
 		var indexOfDay=(weekday.indexOf(dayClassName) - 1);
@@ -204,17 +204,56 @@ var FitnessCalendar = function(){
 	
 	function bindingClickToTrainerManageModalSubmit(){
 		$('#trainerManageModalSubmit').on('click', function(){
-			$.ajax({
-				url: defaultUrl+'edzo/vakacio',
-				type: 'POST',
-				data: ({
-					trainingDate: trainingDate.getTime()
-				}),
-				success: function(data) {
-					setTrainersTrainingsOnCalendar($('#trainers-selector .active').data('username'));
-				}
-			});
+			var vacationRadioButton=$('#trainerManageModal button.active').data('time');
+			if(vacationRadioButton=="hour"){
+				addHourToVacation();
+				$('#trainerManageModal').modal('hide');
+			}
+			else if(vacationRadioButton=="all-day"){
+				addAllDayToVacation();
+			}
+		});
+	}
+	
+	function addAllDayToVacation(){
+		var timeDetails=getTrainingTimeDetails(trainingDate);
+		var numberOfReservedEntries=$('#fitness-calendar-table > tbody > tr > td.reserved-entry.'+timeDetails.trainingDayName).length;
+		if(numberOfReservedEntries>0 && $('#trainerModalWarning').css('display')=='none'){
+			$('#trainerModalWarning').fadeIn('fast');
+		}
+		else{
+			goOnHolidayAllDay();
 			$('#trainerManageModal').modal('hide');
+		}
+		
+		$('#trainerManageModal').on('hide', function(){
+			$('#trainerModalWarning').css('display','none');
+		});
+	}
+	
+	function addHourToVacation(){
+		$.ajax({
+			url: defaultUrl+'edzo/vakacio',
+			type: 'POST',
+			data: ({
+				trainingDate: trainingDate.getTime()
+			}),
+			success: function(data) {
+				setTrainersTrainingsOnCalendar();
+			}
+		});
+	}
+	
+	function goOnHolidayAllDay(){
+		$.ajax({
+			url: defaultUrl+'edzo/vakacioNap',
+			type: 'POST',
+			data: ({
+				trainingDate: trainingDate.getTime()
+			}),
+			success: function(data) {
+				setTrainersTrainingsOnCalendar();
+			}
 		});
 	}
 	
@@ -229,19 +268,19 @@ var FitnessCalendar = function(){
 		$('#prev-week').on('click', function() {
 			actualPageMonday.setTime(actualPageMonday.getTime() - oneDay*7);
 			setDates();
-			setTrainersNameAndCalendarEntries();
+			setTrainersTrainingsOnCalendar();
 		});
 		
 		$('#next-week').on('click', function() {
 			actualPageMonday.setTime(actualPageMonday.getTime() + oneDay*7);
 			setDates();
-			setTrainersNameAndCalendarEntries();
+			setTrainersTrainingsOnCalendar();
 		});
 		
 		$('#this-week').on('click', function() {
 			actualPageMonday.setTime(actualDatesMonday(today).getTime());
 			setDates();
-			setTrainersNameAndCalendarEntries();
+			setTrainersTrainingsOnCalendar();
 		});
 		
 		bindingClickToCalendarEntries();
@@ -276,7 +315,15 @@ var FitnessCalendar = function(){
 			}
 			tbody += '</tr>';
 		}
-		tbody += '</tbody>';
+		
+		var notation='<tr><th id="notation-th" colspan="8">'
+							+ '<div class="notation-div free-entry">&nbsp;</div><span>szabad időpont</span> <div class="notation-div today-entry">&nbsp;</div><span>mai nap</span>'
+							+ '<div class="notation-div" style="background-color: rgb(223,223,223)">&nbsp;</div><span>múltbéli események</span>'
+							+ '<div class="notation-div reserved-entry"><i class="icon-white icon-lock"></i></div><span>foglalt időpont</span>'
+							+ '<div class="notation-div entry-inbasket"><i class="icon-white icon-shopping-cart"></i></i></div><span>kosárba helyezett időpont</span>'
+					+'</th></tr>';
+		
+		tbody += notation + '</tbody>';
 		
 		table += thead + tbody + '</table>'; 
 		table += generateNewTrainingModal(); 
@@ -312,11 +359,13 @@ var FitnessCalendar = function(){
 				+ '<h3 id="trainerManageModalLabel">Elfoglaltság felvétele</h3>'
 			+ '</div>'
 				+ '<div class="modal-body">'
-				+ '<div style="padding:4px;"><b>Időpont: <span id="trainerManageModalTimeSpan"></span></b></div>'
-				+ '<div class="btn-group" data-toggle="buttons-radio">'
-					+ '<button type="button" id="trainerManageModal-hour" class="btn btn-warning">Adott órára</button>'
-					+ '<button type="button" id="trainerManageModal-allday" class="btn btn-warning">Egész nap</button>'
-				+ '</div>'
+					+ '<div style="padding:4px;"><b>Időpont: <span id="trainerManageModalTimeSpan"></span></b></div>'
+					+ '<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom:6px;">'
+						+ '<button type="button" id="trainerManageModal-hour" class="btn btn-warning" data-time="hour">Adott órára</button>'
+						+ '<button type="button" id="trainerManageModal-allday" class="btn btn-warning" data-time="all-day">Egész nap</button>'
+					+ '</div>'
+					+ '<div id="trainerModalWarning" class="alert alert-warning" style="display:none;"><strong>A kijelölt napon már van foglalt időpont!</strong><br/>'
+							+'<span>Ha a felvesz gombra kattint, akkor a rendszer a kiválasztott nap szabad időpontjait foglalja le.</span></div>'
 				+ '</div>'
 				+ '<div class="modal-footer">'
 					+ '<button id="trainerManageModalSubmit" class="btn btn-danger" type="button">Felvesz</button>'
@@ -324,13 +373,12 @@ var FitnessCalendar = function(){
 				+'</div>'
 			+ '</form>'
 		+'</div>';
-		
+
 		return newTrainingModal + trainerManageModal;
 	}
 	
 	return {
 		init : init,
-		setTrainersTrainingsOnCalendar : setTrainersTrainingsOnCalendar,
-		setForTrainer : setForTrainer
+		setTrainersNameAndCalendarEntries : setTrainersNameAndCalendarEntries,
 	};
 }();

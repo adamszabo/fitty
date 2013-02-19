@@ -32,4 +32,6 @@ public interface TrainingService {
 	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
 
 	void goOnHoliday(User trainer, Date date);
+	
+	void goOnHolidayToAllDay(User trainer, Date date);
 }
