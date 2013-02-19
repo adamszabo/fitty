@@ -105,9 +105,9 @@ public class TrainingController {
 		return "redirect:/edzesek";
 	}
 
-	@RequestMapping(value = "/torles/anonymous/{trainingId}")
-	public String removeAnonymousTraining(@PathVariable long trainingId, HttpServletRequest request, HttpServletResponse response) {
-		basketManager.removeAnonymousTraining(request, response);
+	@RequestMapping(value = "/torles/anonymous/{username}")
+	public String removeAnonymousTraining(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeAnonymousTraining(request, response, username);
 		return "redirect:/edzesek";
 	}
 	

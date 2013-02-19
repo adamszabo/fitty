@@ -30,4 +30,6 @@
 	<script src="<@spring.url relativeUrl="/resources/js/fitness-calendar.js"/>"></script>
 	
 	<script src="<@spring.url relativeUrl="/resources/js/jquery.selectBoxIt.js"/>"></script>
+	
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCwSFeY_IgGT75hyovNzFeHRALmsJ9YhLQ&sensor=false"></script>
 </#macro>

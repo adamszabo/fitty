@@ -125,3 +125,12 @@ body li a {
 /* 	background-color: gray !important;	 */
 	opacity: 0.5;
 }
+
+#googleMap img {
+	max-width: none;
+}
+
+.contact-page .hero-unit {
+	padding:20px !important;
+	margin-bottom:20px !important;
+}

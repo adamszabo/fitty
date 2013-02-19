@@ -181,7 +181,16 @@
 				<#assign sum = sum + membership.price>
 			</#list>
 			<h5>Edzések</h5>
-			
+			<#list basket.trainings as training>
+				<div class="basketModalRow">
+					${training.trainer.username} ${training.trainingStartDate?date} (ID:${training.id})
+					<div style="float:right;">
+						5000<b> HUF</b>
+					</div>
+				</div>
+				<#assign sum = sum + 5000>
+			</#list>
+						
 			<div class="basketModalRow">
 				<b>Összesen:</b>
 				<div style="float:right;">

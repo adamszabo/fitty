@@ -182,8 +182,8 @@ public class BasketManager {
 		cookieManager.removeTheCookieByName(request, response, "membershipsInBasket");
 	}
 
-	public void removeAnonymousTraining(HttpServletRequest request, HttpServletResponse response) {
-		cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
+	public void removeAnonymousTraining(HttpServletRequest request, HttpServletResponse response, String username) {
+		tm.removeAnonymousTrainingFromCookiesByTrainerName(response, request, username);
 	}
 
 	private boolean isAnonymousBasketContainsItem(Basket anonymousBasket) {

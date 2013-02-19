@@ -30,6 +30,7 @@
 										<@security.authorize access="isAnonymous()">
 											<li><a id="registrationButton">Regisztráció</a></li>
 										</@security.authorize>
+										<li><a href="<@spring.url relativeUrl="/kapcsolatok"/>">Kapcsolat</a></li>
                                     </ul>
                                     <div style="float:right;">
                                     	<@security.authorize access="isAnonymous()">
