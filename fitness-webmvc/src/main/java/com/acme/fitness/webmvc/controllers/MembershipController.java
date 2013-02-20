@@ -39,7 +39,7 @@ public class MembershipController {
 	@RequestMapping("/ujberlet")
 	public String newMembership(@RequestParam("membershipId") long membershipId, HttpServletResponse response, HttpServletRequest request) {
 		bm.addNewMembership(membershipId, response, request, new ObjectMapper());
-		return "redirect:/berletek";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping("/megrendel")
@@ -51,32 +51,37 @@ public class MembershipController {
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(redirectAttributes);
 		}
-		return "redirect:/berletek";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping("/kosartorles")
 	public String deleteBasket(HttpServletRequest request, HttpServletResponse response, Model model) {
 		bm.deleteBasket(request, response);
 		addMembershipTypesToModel(model);
-		return "berletek";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping("/torles/{membershipId}")
 	public String deleteMembership(@PathVariable long membershipId, HttpServletRequest request, HttpServletResponse response) {
 		bm.removeMembershipFromBasket(request, response);
-		return "redirect:/berletek";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/torles/anonymous/{productId}")
 	public String removeAnonymousProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
 		bm.removeAnonymousMembership(request, response);
-		return "redirect:/aruhaz/";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping("/anonymKosar/hozzaad")
 	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
 		bm.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
-		return "redirect:/berletek";
+		return "redirect:" + redirectedFrom(request);
+	}
+	
+	private String redirectedFrom(HttpServletRequest request) {
+		String split[] = request.getHeader("referer").split(request.getContextPath());
+		return split[1];
 	}
 
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {

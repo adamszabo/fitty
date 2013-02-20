@@ -77,8 +77,7 @@ public class TrainingController {
 			HttpServletRequest request) {
 		basketManager.addNewTraining(username, String.valueOf(trainingDate.getTime()), response, request, new ObjectMapper());
 		logger.info("Training add to basket with trainer:" + username + " , date: " + trainingDate);
-		
-		return "redirect:/edzesek";
+		return "redirect:" + redirectedFrom(request);
 	}
 	
 	@RequestMapping(value = "/rendel")
@@ -90,25 +89,30 @@ public class TrainingController {
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(redirectAttributes);
 		}
-		return "redirect:/edzesek";
+		return "redirect:" + redirectedFrom(request);
 	}
 	
 	@RequestMapping("/anonymKosar/hozzaad")
 	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
-		return "redirect:/edzesek";
+		return "redirect:" + redirectedFrom(request);
 	}
 	
 	@RequestMapping("/torles/{trainerName}")
 	public String deleteTraining(@PathVariable String trainerName, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeTrainingFromBasket(request, response, trainerName);
-		return "redirect:/edzesek";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/torles/anonymous/{username}")
 	public String removeAnonymousTraining(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeAnonymousTraining(request, response, username);
-		return "redirect:/edzesek";
+		return "redirect:" + redirectedFrom(request);
+	}
+	
+	private String redirectedFrom(HttpServletRequest request) {
+		String split[] = request.getHeader("referer").split(request.getContextPath());
+		return split[1];
 	}
 	
 	private String failToCheckOut(RedirectAttributes redirectAttributes) {
