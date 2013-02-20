@@ -217,4 +217,9 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 		return imageService.getProductImageById(id);
 	}
 
+	@Override
+	public void goOnHolidayToAllDay(User trainer, Date date) {
+		trainingService.goOnHolidayToAllDay(trainer, date);
+	}
+
 }

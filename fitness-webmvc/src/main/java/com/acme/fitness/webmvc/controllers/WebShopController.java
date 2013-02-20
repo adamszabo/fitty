@@ -65,7 +65,8 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
-		basketManager.deleteBasket(request, response);
+//		basketManager.deleteBasket(request, response);
+		System.out.println(request.getHeader("referer"));
 		loadPageNumberAndProducts(model, page);
 		return "aruhaz";
 	}

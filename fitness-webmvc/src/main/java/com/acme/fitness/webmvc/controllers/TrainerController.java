@@ -1,7 +1,6 @@
 package com.acme.fitness.webmvc.controllers;
 
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -22,33 +21,56 @@ import com.acme.fitness.webmvc.user.UserManager;
 @Controller
 @RequestMapping("/edzo")
 public class TrainerController {
-	private static Logger logger=LoggerFactory.getLogger(TrainingController.class);
-	
+	private static Logger logger = LoggerFactory.getLogger(TrainingController.class);
+
 	private GeneralProductsService generalProductsService;
 	private GeneralUsersService generalUsersService;
 	private UserManager userManager;
-	
+
 	@Autowired
-	public TrainerController(GeneralProductsService generalProductsService, UserManager userManager, GeneralUsersService generalUsersService){
-		this.generalProductsService=generalProductsService;
-		this.userManager=userManager;
-		this.generalUsersService=generalUsersService;
+	public TrainerController(GeneralProductsService generalProductsService, UserManager userManager, GeneralUsersService generalUsersService) {
+		this.generalProductsService = generalProductsService;
+		this.userManager = userManager;
+		this.generalUsersService = generalUsersService;
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="/vakacio",method=RequestMethod.POST)
-	public String addVacation(HttpServletRequest request, @RequestParam("trainingDate") long dateInMS){
-		Date trainingDate=new Date(dateInMS);
-		String actualUserName=userManager.getLoggedInUserName();
-		
+	@RequestMapping(value = "/vakacio", method = RequestMethod.POST)
+	public boolean addVacation(HttpServletRequest request, @RequestParam("trainingDate") long dateInMS) {
+		boolean result=false;
+		Date trainingDate = new Date(dateInMS);
+		String actualUserName = userManager.getLoggedInUserName();
+
 		try {
-			User user=generalUsersService.getUserByUsername(actualUserName);
+			User user = generalUsersService.getUserByUsername(actualUserName);
 			generalProductsService.goOnHoliday(user, trainingDate);
-			logger.info("Vacation for: "+actualUserName+" with date: "+trainingDate);
+			logger.info("Vacation for: " + actualUserName + " with date: " + trainingDate);
+			result=true;
 		} catch (FitnessDaoException e) {
 			e.printStackTrace();
+			result=false;
 		}
-		
-		return "valami VAKÁCIÓ!!! Dátum: "+trainingDate;
+
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/vakacioNap", method = RequestMethod.POST)
+	public boolean getTrainerAllTrainingsOnDay(HttpServletRequest request, @RequestParam("trainingDate") long dateInMS) {
+		boolean result=false;
+		Date trainingDate = new Date(dateInMS);
+		String actualUserName = userManager.getLoggedInUserName();
+
+		try {
+			User user = generalUsersService.getUserByUsername(actualUserName);
+			 generalProductsService.goOnHolidayToAllDay(user, trainingDate);
+			logger.info("All day vacation for: " + actualUserName + " with date: " + trainingDate);
+			result=true;
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+			result=false;
+		}
+
+		return result;
 	}
 }

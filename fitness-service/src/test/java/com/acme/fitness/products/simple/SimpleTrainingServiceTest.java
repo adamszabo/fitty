@@ -18,18 +18,18 @@ import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
 public class SimpleTrainingServiceTest {
-	
+
 	private SimpleTrainingService underTest;
-	
+
 	@Mock
 	private TrainingDao trainingDao;
-	
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		underTest = new SimpleTrainingService(trainingDao);
 	}
-	
+
 	@Test
 	public void testNewTrainingShouldInvokeTheMethodRight() {
 		// GIVEN
@@ -57,45 +57,45 @@ public class SimpleTrainingServiceTest {
 		// THEN
 		BDDMockito.verify(trainingDao).save(expectedTraining);
 	}
-	
+
 	@Test
 	public void testAddTrainingShouldInvokeTheMethodRight() {
-		//GIVEN
+		// GIVEN
 		User expectedClient = new User();
 		User expectedTrainer = new User();
 		Date expectedDate = new Date();
 		Basket expectedBasket = new Basket();
 		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, expectedBasket);
-		//WHEN
+		// WHEN
 		underTest.saveNewTraining(expectedTrainer, expectedClient, expectedDate, expectedBasket);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingDao).save(expectedTraining);
 	}
-	
+
 	@Test
 	public void testDeleteTrainingShouldInvokeTheMethodRight() {
-		//GIVEN
+		// GIVEN
 		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 0, null, new Basket());
-		//WHEN
+		// WHEN
 		underTest.deleteTraining(expectedTraining);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingDao).delete(expectedTraining);
 	}
-	
+
 	@Test
 	public void testUpdateTrainingShouldInvokeTheMethodRight() {
-		//GIVEN
+		// GIVEN
 		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 12, "review", new Basket());
-		//WHEN
+		// WHEN
 		underTest.updateTraining(expectedTraining);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingDao).update(expectedTraining);
 	}
-	
+
 	@Test
 	public void testRecordTrainingShouldInvokeTheMethodRight() {
-		//GIVEN
-		User user=new User();
+		// GIVEN
+		User user = new User();
 		Training training = new Training(user, user, new Date(), false, 0, null, new Basket());
 		int expectedBurnedCalories = 12;
 		String expectedReview = "review";
@@ -104,88 +104,114 @@ public class SimpleTrainingServiceTest {
 		expectedTraining.setBurnedCalories(expectedBurnedCalories);
 		expectedTraining.setReview(expectedReview);
 		expectedTraining.setAnalyzed(expectedAnalyzed);
-		//WHEN
+		// WHEN
 		underTest.recordTrainingResults(training, expectedBurnedCalories, expectedReview);
-		//THEN
-		
+		// THEN
+
 		BDDMockito.verify(trainingDao).update(expectedTraining);
 	}
-	
+
 	@Test
 	public void testGetTrainingsByTrainerShouldReturnRight() {
-		//GIVEN
+		// GIVEN
 		List<Training> expectedTrainings = new ArrayList<Training>();
 		User trainer = new User();
 		BDDMockito.given(trainingDao.getTrainingsByTrainer(trainer)).willReturn(expectedTrainings);
-		//WHEN
+		// WHEN
 		List<Training> result = underTest.getTrainingsByTrainer(trainer);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingDao).getTrainingsByTrainer(trainer);
 		Assert.assertEquals(expectedTrainings, result);
 	}
-	
+
 	@Test
 	public void testGetTrainingsByClientShouldReturnRight() {
-		//GIVEN
+		// GIVEN
 		List<Training> expectedTrainings = new ArrayList<Training>();
 		User client = new User();
 		BDDMockito.given(trainingDao.getTrainingsByClient(client)).willReturn(expectedTrainings);
-		//WHEN
+		// WHEN
 		List<Training> result = underTest.getTrainingsByClient(client);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingDao).getTrainingsByClient(client);
 		Assert.assertEquals(expectedTrainings, result);
 	}
-	
+
 	@Test
 	public void testGetTrainingsByBasketShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		Basket basket = new Basket();
 		List<Training> expectedTrainings = new ArrayList<Training>();
 		BDDMockito.given(trainingDao.getTrainingsByOrder(basket)).willReturn(expectedTrainings);
-		//WHEN
+		// WHEN
 		List<Training> result = underTest.getTrainingsByBasket(basket);
-		//THEN
+		// THEN
 		Assert.assertEquals(expectedTrainings, result);
 		BDDMockito.verify(trainingDao).getTrainingsByOrder(basket);
 	}
-	
+
 	@Test
 	public void testIsDateReservedShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
 		BDDMockito.given(trainingDao.isDateReserved(trainer, date)).willReturn(true);
-		//WHEN
+		// WHEN
 		boolean actual = underTest.isDateReserved(trainer, date);
-		//THEN
+		// THEN
 		Assert.assertEquals(true, actual);
 		BDDMockito.verify(trainingDao).isDateReserved(trainer, date);
 	}
-	
+
 	@Test
 	public void testGetTrainingsOnWeekByTrainerShouldReturnProperly() {
-		//GIVEN
+		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
 		List<Training> trainings = new ArrayList<Training>();
 		BDDMockito.given(trainingDao.getTrainingsOnWeekByTrainer(trainer, date)).willReturn(trainings);
-		//WHEN
+		// WHEN
 		List<Training> actual = underTest.getTrainingsOnWeekByTrainer(trainer, date);
-		//THEN
+		// THEN
 		Assert.assertEquals(trainings, actual);
 		BDDMockito.verify(trainingDao).getTrainingsOnWeekByTrainer(trainer, date);
 	}
-	
+
 	@Test
 	public void testGoOnHoildayShouldInvokeTheRightMethod() {
-		//GIVEN
+		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
 		Training expectedTraining = new Training(trainer, trainer, date, false, 0, null, null);
-		//WHEN
+		// WHEN
 		underTest.goOnHoliday(trainer, date);
-		//THEN
+		// THEN
 		BDDMockito.verify(trainingDao).save(expectedTraining);
+	}
+
+	@Test
+	public void testGoOnHolidayToAllDayShouldInvoceSaveNewTrainingsWhenTrainingsDateIsFree() {
+		// GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		BDDMockito.given(trainingDao.isDateReserved((User) BDDMockito.anyObject(), (Date) BDDMockito.anyObject())).willReturn(false);
+		// WHEN
+		underTest.goOnHolidayToAllDay(trainer, date);
+		// THEN
+		BDDMockito.verify(trainingDao,BDDMockito.times(24)).isDateReserved((User) BDDMockito.anyObject(), (Date) BDDMockito.anyObject());
+		BDDMockito.verify(trainingDao,BDDMockito.times(24)).save((Training) BDDMockito.anyObject());
+	}
+	
+	@Test
+	public void testGoOnHolidayToAllDayShouldNotInvoceSaveNewTrainingsWhenTrainingsDateIsReserved() {
+		// GIVEN
+		User trainer = new User();
+		Date date = new Date();
+		BDDMockito.given(trainingDao.isDateReserved((User) BDDMockito.anyObject(), (Date) BDDMockito.anyObject())).willReturn(true);
+		// WHEN
+		underTest.goOnHolidayToAllDay(trainer, date);
+		// THEN
+		BDDMockito.verify(trainingDao,BDDMockito.times(24)).isDateReserved((User) BDDMockito.anyObject(), (Date) BDDMockito.anyObject());
+		BDDMockito.verify(trainingDao,BDDMockito.times(0)).save((Training) BDDMockito.anyObject());
 	}
 }

@@ -22,6 +22,7 @@ public interface GeneralProductsService {
 	List<Product> getProductsByPriceInterval(double fromPrice, double toPrice);
 	
 	void goOnHoliday(User trainer, Date date);
+	void goOnHolidayToAllDay(User trainer, Date date);
 	Training newTraining(User trainer, User client, Date date);
 	void deleteTraining(Training training);
 	void updateTraining(Training training);
