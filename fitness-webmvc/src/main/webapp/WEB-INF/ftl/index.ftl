@@ -1,6 +1,9 @@
 <#import "/template/master-template.ftl" as template />
-
+<#import "/spring.ftl" as spring />
+<#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Kezdőlap">			
+
+	<@tags.basketDialog "/aruhaz/confirmBasket"/>
 	<div class="row">
 		<section class="span3">
 		<h1>Csatlakozz most!</h1>

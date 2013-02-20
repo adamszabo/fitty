@@ -99,9 +99,9 @@ public class TrainingController {
 		return "redirect:/edzesek";
 	}
 	
-	@RequestMapping("/torles/{trainingId}")
-	public String deleteTraining(@PathVariable long trainingId, HttpServletRequest request, HttpServletResponse response) {
-		basketManager.removeTrainingFromBasket(request, response);
+	@RequestMapping("/torles/{trainerName}")
+	public String deleteTraining(@PathVariable String trainerName, HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeTrainingFromBasket(request, response, trainerName);
 		return "redirect:/edzesek";
 	}
 

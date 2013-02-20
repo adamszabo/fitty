@@ -57,15 +57,17 @@ public class TrainingManager extends ItemManager {
 		addMapToCookie(response, request, mapper, memberships);
 	}
 
-	public void removeTraining(HttpServletResponse response, HttpServletRequest request) {
+	public void removeTraining(HttpServletResponse response, HttpServletRequest request, String trainerName) {
 		String userName = userManager.getLoggedInUserName();
 		if (userName.equals("anonymousUser")) {
-			new CookieManager().removeTheCookieByName(request, response, "trainingsInBasket");
+			removeAnonymousTrainingFromCookiesByTrainerName(response, request, trainerName);
 		} else {
 			Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
 			Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
-			if (users.containsKey(userName)) {
-				basket = users.get(userName);
+			Map<String, String> trainings = loadProductsByProductType(basket, "trainingsInBasket");
+			
+			trainings.remove(trainerName);
+			if(trainings.size() == 0) {
 				basket.remove("trainingsInBasket");
 			}
 			if (basket.size() == 0) {

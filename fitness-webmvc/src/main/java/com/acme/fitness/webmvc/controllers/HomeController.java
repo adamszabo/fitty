@@ -1,6 +1,5 @@
 package com.acme.fitness.webmvc.controllers;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -60,7 +59,6 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) {
 		bm.addBasketToSessionIfExists(request, response, new ObjectMapper());
-		
 		return "index";
 	}
 

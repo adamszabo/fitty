@@ -3,6 +3,8 @@
 <#import "/tag/tags.ftl" as tags />
 
 <@template.masterTemplate title="Kapcsolatok">
+	<@tags.basketDialog "/aruhaz/confirmBasket"/>
+	
 	<div class="row contact-page">
 		<div class="hero-unit">
 			<h2>Maradj kapcsolatban!</h2>

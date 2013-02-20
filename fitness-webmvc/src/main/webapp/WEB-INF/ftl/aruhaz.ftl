@@ -7,7 +7,7 @@
 		<div class="alert alert-block">
 	  	<button type="button" class="close" data-dismiss="alert">x</button>
 	  		<h4>Hiba!</h4>
-			${message} <a class="btn btn-primary" href="#missesModal" data-toggle="modal">Hiányzó termékek</a>
+			${message} <#if missingProduct??><a class="btn btn-primary" href="#missesModal" data-toggle="modal">Hiányzó termékek</a></#if>
 		</div>
 	</#if>
 	

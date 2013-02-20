@@ -3,6 +3,8 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Raktár">
 
+<@tags.basketDialog "/aruhaz/confirmBasket"/>
+
 <ul class="nav nav-tabs">
   <li <#if productsInStore?exists>class="active"</#if>>
     <a href="<@spring.url relativeUrl="/raktar/termek"/>">Termékek</a>

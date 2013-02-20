@@ -2,6 +2,7 @@
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
+	<@tags.basketDialog "/aruhaz/confirmBasket"/>
 	<#if checkedInUserName?? >
 		<div class="alert alert-success">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>

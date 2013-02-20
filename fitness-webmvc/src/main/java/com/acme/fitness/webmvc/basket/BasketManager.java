@@ -134,8 +134,8 @@ public class BasketManager {
 		mm.removeMembership(response, request);
 	}
 
-	public void removeTrainingFromBasket(HttpServletRequest request, HttpServletResponse response) {
-		tm.removeTraining(response, request);
+	public void removeTrainingFromBasket(HttpServletRequest request, HttpServletResponse response, String trainerName) {
+		tm.removeTraining(response, request, trainerName);
 	}
 
 	public void deleteBasket(HttpServletRequest request, HttpServletResponse response) {
