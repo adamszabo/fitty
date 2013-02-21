@@ -4,6 +4,7 @@
 <#import "/tag/tags.ftl" as tags />
 
 <@template.masterTemplate title="Jogosultságok">
+	<@tags.basketDialog "/aruhaz/confirmBasket"/>
 	<table class="table">
 		<thead>
 			<tr>

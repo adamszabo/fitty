@@ -9,10 +9,10 @@
                             <a class="btn btn-navbar" data-toggle="collapse"
                                     data-target=".nav-collapse"> <span class="icon-bar"></span> <span
                                     class="icon-bar"></span> <span class="icon-bar"></span>
-                            </a> <a class="brand" href="#">Fitness</a>
+                            </a> <a class="brand" href="<@spring.url relativeUrl="/"/>">Fitness</a>
                             <div id="navDiv" class="nav-collapse collapse">
                                     <ul class="nav">
-	                                    <li><a href="<@spring.url relativeUrl="/"/>">Kezdőlap</a></li>
+	                                    <li><a href="<@spring.url relativeUrl="/"/>"><i class="icon-home"></i></a></li>
                                     	<@security.authorize access="hasAnyRole('Client', 'ROLE_ANONYMOUS', 'Trainer')">
 	                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
 											<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
@@ -27,10 +27,10 @@
 										<@security.authorize access="hasRole('SystemAdmin')">
 											<li><a href="<@spring.url relativeUrl="/admin"/>">Jogosultsagok</a></li>
 										</@security.authorize>
+										<li><a href="<@spring.url relativeUrl="/kapcsolatok"/>">Kapcsolat</a></li>
 										<@security.authorize access="isAnonymous()">
 											<li><a id="registrationButton">Regisztráció</a></li>
 										</@security.authorize>
-										<li><a href="<@spring.url relativeUrl="/kapcsolatok"/>">Kapcsolat</a></li>
                                     </ul>
                                     <div style="float:right;">
                                     	<@security.authorize access="isAnonymous()">

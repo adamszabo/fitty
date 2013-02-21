@@ -3,6 +3,7 @@ package com.acme.fitness.webmvc.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,7 +56,7 @@ public class WebShopController {
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
 			HttpServletRequest request, Model model) {
 		basketManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
-		return "redirect:/aruhaz";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/deleteBasket", method = RequestMethod.GET)
@@ -65,10 +66,8 @@ public class WebShopController {
 
 	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
 	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		basketManager.deleteBasket(request, response);
-		System.out.println(request.getHeader("referer"));
-		loadPageNumberAndProducts(model, page);
-		return "aruhaz";
+		basketManager.deleteBasket(request, response);
+		return "redirect:"+redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/confirmBasket", method = RequestMethod.GET)
@@ -86,20 +85,19 @@ public class WebShopController {
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(page, redirectAttributes);
 		}
-		loadPageNumberAndProducts(model, page);
-		return "aruhaz";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/torles/{productId}")
 	public String removeProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeProductFromBasket(productId, request, response);
-		return "redirect:/aruhaz/";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/torles/anonymous/{productId}")
 	public String removeAnonymousProduct(@PathVariable long productId, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeAnonymousProduct(productId, request, response);
-		return "redirect:/aruhaz/";
+		return "redirect:" + redirectedFrom(request);
 	}
 	
 	@RequestMapping(value = "/anonymKosar/torles")
@@ -107,27 +105,32 @@ public class WebShopController {
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		basketManager.deleteAnonymousBasket(request, response);
 		request.getSession().removeAttribute("anonymousBasket");
-		return "redirect:/aruhaz";
+		return "redirect:" + redirectedFrom(request);
 	}
 
 	@RequestMapping(value = "/anonymKosar/hozzaad")
 	public String mergeAnonymousBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
-		return "redirect:/aruhaz";
+		return "redirect:" + redirectedFrom(request);
 	}
 	
 	@RequestMapping(value = "/hianyzo/max")
 	public String addMissingProductMaxQuantityToBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.updateMissingProductToMaxValue(request, response, new ObjectMapper());
-		return "redirect:/aruhaz";
+		return "redirect:" + redirectedFrom(request);
 	}
 	
 	@RequestMapping(value = "/hianyzo/torol")
 	public String removeMissingProductsFromBasket(HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeProductsFromBasket(request, response, new ObjectMapper());
-		return "redirect:/aruhaz";
+		return "redirect:" + redirectedFrom(request);
 	}
 
+	private String redirectedFrom(HttpServletRequest request) {
+		String split[] = request.getHeader("referer").split(request.getContextPath());
+		return split[1];
+	}
+	
 	private void loadPageNumberAndProducts(Model model, String page) {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
 		model.addAttribute("products", getProductsOnPage(pageNumber));
