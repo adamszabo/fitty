@@ -1,6 +1,8 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
+
 <@template.masterTemplate title="Áruház">
 	<@tags.basketDialog "/aruhaz/confirmBasket"/>
 	<#if checkedInUserName?? >
@@ -64,6 +66,12 @@
 				</#if>
 			</tbody>
 		</table>
+		
+		<@loadScripts.loadScripts />
+		<!-- beleptetes -->
+		<script src="<@spring.url relativeUrl="/resources/js/deliver-basketmanager.js"/>"></script>
+		<script src="<@spring.url relativeUrl="/resources/js/forPages/beleptetes.js"/>"></script>
+		
 </@template.masterTemplate>
 
 
@@ -209,4 +217,5 @@
 		</div>
 	</form>
 </div>
+
 </#macro>

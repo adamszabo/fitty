@@ -22,14 +22,10 @@
 	<script src="<@spring.url relativeUrl="/resources/js/bootstrap/bootstrap-datepicker.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/bootstrap/bootstrap-datepicker.js"/>"></script>
     
-    <script src="<@spring.url relativeUrl="/resources/js/mustache.js"/>"></script> 
 	<script src="<@spring.url relativeUrl="/resources/js/fitness-onload.js"/>"></script>
-	<script src="<@spring.url relativeUrl="/resources/js/deliver-basketmanager.js"/>"></script>
+	<script src="<@spring.url relativeUrl="/resources/js/mustache.js"/>"></script> 
+	<script src="<@spring.url relativeUrl="/resources/js/jquery.selectBoxIt.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/registration-validator.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/slimScroll.js"/>"></script>
-	<script src="<@spring.url relativeUrl="/resources/js/fitness-calendar.js"/>"></script>
 	
-	<script src="<@spring.url relativeUrl="/resources/js/jquery.selectBoxIt.js"/>"></script>
-	
-	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCwSFeY_IgGT75hyovNzFeHRALmsJ9YhLQ&sensor=false"></script>
 </#macro>

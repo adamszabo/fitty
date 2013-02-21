@@ -1,5 +1,6 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Edzések">
 <input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>
@@ -30,4 +31,10 @@
 		<div class="fitness-calendar span10"></div>
 	</div>
 </div>
+
+<@loadScripts.loadScripts />
+<!-- edzesek -->
+<script src="<@spring.url relativeUrl="/resources/js/fitness-calendar.js"/>"></script>
+<script src="<@spring.url relativeUrl="/resources/js/forPages/edzesek.js"/>"></script>
+
 </@template.masterTemplate>

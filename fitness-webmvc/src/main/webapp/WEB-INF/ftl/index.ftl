@@ -1,6 +1,8 @@
 <#import "/template/master-template.ftl" as template />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
+
 <@template.masterTemplate title="Kezdőlap">			
 
 	<@tags.basketDialog "/aruhaz/confirmBasket"/>
@@ -57,5 +59,7 @@
 			</div>
 		</section>
 	</div>
+	
+	<@loadScripts.loadScripts />
 	
 </@template.masterTemplate>

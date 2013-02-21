@@ -1,4 +1,3 @@
-<#import "/template/template-loadScripts.ftl" as loadScripts />
 <#import "/template/template-head.ftl" as head />
 <#import "/template/template-headerLayout.ftl" as header/>
 
@@ -17,8 +16,6 @@
 		<div class="container">
 			<#nested/>			
 		</div>
-	
-	    <@loadScripts.loadScripts />
 	
 	</body>
 	 

@@ -1,5 +1,6 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 
 <@template.masterTemplate title="Kapcsolatok">
@@ -37,4 +38,10 @@
 		</section>
 		<div id="init"></div>
 	</div>
+	
+	<@loadScripts.loadScripts />
+	<!-- kapcsolatok -->
+	<script src="<@spring.url relativeUrl="/resources/js/forPages/kapcsolatok.js"/>"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCwSFeY_IgGT75hyovNzFeHRALmsJ9YhLQ&sensor=false"></script>
+	
 </@template.masterTemplate>

@@ -1,5 +1,6 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 
 <@template.masterTemplate title="Jogosultságok">
@@ -50,6 +51,12 @@
 		</tbody>
 	</table>
 	
+	<@loadScripts.loadScripts />
+	<!-- jogosultsagok -->
+	<script src="<@spring.url relativeUrl="/resources/js/forPages/jogosultsagok.js"/>"></script>
+
+</@template.masterTemplate>
+
 <#macro checkedOrUnchecked value>
 	<#if value=="yes">
 		<img src="<@spring.url relativeUrl="/resources/img/checked.gif"/>">
@@ -57,4 +64,3 @@
 		<img src="<@spring.url relativeUrl="/resources/img/unchecked.gif"/>">
 	</#if>
 </#macro>
-</@template.masterTemplate>

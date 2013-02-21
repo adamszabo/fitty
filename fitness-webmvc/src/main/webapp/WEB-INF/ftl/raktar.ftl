@@ -1,5 +1,6 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Raktár">
 
@@ -107,5 +108,9 @@
 		</tbody>
 	</table>
 </#if>
+
+<@loadScripts.loadScripts />
+<!-- raktar -->
+<script src="<@spring.url relativeUrl="/resources/js/forPages/raktar.js"/>"></script>
 
 </@template.masterTemplate>
