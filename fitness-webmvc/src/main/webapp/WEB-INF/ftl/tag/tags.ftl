@@ -336,6 +336,47 @@
 	</#if>
 </#macro>
 
+<#macro reservedElements>
+	<#if reservedTraining?exists>
+	<div id="reservedModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Az alábbi edzőknek már van edzése az adott időpontban:</h3>
+	  </div>
+	  <div class="modal-body">
+	  	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Edző</th>
+					<th>Dátum</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#assign iterate = 0>
+				<#list reservedTraining as training>
+					<#assign iterate = iterate +1>
+					<tr>
+						<td>${iterate}</td>
+						<td>${training.trainer.fullName}</td>
+						<td>${training.trainingStartDate?string("yyyy.MM.dd HH:mm")}</td>>
+					</tr>
+				</#list>
+			</tbody>
+		</table>
+	  </div>
+	  <div class="modal-footer">
+	  	<form action="<@spring.url relativeUrl="/"/>">
+	  		<button id="delete-reserved-trainings-button" class="btn btn-warning" type="button">Edzések törlése</button>
+	  		<button id="delete-basket-button" class="btn btn-danger" type="button">Egész kosár törlése</button>
+		    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Bezárás</button>
+	  	</form>
+	  </div>
+	</div>
+	</#if>
+</#macro>
+
+
 <#macro confirmDialog type message confirmButtonMessage mainLabel="Figyelem!">
 	<div id="${type}ConfirmDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">

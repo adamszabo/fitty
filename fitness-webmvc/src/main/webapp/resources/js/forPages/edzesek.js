@@ -16,6 +16,18 @@ $(document).ready(function() {
 		$('#trainers-selector .trainer-name-li:first').click();
 	}
 	
+	$('#reservedModal #delete-basket-button').on('click', function() {
+		$form = $(this).closest('form')[0];
+		$form.action += "aruhaz/1/deleteBasket";
+		$form.submit();
+	});
+	
+	$('#reservedModal #delete-reserved-trainings-button').on('click', function() {
+		$form = $(this).closest('form')[0];
+		$form.action += "edzesek/torles/foglalt";
+		$form.submit();
+	});
+	
 });
 
 function isLoggedInTrainerCalendarSelected(selectedTrainerUsername){

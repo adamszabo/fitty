@@ -32,16 +32,17 @@ public class SimpleBasketService implements BasketService {
 	private TrainingService trainingService;
 	private OrderItemService orderItemService;
 	private StoreService storeService;
-	
+
 	private Logger logger = LoggerFactory.getLogger(SimpleBasketService.class);
-	
+
 	@Autowired
-	public SimpleBasketService(BasketDao basketDao, MembershipService membershipService, TrainingService trainingService, OrderItemService orderItemService, StoreService storeService){
-		this.basketDao=basketDao;
-		this.membershipService=membershipService;
-		this.trainingService=trainingService;
-		this.orderItemService=orderItemService;
-		this.storeService=storeService;
+	public SimpleBasketService(BasketDao basketDao, MembershipService membershipService, TrainingService trainingService, OrderItemService orderItemService,
+			StoreService storeService) {
+		this.basketDao = basketDao;
+		this.membershipService = membershipService;
+		this.trainingService = trainingService;
+		this.orderItemService = orderItemService;
+		this.storeService = storeService;
 	}
 
 	@Override
@@ -101,7 +102,7 @@ public class SimpleBasketService implements BasketService {
 	}
 
 	@Override
-	public void checkOutBasket(Basket basket) throws StoreQuantityException {
+	public void checkOutBasket(Basket basket) throws StoreQuantityException, TrainingDateReservedException {
 		basket.setCreationDate(new Date());
 		basketDao.save(basket);
 		saveMemberships(basket);
@@ -146,8 +147,7 @@ public class SimpleBasketService implements BasketService {
 		}
 	}
 
-	private void takeOutProduct(Basket basket, List<Product> missingProducts,
-			OrderItem o) throws FitnessDaoException {
+	private void takeOutProduct(Basket basket, List<Product> missingProducts, OrderItem o) throws FitnessDaoException {
 		Product product = o.getProduct();
 		if (storeService.takeOutProduct(product, o.getQuantity())) {
 			orderItemService.updateOrderItem(o);
@@ -158,9 +158,17 @@ public class SimpleBasketService implements BasketService {
 		}
 	}
 
-	private void saveTrainings(Basket basket) {
+	private void saveTrainings(Basket basket) throws TrainingDateReservedException {
+		List<Training> reservedTrainings = new ArrayList<Training>();
 		for (Training t : basket.getTrainings()) {
-			trainingService.saveTraining(basket, t);
+			if (!trainingService.isDateReserved(t.getTrainer(), t.getTrainingStartDate())) {
+				trainingService.saveTraining(basket, t);
+			} else {
+				reservedTrainings.add(t);
+			}
+		}
+		if (reservedTrainings.size() > 0) {
+			throw new TrainingDateReservedException(reservedTrainings);
 		}
 	}
 

@@ -9,6 +9,16 @@
 <@tags.basketDialog "/aruhaz/confirmBasket"/>
 <@tags.basketMergingDialog />
 
+	<#if reservedMessage?exists>
+		<div class="alert alert-block">
+	  	<button type="button" class="close" data-dismiss="alert">x</button>
+	  		<h4>Hiba!</h4>
+			${reservedMessage} <#if reservedTraining??><a class="btn btn-small btn-warning" href="#reservedModal" data-toggle="modal">Foglalt időpontok</a></#if>
+		</div>
+	</#if>
+	
+	<@tags.reservedElements />
+
 <div class="container-fluid">
 	<div class="row-fluid">
 			<#if trainers?exists>

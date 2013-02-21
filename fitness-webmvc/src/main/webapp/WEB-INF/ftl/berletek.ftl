@@ -8,7 +8,6 @@
 <@tags.basketMergingDialog />
 <@tags.errorMessage />
 
-
 <#if membershipTypes?size != 0>
 	<ul class="nav nav-pills">
 	  <#if missingProduct?exists>

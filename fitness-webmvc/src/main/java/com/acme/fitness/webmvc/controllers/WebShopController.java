@@ -21,7 +21,9 @@ import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
+import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.orders.GeneralOrdersService;
+import com.acme.fitness.orders.simple.TrainingDateReservedException;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.basket.BasketManager;
 
@@ -83,6 +85,9 @@ public class WebShopController {
 			return "redirect:/aruhaz/1";
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(page, redirectAttributes);
+		} catch (TrainingDateReservedException e ) {
+			addReservedTrainingsMessage(redirectAttributes, e.getReservedTrainings());
+			return "redirect:/edzesek";
 		}
 		redirectAttributes.addFlashAttribute("successCheckOut", "yeahh");
 		return "redirect:" + redirectedFrom(request);
@@ -140,6 +145,11 @@ public class WebShopController {
 	private String failToCheckOut(String page, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
 		return "redirect:/aruhaz/" + page;
+	}
+	
+	private void addReservedTrainingsMessage(RedirectAttributes redirectAttributes, List<Training> reservedTrainings) {
+		redirectAttributes.addFlashAttribute("reservedTraining", reservedTrainings);
+		redirectAttributes.addFlashAttribute("reservedMessage", "Egyes edzések időpontja már foglalt. További információk az alábbi linek");
 	}
 
 	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {

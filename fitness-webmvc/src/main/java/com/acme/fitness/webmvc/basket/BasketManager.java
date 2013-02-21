@@ -20,6 +20,7 @@ import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
+import com.acme.fitness.orders.simple.TrainingDateReservedException;
 import com.acme.fitness.users.GeneralUsersService;
 import com.acme.fitness.webmvc.controllers.WebShopController;
 import com.acme.fitness.webmvc.cookie.CookieManager;
@@ -98,7 +99,6 @@ public class BasketManager {
 			tm.addTrainingToList(basket, anonymousTrainings);
 			cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
 		}
-
 		request.getSession().removeAttribute("anonymousBasket");
 		users.put(loggedInUserName(), basket);
 		cookieManager.writeMapToCookie(response, mapper, "userNames", users);
@@ -118,6 +118,13 @@ public class BasketManager {
 				String info = "There is no enough quantity from the product above! ";
 				for (Product p : e.getProduct()) {
 					info += " " + p.getName();
+				}
+				logger.info(info);
+				throw e;
+			} catch (TrainingDateReservedException e) {
+				String info = "Trainings was reserved ago.";
+				for(Training t : e.getReservedTrainings()) {
+					info += " trainer: " + t.getTrainer() + " date: " + t.getTrainingStartDate(); 
 				}
 				logger.info(info);
 				throw e;
@@ -266,6 +273,18 @@ public class BasketManager {
 		} catch (StoreQuantityException e) {
 			pm.removeProductsFromBasket(loggedInUserName(), e.getProduct(), request, response, objectMapper);
 		} catch (BasketCheckOutException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeReservedTrainings(HttpServletRequest request, HttpServletResponse response, ObjectMapper objectMapper) {
+		try {
+			checkOutBasket(response, request);
+		} catch (TrainingDateReservedException e) {
+			tm.removeTrainingsFromBasket(loggedInUserName(), e.getReservedTrainings(), request, response, objectMapper);
+		} catch (BasketCheckOutException e) {
+			e.printStackTrace();
+		} catch (StoreQuantityException e) {
 			e.printStackTrace();
 		}
 	}

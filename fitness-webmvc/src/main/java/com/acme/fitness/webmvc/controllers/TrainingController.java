@@ -110,6 +110,12 @@ public class TrainingController {
 		return "redirect:" + redirectedFrom(request);
 	}
 	
+	@RequestMapping(value = "/torles/foglalt")
+	public String removeReservedTrainings(HttpServletRequest request, HttpServletResponse response) {
+		basketManager.removeReservedTrainings(request, response, new ObjectMapper());
+		return "redirect:" + redirectedFrom(request);
+	}
+	
 	private String redirectedFrom(HttpServletRequest request) {
 		String split[] = request.getHeader("referer").split(request.getContextPath());
 		return split[1];
