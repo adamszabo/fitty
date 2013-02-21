@@ -5,7 +5,7 @@
 <input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>
 
 <@tags.errorMessage />
-<@tags.basketDialog "/edzesek/rendel"/>
+<@tags.basketDialog "/aruhaz/confirmBasket"/>
 <@tags.basketMergingDialog />
 
 <div class="container-fluid">

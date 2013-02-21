@@ -90,6 +90,13 @@
 </#macro>
 
 <#macro basketDialog confirmPath>
+	<#if successCheckOut??>
+		<div class="alert alert-success">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Megrendelve!</strong> A kosár tartalma sikeresen megrendelve!
+        </div>
+	</#if>
+
 	<#if basket?exists>
 	<div id="basketModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">

@@ -3,7 +3,6 @@ package com.acme.fitness.webmvc.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -85,6 +84,7 @@ public class WebShopController {
 		} catch (BasketCheckOutException e) {
 			return failToCheckOut(page, redirectAttributes);
 		}
+		redirectAttributes.addFlashAttribute("successCheckOut", "yeahh");
 		return "redirect:" + redirectedFrom(request);
 	}
 

@@ -86,11 +86,11 @@ public class BasketManager {
 		Map<String, Map<String, Map<String, String>>> users = pm.loadUserNamesCookieValue(request, mapper);
 		Map<String, Map<String, String>> basket = pm.loadBasketByUserName(users, loggedInUserName());
 		
-		if (isAnonymousBasketContainsMemberships(request, response, mapper)) {
+		if (isAnonymousBasketContainsProducts(request, response, mapper)) {
 			pm.addOrderItemToList(basket, anonymousProducts);
 			cookieManager.removeTheCookieByName(request, response, "productsInBasket");
 		}
-		if (isAnonymousBasketContainsProducts(request, response, mapper)) {
+		if (isAnonymousBasketContainsMemberships(request, response, mapper)) {
 			mm.addMembershipToList(basket, anonymousMemberships);
 			cookieManager.removeTheCookieByName(request, response, "membershipsInBasket");
 		}
@@ -98,6 +98,7 @@ public class BasketManager {
 			tm.addTrainingToList(basket, anonymousTrainings);
 			cookieManager.removeTheCookieByName(request, response, "trainingsInBasket");
 		}
+
 		request.getSession().removeAttribute("anonymousBasket");
 		users.put(loggedInUserName(), basket);
 		cookieManager.writeMapToCookie(response, mapper, "userNames", users);

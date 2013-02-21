@@ -3,7 +3,7 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Bérletek">
 	
-<@tags.basketDialog "/berletek/megrendel"/>
+<@tags.basketDialog "/aruhaz/confirmBasket"/>
 <@tags.basketMergingDialog />
 <@tags.errorMessage />
 

@@ -3,6 +3,8 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
 
+
+
 	<#if message?exists>
 		<div class="alert alert-block">
 	  	<button type="button" class="close" data-dismiss="alert">x</button>
@@ -37,7 +39,7 @@
 					</dl>
 					<form class="form-search" action="<@spring.url relativeUrl="/aruhaz/${pageNumber}/addToCart"/>" method="post" style="text-align:center">
 					  <div class="input-append">
-					    <input name="quantity" type="number" class="span1 search-query" min="1" max="20" step="1" value="1">
+					    <input name="quantity" type="number" class="span1 search-query" min="1" max="20" step="1" required="required" value="1">
 					   	<input name="productId" type="hidden" value="${product.id}"> 
 					    <button type="submit" class="btn">Kosárba</button>
 					  </div>
