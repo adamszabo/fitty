@@ -1,4 +1,5 @@
 <#import "/template/master-template.ftl" as template />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/spring.ftl" as spring />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Áruház">
@@ -65,4 +66,9 @@
 		<span>Nincs termék a rendszerben.</span>
 	</div>
 </#if>
+
+<@loadScripts.loadScripts />
+<!-- aruhaz -->
+<script src="<@spring.url relativeUrl="/resources/js/forPages/aruhaz.js"/>"></script>
+
 </@template.masterTemplate>

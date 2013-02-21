@@ -153,13 +153,15 @@ var FitnessCalendar = function(){
 		}
 		actualPageSunday = new Date(actualPageMonday.getTime() + oneDay*6);
 		thisMonday = actualDatesMonday(today);
-		console.log(actualPageMonday +  '          ' + thisMonday);
+//		console.log(actualPageMonday +  '          ' + thisMonday);
 		$('#this-week-monday').html(monthNames[actualPageMonday.getMonth()] + " " + actualPageMonday.getDate());
 		$('#this-week-sunday').html(monthNames[actualPageSunday.getMonth()]+ " " + actualPageSunday.getDate());
 		
 	}
 	
 	function markActualDayInCalendar(){
+		$('#fitness-calendar-table thead tr th').removeClass('today-entry');
+		
 		if(actualPageMonday.getMonth() == thisMonday.getMonth() && actualPageMonday.getDate() == thisMonday.getDate()) {
 			$('.' + weekday[today.getDay()]).addClass('today-entry');
 		}
@@ -303,7 +305,14 @@ var FitnessCalendar = function(){
 		var thead = '<thead><tr>';
 		for(var i = 0; i < datesInJSON.header.length; i++) {
 			span = i == 0 ? "span1" : "span2";
-			thead += '<th class='+span+'>' + datesInJSON.header[i] + '</th>';
+			
+			if(i>0){
+				var dayname=weekday[getModulo(i, 7)];
+				thead += '<th class="'+dayname+' '+span+'">' + datesInJSON.header[i] + '</th>';
+			}
+			else{
+				thead += '<th class='+span+'>' + datesInJSON.header[i] + '</th>';
+			}
 		}
 		thead +='</th></thead>';
 	

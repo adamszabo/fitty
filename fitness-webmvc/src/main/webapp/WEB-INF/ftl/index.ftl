@@ -1,4 +1,5 @@
 <#import "/template/master-template.ftl" as template />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 
 <@template.masterTemplate title="Kezdőlap">			
 	<h2>Kezdőlap</h2>
@@ -10,5 +11,7 @@
 	</#list>
 	</ul>
 	Users logged in: ${size}
+	
+	<@loadScripts.loadScripts />
 	
 </@template.masterTemplate>

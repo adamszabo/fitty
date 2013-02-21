@@ -1,5 +1,6 @@
 <#import "/template/master-template.ftl" as template />
 <#import "/spring.ftl" as spring />
+<#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Bérletek">
 	
@@ -52,4 +53,9 @@
 		<span>Nincs bérlet a rendszerben.</span>
 	</div>
 </#if>
+
+<@loadScripts.loadScripts />
+<!-- berletek -->
+<script src="<@spring.url relativeUrl="/resources/js/forPages/berletek.js"/>"></script>
+
 </@template.masterTemplate>
