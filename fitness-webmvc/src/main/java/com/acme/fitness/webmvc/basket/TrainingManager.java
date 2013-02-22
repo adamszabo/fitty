@@ -2,6 +2,7 @@ package com.acme.fitness.webmvc.basket;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
+import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
@@ -135,5 +137,27 @@ public class TrainingManager extends ItemManager {
 
 	public void addTrainingToList(Map<String, Map<String, String>> basket, Map<String, String> anonymousTrainings) {
 		basket.put("trainingsInBasket", anonymousTrainings);
+	}
+
+	public void removeTrainingsFromBasket(String userName, List<Training> reservedTrainings, HttpServletRequest request, HttpServletResponse response, ObjectMapper objectMapper) {
+		Map<String, Map<String, Map<String, String>>> users = loadUserNamesCookieValue(request, new ObjectMapper());
+		Map<String, Map<String, String>> basket = loadBasketByUserName(users, userName);
+		Map<String, String> trainings = loadProductsByProductType(basket, "trainingsInBasket");
+		
+		for(String s : trainings.keySet()) {
+			for(Training t : reservedTrainings) {
+				if(s.equals(t.getTrainer().getUsername())) {
+					trainings.remove(s);
+				}
+			}
+		}
+		
+		if(trainings.size() == 0) {
+			basket.remove("trainingsInBasket");
+		}
+		if (basket.size() == 0) {
+			users.remove(userName);
+		}
+		writeMapToCookie(response, new ObjectMapper(), "userNames", users);
 	}
 }

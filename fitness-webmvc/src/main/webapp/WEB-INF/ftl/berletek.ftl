@@ -4,10 +4,9 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Bérletek">
 	
-<@tags.basketDialog "/berletek/megrendel"/>
+<@tags.basketDialog "/aruhaz/confirmBasket"/>
 <@tags.basketMergingDialog />
 <@tags.errorMessage />
-
 
 <#if membershipTypes?size != 0>
 	<ul class="nav nav-pills">
