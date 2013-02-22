@@ -3,7 +3,6 @@
 <#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Edzések">
-<input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>
 
 <@tags.errorMessage />
 <@tags.basketDialog "/edzesek/rendel"/>
