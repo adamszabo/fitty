@@ -36,7 +36,7 @@ $(document).ready(function() {
 	});
 	
 	//set update user details button parameters
-	var updateUrl=$('#defaultUrl').val()+'modosit/'+$('#username-security-span').html();
+	var updateUrl=$('#defaultUrl').val()+'modositas/'+$('#username-security-span').html();
 	$('#updateUserDetailsButton').attr('href',updateUrl);
 	
 });
