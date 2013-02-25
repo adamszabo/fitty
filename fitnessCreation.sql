@@ -161,7 +161,7 @@ ALTER TABLE store
   burnedcalories integer,
   isanalyzed boolean,
   review character varying(255),
-  trainingstartdate timestamp without time zone,
+  date timestamp without time zone,
   basket_id bigint,
   client_id bigint,
   trainer_id bigint,

@@ -74,4 +74,11 @@ $(document).ready(function(){
 		}
 	});
 	
+	$('.open-updateTrainingTypeModal').on("click", function () {
+		id = $(this).data('id');
+		$("#updateTrainingTypeModal #trainerId").val(id);
+		$("#updateTrainingTypeModal #trainerName").val($('#trainer-' + id + ' .trainer-name').html());
+	    $("#updateTrainingTypeModal #detail").val($('#trainer-' + id + ' .training-type-detail').html());
+	    $("#updateTrainingTypeModal #price").val($('#trainer-' + id + ' .training-type-price').html().replace("&nbsp;", "").replace(",","").replace(".",""));
+	});
 });

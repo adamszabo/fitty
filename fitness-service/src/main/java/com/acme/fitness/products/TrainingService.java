@@ -3,17 +3,18 @@ package com.acme.fitness.products;
 import java.util.Date;
 import java.util.List;
 
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
 public interface TrainingService {
 	
-	Training newTraining(User trainer, User client, Date date);
+	Training newTraining(User trainer, User client, Date date) throws FitnessDaoException;
 
 	Training saveTraining(Basket basket, Training training);
 
-	Training saveNewTraining(User trainer, User client, Date date, Basket basket);
+	Training saveNewTraining(User trainer, User client, Date date, Basket basket) throws FitnessDaoException;
 
 	void deleteTraining(Training training);
 

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acme.fitness.dao.products.TrainingDao;
+import com.acme.fitness.dao.products.TrainingTypeDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
@@ -18,19 +20,23 @@ public class SimpleTrainingService implements TrainingService {
 
 	private TrainingDao trainingDao;
 	
+	private TrainingTypeDao trainingTypeDao;
+	
 	@Autowired
-	public SimpleTrainingService(TrainingDao trainingDao){
+	public SimpleTrainingService(TrainingDao trainingDao, TrainingTypeDao trainingTypeDao){
 		this.trainingDao=trainingDao;
+		this.trainingTypeDao = trainingTypeDao;
 	}
 	
 	@Override
 	public void goOnHoliday(User trainer, Date date) {
-		trainingDao.save(new Training(trainer, trainer, date, false, 0, "", null));
+		trainingDao.save(new Training(trainer, trainer, date, false, 0, "", null, 0.0));
 	}
 	
 	@Override
-	public Training newTraining(User trainer, User client, Date date) {
-		Training training = new Training(trainer, client, date, false, 0, null, null);
+	public Training newTraining(User trainer, User client, Date date) throws FitnessDaoException {
+		double trainerPrice = trainingTypeDao.getTrainingTypeByTrainer(trainer).getPrice();
+		Training training = new Training(trainer, client, date, false, 0, null, null, trainerPrice);
 		return training;
 	}
 	
@@ -42,8 +48,9 @@ public class SimpleTrainingService implements TrainingService {
 	}
 	
 	@Override
-	public Training saveNewTraining(User trainer, User client, Date date, Basket basket) {
-		Training training = new Training(trainer, client, date, false, 0, null, basket);
+	public Training saveNewTraining(User trainer, User client, Date date, Basket basket) throws FitnessDaoException {
+		Training training = newTraining(trainer, client, date);
+		training.setBasket(basket);
 		trainingDao.save(training);
 		return training;
 	}

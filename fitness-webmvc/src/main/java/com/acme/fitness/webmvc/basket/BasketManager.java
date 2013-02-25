@@ -124,7 +124,7 @@ public class BasketManager {
 			} catch (TrainingDateReservedException e) {
 				String info = "Trainings was reserved ago.";
 				for(Training t : e.getReservedTrainings()) {
-					info += " trainer: " + t.getTrainer() + " date: " + t.getTrainingStartDate(); 
+					info += " trainer: " + t.getTrainer() + " date: " + t.getDate(); 
 				}
 				logger.info(info);
 				throw e;

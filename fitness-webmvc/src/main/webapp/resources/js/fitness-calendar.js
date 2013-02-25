@@ -42,7 +42,7 @@ var FitnessCalendar = function(){
 	function renderTrainingsOnCalendar(data, username){
 		if(data.orderedTrainings.length>0){
 			for(var i=0;i<data.orderedTrainings.length;++i){
-				var timeDetails= getTrainingTimeDetails(data.orderedTrainings[i].trainingStartDate);
+				var timeDetails= getTrainingTimeDetails(data.orderedTrainings[i].date);
 //				console.log(timeDetails.trainingDayName+' '+timeDetails.trainingStartHour);
 				var calendarEntry=$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName);
 				modifyReservedCalendarEntry(calendarEntry, data.orderedTrainings[i].client);
@@ -51,7 +51,7 @@ var FitnessCalendar = function(){
 		
 		if(data.trainingsInBasket.length>0){
 			for(var i=0;i<data.trainingsInBasket.length;++i){
-				var timeDetails= getTrainingTimeDetails(data.trainingsInBasket[i].trainingStartDate);
+				var timeDetails= getTrainingTimeDetails(data.trainingsInBasket[i].date);
 				if(isDateOnActualWeek(timeDetails.trainingDate) && data.trainingsInBasket[i].trainer.username==username){
 //					console.log(data.trainingsInBasket[i].trainer.username+' '+username);
 					$('.hours-'+timeDetails.trainingStartHour+' .'+timeDetails.trainingDayName).removeClass('free-entry today-entry')

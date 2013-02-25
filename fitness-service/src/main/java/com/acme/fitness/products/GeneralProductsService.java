@@ -10,6 +10,7 @@ import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.products.TrainingType;
 import com.acme.fitness.domain.users.User;
 
 public interface GeneralProductsService {
@@ -23,7 +24,7 @@ public interface GeneralProductsService {
 	
 	void goOnHoliday(User trainer, Date date);
 	void goOnHolidayToAllDay(User trainer, Date date);
-	Training newTraining(User trainer, User client, Date date);
+	Training newTraining(User trainer, User client, Date date) throws FitnessDaoException;
 	void deleteTraining(Training training);
 	void updateTraining(Training training);
 	void recordTrainingResults(Training training, int burnedCalories, String review);
@@ -53,4 +54,11 @@ public interface GeneralProductsService {
 	List<ProductImage> getAllProductImage();
 	ProductImage getProductImageById(long id) throws FitnessDaoException;
 	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
+	
+	TrainingType newTrainingType(User trainer, String detail, double price);
+	void saveTrainingType(TrainingType trainingType);
+	void updateTrainingType(TrainingType trainingType);
+	List<TrainingType> getAllTrainingTypes();
+	TrainingType getTrainingTypeById(long id) throws FitnessDaoException;
+	TrainingType getTrainingTypeByTrainer(User trainer) throws FitnessDaoException;
 }

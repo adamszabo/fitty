@@ -13,6 +13,7 @@ import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.products.TrainingType;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.products.MembershipService;
@@ -20,6 +21,7 @@ import com.acme.fitness.products.MembershipTypeService;
 import com.acme.fitness.products.ProductImageService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
+import com.acme.fitness.products.TrainingTypeService;
 
 @Service
 public class SimpleGeneralProductsService implements GeneralProductsService {
@@ -29,15 +31,17 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	private TrainingService trainingService;
 	private MembershipTypeService membershipTypeService;
 	private ProductImageService imageService;
+	private TrainingTypeService trainingTypeService;
 	
 	@Autowired
 	public SimpleGeneralProductsService(ProductService productService, MembershipService membershipService, TrainingService trainingService, 
-			MembershipTypeService membershipTypeService, ProductImageService imageService){
+			MembershipTypeService membershipTypeService, ProductImageService imageService, TrainingTypeService trainingTypeService){
 		this.productService=productService;
 		this.membershipService=membershipService;
 		this.trainingService=trainingService;
 		this.membershipTypeService=membershipTypeService;
 		this.imageService=imageService;
+		this.trainingTypeService = trainingTypeService;
 	}
 
 	@Override
@@ -86,7 +90,7 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	}
 
 	@Override
-	public Training newTraining(User trainer, User client, Date date) {
+	public Training newTraining(User trainer, User client, Date date) throws FitnessDaoException {
 		return trainingService.newTraining(trainer, client, date);
 	}
 
@@ -221,5 +225,34 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	public void goOnHolidayToAllDay(User trainer, Date date) {
 		trainingService.goOnHolidayToAllDay(trainer, date);
 	}
+	
+	@Override
+	public TrainingType newTrainingType(User trainer, String detail, double price) {
+		return trainingTypeService.newTrainingType(trainer, detail, price);
+	}
+	
+	@Override
+	public void saveTrainingType(TrainingType trainingType) {
+		trainingTypeService.saveTrainingType(trainingType);
+	}
+	
+	@Override
+	public List<TrainingType> getAllTrainingTypes() {
+		return trainingTypeService.getAllTrainingTypes();
+	}
 
+	@Override
+	public TrainingType getTrainingTypeById(long id) throws FitnessDaoException {
+		return trainingTypeService.getTrainingTypeById(id);
+	}
+	
+	@Override
+	public TrainingType getTrainingTypeByTrainer(User trainer) throws FitnessDaoException {
+		return trainingTypeService.getTrainingTypeByTrainer(trainer);
+	}
+
+	@Override
+	public void updateTrainingType(TrainingType trainingType) {
+		trainingTypeService.updateTrainingType(trainingType);
+	}
 }

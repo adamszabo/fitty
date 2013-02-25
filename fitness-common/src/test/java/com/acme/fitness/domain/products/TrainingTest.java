@@ -48,10 +48,10 @@ public class TrainingTest {
 	}
 
 	@Test
-	public void testGetterSetterBehaviourOfTrainingStartDate() {
+	public void testGetterSetterBehaviourOfDate() {
 		Date expected=new Date();
-		underTest.setTrainingStartDate(expected);
-		Assert.assertEquals(expected, underTest.getTrainingStartDate());
+		underTest.setDate(expected);
+		Assert.assertEquals(expected, underTest.getDate());
 	}
 
 	@Test
@@ -88,16 +88,18 @@ public class TrainingTest {
 		//GIVEN
 		User user=new User();
 		Date date = new Date();
+		Basket basket = new Basket();
 		Training expected = new Training();
 		expected.setTrainer(user);
 		expected.setClient(user);
-		expected.setTrainingStartDate(date);
+		expected.setDate(date);
 		expected.setAnalyzed(true);
 		expected.setBurnedCalories(1);
 		expected.setReview("review");
-		expected.setBasket(new Basket());
+		expected.setBasket(basket);
+		expected.setPrice(1.0);
 		//WHEN
-		underTest = new Training(user, user, date, true, 1, "review", new Basket());
+		underTest = new Training(user, user, date, true, 1, "review", basket, 1.0);
 		//THEN
 		Assert.assertEquals(expected, underTest);
 	}
