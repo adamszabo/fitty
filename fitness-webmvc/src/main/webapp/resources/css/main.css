@@ -4,17 +4,17 @@ html {
 
 body {
 	background: url("../img/furley_bg.png") repeat;
-/* 	-webkit-background-size: cover; */
-/* 	-moz-background-size: cover; */
-/* 	-o-background-size: cover; */
-/* 	background-size: cover; */
+	/* 	-webkit-background-size: cover; */
+	/* 	-moz-background-size: cover; */
+	/* 	-o-background-size: cover; */
+	/* 	background-size: cover; */
 }
 
 form {
 	margin-bottom: 0px;
 }
 
-th{
+th {
 	font-weight: normal;
 }
 
@@ -27,7 +27,7 @@ th{
 	background: -o-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
 	background: -ms-linear-gradient(45deg, #a51217 0%, #2f0800 100%);
 	background: linear-gradient(45deg, #a51217 0%, #2f0800 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(    startColorstr='#a51217', endColorstr='#2f0800', GradientType=1 );
+	filter: progid:DXImageTransform.Microsoft.gradient(     startColorstr='#a51217', endColorstr='#2f0800', GradientType=1 );
 }
 
 .drop-down-btn-group {
@@ -90,11 +90,10 @@ body li a {
 	background-color: #e6e6e6;
 }
 
-#fitness-calendar-table th{
+#fitness-calendar-table th {
 	background-color: white;
 	border: 1px solid rgb(216, 216, 216);
 }
-
 
 #fitness-calendar-table thead tr th {
 	overflow: hidden;
@@ -107,31 +106,31 @@ body li a {
 	border: 1px solid rgb(216, 216, 216);
 }
 
-#fitness-calendar-table tbody tr td:HOVER{
+#fitness-calendar-table tbody tr td:HOVER {
 	opacity: 0.25;
 }
 
-.reserved-entry{
+.reserved-entry {
 	background-color: #AD5958 !important;
 }
 
-.free-entry{
+.free-entry {
 	background-color: white !important;
 }
 
-.entry-inbasket{
-	background-color: #51a351 !important;	
+.entry-inbasket {
+	background-color: #51a351 !important;
 }
 
-.today-entry{
-	background-color: rgb(250,242,203) !important;
+.today-entry {
+	background-color: rgb(250, 242, 203) !important;
 }
 
-.past-entry{
-	opacity: 0.4;
+.past-entry {
+	opacity: 0.5;
 }
 
-.notation-div{
+.notation-div {
 	display: inline-block;
 	border: 1px solid #bbbbbb;
 	width: 40px;
@@ -141,7 +140,7 @@ body li a {
 	vertical-align: baseline;
 }
 
-#notation-th{
+#notation-th {
 	font-size: 11px !important;
 	font-weight: lighter !important;
 	text-align: center;
@@ -152,6 +151,62 @@ body li a {
 }
 
 .contact-page .hero-unit {
-	padding:20px !important;
-	margin-bottom:20px !important;
+	padding: 20px !important;
+	margin-bottom: 20px !important;
+}
+
+.bs-docs-data {
+	position: relative;
+	margin: 15px 0;
+	padding: 39px 19px 14px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.bs-docs-data:after {
+  content: "Adatok módosítása";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #9da0a4;
+  -webkit-border-radius: 4px 0 4px 0;
+     -moz-border-radius: 4px 0 4px 0;
+          border-radius: 4px 0 4px 0;
+}
+
+.bs-docs-password {
+	position: relative;
+	margin: 15px 0;
+	padding: 39px 19px 14px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	overflow: auto;
+}
+
+.bs-docs-password:after {
+  content: "Jelszó módosítása";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #9da0a4;
+  -webkit-border-radius: 4px 0 4px 0;
+     -moz-border-radius: 4px 0 4px 0;
+          border-radius: 4px 0 4px 0;
 }

@@ -28,6 +28,17 @@ $(document).ready(function() {
 	
 	$('#registerButton').on("click",RegistrationValidator.validateRegistration);
 	
+	$('#homeLi').on('mouseenter',function(){
+		$('#homeLi>a>i').addClass('icon-white');
+	});
+	$('#homeLi').on('mouseleave',function(){
+		$('#homeLi>a>i').removeClass('icon-white');
+	});
+	
+	//set update user details button parameters
+	var updateUrl=$('#defaultUrl').val()+'modosit/'+$('#username-security-span').html();
+	$('#updateUserDetailsButton').attr('href',updateUrl);
+	
 });
 
 function showOrHideLoginForm(){

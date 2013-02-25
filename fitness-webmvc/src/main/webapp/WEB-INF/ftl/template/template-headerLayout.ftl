@@ -9,10 +9,10 @@
                             <a class="btn btn-navbar" data-toggle="collapse"
                                     data-target=".nav-collapse"> <span class="icon-bar"></span> <span
                                     class="icon-bar"></span> <span class="icon-bar"></span>
-                            </a> <a class="brand" href="<@spring.url relativeUrl="/"/>">Fitness</a>
+                            </a> <@userLayout/>
                             <div id="navDiv" class="nav-collapse collapse">
                                     <ul class="nav">
-	                                    <li><a href="<@spring.url relativeUrl="/"/>"><i class="icon-home"></i></a></li>
+	                                    <li id="homeLi"><a href="<@spring.url relativeUrl="/"/>"><i class="icon-home"></i></a></li>
                                     	<@security.authorize access="hasAnyRole('Client', 'ROLE_ANONYMOUS', 'Trainer')">
 	                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
 											<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
@@ -38,9 +38,7 @@
                                         	<button type="button" id="loginFormButton" class="btn btn-primary"><i class="icon-white icon-chevron-down"></i> Bejelentkezés</button>
 										</@security.authorize>
                                     	<@security.authorize access="isAuthenticated()">
-											<span style="color:white;vertical-align: middle;">Üdvözlet: <span id="username-security-span"><@security.authentication property="principal.username"/></span></span>
 											<@basketLayout/>
-											<a class="btn btn-danger" href="<@spring.url relativeUrl="/j_spring_security_logout"/>">Kijelentkezés</a>
 										</@security.authorize>
 									</div>
                             </div>
@@ -68,13 +66,14 @@
                     <p class="lead">Üdvözöljük!</p>
             </div>
     </header>
+    <input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>
 </#macro>
 
 <#macro basketLayout>
 	<#if basket?exists>
 			<div class="dropdown" style="vertical-align: middle;display:inline-block;">
-				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    <i class="icon-shopping-cart"></i> Kosár
+				  <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+				    <i class="icon-white icon-shopping-cart"></i> 
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
@@ -83,4 +82,18 @@
 				  </ul>
 			</div>
 	 </#if>
+</#macro>
+
+<#macro userLayout>
+	<@security.authorize access="isAuthenticated()">
+		<div class="dropdown" style="vertical-align: middle;display:inline-block;float:right;margin-left:5px">
+			  <a class="brand dropdown-toggle" data-toggle="dropdown" href="#">
+			    <span id="username-security-span"><@security.authentication property="principal.username"/></span>
+			  </a>
+			  <ul class="dropdown-menu">
+				<li><a id="updateUserDetailsButton" href=""><i class="icon-wrench"></i> Beállítások</a></li>
+				<li><a href="<@spring.url relativeUrl="/j_spring_security_logout"/>"><i class="icon-off"></i> Kijelentkezés</a></li>
+			  </ul>
+		</div>
+	</@security.authorize>
 </#macro>

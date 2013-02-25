@@ -8,6 +8,7 @@
 	<table class="table">
 		<thead>
 			<tr>
+				<th class="span2">Teljes név</th>
 				<th class="span2">Felhasználó név</th>
 				<th class="span2">Kliens</th>
 				<th class="span2">Edző</th>
@@ -21,6 +22,7 @@
 		<tbody>
 			<#list UsersWithRoles as userwithroles>
 					<tr>
+						<td>${userwithroles.user.fullName}</td>
 						<td>${userwithroles.user.username}</td>
 						<td>
 							<@checkedOrUnchecked userwithroles.roleNames?seq_contains("Client")?string("yes", "no")/>

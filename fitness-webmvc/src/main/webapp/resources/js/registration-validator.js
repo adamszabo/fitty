@@ -88,6 +88,8 @@ var RegistrationValidator = function() {
 	}
 	
 	return{
-		validateRegistration: validateRegistration
+		validateRegistration : validateRegistration,
+		validatePasswords : validatePasswords,
+		validateEmailWithRegular : validateEmailWithRegular
 	};
 }();
