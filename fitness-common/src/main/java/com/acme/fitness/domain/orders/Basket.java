@@ -80,6 +80,20 @@ public class Basket {
 	public void addOrderItem(OrderItem o) {
 		orderItems.add(o);
 	}
+	
+	public double getPrice() {
+		double sum = 0;
+		for(Membership m : memberships) {
+			sum += m.getPrice();
+		}
+		for(Training t : trainings) {
+			sum += t.getPrice();
+		}
+		for(OrderItem o : orderItems) {
+			sum += o.getQuantity()*o.getProduct().getPrice();
+		}
+		return sum;
+	}
 
 	@Override
 	public String toString() {
@@ -117,7 +131,7 @@ public class Basket {
 			return false;
 		return true;
 	}
-
+	
 	public long getId() {
 		return id;
 	}

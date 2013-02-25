@@ -14,4 +14,5 @@ public interface TrainingTypeService {
 	public TrainingType getTrainingTypeById(long id) throws FitnessDaoException;
 	public TrainingType getTrainingTypeByTrainer(User trainer) throws FitnessDaoException;
 	public void updateTrainingType(TrainingType trainingType);
+	public void deleteTrainingType(TrainingType trainingType);
 }

@@ -3,6 +3,7 @@
 <#import "/tag/loadScripts.ftl" as loadScripts />
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Edzések">
+<input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>
 
 <@tags.errorMessage />
 <@tags.basketDialog "/aruhaz/confirmBasket"/>
@@ -20,13 +21,13 @@
 
 <div class="container-fluid">
 	<div class="row-fluid">
-			<#if trainers?exists>
-				<#if (trainers?size > 0) >
+			<#if trainingTypes?exists>
+				<#if (trainingTypes?size > 0) >
 					<div id="trainers-selector" class="span2">
 						<ul class="nav nav-list">
 							<li class="nav-header"><h4>Edzők</h4></li>
-								<#list trainers as trainer>
-									<li class="trainer-name-li" data-username="${trainer.username}"><a>${trainer.fullName}</a></li>
+								<#list trainingTypes as trainingType>
+									<li class="trainer-name-li" data-username="${trainingType.trainer.username}" data-price="${trainingType.price}"><a>${trainingType.trainer.fullName}</a></li>
 								</#list>
 						</ul>
 					</div>

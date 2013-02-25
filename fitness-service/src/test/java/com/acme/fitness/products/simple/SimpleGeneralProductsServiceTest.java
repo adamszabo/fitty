@@ -542,4 +542,12 @@ public class SimpleGeneralProductsServiceTest {
 		//THEN
 		BDDMockito.verify(trainingTypeService).updateTrainingType(trainingType);
 	}
+	
+	@Test
+	public void testDeleteTrainingTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.deleteTrainingType(trainingType);
+		//THEN
+		BDDMockito.verify(trainingTypeService).deleteTrainingType(trainingType);
+	}
 }

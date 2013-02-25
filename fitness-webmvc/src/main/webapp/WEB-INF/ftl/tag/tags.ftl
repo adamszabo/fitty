@@ -170,7 +170,6 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign sum = sum + membership["price"]>
 						<tr>
 							<td>${membership.type}</td>
 							<#if membership.isIntervally?string = "true">
@@ -195,29 +194,35 @@
 			<#if basketName["trainings"]?has_content>
 			Edzések:
 		  	<table class="table table-hover">
-		  		<#list basketName["trainings"] as training>
-					<thead>
-						<tr>
-							<th>Edző</th>
-							<th>Időpont</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>${training.trainer.fullName}</td>
-							<td>${training.date?string("yyyy.MM.dd HH:mm")}</td>
-							<td>
-								<#if nameInString = "anonymousBasket">
-									<a href="<@spring.url relativeUrl="/edzesek/torles/anonymous/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
-									<#else>
-									<a href="<@spring.url relativeUrl="/edzesek/torles/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
-								</#if>
-							</td>
-						</tr>
-					</tbody>
-				</#list>
+				<thead>
+					<tr>
+						<th>Edző</th>
+						<th>Időpont</th>
+						<th>Ár</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<#list basketName["trainings"] as training>
+							<tr>
+								<td>${training.trainer.fullName}</td>
+								<td>${training.date?string("yyyy.MM.dd HH:mm")}</td>
+								<td>${training.price}</td>
+								<td>
+									<#if nameInString = "anonymousBasket">
+										<a href="<@spring.url relativeUrl="/edzesek/torles/anonymous/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+										<#else>
+										<a href="<@spring.url relativeUrl="/edzesek/torles/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
+									</#if>
+								</td>
+							</tr>
+					</#list>
+				</tbody>
 			</table>
 			</#if>
+			
+			<div style="float:right">
+			Össz ár: ${basketName.getPrice()}
+			</div>
 </#macro>
 
 <#macro newProductDialog>

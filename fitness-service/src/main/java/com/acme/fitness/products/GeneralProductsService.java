@@ -58,6 +58,7 @@ public interface GeneralProductsService {
 	TrainingType newTrainingType(User trainer, String detail, double price);
 	void saveTrainingType(TrainingType trainingType);
 	void updateTrainingType(TrainingType trainingType);
+	void deleteTrainingType(TrainingType trainingType);
 	List<TrainingType> getAllTrainingTypes();
 	TrainingType getTrainingTypeById(long id) throws FitnessDaoException;
 	TrainingType getTrainingTypeByTrainer(User trainer) throws FitnessDaoException;

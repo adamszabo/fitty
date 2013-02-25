@@ -74,7 +74,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		loadRole(Roles.Client.toString(), user, request);
-		loadRole(Roles.Trainer.toString(), user, request);
+		loadRoleTrainer(user, request);
 		loadRole(Roles.Recepcionist.toString(), user, request);
 		loadRole(Roles.SystemAdmin.toString(), user, request);
 		loadRole(Roles.ProductAdmin.toString(), user, request);
@@ -88,6 +88,16 @@ public class AdminController {
 		} else {
 			gus.removeUserRole(roleName, user);
 			logger.info("remove " + roleName + " role from " + user.getUsername());
+		}
+	}
+	
+	private void loadRoleTrainer(User user, HttpServletRequest request) {
+		if (request.getParameter(Roles.Trainer.toString()).equals("true")) {
+			gus.addUserRole(Roles.Trainer.toString(), user);
+			logger.info("add " + Roles.Trainer.toString() + " role to " + user.getUsername());
+		} else {
+			gus.removeUserRole(Roles.Trainer.toString(), user);
+			logger.info("remove " + Roles.Trainer.toString() + " role from " + user.getUsername());
 		}
 	}
 

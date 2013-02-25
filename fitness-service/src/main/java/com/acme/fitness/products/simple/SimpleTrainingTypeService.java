@@ -2,6 +2,8 @@ package com.acme.fitness.products.simple;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import com.acme.fitness.products.TrainingTypeService;
 public class SimpleTrainingTypeService implements TrainingTypeService {
 
 	private TrainingTypeDao trainingTypeDao;
+	
+	private Logger logger = LoggerFactory.getLogger(SimpleTrainingTypeService.class);
 	
 	public SimpleTrainingTypeService() {
 		
@@ -33,6 +37,7 @@ public class SimpleTrainingTypeService implements TrainingTypeService {
 	@Override
 	public void saveTrainingType(TrainingType trainingType) {
 		trainingTypeDao.save(trainingType);
+		logger.info("Training type is saved " + trainingType);
 	}
 
 	@Override
@@ -53,5 +58,12 @@ public class SimpleTrainingTypeService implements TrainingTypeService {
 	@Override
 	public void updateTrainingType(TrainingType trainingType) {
 		trainingTypeDao.update(trainingType);
+		logger.info("Training type is updated " + trainingType);
+	}
+
+	@Override
+	public void deleteTrainingType(TrainingType trainingType) {
+		logger.info("Training type is deleted " + trainingType);
+		trainingTypeDao.delete(trainingType);
 	}
 }

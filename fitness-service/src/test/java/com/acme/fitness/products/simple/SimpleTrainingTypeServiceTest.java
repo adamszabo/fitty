@@ -62,6 +62,14 @@ public class SimpleTrainingTypeServiceTest {
 	}
 	
 	@Test
+	public void testDeleteTrainingTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.deleteTrainingType(trainingTypeMock);
+		//THEn
+		BDDMockito.verify(trainingTypeDao).delete(trainingTypeMock);
+	}
+	
+	@Test
 	public void testGetAllTrainingTypesShouldInvokeTheRightMethod() {
 		//WHEN
 		underTest.getAllTrainingTypes();
@@ -84,4 +92,5 @@ public class SimpleTrainingTypeServiceTest {
 		//THEn
 		BDDMockito.verify(trainingTypeDao).getTrainingTypeByTrainer(trainer);
 	}
+	
 }

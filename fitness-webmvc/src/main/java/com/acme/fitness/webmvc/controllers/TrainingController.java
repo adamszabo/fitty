@@ -48,7 +48,7 @@ public class TrainingController {
 
 	@RequestMapping(value = "")
 	public String training(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("trainers", generalUsersService.getAllTrainers());
+		request.setAttribute("trainingTypes", generalProductsService.getAllTrainingTypes());
 		basketManager.addBasketToSessionIfExists(request, response, new ObjectMapper());
 		basketManager.isAnonymousBasketIfUserLoggedIn(request, response, new ObjectMapper());
 		return "edzesek";

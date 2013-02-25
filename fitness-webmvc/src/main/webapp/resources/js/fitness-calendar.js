@@ -137,6 +137,7 @@ var FitnessCalendar = function(){
 	function newTraining(date, url, tableElement) {
 		selectedLi=$('#trainers-selector .trainer-name-li.active');
 		$('#newTrainingModalTrainer').html(selectedLi.children(":first").html());
+		$('#newTrainingModalPrice').html($(selectedLi.children(":first")).closest('li').data('price'));
 		$('#newTrainingModalDateTD').html(formatDate(date));
 		$('#training-date').val(date);
 		$('#trainer-username').val(username);
@@ -351,8 +352,9 @@ var FitnessCalendar = function(){
 					+ '<input type="hidden" id="trainer-username" name="trainer-username" value="" />'
 					+ '<input type="hidden" id="training-date" name="training-date" value="" />'
 						+ '<div class="modal-body">'
-							+ '<table class="table"><thead><th>Időpont</th><th>Edző</th></thead><tbody><tr>'
+							+ '<table class="table"><thead><th>Időpont</th><th>Ár</th><th>Edző</th></thead><tbody><tr>'
 							+ '<td id="newTrainingModalDateTD">2012-12-11 12:12</td>'
+							+ '<td id="newTrainingModalPrice"></td>'
 							+ '<td id="newTrainingModalTrainer"></td>'
 							+ '</tr></tbody></table>'
 						+ '</div>'

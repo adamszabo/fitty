@@ -9,10 +9,12 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.domain.products.Membership;
+import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
 
@@ -21,6 +23,18 @@ public class BasketTest {
 	
 	@Mock
 	private User user;
+	
+	@Mock
+	private Membership membership;
+	
+	@Mock
+	private Training training;
+	
+	@Mock
+	private OrderItem orderItem;
+	
+	@Mock
+	private Product product;
 
 	@Before
 	public void setUp() {
@@ -119,6 +133,31 @@ public class BasketTest {
 		underTest.addOrderItem(orderItem);
 		//THEN
 		Assert.assertEquals(expected, underTest.getOrderItems());
+	}
+	
+	@Test
+	public void testGetPriceShouldReturnZeroWhenThereIsNothingInTheBasket() {
+		//WHEN
+		double actual = underTest.getPrice();
+		//THEN
+		Assert.assertEquals(0.0, actual, 0.0);
+	}
+	
+	@Test
+	public void testGetPriceShouldReturnTheRightMethodWhenContainsEverything() {
+		//GIVEN
+		underTest.addMembership(membership);
+		underTest.addOrderItem(orderItem);
+		underTest.addTraining(training);
+		BDDMockito.given(membership.getPrice()).willReturn(1.0);
+		BDDMockito.given(orderItem.getQuantity()).willReturn(2);
+		BDDMockito.given(orderItem.getProduct()).willReturn(product);
+		BDDMockito.given(product.getPrice()).willReturn(4.0);
+		BDDMockito.given(training.getPrice()).willReturn(8.0);
+		//WHEN
+		double actual = underTest.getPrice();
+		//THEN
+		Assert.assertEquals(17.0, actual, 0.0);
 	}
 	
 	@Test

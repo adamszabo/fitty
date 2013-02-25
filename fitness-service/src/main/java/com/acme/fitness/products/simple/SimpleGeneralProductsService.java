@@ -255,4 +255,9 @@ public class SimpleGeneralProductsService implements GeneralProductsService {
 	public void updateTrainingType(TrainingType trainingType) {
 		trainingTypeService.updateTrainingType(trainingType);
 	}
+
+	@Override
+	public void deleteTrainingType(TrainingType trainingType) {
+		trainingTypeService.deleteTrainingType(trainingType);
+	}
 }
