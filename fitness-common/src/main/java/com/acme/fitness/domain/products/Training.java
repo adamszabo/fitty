@@ -30,7 +30,7 @@ public class Training {
 	private User client;
 
 	@Column
-	private Date trainingStartDate;
+	private Date date;
 
 	@Column
 	private boolean isAnalyzed;
@@ -44,62 +44,67 @@ public class Training {
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Basket basket;
+	
+	@Column
+	private double price;
 
 	public Training() {
 		super();
 	}
 
-	public Training(User trainer, User client, Date trainingStartDate,
-			boolean isAnalyzed, int burnedCalories, String review, Basket basket) {
+	public Training(User trainer, User client, Date date,
+			boolean isAnalyzed, int burnedCalories, String review, Basket basket, double price) {
 		super();
 		this.trainer = trainer;
 		this.client = client;
-		this.trainingStartDate = trainingStartDate;
+		this.date = date;
 		this.isAnalyzed = isAnalyzed;
 		this.burnedCalories = burnedCalories;
 		this.review = review;
 		this.basket = basket;
+		this.price = price;
 	}
 
 	@Override
 	public String toString() {
 		return "Training [id=" + id + ", trainerId=" + trainer.getId()
-				+ ", clientId=" + client.getId() + ", trainingStartDate="
-				+ trainingStartDate + ", burnedCalories=" + burnedCalories
-				+ ", isAnalyzed=" + isAnalyzed 	+ "]";
+				+ ", clientId=" + client.getId() + ", date="
+				+ date + ", burnedCalories=" + burnedCalories
+				+ ", isAnalyzed=" + isAnalyzed 	+ ", price= " + price + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + burnedCalories;
+		result = prime * result + ((basket == null) ? 0 : basket.hashCode());
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + (isAnalyzed ? 1231 : 1237);
+		result = prime * result + ((trainer == null) ? 0 : trainer.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((trainer == null) ? 0 : trainer.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || !(obj instanceof Training)) {
-			return false;
+		boolean isEquals = false;
+		if(this == obj) {
+			isEquals = true;
+		} else if(obj instanceof Training) {
+			Training other = (Training) obj;
+			isEquals = id == other.id
+					&& (this.client == null ? other.client == null : this.client.equals(other.client))
+					&& (this.trainer == null ? other.trainer == null : this.trainer.equals(other.trainer)) 
+					&& (this.date == null ? other.date == null : this.date.equals(other.date))
+					&& (this.basket == null ? other.basket == null : this.basket.equals(other.basket))
+					&& (Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price));
 		}
 
-		Training other = (Training) obj;
-		boolean result = false;
-		if (client != null && trainer != null) {
-			result = id == other.getId() 
-					&& client.equals(other.getClient())
-					&& trainer.equals(other.getTrainer())
-					&& burnedCalories == other.getBurnedCalories()
-					&& isAnalyzed == other.isAnalyzed();
-		}
-		return result;
+		return isEquals;
 	}
 
 	public long getId() {
@@ -124,14 +129,6 @@ public class Training {
 
 	public void setClient(User client) {
 		this.client = client;
-	}
-
-	public Date getTrainingStartDate() {
-		return trainingStartDate;
-	}
-
-	public void setTrainingStartDate(Date trainingStartDate) {
-		this.trainingStartDate = trainingStartDate;
 	}
 
 	public boolean isAnalyzed() {
@@ -166,4 +163,19 @@ public class Training {
 		this.basket = basket;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 }

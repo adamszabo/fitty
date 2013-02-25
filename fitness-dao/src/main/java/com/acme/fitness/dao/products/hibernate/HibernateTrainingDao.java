@@ -61,12 +61,12 @@ public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training>
 	@Override
 	public List<Training> getTrainingsAfterDate(Date date) {
 		return getSession().createCriteria(Training.class)
-				.add(Restrictions.gt("trainingStartDate", date)).list();
+				.add(Restrictions.gt("date", date)).list();
 	}
 	
 	@Override
 	public boolean isDateReserved(User trainer, Date date) {
-		Training training = (Training)getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).add(Restrictions.eq("trainingStartDate", date)).uniqueResult();
+		Training training = (Training)getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).add(Restrictions.eq("date", date)).uniqueResult();
 		return training == null ? false : true;
 	}
 	
@@ -74,7 +74,7 @@ public class HibernateTrainingDao extends AbstractHibernateGenericDao<Training>
 	@Override
 	public List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday) {
 		Date sunday = new Date(monday.getTime() + 7*ONE_DAY-1);
-		return getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).add(Restrictions.ge("trainingStartDate", monday)).add(Restrictions.le("trainingStartDate", sunday)).list();
+		return getSession().createCriteria(Training.class).add(Restrictions.eq("trainer", trainer)).add(Restrictions.ge("date", monday)).add(Restrictions.le("date", sunday)).list();
 	}
 
 }

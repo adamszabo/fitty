@@ -26,22 +26,26 @@ import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
+import com.acme.fitness.domain.products.TrainingType;
+import com.acme.fitness.domain.users.User;
 import com.acme.fitness.orders.GeneralOrdersService;
 import com.acme.fitness.products.GeneralProductsService;
+import com.acme.fitness.users.GeneralUsersService;
 
 @Controller
 @RequestMapping(value = "/raktar")
 public class StoreController {
-	private static final Logger logger = LoggerFactory
-			.getLogger(StoreController.class);
+	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
 
 	private GeneralProductsService gps;
 	private GeneralOrdersService gos;
+	private GeneralUsersService gus;
 
 	@Autowired
-	public StoreController(GeneralProductsService gps, GeneralOrdersService gos) {
+	public StoreController(GeneralProductsService gps, GeneralOrdersService gos, GeneralUsersService gus) {
 		this.gps = gps;
 		this.gos = gos;
+		this.gus = gus;
 	}
 
 	@RequestMapping(value = "")
@@ -50,8 +54,7 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "termek", method = RequestMethod.GET)
-	public String products(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request) {
+	public String products(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request) {
 		if (gos.getAllStores().size() != gps.getAllProduct().size()) {
 			for (Product p : gps.getAllProduct()) {
 				gos.addProductToStore(p, 0);
@@ -63,9 +66,7 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "termek/ujmennyiseg", method = RequestMethod.POST)
-	public String productPlusQuantity(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request,
-			@ModelAttribute("productId") long id,
+	public String productPlusQuantity(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("productId") long id,
 			@ModelAttribute("quantity") int quantity) {
 		try {
 			gos.putInProduct(gps.getProductById(id), quantity);
@@ -76,24 +77,18 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "termek/ujtermek", method = RequestMethod.POST)
-	public String newProduct(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request,
-			@ModelAttribute("product") Product product,
+	public String newProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("product") Product product,
 			@RequestParam("file") MultipartFile file) {
 		ProductImage image = createPictureFromMultipartFile(file);
 
-		Product newProduct = gps.addProduct(product.getName(),
-				product.getDetails(), product.getPrice(),
-				product.getManufacturer(), new Date(), image);
+		Product newProduct = gps.addProduct(product.getName(), product.getDetails(), product.getPrice(), product.getManufacturer(), new Date(), image);
 		logger.info("new product added: " + newProduct);
 
 		return "redirect:/raktar";
 	}
 
 	@RequestMapping(value = "termek/torles/{productId}", method = RequestMethod.GET)
-	public String deleteProduct(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request,
-			@PathVariable("productId") long productId) {
+	public String deleteProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @PathVariable("productId") long productId) {
 		try {
 			gps.deleteProduct(gps.getProductById(productId));
 		} catch (FitnessDaoException e) {
@@ -103,31 +98,25 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "berlet")
-	public String membership(Model model,
-			HttpServletResponse response, HttpServletRequest request) {
+	public String membership(Model model, HttpServletResponse response, HttpServletRequest request) {
 		model.addAttribute("membershipsInStore", gps.getAllMembershipTypes());
 		return "raktar";
 	}
-	
+
 	@RequestMapping(value = "berlet/ujberlet", method = RequestMethod.POST)
-	public String newMembership(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request,
-			@ModelAttribute("membership") MembershipType membershipType) {
+	public String newMembership(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("membership") MembershipType membershipType) {
 		gps.saveMembershipType(membershipType);
 		logger.info("new membership type added: " + membershipType);
 		return "redirect:/raktar/berlet";
 	}
-	
+
 	@RequestMapping(value = "berlet/valtoztat", method = RequestMethod.POST)
-	public String updateMembership(Locale locale, Model model,
-			HttpServletResponse response, HttpServletRequest request, 
-			@ModelAttribute("membership") MembershipType membershipType) {
+	public String updateMembership(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("membership") MembershipType membershipType) {
 		gps.updateMembershipType(membershipType);
 		logger.info("membership updated: " + membershipType);
 		return "redirect:/raktar/berlet";
 	}
-	
-	
+
 	@RequestMapping(value = "berlet/torles/{membershipId}", method = RequestMethod.GET)
 	public String deleteMembership(@PathVariable("membershipId") long membershipId) {
 		try {
@@ -138,7 +127,34 @@ public class StoreController {
 		}
 		return "redirect:/raktar/berlet";
 	}
+
+	@RequestMapping(value = "edzestipus")
+	public String trainingType(Model model, HttpServletResponse response, HttpServletRequest request) {
+		model.addAttribute("trainingTypesInStore", gps.getAllTrainingTypes());
+		model.addAttribute("trainers", gus.getAllTrainers());
+		return "raktar";
+	}
 	
+	@RequestMapping(value = "edzestipus/ujedzestipus", method = RequestMethod.POST)
+	public String newTrainingType(HttpServletResponse response, HttpServletRequest request, @ModelAttribute("trainingType") TrainingType trainingType) {
+		try {
+			User trainer = gus.getUserById(Long.parseLong(request.getParameter("trainerId")));
+			try {
+			TrainingType existingTT = gps.getTrainingTypeByTrainer(trainer);
+			existingTT.setDetail(trainingType.getDetail());
+			existingTT.setPrice(trainingType.getPrice());
+			gps.updateTrainingType(existingTT);
+			logger.info("membership is updated: " + existingTT);
+			} catch(FitnessDaoException e) {
+				trainingType.setTrainer(trainer);
+				gps.saveTrainingType(trainingType);
+				logger.info("new membership type added: " + trainingType);
+			}
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/raktar/edzestipus";
+	}
 
 	private ProductImage createPictureFromMultipartFile(MultipartFile file) {
 		ProductImage pi = null;
@@ -148,8 +164,7 @@ public class StoreController {
 				byte[] bytes = file.getBytes();
 				String originalFileName = file.getOriginalFilename();
 				String mime = getMimeFromFileName(originalFileName);
-				logger.info("picutres uploaded: " + originalFileName
-						+ " mime: " + mime);
+				logger.info("picutres uploaded: " + originalFileName + " mime: " + mime);
 				pi = new ProductImage(mime, bytes);
 			} catch (IOException e) {
 				e.printStackTrace();

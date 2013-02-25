@@ -192,7 +192,7 @@
 			<h5>Edzések</h5>
 			<#list basket.trainings as training>
 				<div class="basketModalRow">
-					${training.trainer.username} ${training.trainingStartDate?date} (ID:${training.id})
+					${training.trainer.username} ${training.date?date} (ID:${training.id})
 					<div style="float:right;">
 						5000<b> HUF</b>
 					</div>

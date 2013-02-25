@@ -205,7 +205,7 @@
 					<tbody>
 						<tr>
 							<td>${training.trainer.fullName}</td>
-							<td>${training.trainingStartDate?string("yyyy.MM.dd HH:mm")}</td>
+							<td>${training.date?string("yyyy.MM.dd HH:mm")}</td>
 							<td>
 								<#if nameInString = "anonymousBasket">
 									<a href="<@spring.url relativeUrl="/edzesek/torles/anonymous/${training.trainer.username}"/>" class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></a>
@@ -359,7 +359,7 @@
 					<tr>
 						<td>${iterate}</td>
 						<td>${training.trainer.fullName}</td>
-						<td>${training.trainingStartDate?string("yyyy.MM.dd HH:mm")}</td>>
+						<td>${training.date?string("yyyy.MM.dd HH:mm")}</td>>
 					</tr>
 				</#list>
 			</tbody>
@@ -432,7 +432,7 @@
 			<div class="control-group">
 				<label class="control-label" for="price">Ár</label>
 				<div class="controls">
-					<input type="number" id="price" name="price" placeholder="Bérlet ára"/>
+					<input type="number" id="price" required="required" value="1" min="1" name="price" placeholder="Bérlet ára"/>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -490,7 +490,7 @@
 			<div class="control-group">
 				<label class="control-label" for="price">Ár</label>
 				<div class="controls">
-					<input type="number" id="price" name="price"/>
+					<input type="number" id="price" required="required" value="1" min="1" name="price"/>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -570,5 +570,45 @@
 			</#if>
 		</div>
 	</div>	
+</div>
+</#macro>
+
+<#macro updateTrainingTypeDialog>
+<div id="updateTrainingTypeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Új edzés típus</h3>
+  </div>
+  <div class="modal-body">
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/edzestipus/ujedzestipus"/>" method="post" accept-charset="UTF-8">
+			<input type="hidden" id="trainerId" name="trainerId"/>
+			<div class="control-group">
+				<label class="control-label">Edző</label>
+				<div class="controls">
+					<input type="text" id="trainerName" name="trainerName" placeholder="Edző" disabled/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="detail">Edzés leírása</label>
+				<div class="controls">
+					<input type="text" id="detail" name="detail" placeholder="Edzés leírása"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="price">Ár</label>
+				<div class="controls">
+					<input type="number" id="price" name="price" required="required" value="1" min="1" placeholder="Edzés típus ára"/>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Bezár</button>
+						<button id="submit-btn" class="btn btn-success" type ="submit">Hozzáadás</button>
+					</div>
+				</div>
+			</div>
+		</form>
+  </div>
 </div>
 </#macro>

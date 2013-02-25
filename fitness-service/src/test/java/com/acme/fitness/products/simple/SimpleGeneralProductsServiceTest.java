@@ -19,12 +19,14 @@ import com.acme.fitness.domain.products.MembershipType;
 import com.acme.fitness.domain.products.Product;
 import com.acme.fitness.domain.products.ProductImage;
 import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.products.TrainingType;
 import com.acme.fitness.domain.users.User;
 import com.acme.fitness.products.MembershipService;
 import com.acme.fitness.products.MembershipTypeService;
 import com.acme.fitness.products.ProductImageService;
 import com.acme.fitness.products.ProductService;
 import com.acme.fitness.products.TrainingService;
+import com.acme.fitness.products.TrainingTypeService;
 
 public class SimpleGeneralProductsServiceTest {
 	private static final String TEST_STRING = "TESTSTRING";
@@ -66,11 +68,17 @@ public class SimpleGeneralProductsServiceTest {
 
 	@Mock
 	private ProductImageService imageService;
+	
+	@Mock
+	private TrainingTypeService trainingTypeService;
+	
+	@Mock
+	private TrainingType trainingType;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		underTest = new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService, imageService);
+		underTest = new SimpleGeneralProductsService(productService, membershipService, trainingService, membershipTypeService, imageService, trainingTypeService);
 	}
 
 	@Test
@@ -163,7 +171,7 @@ public class SimpleGeneralProductsServiceTest {
 	}
 
 	@Test
-	public void testNewTrainingShouldReturnProperly() {
+	public void testNewTrainingShouldReturnProperly() throws FitnessDaoException {
 		// GIVEN
 		Date date = new Date();
 		BDDMockito.given(trainingService.newTraining(user, user, date)).willReturn(training);
@@ -485,5 +493,53 @@ public class SimpleGeneralProductsServiceTest {
 		underTest.goOnHolidayToAllDay(user, date);
 		// THEN
 		BDDMockito.verify(trainingService, BDDMockito.times(1)).goOnHolidayToAllDay(user, date);
+	}
+	
+	@Test
+	public void testNewTrainingShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.newTrainingType(user, "test", 1.0);
+		//THEN
+		BDDMockito.verify(trainingTypeService).newTrainingType(user, "test", 1.0);
+	}
+	
+	@Test
+	public void testSaveTrainingTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.saveTrainingType(trainingType);
+		//THEn
+		BDDMockito.verify(trainingTypeService).saveTrainingType(trainingType);
+	}
+	
+	@Test
+	public void testGetAllTrainingTypes() {
+		//WHEN
+		underTest.getAllTrainingTypes();
+		//THEN
+		BDDMockito.verify(trainingTypeService).getAllTrainingTypes();
+	}
+	
+	@Test
+	public void testGetTrainingTypeByIdShouldInvokeTheRightMethod() throws FitnessDaoException {
+		//WHEN
+		underTest.getTrainingTypeById(1L);
+		//THEN
+		BDDMockito.verify(trainingTypeService).getTrainingTypeById(1L);
+	}
+	
+	@Test
+	public void testGetTrainingTypeByTrainerShouldInvokeTheRightMethod() throws FitnessDaoException {
+		//WHEN
+		underTest.getTrainingTypeByTrainer(user);
+		//THEN
+		BDDMockito.verify(trainingTypeService).getTrainingTypeByTrainer(user);
+	}
+	
+	@Test
+	public void testUpdateTrainingTypeShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.updateTrainingType(trainingType);
+		//THEN
+		BDDMockito.verify(trainingTypeService).updateTrainingType(trainingType);
 	}
 }

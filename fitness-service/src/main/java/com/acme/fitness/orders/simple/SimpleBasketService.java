@@ -161,7 +161,7 @@ public class SimpleBasketService implements BasketService {
 	private void saveTrainings(Basket basket) throws TrainingDateReservedException {
 		List<Training> reservedTrainings = new ArrayList<Training>();
 		for (Training t : basket.getTrainings()) {
-			if (!trainingService.isDateReserved(t.getTrainer(), t.getTrainingStartDate())) {
+			if (!trainingService.isDateReserved(t.getTrainer(), t.getDate())) {
 				trainingService.saveTraining(basket, t);
 			} else {
 				reservedTrainings.add(t);

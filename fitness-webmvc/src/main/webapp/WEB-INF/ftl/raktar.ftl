@@ -13,6 +13,9 @@
   <li <#if membershipsInStore?exists>class="active"</#if>>
   	<a href="<@spring.url relativeUrl="/raktar/berlet"/>">Bérletek</a>
   </li>
+    <li <#if trainingTypesInStore?exists>class="active"</#if>>
+  	<a href="<@spring.url relativeUrl="/raktar/edzestipus"/>">Edzés típusok</a>
+  </li>
 </ul>
 
 <#if productsInStore?exists>
@@ -108,6 +111,46 @@
 		</tbody>
 	</table>
 </#if>
+
+<#if trainingTypesInStore?exists>
+	<@tags.updateTrainingTypeDialog/>
+	<table id="trainingTypeTable"class="table table-hover">
+		<thead>
+			<tr>
+				<th>Edző Azonosító</th>
+				<th>Edző</th>
+				<th>Edzés típus azonosító</th>
+				<th>Leírás</th>
+				<th>Ár</th>
+				<th>Módosítás</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list trainers as trainer>
+				<tr id="trainer-${trainer.id}">
+					<td class="trainer-id">${trainer.id}</td>
+					<td class="trainer-name">${trainer.fullName}</td>
+					<#assign isType = false>
+					<#list trainingTypesInStore as type>
+						<#if type.trainer.id = trainer.id>
+							<#assign isType = true>
+							<td class="training-type-id">${type.id}</td>
+							<td class="training-type-detail">${type.detail}</td>
+							<td class="training-type-price">${type.price}</td>
+						</#if>
+					</#list>
+					<#if isType = false>
+						<td class="training-type-id"></td>
+						<td class="training-type-detail"></td>
+						<td class="training-type-price"></td>
+					</#if>
+					<td><button data-id="${trainer.id}" class="open-updateTrainingTypeModal btn btn-primary" type="button" data-toggle="modal" href="#updateTrainingTypeModal"><i class="icon-white icon-wrench"></i></button></td>
+				</tr>
+			</#list>
+		</tbody>
+	</table>
+</#if>
+
 
 <@loadScripts.loadScripts />
 <!-- raktar -->

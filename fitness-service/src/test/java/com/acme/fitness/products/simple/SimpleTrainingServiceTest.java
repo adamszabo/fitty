@@ -13,8 +13,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.acme.fitness.dao.products.TrainingDao;
+import com.acme.fitness.dao.products.TrainingTypeDao;
+import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Training;
+import com.acme.fitness.domain.products.TrainingType;
 import com.acme.fitness.domain.users.User;
 
 public class SimpleTrainingServiceTest {
@@ -24,25 +27,52 @@ public class SimpleTrainingServiceTest {
 	@Mock
 	private TrainingDao trainingDao;
 
+	@Mock
+	private TrainingTypeDao trainingTypeDao;
+	
+	@Mock
+	private TrainingType trainingType;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		underTest = new SimpleTrainingService(trainingDao);
+		underTest = new SimpleTrainingService(trainingDao, trainingTypeDao);
 	}
 
 	@Test
-	public void testNewTrainingShouldInvokeTheMethodRight() {
+	public void testNewTrainingShouldInvokeTheMethodRight() throws FitnessDaoException {
 		// GIVEN
 		User expectedClient = new User();
 		expectedClient.setId(1L);
 		User expectedTrainer = new User();
 		expectedTrainer.setId(2L);
 		Date expectedDate = new Date();
-		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, null);
+		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, null, 1.0);
+		BDDMockito.given(trainingTypeDao.getTrainingTypeByTrainer(expectedTrainer)).willReturn(trainingType);
+		BDDMockito.given(trainingType.getPrice()).willReturn(1.0);
 		// WHEN
 		Training result = underTest.newTraining(expectedTrainer, expectedClient, expectedDate);
 		// THEN
 		Assert.assertEquals(expectedTraining, result);
+		BDDMockito.verify(trainingTypeDao).getTrainingTypeByTrainer(expectedTrainer);
+		BDDMockito.verify(trainingType).getPrice();
+	}
+	
+	@Test(expected=FitnessDaoException.class)
+	public void testNewTrainingShouldThrowExceptionWhenTheTrainerDoesntHaveTrainerType() throws FitnessDaoException {
+		// GIVEN
+		User expectedClient = new User();
+		expectedClient.setId(1L);
+		User expectedTrainer = new User();
+		expectedTrainer.setId(2L);
+		Date expectedDate = new Date();
+		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, null, 1.0);
+		BDDMockito.given(trainingTypeDao.getTrainingTypeByTrainer(expectedTrainer)).willThrow(new FitnessDaoException());
+		// WHEN
+		Training result = underTest.newTraining(expectedTrainer, expectedClient, expectedDate);
+		// THEN
+		Assert.assertEquals(expectedTraining, result);
+		BDDMockito.verify(trainingTypeDao).getTrainingTypeByTrainer(expectedTrainer);
 	}
 
 	@Test
@@ -59,23 +89,27 @@ public class SimpleTrainingServiceTest {
 	}
 
 	@Test
-	public void testAddTrainingShouldInvokeTheMethodRight() {
+	public void testAddTrainingShouldInvokeTheMethodRight() throws FitnessDaoException {
 		// GIVEN
 		User expectedClient = new User();
 		User expectedTrainer = new User();
 		Date expectedDate = new Date();
 		Basket expectedBasket = new Basket();
-		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, expectedBasket);
+		Training expectedTraining = new Training(expectedTrainer, expectedClient, expectedDate, false, 0, null, expectedBasket, 1.0);
+		BDDMockito.given(trainingTypeDao.getTrainingTypeByTrainer(expectedTrainer)).willReturn(trainingType);
+		BDDMockito.given(trainingType.getPrice()).willReturn(1.0);
 		// WHEN
 		underTest.saveNewTraining(expectedTrainer, expectedClient, expectedDate, expectedBasket);
 		// THEN
 		BDDMockito.verify(trainingDao).save(expectedTraining);
+		BDDMockito.verify(trainingTypeDao).getTrainingTypeByTrainer(expectedTrainer);
+		BDDMockito.verify(trainingType).getPrice();
 	}
 
 	@Test
 	public void testDeleteTrainingShouldInvokeTheMethodRight() {
 		// GIVEN
-		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 0, null, new Basket());
+		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 0, null, new Basket(), 1.0);
 		// WHEN
 		underTest.deleteTraining(expectedTraining);
 		// THEN
@@ -85,7 +119,7 @@ public class SimpleTrainingServiceTest {
 	@Test
 	public void testUpdateTrainingShouldInvokeTheMethodRight() {
 		// GIVEN
-		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 12, "review", new Basket());
+		Training expectedTraining = new Training(new User(), new User(), new Date(), false, 12, "review", new Basket(), 1.0);
 		// WHEN
 		underTest.updateTraining(expectedTraining);
 		// THEN
@@ -96,11 +130,11 @@ public class SimpleTrainingServiceTest {
 	public void testRecordTrainingShouldInvokeTheMethodRight() {
 		// GIVEN
 		User user = new User();
-		Training training = new Training(user, user, new Date(), false, 0, null, new Basket());
+		Training training = new Training(user, user, new Date(), false, 0, null, new Basket(), 1.0);
 		int expectedBurnedCalories = 12;
 		String expectedReview = "review";
 		boolean expectedAnalyzed = true;
-		Training expectedTraining = new Training(user, user, new Date(), false, 0, null, new Basket());
+		Training expectedTraining = new Training(user, user, new Date(), false, 0, null, new Basket(), 1.0);
 		expectedTraining.setBurnedCalories(expectedBurnedCalories);
 		expectedTraining.setReview(expectedReview);
 		expectedTraining.setAnalyzed(expectedAnalyzed);
@@ -182,7 +216,7 @@ public class SimpleTrainingServiceTest {
 		// GIVEN
 		User trainer = new User();
 		Date date = new Date();
-		Training expectedTraining = new Training(trainer, trainer, date, false, 0, null, null);
+		Training expectedTraining = new Training(trainer, trainer, date, false, 0, null, null, 0.0);
 		// WHEN
 		underTest.goOnHoliday(trainer, date);
 		// THEN
