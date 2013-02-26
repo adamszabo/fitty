@@ -17,6 +17,7 @@
 	                                    	<li><a href="<@spring.url relativeUrl="/aruhaz"/>">Áruház</a></li>
 											<li><a href="<@spring.url relativeUrl="/edzesek"/>">Edzések</a></li>
 											<li><a href="<@spring.url relativeUrl="/berletek"/>">Bérletek</a></li>
+											<li><a href="<@spring.url relativeUrl="/edzok"/>">Edzők</a></li>
 										</@security.authorize>
 										<@security.authorize access="hasRole('Recepcionist')">
 											<li><a href="<@spring.url relativeUrl="/beleptetes"/>">Beléptetés</a></li>
