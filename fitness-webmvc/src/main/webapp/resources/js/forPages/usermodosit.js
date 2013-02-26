@@ -1,75 +1,72 @@
 $(document).ready(function() {
-	//Full name validation
-	$('#userDataUpdate-fullName').on('focusout',function(){
-		var fullName=$(this).val();
-		if(!validateStringLength(fullName,6)){
+
+	// Full name validation
+	$('#userDataUpdate-fullName').on('focusout', function() {
+		var fullName = $(this).val();
+		if (!validateStringLength(fullName, 6)) {
 			$('#userDataUpdate-fullNameAlert').show();
 		}
 	});
-	$('#userDataUpdate-fullName').on('focusin',function(){
+	$('#userDataUpdate-fullName').on('focusin', function() {
 		$('#userDataUpdate-fullNameAlert').hide();
 	});
-	
-	//Email validation
+
+	// Email validation
 	validateEmailWhenLeaveInput();
 	$('#userDataUpdate-email').on('focusin', function() {
 		$('#userDataUpdate-emailAlert').hide();
 	});
-	
-	//Password validation and send modified user details
+
+	// Password validation and send modified user details
 	$('#userDataUpdateButton').on('click', function() {
-		if(isAllInputsFilled('userDataUpdateForm')){
+		if (isAllInputsFilled('userDataUpdateForm')) {
 			$('#userDataUpdate-inputsAlert').hide();
 			validateAndSendUserData();
-		}
-		else{
+		} else {
 			$('#userDataUpdate-inputsAlert').show();
 		}
 	});
-	
-	//hide notification area
+
+	// hide notification area
 	$('input').on('focusin', function() {
 		$('#notificationDiv').hide();
 	});
-	
-	//validate and send new password with valid old password
-	$('#userPasswordUpdateButton').on('click',function(){
-		if(isAllInputsFilled('userPasswordUpdateForm')){
+
+	// validate and send new password with valid old password
+	$('#userPasswordUpdateButton').on('click', function() {
+		if (isAllInputsFilled('userPasswordUpdateForm')) {
 			$('#userPasswordUpdate-inputsAlert').hide();
 			checkNewPasswordAndItsConfirmationInput();
-		}
-		else{
+		} else {
 			$('#userPasswordUpdate-inputsAlert').show();
 		}
 	});
 
 });
 
-function checkNewPasswordAndItsConfirmationInput(){
-	var newPassword=$('#newPassword').val();
-	var newPasswordRe=$('#newPasswordRe').val();
-	
-	if(validateStringLength(newPassword, 4)){
-		if(newPassword==newPasswordRe){
+function checkNewPasswordAndItsConfirmationInput() {
+	var newPassword = $('#newPassword').val();
+	var newPasswordRe = $('#newPasswordRe').val();
+
+	if (validateStringLength(newPassword, 4)) {
+		if (newPassword == newPasswordRe) {
 			$('#newPasswordAlert').hide();
 			checkOldPasswordAndSendNew();
-		}
-		else{
+		} else {
 			$('#newPasswordAlert>span').html('A két megadott jelszó nem egyezik meg!');
 			$('#newPasswordAlert').show();
 		}
-	}
-	else{
+	} else {
 		$('#newPasswordAlert>span').html('A jelszó legalább 4 karakter hosszúságú legyen!');
 		$('#newPasswordAlert').show();
 	}
-	
+
 }
 
-function checkOldPasswordAndSendNew(){
-	var username=$('#userPasswordUpdate-username').val();
-	var oldPassword=$('#oldPassword').val();
-	
+function checkOldPasswordAndSendNew() {
+	var username = $('#userPasswordUpdate-username').val();
+	var oldPassword = $('#oldPassword').val();
+
 	$.ajax({
 		url : $('#defaultUrl').val() + 'modositas/validatePass',
 		type : 'POST',
@@ -80,7 +77,7 @@ function checkOldPasswordAndSendNew(){
 		success : function(data) {
 			if (data) {
 				$('#oldPasswordAlert').hide();
-				sendNewPassword();				
+				sendNewPassword();
 			} else {
 				$('#oldPasswordAlert').show();
 			}
@@ -88,9 +85,9 @@ function checkOldPasswordAndSendNew(){
 	});
 }
 
-function sendNewPassword(){
-	var newPassword=$('#newPassword').val();
-	
+function sendNewPassword() {
+	var newPassword = $('#newPassword').val();
+
 	$.ajax({
 		url : $('#defaultUrl').val() + 'modositas/jelszo',
 		type : 'POST',
@@ -109,12 +106,12 @@ function sendNewPassword(){
 	});
 }
 
-function sendModifiedData(){
-	var fullName=$('#userDataUpdate-fullName').val();
-	var email=$('#userDataUpdate-email').val();
-	var mobile=$('#userDataUpdate-mobile').val();
-	
-	if(validateStringLength(fullName, 5) && RegistrationValidator.validateEmailWithRegular(email)){
+function sendModifiedData() {
+	var fullName = $('#userDataUpdate-fullName').val();
+	var email = $('#userDataUpdate-email').val();
+	var mobile = $('#userDataUpdate-mobile').val();
+
+	if (validateStringLength(fullName, 5) && RegistrationValidator.validateEmailWithRegular(email)) {
 		$.ajax({
 			url : $('#defaultUrl').val() + 'modositas/adatok',
 			type : 'POST',
@@ -168,17 +165,17 @@ function validateAndSendUserData() {
 	});
 }
 
-function validateStringLength(fullName, minLength){
-	return minLength<=fullName.length;
+function validateStringLength(fullName, minLength) {
+	return minLength <= fullName.length;
 }
 
-function isAllInputsFilled(formId){
-	var $inputs=$('#'+formId+' .control-group .controls input');
-	var filled=true;
-	$inputs.each(function(index,value){
-		var input=$(value);
-		if(input.val()=="")
-			filled=false;
+function isAllInputsFilled(formId) {
+	var $inputs = $('#' + formId + ' .control-group .controls input');
+	var filled = true;
+	$inputs.each(function(index, value) {
+		var input = $(value);
+		if (input.val() == "")
+			filled = false;
 	});
 	return filled;
 }
