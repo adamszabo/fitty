@@ -1,10 +1,10 @@
 var RegistrationValidator = function() {
 	
 	function validateRegistration() {
-		emailAddress = $('#email').val();
-		isValidEmail = validateEmailWithRegular(emailAddress);
-		isValidPasswordRe = validatePasswords();
-		isAllInputFilled = isAllInputsFilled();
+		var emailAddress = $('#email').val();
+		var isValidEmail = validateEmailWithRegular(emailAddress);
+		var isValidPasswordRe = validatePasswords();
+		var isAllInputFilled = isAllInputsFilled();
 
 		if (isAllInputFilled) {
 			$('#inputs').hide();
@@ -63,8 +63,8 @@ var RegistrationValidator = function() {
 	}
 
 	function validatePasswords(){
-		password=$('#password').val();
-		passwordRe=$('#passwordRe').val();
+		var password=$('#password').val();
+		var passwordRe=$('#passwordRe').val();
 		
 		if(password!=passwordRe){
 			$('#passwordAlert').show();
@@ -77,8 +77,8 @@ var RegistrationValidator = function() {
 	}
 
 	function isAllInputsFilled(){
-		$inputs=$('#registrationForm .control-group .controls input');
-		filled=true;
+		var $inputs=$('#registrationForm .control-group .controls input');
+		var filled=true;
 		$inputs.each(function(index,value){
 			input=$(value);
 			if(input.val()=="")

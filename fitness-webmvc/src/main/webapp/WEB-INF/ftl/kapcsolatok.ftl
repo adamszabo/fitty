@@ -8,21 +8,25 @@
 	
 	<div class="row contact-page">
 		<div class="hero-unit">
-			<h2>Maradj kapcsolatban!</h2>
-			<p class="tagline">Bármilyen kérdéssel kapcsolatban keress fel minket az alábbi elérhetőségeken.</p>
+			<h2>Maradjon kapcsolatban!</h2>
+			<p class="tagline">Bármilyen kérdéssel kapcsolatban, keressen minket az alábbi elérhetőségeken.</p>
 		</div> 
 		<section class="span6">
 			<div class="control-group">
 				<label class="control-label">
-					<i class="icon-envelope"></i> Cím
+					<i class="icon-map-marker"></i> Cím
 				</label>
-				<div class="controls controls-row">Zsír Szabó Fitnesz klub - 1082 Budapest Futó utca 1</div>
+				<div class="controls controls-row">Zsír Szabó Fitnesz Klub - 1082 Budapest Futó utca 1</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">
-					<i class="icon-info-sign"></i> E-mail
+					<i class="icon-envelope"></i> E-mail
 				</label>
 				<div class="controls controls-row">info@zsirszabo.com</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"><i class="icon-volume-up"></i> Telefon</label>
+				<div class="controls controls-row">+36-30-111-1122</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">
