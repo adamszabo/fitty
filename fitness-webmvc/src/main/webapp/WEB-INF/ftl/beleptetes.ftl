@@ -53,10 +53,14 @@
 								</td>
 							</tr>
 							<tr id="${item.user.username}-memberships-tr" style="display:none">
-								<@memberShipsTableWithCheckIn item.memberships item.user.fullName/>
+								<td colspan="6">
+									<@memberShipsTableWithCheckIn item.memberships item.user.fullName/>
+								</td>
 							</tr>
 							<tr id="${item.user.username}-baskets-tr" style="display:none">
-								<@basketsTableWithCheckOut item.baskets />
+								<td colspan="6">
+									<@basketsTableWithCheckOut item.baskets />
+								</td>
 							</tr>
 					</#list>
 				<#else>
@@ -77,7 +81,6 @@
 
 <#macro memberShipsTableWithCheckIn memberships fullName>
 	<#if (memberships?size>0) >
-		<td colspan="6">
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
@@ -107,17 +110,13 @@
 					</#list>
 				</tbody>
 			</table>
-		</td>
 	<#else>
-		<td colspan="6">
 			<h5>Nincs bérlet a személyhez.</h5>
-		</td>
 	</#if>
 </#macro>
 
 <#macro basketsTableWithCheckOut baskets>
 	<#if (baskets?size>0) >
-		<td colspan="6">
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
@@ -153,11 +152,8 @@
 					</#list>
 				</tbody>
 			</table>
-		</td>
 	<#else>
-		<td colspan="6">
-			<h5>Nem tartozik teljesítetlen megrendelés a személyhez.</h5>
-		</td>
+		<h5>Nem tartozik teljesítetlen megrendelés a személyhez.</h5>
 	</#if>
 </#macro>
 
