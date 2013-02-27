@@ -89,23 +89,12 @@ public class CheckInController {
 		UserWithMembershipsAndBaskets uwm = new UserWithMembershipsAndBaskets();
 
 		List<Membership> memberships = gps.getValidMembershipsByUser(user, new Date());
-		List<Basket> baskets=getBasketsWithMembershipsAndTrainings(user);
+		List<Basket> baskets=gos.getBasketsByUserAndDeliveredStatus(user, false);
 		uwm.setUser(user);
 		uwm.setMemberships(memberships);
 		uwm.setBaskets(baskets);
 
 		return uwm;
-	}
-
-	private List<Basket> getBasketsWithMembershipsAndTrainings(User user) {
-		List<Basket> result=gos.getBasketsByUserAndDeliveredStatus(user, false);
-		
-		for(Basket basket : result){
-			basket.setMemberships(gps.getMembershipByBasket(basket));
-			basket.setTrainings(gps.getTrainingsByBasket(basket));
-		}
-		
-		return result;
 	}
 
 	private List<User> getUsersWithDetails(String searchType, String searchInput) {

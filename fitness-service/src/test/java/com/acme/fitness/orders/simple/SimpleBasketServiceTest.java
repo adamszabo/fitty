@@ -93,7 +93,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddMembershipToBasketShouldAddTheMembershipRight() {
 		// GIVEN
-		User user=new User();
+		User user = new User();
 		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		Membership membership = new Membership();
@@ -112,7 +112,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddTrainingToBasketShouldAddTheTrainingRight() {
 		// GIVEN
-		User user=new User();
+		User user = new User();
 		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		Training training = new Training();
@@ -131,7 +131,7 @@ public class SimpleBasketServiceTest {
 	@Test
 	public void testAddOrderItemToBasketShouldAddTheOrderItemRight() {
 		// GIVEN
-		User user=new User();
+		User user = new User();
 		Basket basket = new Basket(false, user);
 		basket.setId(1L);
 		OrderItem orderItem = new OrderItem();
@@ -210,11 +210,10 @@ public class SimpleBasketServiceTest {
 	}
 
 	@Test
-	public void testGetBasketsByUserShouldReturnProperly() {
+	public void testGetBasketsByUserWhenNoResultFoundShouldReturnProperly() {
 		// GIVEN
 		User user = new User();
-		BDDMockito.given(basketDao.getBasketsByUser(user)).willReturn(
-				new ArrayList<Basket>());
+		BDDMockito.given(basketDao.getBasketsByUser(user)).willReturn(new ArrayList<Basket>());
 		// WHEN
 		List<Basket> result = underTest.getBasketsByUser(user);
 		// THEN
@@ -223,8 +222,66 @@ public class SimpleBasketServiceTest {
 	}
 
 	@Test
-	public void testGetBasketByIdShouldReturnProperly()
-			throws FitnessDaoException {
+	public void testGetBasketsByUserWhenHasOneResultShouldReturnProperly() {
+		// GIVEN
+		User user = new User();
+		List<Basket> expected = new ArrayList<Basket>();
+		List<Membership> memberships=new ArrayList<Membership>();
+		List<Training> trainings=new ArrayList<Training>();
+		expected.add(basketMock);
+		BDDMockito.given(basketDao.getBasketsByUser(user)).willReturn(expected);
+		BDDMockito.given(membershipService.getMembershipByBasket(basketMock)).willReturn(memberships);
+		BDDMockito.given(trainingService.getTrainingsByBasket(basketMock)).willReturn(trainings);
+		// WHEN
+		List<Basket> result = underTest.getBasketsByUser(user);
+		// THEN
+		BDDMockito.verify(basketDao).getBasketsByUser(user);
+		BDDMockito.verify(membershipService).getMembershipByBasket(basketMock);
+		BDDMockito.verify(trainingService).getTrainingsByBasket(basketMock);
+		BDDMockito.verify(basketMock).setMemberships(memberships);
+		BDDMockito.verify(basketMock).setTrainings(trainings);
+		Assert.assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testGetBasketsByUserAndDeliveredStatusWhenNoResultFoundShouldReturnProperly() {
+		// GIVEN
+		User user = new User();
+		boolean deliveredStatus=false;
+		List<Basket> expected = new ArrayList<Basket>();
+		BDDMockito.given(basketDao.getBasketsByUserAndDeliveredStatus(user, deliveredStatus)).willReturn(expected);
+		// WHEN
+		List<Basket> result = underTest.getBasketsByUserAndDeliveredStatus(user, deliveredStatus);
+		// THEN
+		BDDMockito.verify(basketDao).getBasketsByUserAndDeliveredStatus(user, deliveredStatus);
+		Assert.assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testGetBasketsByUserAndDeliveredStatusWhenHasOneResultShouldReturnProperly() {
+		// GIVEN
+		User user = new User();
+		boolean deliveredStatus=false;
+		List<Basket> expected = new ArrayList<Basket>();
+		List<Membership> memberships=new ArrayList<Membership>();
+		List<Training> trainings=new ArrayList<Training>();
+		expected.add(basketMock);
+		BDDMockito.given(basketDao.getBasketsByUserAndDeliveredStatus(user, deliveredStatus)).willReturn(expected);
+		BDDMockito.given(membershipService.getMembershipByBasket(basketMock)).willReturn(memberships);
+		BDDMockito.given(trainingService.getTrainingsByBasket(basketMock)).willReturn(trainings);
+		// WHEN
+		List<Basket> result = underTest.getBasketsByUserAndDeliveredStatus(user, deliveredStatus);
+		// THEN
+		BDDMockito.verify(basketDao).getBasketsByUserAndDeliveredStatus(user, deliveredStatus);
+		BDDMockito.verify(membershipService).getMembershipByBasket(basketMock);
+		BDDMockito.verify(trainingService).getTrainingsByBasket(basketMock);
+		BDDMockito.verify(basketMock).setMemberships(memberships);
+		BDDMockito.verify(basketMock).setTrainings(trainings);
+		Assert.assertEquals(expected, result);
+	}
+
+	@Test
+	public void testGetBasketByIdShouldReturnProperly() throws FitnessDaoException {
 		// GIVEN
 		Basket expected = new Basket();
 		BDDMockito.given(basketDao.getBasketById(1L)).willReturn(expected);
@@ -236,8 +293,7 @@ public class SimpleBasketServiceTest {
 	}
 
 	@Test
-	public void testCheckOutBasketShouldInvokeTheTrainingAndMembershipMethodsRight()
-			throws StoreQuantityException {
+	public void testCheckOutBasketShouldInvokeTheTrainingAndMembershipMethodsRight() throws StoreQuantityException {
 		// GIVEN
 		Training training = new Training();
 		Membership membership = new Membership();
@@ -256,19 +312,16 @@ public class SimpleBasketServiceTest {
 	}
 
 	@Test
-	public void testCheckOutBasketShouldInvokeTheUpdateOrderItemMethodRight()
-			throws StoreQuantityException, FitnessDaoException {
+	public void testCheckOutBasketShouldInvokeTheUpdateOrderItemMethodRight() throws StoreQuantityException, FitnessDaoException {
 		// GIVEN
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(orderItemMock);
 		BDDMockito.given(basketMock.getOrderItems()).willReturn(orderItems);
 		BDDMockito.given(orderItemMock.getProduct()).willReturn(new Product());
 		BDDMockito.given(orderItemMock.getQuantity()).willReturn(1);
-		BDDMockito.given(storeService.takeOutProduct(new Product(), 1))
-				.willReturn(true);
+		BDDMockito.given(storeService.takeOutProduct(new Product(), 1)).willReturn(true);
 		BDDMockito.doNothing().when(basketDao).save(basketMock);
-		BDDMockito.doNothing().when(orderItemService)
-				.updateOrderItem(orderItemMock);
+		BDDMockito.doNothing().when(orderItemService).updateOrderItem(orderItemMock);
 		// WHEN
 		underTest.checkOutBasket(basketMock);
 		// THEN
@@ -282,7 +335,7 @@ public class SimpleBasketServiceTest {
 
 	@Test
 	public void testCheckOutBasketShouldThrowExpcetionWhenInvokeTheUpdateOrderItemMethod() throws FitnessDaoException {
-		//GIVEN
+		// GIVEN
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(orderItemMock);
 		Product expectedProduct = new Product();
@@ -296,13 +349,13 @@ public class SimpleBasketServiceTest {
 		List<Product> result = null;
 		List<Product> products = new ArrayList<Product>();
 		products.add(expectedProduct);
-		//WHEN
+		// WHEN
 		try {
 			underTest.checkOutBasket(basketMock);
 		} catch (StoreQuantityException e) {
 			result = e.getProduct();
 		}
-		//THEN
+		// THEN
 		Assert.assertEquals(products, result);
 		BDDMockito.verify(basketMock).getOrderItems();
 		BDDMockito.verify(orderItemMock, BDDMockito.times(2)).getProduct();
@@ -310,10 +363,10 @@ public class SimpleBasketServiceTest {
 		BDDMockito.verify(storeService).takeOutProduct(expectedProduct, 1);
 		BDDMockito.verify(basketDao).save(basketMock);
 	}
-	
+
 	@Test
 	public void testCheckOutBasketShouldInvokeTakeOutProductsElseBranchWhenTakeOUtProductMethodReturnsFalse() throws FitnessDaoException {
-		//GIVEN
+		// GIVEN
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		orderItems.add(orderItemMock);
 		Product expectedProduct = new Product();
@@ -326,13 +379,13 @@ public class SimpleBasketServiceTest {
 		List<Product> result = null;
 		List<Product> products = new ArrayList<Product>();
 		products.add(expectedProduct);
-		//WHEN
+		// WHEN
 		try {
 			underTest.checkOutBasket(basketMock);
 		} catch (StoreQuantityException e) {
 			result = e.getProduct();
 		}
-		//THEN
+		// THEN
 		Assert.assertEquals(products, result);
 		BDDMockito.verify(basketMock).getOrderItems();
 		BDDMockito.verify(orderItemMock, BDDMockito.times(2)).getProduct();
@@ -340,19 +393,19 @@ public class SimpleBasketServiceTest {
 		BDDMockito.verify(storeService).takeOutProduct(expectedProduct, 1);
 		BDDMockito.verify(basketDao).save(basketMock);
 	}
-	
+
 	@Test
-	public void testGetBasketsByUserAndDeliveredStatus(){
-		//GIVEN
-		User user=new User();
-		List<Basket> expected=new ArrayList<Basket>();
+	public void testGetBasketsByUserAndDeliveredStatus() {
+		// GIVEN
+		User user = new User();
+		List<Basket> expected = new ArrayList<Basket>();
 		BDDMockito.given(basketDao.getBasketsByUserAndDeliveredStatus(user, true)).willReturn(expected);
-		//WHEN
-		List<Basket> result=underTest.getBasketsByUserAndDeliveredStatus(user, true);
-		//THEN
+		// WHEN
+		List<Basket> result = underTest.getBasketsByUserAndDeliveredStatus(user, true);
+		// THEN
 		BDDMockito.verify(basketDao).getBasketsByUserAndDeliveredStatus(user, true);
 		Assert.assertEquals(expected, result);
-		
+
 	}
-	
+
 }

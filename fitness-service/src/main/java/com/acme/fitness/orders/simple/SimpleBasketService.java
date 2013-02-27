@@ -119,7 +119,9 @@ public class SimpleBasketService implements BasketService {
 
 	@Override
 	public List<Basket> getBasketsByUser(User user) {
-		return basketDao.getBasketsByUser(user);
+		List<Basket> baskets=basketDao.getBasketsByUser(user);
+		setBasketsMembershipsAndTrainings(baskets);
+		return baskets;
 	}
 
 	@Override
@@ -129,7 +131,19 @@ public class SimpleBasketService implements BasketService {
 
 	@Override
 	public List<Basket> getBasketsByUserAndDeliveredStatus(User user, boolean isDelviered) {
-		return basketDao.getBasketsByUserAndDeliveredStatus(user, isDelviered);
+		List<Basket> baskets=basketDao.getBasketsByUserAndDeliveredStatus(user, isDelviered);
+		setBasketsMembershipsAndTrainings(baskets);
+		return baskets;
+	}
+
+	private void setBasketsMembershipsAndTrainings(List<Basket> baskets) {
+		for(Basket basket : baskets){
+			List<Membership> memberships=membershipService.getMembershipByBasket(basket);
+			List<Training> trainings=trainingService.getTrainingsByBasket(basket);
+			
+			basket.setMemberships(memberships);
+			basket.setTrainings(trainings);
+		}
 	}
 
 	private void saveProducts(Basket basket) throws StoreQuantityException {
@@ -138,7 +152,7 @@ public class SimpleBasketService implements BasketService {
 			try {
 				takeOutProduct(basket, missingProducts, o);
 			} catch (FitnessDaoException e) {
-				e.fillInStackTrace().printStackTrace();
+				logger.info(e.getMessage());
 				missingProducts.add(o.getProduct());
 			}
 		}

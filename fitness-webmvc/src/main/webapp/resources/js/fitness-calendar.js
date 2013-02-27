@@ -149,9 +149,6 @@ var FitnessCalendar = function(){
 	}
 	
 	function setDates() {
-		for(var i = 0; i < 7; i++) {
-			$('.' + weekday[i]).css('background-color', "white");
-		}
 		actualPageSunday = new Date(actualPageMonday.getTime() + oneDay*6);
 		thisMonday = actualDatesMonday(today);
 //		console.log(actualPageMonday +  '          ' + thisMonday);

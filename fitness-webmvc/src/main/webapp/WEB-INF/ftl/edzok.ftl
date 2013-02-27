@@ -29,6 +29,7 @@
 						</#list>
 				</tbody>
 			</table>
+			<p><a class="btn btn-mini btn-inverse" href="<@spring.url relativeUrl="/edzesek"/>">Edzők naptárai</a></p>
 		<#else>
 			<div class="alert alert-warning">
 				<span>Nincs edző a rendszerben.</span>

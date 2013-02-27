@@ -42,6 +42,7 @@
 		<sec:intercept-url pattern="/admin/**" access="hasRole('SystemAdmin')"/>
 		<sec:intercept-url pattern="/raktar/**" access="hasRole('ProductAdmin')"/>
 		<sec:intercept-url pattern="/modositas/**" access="isAuthenticated()"/>
+		<sec:intercept-url pattern="/rendelesek/**" access="isAuthenticated()"/>
 		<sec:intercept-url pattern="/beleptetes/**" access="hasRole('Recepcionist')"/>
 	</sec:http>
 

@@ -92,6 +92,7 @@
 			    <span id="username-security-span"><@security.authentication property="principal.username"/></span>
 			  </a>
 			  <ul class="dropdown-menu">
+			  	<li><a id="userOrdersDetailsButton" href="<@spring.url relativeUrl="/rendelesek/atveheto"/>"><i class="icon-th-list"></i> Rendelések</a></li>
 				<li><a id="updateUserDetailsButton" href=""><i class="icon-wrench"></i> Beállítások</a></li>
 				<li><a href="<@spring.url relativeUrl="/j_spring_security_logout"/>"><i class="icon-off"></i> Kijelentkezés</a></li>
 			  </ul>
