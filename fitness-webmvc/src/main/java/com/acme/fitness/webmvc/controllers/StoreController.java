@@ -2,6 +2,7 @@ package com.acme.fitness.webmvc.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -87,6 +88,45 @@ public class StoreController {
 		return "redirect:/raktar";
 	}
 
+	@RequestMapping(value = "termek/termekmodositas", method = RequestMethod.POST)
+	public String updateProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("product") Product product,
+			@RequestParam("file") MultipartFile file) {
+		ProductImage image = createPictureFromMultipartFile(file);
+
+		try {
+			Product existingProduct = gps.getProductById(Long.parseLong(request.getParameter("productId")));
+			updateProductFields(product, existingProduct);
+			boolean isImageChanged = false;
+			if (image != null) {
+				if(existingProduct.getProductImage() == null) {
+					isImageChanged = true;
+				} else if (!areImagesEqual(image, existingProduct)) {
+					existingProduct.setProductImage(image);
+					isImageChanged = true;
+				}
+			}
+			if (isImageChanged) {
+				gps.updateProductAndSaveImage(existingProduct, image);
+			} else {
+				gps.updateProduct(existingProduct);
+			}
+		} catch (FitnessDaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/raktar";
+	}
+
+	private boolean areImagesEqual(ProductImage image, Product existingProduct) {
+		return Arrays.equals(image.getImage(), existingProduct.getProductImage().getImage()) && image.getMime().equals(existingProduct.getProductImage().getMime());
+	}
+
+	private void updateProductFields(Product product, Product existingProduct) {
+		existingProduct.setName(product.getName());
+		existingProduct.setDetails(product.getDetails());
+		existingProduct.setManufacturer(product.getManufacturer());
+		existingProduct.setPrice(product.getPrice());
+	}
+
 	@RequestMapping(value = "termek/torles/{productId}", method = RequestMethod.GET)
 	public String deleteProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @PathVariable("productId") long productId) {
 		try {
@@ -118,7 +158,7 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "berlet/torles/{membershipId}", method = RequestMethod.GET)
-	public String deleteMembership(@PathVariable("membershipId") long membershipId) {
+	public String deleteMembershipType(@PathVariable("membershipId") long membershipId) {
 		try {
 			gps.deleteMembershipType(gps.getMembershipTypeById(membershipId));
 			logger.info("membership deleted with id: " + membershipId);
@@ -134,18 +174,18 @@ public class StoreController {
 		model.addAttribute("trainers", gus.getAllTrainers());
 		return "raktar";
 	}
-	
+
 	@RequestMapping(value = "edzestipus/ujedzestipus", method = RequestMethod.POST)
 	public String newTrainingType(HttpServletResponse response, HttpServletRequest request, @ModelAttribute("trainingType") TrainingType trainingType) {
 		try {
 			User trainer = gus.getUserById(Long.parseLong(request.getParameter("trainerId")));
 			try {
-			TrainingType existingTT = gps.getTrainingTypeByTrainer(trainer);
-			existingTT.setDetail(trainingType.getDetail());
-			existingTT.setPrice(trainingType.getPrice());
-			gps.updateTrainingType(existingTT);
-			logger.info("membership is updated: " + existingTT);
-			} catch(FitnessDaoException e) {
+				TrainingType existingTT = gps.getTrainingTypeByTrainer(trainer);
+				existingTT.setDetail(trainingType.getDetail());
+				existingTT.setPrice(trainingType.getPrice());
+				gps.updateTrainingType(existingTT);
+				logger.info("membership is updated: " + existingTT);
+			} catch (FitnessDaoException e) {
 				trainingType.setTrainer(trainer);
 				gps.saveTrainingType(trainingType);
 				logger.info("new membership type added: " + trainingType);

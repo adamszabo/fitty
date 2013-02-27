@@ -4,7 +4,7 @@
 <#import "/tag/tags.ftl" as tags />
 
 <@template.masterTemplate title="Áruház">
-	<@tags.basketDialog "/aruhaz/confirmBasket"/>
+	<@tags.basketDialog "/kosar/rendel"/>
 	<#if checkedInUserName?? >
 		<div class="alert alert-success">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -169,7 +169,6 @@
 		</div>
 		<div class="modal-body">
 			<h5>Termékek</h5>
-			<#assign sum = 0>
 			<#list basket.orderItems as orderItem>
 				<div class="basketModalRow">
 					${orderItem.product.name} (ID:${orderItem.id})
@@ -177,7 +176,6 @@
 						${orderItem.quantity} x	${orderItem.product.price} <b>HUF</b>
 					</div>
 				</div>
-				<#assign sum = sum + ( orderItem.quantity *  orderItem.product.price) >
 			</#list>
 			<h5>Bérletek</h5>
 			<#list basket.memberships as membership>
@@ -187,23 +185,21 @@
 						${membership.price} <b>HUF</b>
 					</div>
 				</div>
-				<#assign sum = sum + membership.price>
 			</#list>
 			<h5>Edzések</h5>
 			<#list basket.trainings as training>
 				<div class="basketModalRow">
 					${training.trainer.username} ${training.date?date} (ID:${training.id})
 					<div style="float:right;">
-						5000<b> HUF</b>
+						${training.price} <b>HUF</b>
 					</div>
 				</div>
-				<#assign sum = sum + 5000>
 			</#list>
 						
 			<div class="basketModalRow">
 				<b>Összesen:</b>
 				<div style="float:right;">
-					${sum} <b>HUF</b>
+					${basket.getPrice()} <b>HUF</b>
 				</div>
 			</div>
 		</div>

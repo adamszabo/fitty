@@ -617,3 +617,53 @@
   </div>
 </div>
 </#macro>
+
+<#macro updateProductDialog>
+<div id="updateProductModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Új termék</h3>
+    <@errorAlert "new-product-inputs" "Töltsön ki minden mezőt!" />
+  </div>
+  <div class="modal-body">
+		<form class="form-horizontal" action="<@spring.url relativeUrl="/raktar/termek/termekmodositas"/>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+			<input type="hidden" id="productId" name="productId">
+			<div class="control-group">
+				<label class="control-label" for="name">Termék név</label>
+				<div class="controls">
+					<input type="text" id="name" class="input-check" name="name" placeholder="Termék neve">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="details">Leírás</label>
+				<div class="controls">
+					<input type="text" id="details" class="input-check" name="details" placeholder="Termékhez kapcsolódó leírás">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="manufacturer">Gyártó</label>
+				<div class="controls">
+					<input type="text" id="manufacturer" class="input-check" name="manufacturer" placeholder="Termék gyártója">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="price">Ár</label>
+				<div class="controls">
+					<input type="number" id="price" class="input-check" name="price" requested="requested" min="1" value="1" placeholder="Termék ára">
+				</div>
+			</div>
+			<div class="control-group">
+					<@bootstrapFileUpload />
+			</div>
+			<div class="modal-footer">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Bezár</button>
+						<button id="update-product-button" class="btn btn-success" type="submit">Hozzáadás</button>
+					</div>
+				</div>
+			</div>
+		</form>
+  </div>
+</div>
+</#macro>

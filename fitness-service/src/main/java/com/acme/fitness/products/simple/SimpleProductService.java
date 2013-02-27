@@ -3,7 +3,9 @@ package com.acme.fitness.products.simple;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.TransientObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import com.acme.fitness.dao.products.ProductDao;
@@ -15,22 +17,22 @@ import com.acme.fitness.products.ProductService;
 
 @Service
 public class SimpleProductService implements ProductService {
-	
+
 	private ProductDao productDao;
 	private ProductImageService productImageService;
-	
+
 	@Autowired
-	public SimpleProductService(ProductDao productDao, ProductImageService productImageDao){
-		this.productDao=productDao;
-		this.productImageService=productImageDao;
+	public SimpleProductService(ProductDao productDao, ProductImageService productImageDao) {
+		this.productDao = productDao;
+		this.productImageService = productImageDao;
 	}
 
 	@Override
 	public Product addProduct(String name, String details, double price, String manufacturer, Date creation, ProductImage productImage) {
-		if(productImage!=null){
+		if (productImage != null) {
 			productImageService.saveProductImage(productImage);
 		}
-		
+
 		Product product = new Product(name, details, price, manufacturer, creation, productImage);
 		productDao.save(product);
 		return product;
@@ -39,13 +41,14 @@ public class SimpleProductService implements ProductService {
 	@Override
 	public void deleteProduct(Product product) {
 		productDao.delete(product);
+
 	}
 
 	@Override
 	public void updateProduct(Product product) {
 		productDao.update(product);
 	}
-	
+
 	@Override
 	public List<Product> getAllProducts() {
 		return productDao.getAllProduct();
@@ -69,9 +72,14 @@ public class SimpleProductService implements ProductService {
 	}
 
 	@Override
-	public List<Product> getProductsByPriceInterval(double fromPrice,
-			double toPrice) {
+	public List<Product> getProductsByPriceInterval(double fromPrice, double toPrice) {
 		List<Product> result = productDao.getProductsByPriceInterval(fromPrice, toPrice);
 		return result;
+	}
+
+	@Override
+	public void updateProductAndSaveImage(Product product, ProductImage image) {
+		productImageService.saveProductImage(image);
+		productDao.update(product);
 	}
 }

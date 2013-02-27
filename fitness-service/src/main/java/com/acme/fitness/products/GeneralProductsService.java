@@ -53,6 +53,8 @@ public interface GeneralProductsService {
 	
 	List<ProductImage> getAllProductImage();
 	ProductImage getProductImageById(long id) throws FitnessDaoException;
+	void updateProductAndSaveImage(Product product, ProductImage image);
+	
 	List<Training> getTrainingsOnWeekByTrainer(User trainer, Date monday);
 	
 	TrainingType newTrainingType(User trainer, String detail, double price);

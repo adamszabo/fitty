@@ -24,4 +24,6 @@ public interface ProductService {
 	List<Product> getProductsByManufacturer(String manufacturer);
 
 	List<Product> getProductsByPriceInterval(double fromPrice, double toPrice);
+
+	void updateProductAndSaveImage(Product product, ProductImage image);
 }

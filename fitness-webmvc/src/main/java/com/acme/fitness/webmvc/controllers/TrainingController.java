@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.acme.fitness.domain.exceptions.BasketCheckOutException;
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
-import com.acme.fitness.domain.exceptions.StoreQuantityException;
 import com.acme.fitness.domain.orders.Basket;
 import com.acme.fitness.domain.products.Training;
 import com.acme.fitness.domain.users.User;
@@ -80,24 +77,6 @@ public class TrainingController {
 		return "redirect:" + redirectedFrom(request);
 	}
 	
-	@RequestMapping(value = "/rendel")
-	public String confirmBasket(HttpServletResponse response, HttpServletRequest request, RedirectAttributes redirectAttributes){
-		try {
-			basketManager.checkOutBasket(response, request);
-		} catch (StoreQuantityException e) {
-			e.printStackTrace();
-		} catch (BasketCheckOutException e) {
-			return failToCheckOut(redirectAttributes);
-		}
-		return "redirect:" + redirectedFrom(request);
-	}
-	
-	@RequestMapping("/anonymKosar/hozzaad")
-	public String addAnonymousBasketToUser(HttpServletRequest request, HttpServletResponse response) {
-		basketManager.AddAnonymousBasketToLoggedInUserBasket(response, request, new ObjectMapper());
-		return "redirect:" + redirectedFrom(request);
-	}
-	
 	@RequestMapping("/torles/{trainerName}")
 	public String deleteTraining(@PathVariable String trainerName, HttpServletRequest request, HttpServletResponse response) {
 		basketManager.removeTrainingFromBasket(request, response, trainerName);
@@ -119,11 +98,6 @@ public class TrainingController {
 	private String redirectedFrom(HttpServletRequest request) {
 		String split[] = request.getHeader("referer").split(request.getContextPath());
 		return split[1];
-	}
-	
-	private String failToCheckOut(RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
-		return "redirect:/edzesek";
 	}
 	
 	private List<Training> getTrainingsFromBasket(HttpServletRequest request) {

@@ -181,4 +181,15 @@ public class SimpleProductServiceTest {
 		BDDMockito.verify(productDao).getProductsByManufacturer("manu");
 		Assert.assertEquals(products, result);
 	}
+	
+	@Test
+	public void testUpdateProductAndSaveImageShouldInvokeTheRightMethods() {
+		//GIVEN
+		Product product = new Product();
+		//WHEN
+		underTest.updateProductAndSaveImage(product, productImage);
+		//THEN
+		BDDMockito.verify(productImageService).saveProductImage(productImage);
+		BDDMockito.verify(productDao).update(product);
+	}
 }

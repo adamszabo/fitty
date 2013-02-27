@@ -4,7 +4,7 @@
 <#import "/tag/tags.ftl" as tags />
 
 <@template.masterTemplate title="Kapcsolatok">
-	<@tags.basketDialog "/aruhaz/confirmBasket"/>
+	<@tags.basketDialog "/kosar/rendel"/>
 	
 	<div class="row contact-page">
 		<div class="hero-unit">

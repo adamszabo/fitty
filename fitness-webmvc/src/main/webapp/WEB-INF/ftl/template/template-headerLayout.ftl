@@ -48,7 +48,7 @@
     </div>
     <@tags.registrationDialog />
     
-    <form action="<@spring.url relativeUrl="/aruhaz/deleteBasket"/>">
+    <form action="<@spring.url relativeUrl="/kosar/torol"/>">
 		<@tags.confirmDialog "basket-delete" "Biztos, hogy törli a kosarat?" "Törlés" "Kosár törlése"/>
 	</form>
 	

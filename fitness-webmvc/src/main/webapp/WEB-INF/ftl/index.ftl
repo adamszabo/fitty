@@ -5,7 +5,7 @@
 
 <@template.masterTemplate title="Kezdőlap">			
 
-	<@tags.basketDialog "/aruhaz/confirmBasket"/>
+	<@tags.basketDialog "/kosar/rendel"/>
 	<div class="row">
 		<section class="span3">
 		<h1>Csatlakozz most!</h1>

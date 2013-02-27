@@ -550,4 +550,12 @@ public class SimpleGeneralProductsServiceTest {
 		//THEN
 		BDDMockito.verify(trainingTypeService).deleteTrainingType(trainingType);
 	}
+	
+	@Test
+	public void testUpdateProductAndSaveImageShouldInvokeTheRightMethod() {
+		//WHEN
+		underTest.updateProductAndSaveImage(product, productImage);
+		//THEN
+		BDDMockito.verify(productService).updateProductAndSaveImage(product, productImage);
+	}
 }

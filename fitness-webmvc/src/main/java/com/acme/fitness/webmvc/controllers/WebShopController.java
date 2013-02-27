@@ -14,16 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.acme.fitness.domain.exceptions.BasketCheckOutException;
-import com.acme.fitness.domain.exceptions.FitnessDaoException;
-import com.acme.fitness.domain.exceptions.StoreQuantityException;
-import com.acme.fitness.domain.orders.Store;
 import com.acme.fitness.domain.products.Product;
-import com.acme.fitness.domain.products.Training;
-import com.acme.fitness.orders.GeneralOrdersService;
-import com.acme.fitness.orders.simple.TrainingDateReservedException;
 import com.acme.fitness.products.GeneralProductsService;
 import com.acme.fitness.webmvc.basket.BasketManager;
 
@@ -34,9 +26,6 @@ public class WebShopController {
 	@Autowired
 	private GeneralProductsService gps;
 	
-	@Autowired
-	private GeneralOrdersService gos;
-
 	@Autowired
 	private BasketManager basketManager;
 
@@ -57,39 +46,6 @@ public class WebShopController {
 	public String addProductToCart(@ModelAttribute("productId") long id, @ModelAttribute("quantity") int quantity, @PathVariable String page, HttpServletResponse response,
 			HttpServletRequest request, Model model) {
 		basketManager.addNewOrderItem(id, quantity, response, request, new ObjectMapper());
-		return "redirect:" + redirectedFrom(request);
-	}
-
-	@RequestMapping(value = "/deleteBasket", method = RequestMethod.GET)
-	public String deleteBasketDefault(HttpServletRequest request, HttpServletResponse response, Model model) {
-		return deleteBasket("1", request, response, model);
-	}
-
-	@RequestMapping(value = "/{page}/deleteBasket", method = RequestMethod.GET)
-	public String deleteBasket(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, Model model) {
-		basketManager.deleteBasket(request, response);
-		return "redirect:"+redirectedFrom(request);
-	}
-
-	@RequestMapping(value = "/confirmBasket", method = RequestMethod.GET)
-	public String confirmOrderDefault(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
-		return confirmOrder("1", request, response, redirectAttributes, model);
-	}
-
-	@RequestMapping(value = "/{page}/confirmBasket", method = RequestMethod.GET)
-	public String confirmOrder(@PathVariable String page, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
-		try {
-			basketManager.checkOutBasket(response, request);
-		} catch (StoreQuantityException e) {
-			addMissingProductsMessages(redirectAttributes, e.getProduct());
-			return "redirect:/aruhaz/1";
-		} catch (BasketCheckOutException e) {
-			return failToCheckOut(page, redirectAttributes);
-		} catch (TrainingDateReservedException e ) {
-			addReservedTrainingsMessage(redirectAttributes, e.getReservedTrainings());
-			return "redirect:/edzesek";
-		}
-		redirectAttributes.addFlashAttribute("successCheckOut", "yeahh");
 		return "redirect:" + redirectedFrom(request);
 	}
 
@@ -140,29 +96,6 @@ public class WebShopController {
 		int pageNumber = validatePageNumber(parsePageNumber(page), gps.getAllProduct().size());
 		model.addAttribute("products", getProductsOnPage(pageNumber));
 		model.addAttribute("pageNumber", pageNumber);
-	}
-
-	private String failToCheckOut(String page, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("message", "Termék rendeléséhez be kell jelentkezni!");
-		return "redirect:/aruhaz/" + page;
-	}
-	
-	private void addReservedTrainingsMessage(RedirectAttributes redirectAttributes, List<Training> reservedTrainings) {
-		redirectAttributes.addFlashAttribute("reservedTraining", reservedTrainings);
-		redirectAttributes.addFlashAttribute("reservedMessage", "Egyes edzések időpontja már foglalt. További információk az alábbi linek");
-	}
-
-	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {
-		List<Store> stores = new ArrayList<Store>();
-		for(Product p : list) {
-			try {
-				stores.add(gos.getStoreByProduct(p));
-			} catch (FitnessDaoException e) {
-				e.printStackTrace();
-			}
-		}
-		redirectAttributes.addFlashAttribute("missingProduct", stores);
-		redirectAttributes.addFlashAttribute("message", "Egyes termékekből nincsen elegendő mennyiség a raktáron. További információk az alábbi linken!");
 	}
 
 	private List<Product> getProductsOnPage(int pageNumber) {

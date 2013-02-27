@@ -15,7 +15,7 @@
 	</#if>
 	
 <#if products?size != 0>
-	<@tags.basketDialog "/aruhaz/${pageNumber}/confirmBasket"/>
+	<@tags.basketDialog "/kosar/rendel"/>
 	<@tags.basketMergingDialog />
 
 	<div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%">

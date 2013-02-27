@@ -81,4 +81,19 @@ $(document).ready(function(){
 	    $("#updateTrainingTypeModal #detail").val($('#trainer-' + id + ' .training-type-detail').html());
 	    $("#updateTrainingTypeModal #price").val($('#trainer-' + id + ' .training-type-price').html().replace("&nbsp;", "").replace(",","").replace(".",""));
 	});
+	
+	$('.open-updateProductModal').on("click", function () {
+		id = $(this).data('id');
+		image = $(this).data('image');
+		$("#updateProductModal #productId").val($('#store-' + id + ' .productId').html());
+		$("#updateProductModal #name").val($('#store-' + id + ' .name').html());
+		$("#updateProductModal #details").val($('#store-' + id + ' .details').html());
+		$("#updateProductModal #manufacturer").val($('#store-' + id + ' .manufacturer').html());
+		$("#updateProductModal #price").val($('#store-' + id + ' .price').html().replace("&nbsp;", "").replace(",","").replace(".",""));
+		if(image=='') {
+			$('#updateProductModal img').attr('src', 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image');
+		} else {
+			$('#updateProductModal img').attr('src', $('#defaultUrl').val() + '/imageController/'+image);
+		}
+	});
 });

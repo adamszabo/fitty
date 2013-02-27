@@ -4,7 +4,7 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Raktár">
 
-<@tags.basketDialog "/aruhaz/confirmBasket"/>
+<@tags.basketDialog "/kosar/rendel"/>
 
 <ul class="nav nav-tabs">
   <li <#if productsInStore?exists>class="active"</#if>>
@@ -22,6 +22,7 @@
 	<button class="btn btn-primary" type="button" data-toggle="modal" href="#newProductModal">Új termék hozzáadása</button>
 	
 	<@tags.newProductDialog/>
+	<@tags.updateProductDialog/>
 	<link href="<@spring.url relativeUrl="/resources/css/bootstrap-fileupload.css"/>" rel="stylesheet" />
 	<table class="table table-hover">
 		<thead>
@@ -34,27 +35,28 @@
 				<th>Mennyiség</th>
 				<th>Érkezett mennyiség</th>
 				<th>Törlés</th>
+				<th>Módosítás</th>
 			</tr>
 		</thead>
 		<tbody>
 			<#list productsInStore as product>
 				<#if product.quantity < 1>
-					<tr class="error">
+					<tr id="store-${product.id}" class="error">
 				<#else>
-					<tr>
+					<tr id="store-${product.id}">
 				</#if>
-					<td>${product.product.id}</td>
-					<td>${product.product.name}</td>
-					<td>${product.product.manufacturer}</td>
-					<td class="span3">${product.product.details}</td>
-					<td>${product.product.price}</td>
+					<td class="productId">${product.product.id}</td>
+					<td class="name">${product.product.name}</td>
+					<td class="manufacturer">${product.product.manufacturer}</td>
+					<td class="details">${product.product.details}</td>
+					<td class="price">${product.product.price}</td>
 					<td>${product.quantity}</td>
 					<td>
 						<form class="form-search" action="<@spring.url relativeUrl="/raktar/termek/ujmennyiseg"/>" method="post" style="text-align:left">
 							<div class="input-append span2">
 			  					<input name="quantity" class="span1 search-query" min=0 value=0 type="number">
 			  					<input name="productId" type="hidden" value="${product.product.id}">
-			  					<button class="btn" type="submit">Raktárba</button>
+			  					<button class="btn" type="submit"><i class="icon icon-shopping-cart"></i></button>
 						  	</div>
 						</form>
 					</td>
@@ -62,6 +64,9 @@
 						<td>
 							<a href="#${product.product.id}-deleteMembershipConfirmDialog" data-toggle="modal" class="btn btn-danger deleteMembershipButton"><i class="icon-white icon-remove"></i></a>
 							<@tags.confirmDialog "${product.product.id}-deleteMembership" "Biztos, hogy törli a (Azonosító : ${product.product.id}) terméket?" "Törlés" />
+						</td>
+						<td>
+							<a class="open-updateProductModal btn btn-primary" data-toggle="modal" href="#updateProductModal" data-id="${product.id}" data-image="<#if product.product.productImage??>${product.product.productImage.id}</#if>"><i class="icon-white icon-wrench"></i></a>
 						</td>
 					</form>
 				</tr>

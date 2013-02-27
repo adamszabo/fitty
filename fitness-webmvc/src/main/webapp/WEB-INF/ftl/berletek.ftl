@@ -4,7 +4,7 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Bérletek">
 	
-<@tags.basketDialog "/aruhaz/confirmBasket"/>
+<@tags.basketDialog "/kosar/rendel"/>
 <@tags.basketMergingDialog />
 <@tags.errorMessage />
 
