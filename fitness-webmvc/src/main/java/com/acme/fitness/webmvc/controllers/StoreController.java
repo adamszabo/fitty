@@ -92,20 +92,9 @@ public class StoreController {
 	public String updateProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("product") Product product,
 			@RequestParam("file") MultipartFile file) {
 		ProductImage image = createPictureFromMultipartFile(file);
-
 		try {
 			Product existingProduct = gps.getProductById(Long.parseLong(request.getParameter("productId")));
-			updateProductFields(product, existingProduct);
-			boolean isImageChanged = false;
-			if (image != null) {
-				if(existingProduct.getProductImage() == null) {
-					isImageChanged = true;
-				} else if (!areImagesEqual(image, existingProduct)) {
-					existingProduct.setProductImage(image);
-					isImageChanged = true;
-				}
-			}
-			if (isImageChanged) {
+			if (isImageChanged(image, existingProduct, product)) {
 				gps.updateProductAndSaveImage(existingProduct, image);
 			} else {
 				gps.updateProduct(existingProduct);
@@ -116,16 +105,7 @@ public class StoreController {
 		return "redirect:/raktar";
 	}
 
-	private boolean areImagesEqual(ProductImage image, Product existingProduct) {
-		return Arrays.equals(image.getImage(), existingProduct.getProductImage().getImage()) && image.getMime().equals(existingProduct.getProductImage().getMime());
-	}
 
-	private void updateProductFields(Product product, Product existingProduct) {
-		existingProduct.setName(product.getName());
-		existingProduct.setDetails(product.getDetails());
-		existingProduct.setManufacturer(product.getManufacturer());
-		existingProduct.setPrice(product.getPrice());
-	}
 
 	@RequestMapping(value = "termek/torles/{productId}", method = RequestMethod.GET)
 	public String deleteProduct(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request, @PathVariable("productId") long productId) {
@@ -194,6 +174,31 @@ public class StoreController {
 			e.printStackTrace();
 		}
 		return "redirect:/raktar/edzestipus";
+	}
+	
+	private boolean isImageChanged(ProductImage image, Product existingProduct, Product product) {
+		updateProductFields(product, existingProduct);
+		boolean isImageChanged = false;
+		if (image != null) {
+			if(existingProduct.getProductImage() == null) {
+				isImageChanged = true;
+			} else if (!areImagesEqual(image, existingProduct)) {
+				existingProduct.setProductImage(image);
+				isImageChanged = true;
+			}
+		}
+		return isImageChanged;
+	}
+	
+	private boolean areImagesEqual(ProductImage image, Product existingProduct) {
+		return Arrays.equals(image.getImage(), existingProduct.getProductImage().getImage()) && image.getMime().equals(existingProduct.getProductImage().getMime());
+	}
+
+	private void updateProductFields(Product product, Product existingProduct) {
+		existingProduct.setName(product.getName());
+		existingProduct.setDetails(product.getDetails());
+		existingProduct.setManufacturer(product.getManufacturer());
+		existingProduct.setPrice(product.getPrice());
 	}
 
 	private ProductImage createPictureFromMultipartFile(MultipartFile file) {
