@@ -34,6 +34,7 @@ $(document).ready(function() {
 
 	// validate and send new password with valid old password
 	$('#userPasswordUpdateButton').on('click', function() {
+		$('#oldPasswordAlert').hide();
 		if (isAllInputsFilled('userPasswordUpdateForm')) {
 			$('#userPasswordUpdate-inputsAlert').hide();
 			checkNewPasswordAndItsConfirmationInput();
@@ -76,7 +77,6 @@ function checkOldPasswordAndSendNew() {
 		}),
 		success : function(data) {
 			if (data) {
-				$('#oldPasswordAlert').hide();
 				sendNewPassword();
 			} else {
 				$('#oldPasswordAlert').show();

@@ -46,6 +46,13 @@
                             <!--/.nav-collapse -->
                     </div>
             </div>
+            <div id="loginForm" class="navbar-inverse loginform-layout">
+			    <div class="navbar-inner">
+			    	<div class="container">
+						<@tags.login/>
+			        </div>
+			   	</div>	
+			</div>
     </div>
     <@tags.registrationDialog />
     
@@ -53,13 +60,7 @@
 		<@tags.confirmDialog "basket-delete" "Biztos, hogy törli a kosarat?" "Törlés" "Kosár törlése"/>
 	</form>
 	
-   <div id="loginForm" class="navbar-inverse" style="background-color:black;position:fixed; z-index:7;width: 100%; display: none;">
-	    <div class="navbar-inner">
-	    	<div class="container">
-				<@tags.login/>
-	        </div>
-	   	</div>	
-	</div>
+   
     
     <header class="jumbotron subhead headerback" id="overview">
             <div class="container">

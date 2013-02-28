@@ -56,7 +56,7 @@
 							<div class="input-append span2">
 			  					<input name="quantity" class="span1 search-query" min=0 value=0 type="number">
 			  					<input name="productId" type="hidden" value="${product.product.id}">
-			  					<button class="btn" type="submit"><i class="icon icon-shopping-cart"></i></button>
+			  					<button class="btn" type="submit"><i class="icon icon-barcode"></i></button>
 						  	</div>
 						</form>
 					</td>
