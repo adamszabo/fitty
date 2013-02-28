@@ -17,6 +17,6 @@ function initialize() {
 	new google.maps.Marker({
 		position : point,
 		map : map,
-		title : "Hello World!"
+		title : "Zsír-Szabó Fitnesz"
 	});
 }

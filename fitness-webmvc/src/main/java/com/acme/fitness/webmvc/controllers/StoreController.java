@@ -180,11 +180,9 @@ public class StoreController {
 		updateProductFields(product, existingProduct);
 		boolean isImageChanged = false;
 		if (image != null) {
-			if(existingProduct.getProductImage() == null) {
+			if(existingProduct.getProductImage() == null || !areImagesEqual(image, existingProduct)) {
 				isImageChanged = true;
-			} else if (!areImagesEqual(image, existingProduct)) {
 				existingProduct.setProductImage(image);
-				isImageChanged = true;
 			}
 		}
 		return isImageChanged;
