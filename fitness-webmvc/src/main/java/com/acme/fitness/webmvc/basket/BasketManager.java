@@ -130,7 +130,7 @@ public class BasketManager {
 				throw e;
 			}
 		} else {
-			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni");
+			throw new BasketCheckOutException("Termék rendeléséhez be kell jelentkezni!");
 		}
 	}
 

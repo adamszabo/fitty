@@ -19,7 +19,7 @@
 	<@tags.basketMergingDialog />
 
 	<div id="page-container" class="wrapper wrapper-home" style="padding-top: 1%">
-	<ul class="thumbnails">
+	<ul class="thumbnails per6">
 		<#list products as product>
 			<li class="span4">
 				<div class="thumbnail">

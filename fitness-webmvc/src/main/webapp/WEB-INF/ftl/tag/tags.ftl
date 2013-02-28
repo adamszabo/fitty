@@ -76,7 +76,7 @@
 	<#if message?exists>
 		<div class="alert alert-block">
 	  	<button type="button" class="close" data-dismiss="alert">x</button>
-	  		<h4>Hiba!</h4>
+	  		<h4>Hiba! </h4>
 			${message}
 		</div>
 	</#if>
@@ -293,7 +293,7 @@
 	<div id="missesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h3 id="myModalLabel">Az alábbi termékből nem taláható megfelelő mennyiség a raktárban:</h3>
+	    <h3 id="myModalLabel">Az alábbi termékekből nem taláható megfelelő mennyiség a raktárban:</h3>
 	  </div>
 	  <div class="modal-body">
 	  	<table class="table table-hover">
@@ -372,7 +372,6 @@
 	  <div class="modal-footer">
 	  	<form action="<@spring.url relativeUrl="/"/>">
 	  		<button id="delete-reserved-trainings-button" class="btn btn-warning" type="button">Edzések törlése</button>
-	  		<button id="delete-basket-button" class="btn btn-danger" type="button">Egész kosár törlése</button>
 		    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Bezárás</button>
 	  	</form>
 	  </div>
@@ -521,7 +520,7 @@
 		<h3>Aktuális kosár</h3>
 		<@basketElementsInTable anonymousBasket "anonymousBasket"/>
 	  
-		<h3>Jelenlegi kosarának tartalma:</h3>
+		<h3>Saját kosarának tartalma:</h3>
 		<#if basket?exists>
 		<@basketElementsInTable basket "basket"/>
 		<#else>

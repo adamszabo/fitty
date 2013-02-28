@@ -234,3 +234,11 @@ body li a {
 .thiner-lines td,.thiner-lines th {
 	padding: 5px;
 }
+
+.per6 li:nth-child(4) {
+  clear: left;
+}
+
+.per6 li:nth-child(7) {
+  clear: left;
+}

@@ -63,7 +63,7 @@ public class BasketController {
 	
 	private void addReservedTrainingsMessage(RedirectAttributes redirectAttributes, List<Training> reservedTrainings) {
 		redirectAttributes.addFlashAttribute("reservedTraining", reservedTrainings);
-		redirectAttributes.addFlashAttribute("reservedMessage", "Egyes edzések időpontja már foglalt. További információk az alábbi linek");
+		redirectAttributes.addFlashAttribute("reservedMessage", "Egyes edzések időpontja már foglalt. További információk az alábbi linken");
 	}
 	
 	private void addMissingProductsMessages(RedirectAttributes redirectAttributes, List<Product> list) {
