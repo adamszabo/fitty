@@ -4,7 +4,7 @@
 <#import "/tag/tags.ftl" as tags />
 <@template.masterTemplate title="Rendelések">
 	
-<@tags.basketDialog "/aruhaz/confirmBasket"/>
+<@tags.basketDialog "/kosar/rendel"/>
 <@tags.basketMergingDialog />
 <@tags.errorMessage />
 
@@ -45,7 +45,7 @@
 
 <#macro basketsTable baskets>
 	<#if (baskets?size>0) >
-			<table class="table table-hover table-bordered">
+			<table class="table table-hover table-bordered thiner-lines">
 				<thead>
 					<tr>
 						<th colspan="6">Rendelések</th>
@@ -70,7 +70,7 @@
 								<td>${basket.trainings?size}</td>
 								<td>${basket.creationDate?date}</td>
 								<td>
-									<a href="#${basket.id}-modal" class="btn btn-primary" data-toggle="modal">Rendelt elemek</a>
+									<a href="#${basket.id}-modal" class="btn btn-small btn-primary" data-toggle="modal">Rendelt elemek</a>
 								</td>
 							</form>
 						</tr>
