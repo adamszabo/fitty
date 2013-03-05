@@ -6,6 +6,14 @@
 <@template.masterTemplate title="Kezdőlap">			
 
 	<@tags.basketDialog "/kosar/rendel"/>
+	
+	<#if registrationMessage?exists>
+		<div class="alert alert-success">
+	  	<button type="button" class="close" data-dismiss="alert">x</button>
+	  		<h4>Sikeres regisztráció!</h4>
+			${registrationMessage}
+		</div>
+	</#if>
 	<div class="row">
 		<section class="span3">
 		<h1>Csatlakozz most!</h1>

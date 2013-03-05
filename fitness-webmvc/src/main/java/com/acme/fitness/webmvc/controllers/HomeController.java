@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.fitness.domain.exceptions.FitnessDaoException;
 import com.acme.fitness.domain.users.Roles;
@@ -63,7 +64,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String registration(Locale locale, Model model, @Valid User user) {
+	public String registration(Locale locale, Model model, @Valid User user, RedirectAttributes redirectAttributes) {
 		boolean existUsername = existUserName(user.getUsername());
 		boolean existEmail = existEmail(user.getEmail());
 		
@@ -71,6 +72,7 @@ public class HomeController {
 			User registeredUser = gus.addUser(user.getFullName(), user.getUsername(), spe.encode(user.getPassword()), user.getEmail(), user.getMobile(), new Date());
 			gus.addUserRole(Roles.Client.toString(), registeredUser);
 			logger.info("User registered :" + user.toString() + " password: " + user.getPassword() + ", mobile: " + user.getMobile());
+			redirectAttributes.addFlashAttribute("registrationMessage", "A " + user.getUsername() + " felhasználónévvel történő regisztráció sikeres volt");
 		} else {
 			logger.info("The username or email already exists in the database!");
 		}
