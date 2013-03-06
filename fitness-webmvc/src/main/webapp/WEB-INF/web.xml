@@ -44,13 +44,17 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
         </init-param>
+	      <init-param>
+	        <param-name>org.atmosphere.cpr.broadcastFilterClasses</param-name>
+	        <param-value>org.atmosphere.client.TrackMessageSizeFilter</param-value>
+	      </init-param>
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
 
 	<servlet-mapping>
 		<servlet-name>feeds</servlet-name>
-		<url-pattern>/aruhaz/reklam/reklamok</url-pattern>
+		<url-pattern>/reklam/feliratkoz</url-pattern>
 	</servlet-mapping>
 	
   <filter>

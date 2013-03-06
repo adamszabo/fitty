@@ -31,5 +31,5 @@
 	
 	<!-- Advertisment -->
 	<script src="<@spring.url relativeUrl="/resources/js/marquee.js"/>"></script>
-	
+	<script src="<@spring.url relativeUrl="/resources/js/forPages/reklam.js"/>"></script>
 </#macro>

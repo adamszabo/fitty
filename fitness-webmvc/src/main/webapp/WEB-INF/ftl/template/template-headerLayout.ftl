@@ -27,6 +27,7 @@
 										</@security.authorize>
 										<@security.authorize access="hasRole('SystemAdmin')">
 											<li><a href="<@spring.url relativeUrl="/admin"/>">Jogosultsagok</a></li>
+											<li><a href="<@spring.url relativeUrl="/reklam"/>">Reklám</a></li>
 										</@security.authorize>
 										<li><a href="<@spring.url relativeUrl="/kapcsolatok"/>">Kapcsolat</a></li>
 										<@security.authorize access="isAnonymous()">
