@@ -65,7 +65,7 @@
     <header class="jumbotron subhead headerback" id="overview">
             <div class="container">
                     <h1>Zsír-Szabó Fitnesz</h1>
-                    <p class="lead">Üdvözöljük!</p>
+                    <p class="lead" style="margin-bottom: 0px !important;">Üdvözöljük!</p>
             </div>
     </header>
     <input type="hidden" name="defaultUrl" id="defaultUrl" value="<@spring.url relativeUrl="/"/>"/>

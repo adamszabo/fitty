@@ -29,4 +29,7 @@
 	<script src="<@spring.url relativeUrl="/resources/js/slimScroll.js"/>"></script>
 	<script src="<@spring.url relativeUrl="/resources/js/jquery.atmosphere.js"/>"></script>
 	
+	<!-- Advertisment -->
+	<script src="<@spring.url relativeUrl="/resources/js/marquee.js"/>"></script>
+	
 </#macro>

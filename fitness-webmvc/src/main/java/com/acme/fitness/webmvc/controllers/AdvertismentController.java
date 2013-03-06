@@ -1,15 +1,17 @@
 package com.acme.fitness.webmvc.controllers;
 
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.AtmosphereResourceEventListenerAdapter;
 import org.atmosphere.cpr.Broadcaster;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -32,23 +34,27 @@ public class AdvertismentController {
         }
 	}
 
-	@RequestMapping(value="/aruhaz/reklamok")
+	@RequestMapping(value="/aruhaz/reklam/reklamok", method=RequestMethod.GET)
 	@ResponseBody
 	public void readAdvertisment(AtmosphereResource atmosphereResource){
-		System.out.println("hahaha");
+		System.out.println("Subscribe to websocket....");
 		this.suspend(atmosphereResource);
-	 
-	    final Broadcaster bc = atmosphereResource.getBroadcaster();
-	    
-	    bc.scheduleFixedBroadcast(new Callable<String>() {
-	    	
-	        //@Override
+	}
+	
+	@RequestMapping(value="/aruhaz/reklam/reklamok", method=RequestMethod.POST)
+	@ResponseBody
+	public void sendAdvertisment(@RequestBody String adv, AtmosphereResource atmosphereResource){
+		final String msg=adv;
+		final Broadcaster bc = atmosphereResource.getBroadcaster();
+		
+		
+		bc.broadcast(new Callable<String>() {
 	        public String call() throws Exception {
-	        	System.out.println("hehehe");
-	            return "{ \"szeva\" : \"pina\"}";
+	        	Random rand=new Random();
+	        	System.out.println("Send advertisment message.....");
+	            return "{ \"msg\" : \""+msg+" "+rand.nextInt()+"\"}";
 	        }
-	 
-	    }, 10, TimeUnit.SECONDS);
+	    });
 	}
 	
 }

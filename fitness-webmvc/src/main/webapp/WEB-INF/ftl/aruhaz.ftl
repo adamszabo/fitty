@@ -5,7 +5,8 @@
 <@template.masterTemplate title="Áruház">
 
 
-
+	<button type="button" class="btn" id="broadcastButton">BroadCast</button>
+	<button type="button" class="btn" id="broadcastStopButton">Stop advertistment</button>
 	<#if message?exists>
 		<div class="alert alert-block">
 	  	<button type="button" class="close" data-dismiss="alert">x</button>
