@@ -12,14 +12,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class AtmosphereArgumentResolver implements HandlerMethodArgumentResolver {
 
-    //@Override
+    @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return AtmosphereResource.class.isAssignableFrom(parameter.getParameterType());
     }
 
-    //@Override
+    @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
     	HttpServletRequest httpServletRequest= webRequest.getNativeRequest(HttpServletRequest.class);
-        return Meteor.build(httpServletRequest).getAtmosphereResource();
+    	return Meteor.build(httpServletRequest).getAtmosphereResource();
     }
 }
