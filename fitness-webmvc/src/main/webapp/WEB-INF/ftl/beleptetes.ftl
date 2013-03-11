@@ -90,6 +90,7 @@
 						<th>Azonosító</th>
 						<th>Típus</th>
 						<th>Belépések száma</th>
+						<th>Érvényesség</th>
 						<th>Ára</th>
 						<th>Művelet</th>
 					</tr>
@@ -103,6 +104,14 @@
 								<td>${membership.id}</td>
 								<td>${membership.type}</td>
 								<td>${membership.numberOfEntries}</td>
+								<td>
+									<#if membership.isIntervally>
+										${membership.expireDate?date}
+									<#else>
+									<#assign numberOfValidEntries=(membership.maxNumberOfEntries-membership.numberOfEntries)>
+										${numberOfValidEntries} alkalom
+									</#if>
+								</td>
 								<td>${membership.price}</td>
 								<td><button class="btn btn-success" type="submit">Beléptet</button></td>
 							</form>
